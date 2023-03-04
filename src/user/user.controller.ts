@@ -4,7 +4,7 @@ import { UserService } from "./user.service";
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
-    //dto를통한통신
+    
   @Post("/login")
   async login(@Body() body) {
     return await this.userService.login(body.email, body.password);
