@@ -8,6 +8,7 @@ import { UserModule } from './user/user.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { RequestModule } from './request/request.module';
 
 @Module({
   imports: [
@@ -24,7 +25,9 @@ import { AuthMiddleware } from './auth/auth.middleware';
       inject: [ConfigService]
     }),
     
-    UserModule
+    UserModule,
+    
+    RequestModule
   ],
   controllers: [AppController],
   providers: [AppService],
