@@ -9,6 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
 import { AuthMiddleware } from './auth/auth.middleware';
 import { RequestModule } from './request/request.module';
+import { CatModule } from './cat/cat.module';
 
 @Module({
   imports: [
@@ -27,7 +28,9 @@ import { RequestModule } from './request/request.module';
     
     UserModule,
     
-    RequestModule
+    RequestModule,
+    
+    CatModule
   ],
   controllers: [AppController],
   providers: [AppService],
