@@ -1,4 +1,24 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, Req } from '@nestjs/common';
+import { Request } from 'express';
+import { CreateRequestDto } from './dto/create-request.dto';
+import { UpdateRequestDto } from './dto/update-request.dto';
+import { RequestService } from './request.service';
 
-@Controller('request')
-export class RequestController {}
+@Controller('requests')
+export class RequestController {
+  constructor(private readonly requestService: RequestService) {}
+
+  @Get()
+  async getRequests() {
+    return await this.requestService.getRequests();
+  }
+
+  @Post()
+  createRequest(@Req() request: Request, @Body() data: CreateRequestDto) {
+    // const userEmail = request.user;
+    return this.requestService.createRequest(data.reserved_time, data.detail);
+  }
+
+  @Patch()
+  updateRequest(@Body() data: UpdateRequestDto) {}
+}
