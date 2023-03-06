@@ -7,13 +7,14 @@ import {
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import _ from "lodash";
-import { InsertResult, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { User } from "./user.entity";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) 
+    private userRepository: Repository<User>,
     private jwtService: JwtService
   ) { }
 

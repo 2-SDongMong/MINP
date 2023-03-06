@@ -16,8 +16,8 @@ import { JwtConfigService } from "src/config/jwt.config.service";
       inject: [ConfigService]
     }),
   ],
- // providers: [UserService],
+  providers: [UserService],
   exports: [UserService],
-  //controllers: [UserController],
+  controllers: [UserController],
 })
 export class UserModule {}
