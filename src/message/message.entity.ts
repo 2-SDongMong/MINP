@@ -1,3 +1,4 @@
+import { User } from 'src/user/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -5,6 +6,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  JoinColumn,
+  ManyToOne,
 } from 'typeorm';
 
 @Entity({ schema: 'mooin_cat', name: 'messages' })
@@ -26,4 +29,12 @@ export class Message {
 
   @DeleteDateColumn()
   deleted_at: Date | null;
+
+  @ManyToOne(() => User, (user) => user.send_messages, { cascade: true })
+  @JoinColumn({ name: 'send_user_id' })
+  send_user: User;
+
+  @ManyToOne(() => User, (user) => user.receive_messages, { cascade: true })
+  @JoinColumn({ name: 'receive_user_id' })
+  receive_user: User;
 }

@@ -1,37 +1,28 @@
+import { User } from 'src/user/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'mooin_cat', name: 'requests' })
 export class Request {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'request_id' })
+  @PrimaryGeneratedColumn()
   request_id: number;
 
   @Column('int')
   user_id: number;
 
-  @Column('varchar', { length: 50 })
-  name: string;
+  @Column('varchar', { length: 500 })
+  detail: string;
 
-  @Column('int')
-  age: number;
-
-  @Column('varchar', { length: 20 })
-  gender: string;
-
-  @Column('bool')
-  neutered: boolean;
-
-  @Column('varchar', { length: 255 })
-  image: string;
-
-  @Column('varchar', { length: 100 })
-  character: string;
+  @Column('date')
+  reserved_time: Date;
 
   @CreateDateColumn()
   created_at: Date;
@@ -41,4 +32,8 @@ export class Request {
 
   @DeleteDateColumn()
   deleted_at: Date | null;
+
+  @ManyToOne(() => User, (user: User) => user.requests, { cascade: true })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }

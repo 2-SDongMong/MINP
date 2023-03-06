@@ -1,16 +1,21 @@
+import { CatLike } from 'src/cat-like/cat-like.entity';
+import { User } from 'src/user/user.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'mooin_cat', name: 'cats' })
 export class Cat {
-  @PrimaryGeneratedColumn({ type: 'int', name: 'cat_id' })
+  @PrimaryGeneratedColumn()
   cat_id: number;
 
   @Column('int')
@@ -19,7 +24,7 @@ export class Cat {
   @Column('varchar', { length: 50 })
   name: string;
 
-  @Column('int')
+  @Column('int', { nullable: true })
   age: number;
 
   @Column('varchar', { length: 20 })
@@ -31,7 +36,7 @@ export class Cat {
   @Column('varchar', { length: 255 })
   image: string;
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 100, nullable: true })
   character: string;
 
   @CreateDateColumn()
@@ -42,4 +47,14 @@ export class Cat {
 
   @DeleteDateColumn()
   deleted_at: Date | null;
+
+  @ManyToOne(() => User, (user) => user.cats, { cascade: true })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @OneToMany(() => CatLike, (catLike) => catLike.cat, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
+  cat_likes: CatLike[];
 }
