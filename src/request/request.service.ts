@@ -13,15 +13,8 @@ export class RequestService {
 
   async getRequests() {
     const request = await this.requestRepository.find({
-      // where: { deleted_at: null },
-      // 이 조건이 없어도 이 조건으로 find 해온다.
       relations: {
-        // user: true,
         user: {
-          // user_id: true,
-          // nickname: true,
-          // select: ['nickname',],
-          // nickname: true,
           cats: true,
         },
       },
@@ -46,15 +39,15 @@ export class RequestService {
 
   async getRequestById(id: number) {}
 
-  createRequest(resevedTime: Date, detail: string) {
+  createRequest(bodyData) {
     this.requestRepository.insert({
       user_id: 1,
-      reserved_time: resevedTime,
-      detail,
+      reserved_time: bodyData.reserved_time,
+      detail: bodyData.detail,
     });
   }
 
-  updateRequest(reservedTime: Date, detail: string) {}
+  updateRequest(bodyData) {}
 
   deleteRequest() {}
 }

@@ -15,8 +15,8 @@ export class RequestController {
 
   @Post()
   createRequest(@Req() request: Request, @Body() data: CreateRequestDto) {
-    // const userEmail = request.user;
-    return this.requestService.createRequest(data.reserved_time, data.detail);
+    // FIXME: const userEmail = request.user;
+    return this.requestService.createRequest(data);
   }
 
   @Patch()
