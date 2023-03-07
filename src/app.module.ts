@@ -24,6 +24,7 @@ import { CatLikesModule } from './cat-likes/cat-likes.module';
 import { ShareCommentsModule } from './share-comments/share-comments.module';
 import { SharePostsModule } from './share-posts/share-posts.module';
 import { ShareImagesModule } from './share-images/share-images.module';
+import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 
 @Module({
   imports: [
@@ -63,6 +64,8 @@ import { ShareImagesModule } from './share-images/share-images.module';
     SharePostsModule,
 
     ShareImagesModule,
+
+    ShareProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
