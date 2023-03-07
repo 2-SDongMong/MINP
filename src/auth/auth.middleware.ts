@@ -19,6 +19,7 @@ import {
       let token: string;
       try {
         token = authHeader.split(" ")[1];
+        console.log("token---------------",token)
         const payload = await this.jwtService.verify(token);
         req.user = payload;
         next();

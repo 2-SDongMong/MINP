@@ -16,3 +16,5 @@ export class CreateUserDto {
   @IsString()
   readonly referral_code: string;
 }
+
+export default CreateUserDto

@@ -3,79 +3,67 @@ import {
   Injectable,
   NotFoundException,
   UnauthorizedException,
-} from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { InjectRepository } from "@nestjs/typeorm";
-import _ from "lodash";
-import { Repository } from "typeorm";
-import { User } from "./user.entity";
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { InjectRepository } from '@nestjs/typeorm';
+import _ from 'lodash';
+import { InsertResult, Repository } from 'typeorm';
+import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto'
+import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) 
-    private userRepository: Repository<User>,
-    private jwtService: JwtService
-  ) { }
+    @InjectRepository(User) private userRepository: Repository<User>,
 
-  async login(email: string, password: string) {
-    const user = await this.userRepository.findOne({
-      where: { email, deletedAt: null },
-      select: ["email", "password"],
-    });
+  ) {}
 
-    if (_.isNil(user)) {
-      throw new NotFoundException(`User not found. email: ${email}`);
+  async create(userData: CreateUserDto) {
+    //이메일 중복 체크
+    const existUser = await this.getByEmail(userData.email);
+    if (!_.isNil(existUser)) {
+      throw new ConflictException(`User already exists. email: ${userData.email}`);
     }
-
-    if (user.password !== password) {
-      throw new UnauthorizedException(
-        `User password is not correct. email: ${email}`
-      );
-    }
-
-    const payload = { email: user.email };
-    const accessToken = await this.jwtService.signAsync(payload);
-    return accessToken;
-  }
-
-  async createUser(
-    email: string,
-    name: string,
-    nickname: string,
-    address: string,
-    password: string,
-    phone_number: string,
-    referral_code: string,
-  ) {
-    const existUser = await this.getUserInfo(email);
-    // if (!_.isNil(existUser)) {
-    //   throw new ConflictException(`User already exists. email: ${email}`);
-    // }
-    
-    const insertResult = await this.userRepository.insert({
-      email,
-      name,
-      nickname,
-      address,
-      phone_number,
-      referral_code,
-      password,
+    //해시, salt 10번
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const newUser = await this.userRepository.create({
+      ...userData,
+      password: hashedPassword,
     });
-
-    const payload = { email: insertResult.identifiers[0].email };
-    const accessToken = await this.jwtService.signAsync(payload);
-    return accessToken;
+    await this.userRepository.save(newUser);
+    return newUser;
   }
-
+  //이건 아직 xx
   updateUser(email: string, nickname: string, password: string) {
     this.userRepository.update({ email }, { nickname, password });
   }
 
-  async getUserInfo(email: string) {
+  async getByEmail(email: string) {
     return await this.userRepository.findOne({
-      where: { email, deletedAt: null },
-      select: ["nickname"], // 이외에도 다른 정보들이 필요하면 리턴해주면 됩니다.
+      where: { email, deleted_at: null },
+      select: ['nickname'],
     });
+  }
+
+  async findOneByEmail(email: string) {
+    console.log(email);
+    return await this.userRepository.findOneBy({ email: email });
+  }
+  async findPassword(email: string){
+    console.log("함수 들어옴?");
+    const a = await this.userRepository.findOne({where: { email, deleted_at: null },
+      select: ['password'],});
+      
+    return a
+  }
+
+  async findOne(id: number) {
+    return await this.userRepository.findOneBy({ user_id: id });
+  }
+  //refreshToken update
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    return await this.userRepository.update(id, updateUserDto);
   }
 }
