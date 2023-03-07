@@ -1,4 +1,5 @@
 name: [main] branch [PUSH, PULL_REQUEST] test
+
 run-name: PUSH or PULL_REQUEST events triggered on branch MAIN
 
 on:
@@ -29,4 +30,4 @@ jobs:
         run: npm ci
 
       - run: npm run build --if-present
-    # TODO: - run: npm test
+    	# TODO: - run: npm test
