@@ -75,9 +75,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       // PUT /user/update 경로에 AuthMiddelware 미들웨어 적용.
-      .forRoutes(
-        { path: 'user/update', method: RequestMethod.PUT },
-        { path: 'requests', method: RequestMethod.POST },
-      );
+      .forRoutes({ path: 'user/update', method: RequestMethod.PUT });
   }
 }

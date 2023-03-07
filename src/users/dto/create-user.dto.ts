@@ -14,5 +14,5 @@ export class CreateUserDto {
   @IsString()
   readonly password: string;
   @IsString()
-  readonly referral_code?: string;
+  readonly referral_code: string;
 }

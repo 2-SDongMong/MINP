@@ -34,7 +34,7 @@ export class UsersService {
       );
     }
 
-    const payload = { user_id: user.user_id, email: user.email };
+    const payload = { email: user.email };
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
   }
@@ -59,14 +59,11 @@ export class UsersService {
       nickname,
       address,
       phone_number,
-      password,
       referral_code,
+      password,
     });
 
-    const payload = {
-      user_id: insertResult.identifiers[0].user_id,
-      email: insertResult.identifiers[0].email,
-    };
+    const payload = { email: insertResult.identifiers[0].email };
     const accessToken = await this.jwtService.signAsync(payload);
     return accessToken;
   }
