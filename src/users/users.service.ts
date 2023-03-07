@@ -7,18 +7,19 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { InsertResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
     private jwtService: JwtService,
   ) {}
 
   async login(email: string, password: string) {
-    const user = await this.userRepository.findOne({
+    const user = await this.usersRepository.findOne({
       where: { email, deleted_at: null },
       select: ['email', 'password'],
     });
@@ -52,7 +53,7 @@ export class UsersService {
     //   throw new ConflictException(`User already exists. email: ${email}`);
     // }
 
-    const insertResult = await this.userRepository.insert({
+    const insertResult = await this.usersRepository.insert({
       email,
       name,
       nickname,
@@ -68,13 +69,13 @@ export class UsersService {
   }
 
   updateUser(email: string, nickname: string, password: string) {
-    this.userRepository.update({ email }, { nickname, password });
+    this.usersRepository.update({ email }, { nickname, password });
   }
 
   async getUserInfo(email: string) {
-    return await this.userRepository.findOne({
+    return await this.usersRepository.findOne({
       where: { email, deleted_at: null },
-      select: ['nickname'], // 이외에도 다른 정보들이 필요하면 리턴해주면 됩니다.
+      select: ['nickname'],
     });
   }
 }

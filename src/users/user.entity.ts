@@ -53,8 +53,8 @@ export class User {
   @Column('varchar', { length: 100, nullable: true })
   referral_code: string;
 
-  @Column('varchar', { select: false })
-  salt: string;
+  @Column({ default: null })
+  hashdRt: string | null;
 
   @CreateDateColumn()
   created_at: Date;
