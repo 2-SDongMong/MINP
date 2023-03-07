@@ -16,6 +16,7 @@ import { ShareProducts } from 'src/share-modules/share-products/entities/share-p
 import { SharePost } from 'src/share-posts/share-post.entity';
 import { UserLike } from 'src/user-likes/user-like.entity';
 import { User } from 'src/users/user.entity';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
@@ -48,6 +49,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       ],
       synchronize: true,
       autoLoadEntities: true,
+      namingStrategy: new SnakeNamingStrategy(),
     };
   }
 }
