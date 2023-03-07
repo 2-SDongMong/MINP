@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, PayloadTooLargeException, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { LoginUserDto } from 'src/user/dto/login-user.dto';
 import { User } from 'src/user/user.entity';
 import { AuthService } from './auth.service';
@@ -8,6 +8,7 @@ import { RtGuard } from './guards/rt.guard';
 
 @Controller('auth')
 export class AuthController {
+    jwtService: any;
     constructor(private readonly authService: AuthService){}
 
    
@@ -27,7 +28,7 @@ export class AuthController {
 
     
     @Post('/refresh')
-    //@UseGuards(RtGuard)
+    @UseGuards(RtGuard)
     @HttpCode(HttpStatus.OK)
     async refreshTokens(
       @GetCurrentUser('refreshToken') refreshToken: string,
