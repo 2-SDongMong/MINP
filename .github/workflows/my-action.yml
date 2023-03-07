@@ -1,4 +1,4 @@
-name: [main] branch [PUSH, PULL_REQUEST] test
+name: MAIN branch PUSH, PULL_REQUEST test
 
 run-name: PUSH or PULL_REQUEST events triggered on branch MAIN
 
