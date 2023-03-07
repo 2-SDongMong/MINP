@@ -9,7 +9,7 @@ export class ShareProductsLocation {
   address: string;
 
   @Column()
-  address_detail: string;
+  addressDetail: string;
 
   @Column()
   lat: number;
@@ -18,5 +18,5 @@ export class ShareProductsLocation {
   lng: number;
 
   @Column()
-  trade_time: Date;
+  tradeTime: Date;
 }

@@ -25,7 +25,7 @@ export class ShareProducts {
   description: string;
 
   @Column()
-  is_trade: boolean;
+  isTrade: boolean;
 
   @JoinColumn()
   @OneToOne(() => ShareProductsLocation)
