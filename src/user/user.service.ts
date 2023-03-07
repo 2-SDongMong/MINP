@@ -7,6 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
+import { where } from 'sequelize';
 import { InsertResult, Repository } from 'typeorm';
 import { User } from './user.entity';
 
@@ -15,6 +16,7 @@ export class UserService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private userPassword = new Map(),
   ) {}
 
   async login(email: string, password: string) {
@@ -76,5 +78,32 @@ export class UserService {
       where: { email, deleted_at: null },
       select: ['nickname'], // 이외에도 다른 정보들이 필요하면 리턴해주면 됩니다.
     });
+  }
+
+  // My page API
+  async getUser(userId: number) {
+    return await this.userRepository.findOne({
+      where: { user_id:userId},
+      select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
+    });
+  }
+
+    updateUserInfo(userId: number, nickname: string, address: string, phone_number: string, password: string) {
+    this.userRepository.update({
+      user_id:userId}, 
+      { 
+        nickname, 
+        address, 
+        phone_number, 
+        password
+      });
+  }
+
+  deleteUser(userId: number, password: number) {
+    if (this.userPassword.get(userId) !== password) {
+      throw new UnauthorizedException(
+        '입력된 비밀번호가 다릅니다.'
+      );   
+    }
   }
 }
