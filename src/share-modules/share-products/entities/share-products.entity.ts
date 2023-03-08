@@ -24,7 +24,7 @@ export class ShareProducts {
   @Column({ type: 'text' })
   description: string;
 
-  @Column()
+  @Column({ default: false })
   isTrade: boolean;
 
   @JoinColumn()

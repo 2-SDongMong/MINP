@@ -32,6 +32,7 @@ export class ShareProductsController {
     @Param('productId') productId: string,
     @Body() updateShareProductDto: UpdateShareProductDto,
   ) {
+    await this.shareProductsService.checkTradeOut({ productId });
     return await this.shareProductsService.update({
       productId,
       updateShareProductDto,
