@@ -29,7 +29,7 @@ export class User {
   @Column('varchar', { length: 50, unique: true })
   nickname: string;
 
-  @Column('varchar', { length: 50, select: false })
+  @Column('varchar', { length: 140, select: false })
   password: string;
 
   @Column('varchar', { length: 10 })
@@ -90,7 +90,7 @@ export class User {
   })
   share_posts: SharePost[];
 
-  @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
+  @OneToMany(()=>ShareProducts, (shareProducts)=>shareProducts.user,{
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

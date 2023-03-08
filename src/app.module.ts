@@ -26,9 +26,11 @@ import { SharePostsModule } from './share-posts/share-posts.module';
 import { ShareImagesModule } from './share-images/share-images.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
+
 @Module({
   imports: [
-    // 제일 먼저 보이는 모듈에 db접속정보가 다 보이니까 감춰
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -40,10 +42,13 @@ import { ShareProductsModule } from './share-modules/share-products/share-produc
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
-
     UsersModule,
 
     RequestsModule,
+
+    AuthModule,
+    
+    PassportModule,
 
     CatsModule,
 
@@ -75,6 +80,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(AuthMiddleware)
       // PUT /user/update 경로에 AuthMiddelware 미들웨어 적용.
-      .forRoutes({ path: 'user/update', method: RequestMethod.PUT });
+      .forRoutes({ path: 'auth/logout', method: RequestMethod.ALL });
   }
 }
