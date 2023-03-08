@@ -1,0 +1,65 @@
+GET http://localhost:3000/requests
+
+###
+
+GET http://localhost:3000/requests/10
+
+###
+
+POST http://localhost:3000/requests
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+
+{
+    "reserved_time": "2023-03-29",
+    "detail": "냥품 요청이요!"
+}
+
+###
+
+PATCH http://localhost:3000/requests/10
+Content-Type: application/json
+
+{
+    "detail": "냥품 요청합니다!"
+}
+
+###
+
+DELETE http://localhost:3000/requests/4
+
+###
+
+POST http://localhost:3000/user/signup
+Content-Type: application/json
+
+{
+    "email": "test3@gmail.com",
+    "name": "test_name",
+    "nickname": "Nick Again3",
+    "address": "서울시 구로구",
+    "phone_number": "010-1234-5678",
+    "referral_code": "3btest",
+    "password": "1234"
+}
+
+###
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "test3@gmail.com",
+    "password": "1234"
+}
+
+###
+
+POST http://localhost:3000/auth/logout
+
+###
+
+PUT http://localhost:3000/user/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNiwiaWF0IjoxNjc4MTk2MjM4LCJleHAiOjE2NzgxOTk4Mzh9.-QKmG56ll9RgeacAC_GMGcA_cxit5yol34pEOElRdxA
+
+###

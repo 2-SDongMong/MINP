@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
-import { JwtModuleOptions, JwtOptionsFactory } from "@nestjs/jwt";
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtModuleOptions, JwtOptionsFactory } from '@nestjs/jwt';
 
 @Injectable()
 export class JwtConfigService implements JwtOptionsFactory {
@@ -8,7 +8,7 @@ export class JwtConfigService implements JwtOptionsFactory {
 
   createJwtOptions(): JwtModuleOptions {
     return {
-      secret: this.configService.get<string>("JWT_SECRET"),
+      secret: this.configService.get<string>("JWT_ACCESS_SECRET"),
       signOptions: { expiresIn: "3600s" },
     };
   }
