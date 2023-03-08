@@ -1,9 +1,9 @@
-import { IsString, IsDate } from 'class-validator';
+import { IsString, IsDateString } from 'class-validator';
 
 export class CreateRequestDto {
   @IsString()
   readonly detail: string;
 
-  @IsDate()
+  @IsDateString()
   readonly reserved_time: Date;
 }
