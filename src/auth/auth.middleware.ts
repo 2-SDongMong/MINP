@@ -15,7 +15,7 @@ import {
     async use(req: any, res: any, next: Function) {
       const authHeader = req.headers.authorization;
   
-      const accessToken = authHeader && authHeader?.split(' ')[1];
+      const accessToken = authHeader?.split(' ')[1];
       if ( !accessToken) {
         return next();
       }

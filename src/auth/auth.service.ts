@@ -85,11 +85,12 @@ export class AuthService {
     const token = refreshtoken.split('bearer ')[1];
     //bearer refreshtoken 이런 토큰
     const user = await this.userService.findOne(user_id);
-    const refreshTokentCompare = await bcrypt.compare(token, user?.hashdRt);
+    if (!user?.hashdRt) throw new ForbiddenException('Access Denied.');
+    const refreshTokentCompare = await bcrypt.compare(token, user.hashdRt);
     if (!refreshTokentCompare) throw new ForbiddenException('Access Denied.');
-    const tokens = await this.getTokens(user?.user_id, user?.email);
+    const tokens = await this.getTokens(user.user_id, user.email);
     const refreshTokenHash = await this.hashPassword(tokens.refresh_token);
-    await this.userService.update(user?.user_id, { hashdRt: refreshTokenHash });
+    await this.userService.update(user.user_id, { hashdRt: refreshTokenHash });
 
     return tokens;
     }
