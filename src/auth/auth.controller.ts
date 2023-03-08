@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, PayloadTooLargeException, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { LoginUserDto } from 'src/user/dto/login-user.dto';
-import { User } from 'src/user/user.entity';
+import { LoginUserDto } from 'src/users/dto/login-user.dto';
+import { User } from 'src/users/user.entity';
 import { AuthService } from './auth.service';
 import { GetCurrentUser } from './decorator/get-current-user.decorator';
 import { UserId } from './decorator/get-current-userid.decorator';

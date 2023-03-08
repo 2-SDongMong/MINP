@@ -7,23 +7,25 @@ import {
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UserModule } from './user/user.module';
-import { AuthMiddleware } from './auth/auth.middleware';
-import { RequestModule } from './request/request.module';
-import { CatModule } from './cat/cat.module';
-import { MessageModule } from './message/message.module';
-import { PostModule } from './post/post.module';
-import { PostCommentModule } from './post-comment/post-comment.module';
-import { UserLikeModule } from './user-like/user-like.module';
-import { PostImageModule } from './post-image/post-image.module';
-import { CatLikeModule } from './cat-like/cat-like.module';
-import { ShareCommentModule } from './share-comment/share-comment.module';
-import { SharePostModule } from './share-post/share-post.module';
-import { ShareImageModule } from './share-image/share-image.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
+import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
+import { AuthMiddleware } from './auth/auth.middleware';
+import { RequestsModule } from './requests/requests.module';
+import { CatsModule } from './cats/cats.module';
+import { MessagesModule } from './messages/messages.module';
+import { PostsModule } from './posts/posts.module';
+import { PostCommentsModule } from './post-comments/post-comments.module';
+import { UserLikesModule } from './user-likes/user-likes.module';
+import { PostImagesModule } from './post-images/post-images.module';
+import { CatLikesModule } from './cat-likes/cat-likes.module';
+import { ShareCommentsModule } from './share-comments/share-comments.module';
+import { SharePostsModule } from './share-posts/share-posts.module';
+import { ShareImagesModule } from './share-images/share-images.module';
+import { ShareProductsModule } from './share-modules/share-products/share-products.module';
+
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 
@@ -40,33 +42,35 @@ import { PassportModule } from '@nestjs/passport';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
-    UserModule,
+    UsersModule,
+
+    RequestsModule,
 
     AuthModule,
     
     PassportModule,
 
-    RequestModule,
+    CatsModule,
 
-    CatModule,
+    MessagesModule,
 
-    MessageModule,
+    PostsModule,
 
-    PostModule,
+    PostCommentsModule,
 
-    PostCommentModule,
+    CatLikesModule,
 
-    CatLikeModule,
+    PostImagesModule,
 
-    PostImageModule,
+    UserLikesModule,
 
-    UserLikeModule,
+    ShareCommentsModule,
 
-    ShareCommentModule,
+    SharePostsModule,
 
-    SharePostModule,
+    ShareImagesModule,
 
-    ShareImageModule,
+    ShareProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],

@@ -1,14 +1,14 @@
 import { HttpException, HttpStatus, ForbiddenException, Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { JwtService } from '@nestjs/jwt';
-import { LoginUserDto } from 'src/user/dto/login-user.dto';
+import { LoginUserDto } from 'src/users/dto/login-user.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     private jwtService: JwtService,
     ) {}
 

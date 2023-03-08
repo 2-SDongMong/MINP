@@ -4,12 +4,12 @@ import {
     UnauthorizedException,
   } from "@nestjs/common";
   import { JwtService } from "@nestjs/jwt";
-import { UserService } from "src/user/user.service";
+import { UsersService } from "src/users/users.service";
   
   @Injectable()
   export class AuthMiddleware implements NestMiddleware {
     constructor(private jwtService: JwtService,
-      private readonly userService: UserService
+      private readonly userService: UsersService
       ) {}
   
     async use(req: any, res: any, next: Function) {
