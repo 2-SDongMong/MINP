@@ -7,106 +7,92 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { Repository } from 'typeorm';
+import { InsertResult, Repository } from 'typeorm';
 import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto'
+import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
-    private usersRepository: Repository<User>,
-    private jwtService: JwtService,
-    // private userPassword = new Map(),
+    @InjectRepository(User) private userRepository: Repository<User>,
+
   ) {}
 
-  async login(email: string, password: string) {
-    const user = await this.usersRepository.findOne({
-      where: { email, deleted_at: null },
-      select: ['email', 'password'],
-    });
-
-    if (_.isNil(user)) {
-      throw new NotFoundException(`User not found. email: ${email}`);
+  async create(userData: CreateUserDto) {
+    //이메일 중복 체크
+    const existUser = await this.getByEmail(userData.email);
+    if (!_.isNil(existUser)) {
+      throw new ConflictException(`User already exists. email: ${userData.email}`);
     }
-
-    if (user.password !== password) {
-      throw new UnauthorizedException(
-        `User password is not correct. email: ${email}`,
-      );
-    }
-
-    const payload = { email: user.email };
-    const accessToken = await this.jwtService.signAsync(payload);
-    return accessToken;
-  }
-
-  async createUser(
-    email: string,
-    name: string,
-    nickname: string,
-    address: string,
-    password: string,
-    phone_number: string,
-    referral_code: string,
-  ) {
-    const existUser = await this.getUserInfo(email);
-    // if (!_.isNil(existUser)) {
-    //   throw new ConflictException(`User already exists. email: ${email}`);
-    // }
-
-    const insertResult = await this.usersRepository.insert({
-      email,
-      name,
-      nickname,
-      address,
-      phone_number,
-      referral_code,
-      password,
+    //해시, salt 10번//login password 지워지는거
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    const newUser = await this.userRepository.create({
+      ...userData,
+      password: hashedPassword,
     });
-
-    const payload = { 
-      user_id: insertResult.identifiers[0].user_id,
-      email: insertResult.identifiers[0].email 
-    };
-    const accessToken = await this.jwtService.signAsync(payload);
-    return accessToken;
+    await this.userRepository.save(newUser);
+    
+    return newUser;
   }
-
+  //이건 아직 xx
   updateUser(email: string, nickname: string, password: string) {
-    this.usersRepository.update({ email }, { nickname, password });
+    this.userRepository.update({ email }, { nickname, password });
   }
 
-  async getUserInfo(email: string) {
-    return await this.usersRepository.findOne({
+  async getByEmail(email: string) {
+    return await this.userRepository.findOne({
       where: { email, deleted_at: null },
       select: ['nickname'],
     });
   }
 
-  // My page API
-  async getUser(userId: number) {
-    return await this.usersRepository.findOne({
-      where: { user_id:userId},
-      select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
-    });
+  async findOneByEmail(email: string) {
+    console.log(email);
+
+    return await this.userRepository.findOneBy({ email: email });
+  }
+  async findPassword(email: string){
+    const a = await this.userRepository.findOne({where: { email, deleted_at: null },
+      select: ['password'],});
+      
+    return a  
   }
 
-    updateUserInfo(userId: number, nickname: string, address: string, phone_number: string, password: string) {
-    this.usersRepository.update({
-      user_id:userId}, 
-      { 
-        nickname, 
-        address, 
-        phone_number, 
-        password
+  async findOne(id: number) {
+    return await this.userRepository.findOneBy({ user_id: id });
+  }
+  //refreshToken update
+  async update(id: number, updateUserDto: UpdateUserDto) {
+
+    return await this.userRepository.update(id, updateUserDto);
+  }
+
+    // My page API
+    async getUser(userId: number) {
+      return await this.userRepository.findOne({
+        where: { user_id:userId},
+        select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
       });
-  }
-
-  // deleteUser(userId: number, password: number) {
-  //   if (this.userPassword.get(userId) !== password) {
-  //     throw new UnauthorizedException(
-  //       '입력된 비밀번호가 다릅니다.'
-  //     );   
-  //   }
-  // }
+    }
+  
+      updateUserInfo(userId: number, nickname: string, address: string, phone_number: string, password: string) {
+      this.userRepository.update({
+        user_id:userId}, 
+        { 
+          nickname, 
+          address, 
+          phone_number, 
+          password
+        });
+    }
+  
+    // deleteUser(userId: number, password: number) {
+    //   if (this.userPassword.get(userId) !== password) {
+    //     throw new UnauthorizedException(
+    //       '입력된 비밀번호가 다릅니다.'
+    //     );   
+    //   }
+    // }
 }
