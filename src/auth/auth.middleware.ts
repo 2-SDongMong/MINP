@@ -23,11 +23,11 @@ import {
       try {
         token = authHeader.split(" ")[1];
         const { email } = this.jwtService.verify(token,{
-          secret: 'JWT_ACCESS_SECRET'
+          secret: 'JWT_REFRESH_SECRET'
         })
-        console.log(email)
         const User = this.userService.findOneByEmail(email)
         req.user = (await User).user_id;
+        
         next();
       } catch (err) {
         throw new UnauthorizedException(`Invalid JWT: ${token}`);

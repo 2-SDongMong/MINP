@@ -23,8 +23,8 @@ export class AuthController {
   
     @Post('/logout')
     @HttpCode(HttpStatus.OK)
-    async logout(@UserId() userId: number) {
-
+    async logout(@UserId() userId: number,) {
+      
       return await this.authService.logout(userId);
     }
 
@@ -33,8 +33,9 @@ export class AuthController {
     @UseGuards(RtGuard)
     @HttpCode(HttpStatus.OK)
     async refreshTokens(
+      //쿠키, 웹스토리지에 있는 refreshtoken으로 
       @GetCurrentUser('refreshToken') refreshToken: string,
-      @UserId() userId: number,){
+      @UserId() userId: object,){
 
         return await this.authService.refreshTokens(userId, refreshToken);
     }
