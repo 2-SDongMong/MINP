@@ -25,7 +25,7 @@ import { ShareCommentsModule } from './share-comments/share-comments.module';
 import { SharePostsModule } from './share-posts/share-posts.module';
 import { ShareImagesModule } from './share-images/share-images.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
-import { ShareProductsCategoryModule } from './share-modules/share-products-category/share-products-category.module';
+import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
 
 @Module({
   imports: [

@@ -1,4 +1,4 @@
-import { ShareProductsCategory } from 'src/share-modules/share-products-category/entities/share-products-category.entity';
+import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
 import { ShareProductsLocation } from 'src/share-modules/share-products-location/entities/share-products-location.entity';
 import { ShareProductsTag } from 'src/share-modules/share-products-tag/entities/share-products-tag.entity';
 import { User } from 'src/users/user.entity';
@@ -31,8 +31,8 @@ export class ShareProducts {
   @OneToOne(() => ShareProductsLocation)
   shareProductsLocation: ShareProductsLocation;
 
-  @ManyToOne(() => ShareProductsCategory)
-  shareProductsCategory: ShareProductsCategory;
+  @ManyToOne(() => ProductCategory)
+  productCategory: ProductCategory;
 
   @ManyToOne(() => User, (user) => user.share_products, { cascade: true })
   @JoinColumn({ name: 'user_id' })
