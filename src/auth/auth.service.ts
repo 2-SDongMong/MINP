@@ -21,7 +21,7 @@ export class AuthService {
       dto.password,
       findPassword.password,
     );
-    console.log(isPasswordMatching);
+    
     if (!isPasswordMatching) {
       throw new HttpException(
         '잘못된 인증 정보입니다.',
