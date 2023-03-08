@@ -9,9 +9,9 @@ import { PostImage } from 'src/post-images/post-image.entity';
 import { Post } from 'src/posts/post.entity';
 import { ShareComment } from 'src/share-comments/share-comment.entity';
 import { ShareImage } from 'src/share-images/share-image.entity';
-import { ShareProductsCategory } from 'src/share-modules/share-products-category/entities/share-products-category.entity';
-import { ShareProductsLocation } from 'src/share-modules/share-products-location/entities/share-products-location.entity';
-import { ShareProductsTag } from 'src/share-modules/share-products-tag/entities/share-products-tag.entity';
+import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
+import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
+import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
 import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
 import { SharePost } from 'src/share-posts/share-post.entity';
 import { UserLike } from 'src/user-likes/user-like.entity';
@@ -42,12 +42,13 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         PostImage,
         CatLike,
         UserLike,
-        ShareProductsCategory,
-        ShareProductsLocation,
-        ShareProductsTag,
+        ProductCategory,
+        ProductsLocation,
+        ProductsTag,
         ShareProducts,
       ],
-      synchronize: true,
+      synchronize: false, // true,
+      logging: ['error'],
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
     };

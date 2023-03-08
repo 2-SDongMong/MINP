@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ schema: 'mooin_cat', name: 'share_products_location' })
-export class ShareProductsLocation {
+@Entity({ schema: 'mooin_cat', name: 'products_location' })
+export class ProductsLocation {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
