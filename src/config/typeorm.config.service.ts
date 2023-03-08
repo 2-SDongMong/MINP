@@ -10,8 +10,8 @@ import { Post } from 'src/posts/post.entity';
 import { ShareComment } from 'src/share-comments/share-comment.entity';
 import { ShareImage } from 'src/share-images/share-image.entity';
 import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
-import { ShareProductsLocation } from 'src/share-modules/share-products-location/entities/share-products-location.entity';
-import { ShareProductsTag } from 'src/share-modules/share-products-tag/entities/share-products-tag.entity';
+import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
+import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
 import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
 import { SharePost } from 'src/share-posts/share-post.entity';
 import { UserLike } from 'src/user-likes/user-like.entity';
@@ -43,8 +43,8 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         CatLike,
         UserLike,
         ProductCategory,
-        ShareProductsLocation,
-        ShareProductsTag,
+        ProductsLocation,
+        ProductsTag,
         ShareProducts,
       ],
       synchronize: false, // true,

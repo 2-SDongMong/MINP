@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateShareProductDto } from './dto/create-share-products.dto';
@@ -41,5 +41,17 @@ export class ShareProductsService {
     };
 
     return await this.shareProductsRepository.save(newProduct);
+  }
+  async checkTradeOut({ productId }) {
+    const product = await this.shareProductsRepository.findOne({
+      where: { id: productId },
+    });
+    if (product.isTrade)
+      throw new UnprocessableEntityException('이미 거래가 완료된 상품입니다.');
+  }
+
+  async deleteById(id: string): Promise<boolean> {
+    const result = await this.shareProductsRepository.delete({ id });
+    return result.affected > 0;
   }
 }

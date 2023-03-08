@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateShareProductDto } from './dto/create-share-products.dto';
 import { UpdateShareProductDto } from './dto/update-share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
@@ -32,9 +40,14 @@ export class ShareProductsController {
     @Param('productId') productId: string,
     @Body() updateShareProductDto: UpdateShareProductDto,
   ) {
+    await this.shareProductsService.checkTradeOut({ productId });
     return await this.shareProductsService.update({
       productId,
       updateShareProductDto,
     });
+  }
+  @Delete('/products/:id')
+  deleteProductById(@Param('id') id: string) {
+    return this.shareProductsService.deleteById(id);
   }
 }
