@@ -1,8 +1,8 @@
 import { IsString } from 'class-validator';
 
-export class CreateShareProductsCategoryDto {
+export class CreateShareProductDto {
   @IsString()
-  readonly name: string;
+  readonly title: string;
 
   @IsString()
   readonly description: string;
