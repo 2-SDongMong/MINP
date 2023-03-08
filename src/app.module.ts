@@ -47,7 +47,7 @@ import { PassportModule } from '@nestjs/passport';
     RequestsModule,
 
     AuthModule,
-    
+
     PassportModule,
 
     CatsModule,
@@ -79,7 +79,9 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      // PUT /user/update 경로에 AuthMiddelware 미들웨어 적용.
-      .forRoutes({ path: 'auth/logout', method: RequestMethod.ALL });
+      .forRoutes(
+        { path: 'auth/logout', method: RequestMethod.ALL },
+        { path: 'requests', method: RequestMethod.POST },
+      );
   }
 }
