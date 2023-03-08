@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateShareProductDto } from './dto/share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
 import { ShareProductsService } from './share-products.service';
@@ -10,6 +10,13 @@ export class ShareProductsController {
   @Get()
   async findAll(): Promise<ShareProducts[]> {
     return await this.shareProductsService.findAll();
+  }
+
+  @Get(':productId')
+  async findEach(
+    @Param('productId') productId: string,
+  ): Promise<ShareProducts> {
+    return await this.shareProductsService.findEach(productId);
   }
 
   @Post()

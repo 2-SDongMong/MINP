@@ -15,6 +15,12 @@ export class ShareProductsService {
     return await this.shareProductsRepository.find();
   }
 
+  async findEach(productId) {
+    return await this.shareProductsRepository.findOne({
+      where: { id: productId },
+    });
+  }
+
   async create(
     createShareProductDto: CreateShareProductDto,
   ): Promise<ShareProducts> {
