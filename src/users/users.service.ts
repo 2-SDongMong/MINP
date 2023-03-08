@@ -26,13 +26,14 @@ export class UsersService {
     if (!_.isNil(existUser)) {
       throw new ConflictException(`User already exists. email: ${userData.email}`);
     }
-    //해시, salt 10번
+    //해시, salt 10번//login password 지워지는거
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const newUser = await this.userRepository.create({
       ...userData,
       password: hashedPassword,
     });
     await this.userRepository.save(newUser);
+    
     return newUser;
   }
   //이건 아직 xx
@@ -49,10 +50,10 @@ export class UsersService {
 
   async findOneByEmail(email: string) {
     console.log(email);
+
     return await this.userRepository.findOneBy({ email: email });
   }
   async findPassword(email: string){
-    console.log("함수 들어옴?");
     const a = await this.userRepository.findOne({where: { email, deleted_at: null },
       select: ['password'],});
       
@@ -64,6 +65,7 @@ export class UsersService {
   }
   //refreshToken update
   async update(id: number, updateUserDto: UpdateUserDto) {
+
     return await this.userRepository.update(id, updateUserDto);
   }
 }

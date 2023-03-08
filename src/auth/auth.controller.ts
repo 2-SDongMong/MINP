@@ -16,6 +16,7 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     async login(@Body() dto: LoginUserDto) {
       console.log("오류찾기 auth.controller.ts")
+      
       return await this.authService.login(dto);
     }
   
@@ -23,6 +24,7 @@ export class AuthController {
     @Post('/logout')
     @HttpCode(HttpStatus.OK)
     async logout(@UserId() userId: number) {
+
       return await this.authService.logout(userId);
     }
 
@@ -33,7 +35,7 @@ export class AuthController {
     async refreshTokens(
       @GetCurrentUser('refreshToken') refreshToken: string,
       @UserId() userId: number,){
-        console.log("오류찾기 auth.controller.ts/refreshTokens")
+
         return await this.authService.refreshTokens(userId, refreshToken);
     }
     

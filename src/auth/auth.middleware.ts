@@ -4,7 +4,7 @@ import {
     UnauthorizedException,
   } from "@nestjs/common";
   import { JwtService } from "@nestjs/jwt";
-import { UsersService } from "src/users/users.service";
+  import { UsersService } from "src/users/users.service";
   
   @Injectable()
   export class AuthMiddleware implements NestMiddleware {
@@ -27,8 +27,6 @@ import { UsersService } from "src/users/users.service";
         })
         console.log(email)
         const User = this.userService.findOneByEmail(email)
-        console.log("User",User)
-
         req.user = (await User).user_id;
         next();
       } catch (err) {

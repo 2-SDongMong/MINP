@@ -16,10 +16,7 @@ export class AuthService {
   // login
   public async login(dto:LoginUserDto){
     const findPassword = await this.userService.findPassword(dto.email)
-    console.log("findPassword",findPassword)
-
     const user = await this.userService.findOneByEmail(dto.email);
-    console.log("user",user)
     const isPasswordMatching = await bcrypt.compare(
       dto.password,
       findPassword.password,
@@ -32,21 +29,20 @@ export class AuthService {
       );
     }
     user.password = undefined;
-    console.log("넘음?")
-    const tokens = await this.getTokens(user.user_id, user.email);
-    const rtHash = await this.hashPassword(tokens.refresh_token);
 
-    await this.userService.update(user.user_id, { hashdRt: rtHash });
+    const tokens = await this.getTokens(user.user_id, user.email);
+    const refreshTokentHash = await this.hashPassword(tokens.refresh_token);
+    await this.userService.update(user.user_id, { hashdRt: refreshTokentHash });
+
     return tokens;
   }
 
   async logout(userId: number) {
-    console.log("update-----------------",userId)
     await this.userService.update(userId, { hashdRt: null });
   }
 
   async getTokens(userId: number, email: string) {
-    const [at, rt] = await Promise.all([
+    const [accesstoken, refreshtoken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
@@ -70,17 +66,17 @@ export class AuthService {
     ]);
 
     return {
-      access_token: at,
-      refresh_token: rt,
+      access_token: accesstoken,
+      refresh_token: refreshtoken,
     };
   }
 
   async hashPassword(data: string) {
+
     return bcrypt.hash(data, 10);
   }
   
   async refreshTokens(userId: number, rt: string) {
-    console.log("refresh 들어옴?")
     const user = await this.userService.findOne(userId);
     //찾아 없으면 x
     if (!user || !user.hashdRt) throw new ForbiddenException('Access Denied.');
@@ -94,6 +90,7 @@ export class AuthService {
     const rtHash = await this.hashPassword(tokens.refresh_token);
 
     await this.userService.update(user.user_id, { hashdRt: rtHash });
+    
     return tokens;
     }
 
