@@ -15,14 +15,12 @@ import {
     async use(req: any, res: any, next: Function) {
       const authHeader = req.headers.authorization;
   
-      const accessToken = authHeader && authHeader.split(' ')[1];
-      if (!authHeader || !accessToken) {
+      const accessToken = authHeader && authHeader?.split(' ')[1];
+      if ( !accessToken) {
         return next();
       }
   
-      //let token: string;
       try {
-        //token = authHeader.split(" ")[1];
         const { email } = this.jwtService.verify(accessToken,{
           secret: 'JWT_ACCESS_SECRET'
         })
