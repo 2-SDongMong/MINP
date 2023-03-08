@@ -49,4 +49,9 @@ export class ShareProductsService {
     if (product.isTrade)
       throw new UnprocessableEntityException('이미 거래가 완료된 상품입니다.');
   }
+
+  async deleteById(id: string): Promise<boolean> {
+    const result = await this.shareProductsRepository.delete({ id });
+    return result.affected > 0;
+  }
 }

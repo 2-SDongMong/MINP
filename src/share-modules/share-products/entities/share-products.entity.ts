@@ -1,6 +1,6 @@
 import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
-import { ShareProductsLocation } from 'src/share-modules/share-products-location/entities/share-products-location.entity';
-import { ShareProductsTag } from 'src/share-modules/share-products-tag/entities/share-products-tag.entity';
+import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
+import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
 import { User } from 'src/users/user.entity';
 import {
   Column,
@@ -28,8 +28,8 @@ export class ShareProducts {
   isTrade: boolean;
 
   @JoinColumn()
-  @OneToOne(() => ShareProductsLocation)
-  shareProductsLocation: ShareProductsLocation;
+  @OneToOne(() => ProductsLocation)
+  shareProductsLocation: ProductsLocation;
 
   @ManyToOne(() => ProductCategory)
   productCategory: ProductCategory;
@@ -39,9 +39,6 @@ export class ShareProducts {
   user: User;
 
   @JoinTable()
-  @ManyToMany(
-    () => ShareProductsTag,
-    (shareProductsTag) => shareProductsTag.shareProducts,
-  )
-  shareProductsTag: ShareProductsTag[];
+  @ManyToMany(() => ProductsTag, (productsTag) => productsTag.shareProducts)
+  productsTag: ProductsTag[];
 }
