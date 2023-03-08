@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateShareProductDto } from './dto/share-products.dto';
+import { CreateShareProductDto } from './dto/create-share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
 
 @Injectable()
@@ -21,12 +21,25 @@ export class ShareProductsService {
     });
   }
 
-  async create(
+  async createShare(
     createShareProductDto: CreateShareProductDto,
   ): Promise<ShareProducts> {
     const newShareProduct = this.shareProductsRepository.create(
       createShareProductDto,
     );
     return await this.shareProductsRepository.save(newShareProduct);
+  }
+  async update({ productId, updateShareProductDto }) {
+    const myproduct = await this.shareProductsRepository.findOne({
+      where: { id: productId },
+    });
+
+    const newProduct = {
+      ...myproduct,
+      id: productId,
+      ...updateShareProductDto,
+    };
+
+    return await this.shareProductsRepository.save(newProduct);
   }
 }

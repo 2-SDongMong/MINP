@@ -15,7 +15,7 @@ import {
 
 @Entity({ schema: 'mooin_cat', name: 'share_products' })
 export class ShareProducts {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
