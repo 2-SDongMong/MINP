@@ -1,0 +1,27 @@
+### 로그인 지금 안 됨
+POST 'http://localhost:3000/users/login'
+
+Content-Type: application/json
+{
+  "email":"test_id",
+  "password":"1234"
+}
+
+### 회원가입
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+  "email":"cac@gmail.com",
+  "name":"김광",
+  "nickname":"냥냥인",
+  "address":"경기도 고양시 고양구 고양동",
+  "password":"1234",
+  "phone_number":"010-0000-0000",
+  "referral_code":""
+}
+
+### my page 회원정보 불러오기
+GET http://localhost:3000/users/mypage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMywiaWF0IjoxNjc4MjQ0Nzg0LCJleHAiOjE2Nzg2MDQ3ODR9.JnQG5TVCh8qRECzorbFmYf8mtU9PWdXoOfUzWVHwqzA

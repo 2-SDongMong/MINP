@@ -9,21 +9,22 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
-import { UserModule } from './user/user.module';
+import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtConfigService } from './config/jwt.config.service';
 import { AuthMiddleware } from './auth/auth.middleware';
-import { RequestModule } from './request/request.module';
-import { CatModule } from './cat/cat.module';
-import { MessageModule } from './message/message.module';
-import { PostModule } from './post/post.module';
-import { PostCommentModule } from './post-comment/post-comment.module';
-import { UserLikeModule } from './user-like/user-like.module';
-import { PostImageModule } from './post-image/post-image.module';
-import { CatLikeModule } from './cat-like/cat-like.module';
-import { ShareCommentModule } from './share-comment/share-comment.module';
-import { SharePostModule } from './share-post/share-post.module';
-import { ShareImageModule } from './share-image/share-image.module';
+import { RequestsModule } from './requests/requests.module';
+import { CatsModule } from './cats/cats.module';
+import { MessagesModule } from './messages/messages.module';
+import { PostsModule } from './posts/posts.module';
+import { PostCommentsModule } from './post-comments/post-comments.module';
+import { UserLikesModule } from './user-likes/user-likes.module';
+import { PostImagesModule } from './post-images/post-images.module';
+import { CatLikesModule } from './cat-likes/cat-likes.module';
+import { ShareCommentsModule } from './share-comments/share-comments.module';
+import { SharePostsModule } from './share-posts/share-posts.module';
+import { ShareImagesModule } from './share-images/share-images.module';
+import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 
 @Module({
   imports: [
@@ -40,29 +41,31 @@ import { ShareImageModule } from './share-image/share-image.module';
       inject: [ConfigService],
     }),
 
-    UserModule,
+    UsersModule,
 
-    RequestModule,
+    RequestsModule,
 
-    CatModule,
+    CatsModule,
 
-    MessageModule,
+    MessagesModule,
 
-    PostModule,
+    PostsModule,
 
-    PostCommentModule,
+    PostCommentsModule,
 
-    CatLikeModule,
+    CatLikesModule,
 
-    PostImageModule,
+    PostImagesModule,
 
-    UserLikeModule,
+    UserLikesModule,
 
-    ShareCommentModule,
+    ShareCommentsModule,
 
-    SharePostModule,
+    SharePostsModule,
 
-    ShareImageModule,
+    ShareImagesModule,
+
+    ShareProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
