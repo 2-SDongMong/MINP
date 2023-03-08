@@ -9,7 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { InsertResult, Repository } from 'typeorm';
 import { User } from './user.entity';
-import { CreateUserDto } from './dto/create-user.dto'
+import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -17,15 +17,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepository: Repository<User>,
-
   ) {}
 
   async create(userData: CreateUserDto) {
     //이메일 중복 체크
     const existUser = await this.getByEmail(userData.email);
     if (!_.isNil(existUser)) {
-      throw new ConflictException(`User already exists. email: ${userData.email}`);
+      throw new ConflictException(
+        `User already exists. email: ${userData.email}`,
+      );
     }
+
     //해시, salt 10번//login password 지워지는거
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     const newUser = await this.userRepository.create({
@@ -33,9 +35,10 @@ export class UsersService {
       password: hashedPassword,
     });
     await this.userRepository.save(newUser);
-    
+
     return newUser;
   }
+
   //이건 아직 xx
   updateUser(email: string, nickname: string, password: string) {
     this.userRepository.update({ email }, { nickname, password });
@@ -53,11 +56,13 @@ export class UsersService {
 
     return await this.userRepository.findOneBy({ email: email });
   }
-  async findPassword(email: string){
-    const a = await this.userRepository.findOne({where: { email, deleted_at: null },
-      select: ['password'],});
-      
-    return a  
+  async findPassword(email: string) {
+    const a = await this.userRepository.findOne({
+      where: { email, deleted_at: null },
+      select: ['password'],
+    });
+
+    return a;  
   }
 
   async findOne(id: number) {
@@ -65,19 +70,18 @@ export class UsersService {
   }
   //refreshToken update
   async update(id: number, updateUserDto: UpdateUserDto) {
-
     return await this.userRepository.update(id, updateUserDto);
   }
 
     // My page API
-    async getUser(userId: number) {
+    async getUserById(userId: number) {
       return await this.userRepository.findOne({
         where: { user_id:userId},
         select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
       });
     }
   
-      updateUserInfo(userId: number, nickname: string, address: string, phone_number: string, password: string) {
+      updateUserById(userId: number, nickname: string, address: string, phone_number: string, password: string) {
       this.userRepository.update({
         user_id:userId}, 
         { 
@@ -88,11 +92,8 @@ export class UsersService {
         });
     }
   
-    // deleteUser(userId: number, password: number) {
-    //   if (this.userPassword.get(userId) !== password) {
-    //     throw new UnauthorizedException(
-    //       '입력된 비밀번호가 다릅니다.'
-    //     );   
-    //   }
-    // }
+    deleteUserById(id: number,) {
+      this.userRepository.softDelete(id);
+    }
+
 }

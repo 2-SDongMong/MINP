@@ -25,6 +25,7 @@ import { ShareCommentsModule } from './share-comments/share-comments.module';
 import { SharePostsModule } from './share-posts/share-posts.module';
 import { ShareImagesModule } from './share-images/share-images.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
+import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
 
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
@@ -47,7 +48,7 @@ import { PassportModule } from '@nestjs/passport';
     RequestsModule,
 
     AuthModule,
-    
+
     PassportModule,
 
     CatsModule,
@@ -71,6 +72,8 @@ import { PassportModule } from '@nestjs/passport';
     ShareImagesModule,
 
     ShareProductsModule,
+
+    ShareProductsCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
@@ -79,7 +82,12 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      // PUT /user/update 경로에 AuthMiddelware 미들웨어 적용.
-      .forRoutes({ path: 'auth/logout', method: RequestMethod.ALL });
+      .forRoutes(
+        { path: 'auth/logout', method: RequestMethod.ALL },
+        { path: 'requests', method: RequestMethod.POST },
+        { path: 'users/mypage', method: RequestMethod.ALL },
+        { path: 'cats', method: RequestMethod.ALL},
+        
+      );
   }
 }
