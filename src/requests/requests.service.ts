@@ -78,23 +78,20 @@ export class RequestsService {
       throw new NotFoundException(`Request article not found. id: ${id}`);
     }
 
+    const { reserved_time, detail } = bodyData;
+
     // reserved_time을 업데이트 하지 않는 경우(detail만 입력된 경우)
-    if (!bodyData.reserved_time) {
-      this.requestRepository.update(id, { detail: bodyData.detail });
+    if (!reserved_time) {
+      this.requestRepository.update(id, { detail });
       return;
     }
     // detail을 업데이트 하지 않는 경우(reserved_time만 입력된 경우)
-    if (!bodyData.detail) {
-      this.requestRepository.update(id, {
-        reserved_time: bodyData.reserved_time,
-      });
+    if (!detail) {
+      this.requestRepository.update(id, { reserved_time });
       return;
     }
     // reserved_time과 detail 항목을 모두 업데이트
-    this.requestRepository.update(id, {
-      reserved_time: bodyData.reserved_time,
-      detail: bodyData.detail,
-    });
+    this.requestRepository.update(id, { reserved_time, detail });
   }
 
   deleteRequestById(id: number) {
