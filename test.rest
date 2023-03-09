@@ -3,21 +3,21 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email":"cac@gmail.com",
+  "email":"catt@gmail.com",
   "password":"1234"
 }
 ### 로그아웃
 POST http://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI5LCJlbWFpbCI6ImNhY0BnbWFpbC5jb20iLCJpYXQiOjE2NzgzMzA5MjksImV4cCI6MTY3ODQxNzMyOX0.xJUKVWiWwHP9qP8m5fw9_H9JQR5IlFOpugNzXWrBxIw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
 
 ### 회원가입
 POST http://localhost:3000/user/signup
 Content-Type: application/json
 
 {
-  "email":"cac@gmail.com",
+  "email":"catt@gmail.com",
   "name":"김광",
-  "nickname":"냥냥인",
+  "nickname":"냥팡",
   "address":"경기도 고양시 고양구 고양동",
   "password":"1234",
   "phone_number":"010-0000-0000",
@@ -27,4 +27,57 @@ Content-Type: application/json
 ### my page 회원정보 불러오기
 GET http://localhost:3000/user/mypage
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMywiaWF0IjoxNjc4MjQ0Nzg0LCJleHAiOjE2Nzg2MDQ3ODR9.JnQG5TVCh8qRECzorbFmYf8mtU9PWdXoOfUzWVHwqzA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+
+### my page 회원정보 수정
+PATCH  http://localhost:3000/user/mypage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+
+{
+  "nickname":"냥냥팡인",
+  "address":"경기도 고양시 고양구 고양동",
+  "phone_number": "010-1111-1111"
+
+}
+
+### my page 회원정보 삭제
+DELETE  http://localhost:3000/user/mypage
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM0LCJlbWFpbCI6ImNhdEBnbWFpbC5jb20iLCJpYXQiOjE2NzgzNDI3NTYsImV4cCI6MTY3ODQyOTE1Nn0.SI2Ykm-RRnMeId0qmz_UEB_0WE4PWryE9xeFniSenW4
+
+### cat 정보 불러오기
+GET http://localhost:3000/cats
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+
+### cat 정보 생성하기
+POST http://localhost:3000/cats
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+
+{
+      "name": "뭉치",
+      "age":  8,
+      "gender": "남",
+      "neutered": true,
+      "image": "", 
+      "character": "잠이 많고 사람을 좋아합니다. 장난감을 좋아해요."
+}
+
+### cat 정보 생성하기
+PATCH  http://localhost:3000/cats/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+
+{
+      "age":  9,
+      "neutered": true,
+      "image": "", 
+      "character": "잠이 많고 사람을 좋아합니다. 장난감을 좋아해요."
+}
+
+### cat 정보 생성하기
+DELETE   http://localhost:3000/cats/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I

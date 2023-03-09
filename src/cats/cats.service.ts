@@ -24,6 +24,7 @@ export class CatsService {
         user: {
           user_id: true
         },
+        cat_id: true,
         name: true,
         age: true,
         gender: true,
@@ -36,7 +37,7 @@ export class CatsService {
   }
 
   async createCat(id: number, bodyData: CreateCatDto) {
-    this.catRepository.insert({
+    this.catRepository.save({
       user_id: id,
       name: bodyData.name,
       age: bodyData.age,
@@ -47,17 +48,25 @@ export class CatsService {
     });
   }
 
-  async updateCatById(id: number, bodyData: UpdateCatDto) {
-    const cat = await this.catRepository.findOne({
-      where: { cat_id: id },
-    });
-    if (_.isNil(cat)) {
-      throw new NotFoundException('해당 고양이를 찾지 못했습니다.');
-    }
+  async updateCatById(userId: number, catId: number, bodyData: UpdateCatDto) {
+    const eidtCat = await this.catRepository
+    .createQueryBuilder()
+    .update(Cat)
+    .set(bodyData)
+    .where('cat_id = :catId', { catId : Number(catId) })
+    .execute();
+    return eidtCat;
   }
 
-  //   if (!bodyData.neutered)
-  // }
+  async deleteCatById(userId: number, catId: number) {
+    const removeCat = await this.catRepository
+    .createQueryBuilder()
+    .softDelete()
+    .where('cat_id = :catId', { catId: Number(catId) })
+    .execute();
+    return removeCat;
+
+  }
   
 
 

@@ -1,8 +1,11 @@
-import { Body, Param, Controller, Get, Post, Put, Delete, Req } from '@nestjs/common';
+import { Body,Controller, Get, Post, Put, Delete, Req, Patch } from '@nestjs/common';
+import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateMypageDto } from './dto/update-mypage.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserInfo } from './user.info.decorator';
 import { UsersService } from './users.service';
+import { Request } from 'express';
 
 @Controller('user')
 export class UsersController {
@@ -20,24 +23,20 @@ export class UsersController {
 
   // My page API
   @Get('/mypage')
-  getUser(
-    @UserInfo() user,
-    @Req() req
-    // @Param('id') userId:number)
-    ){
-    console.log(req.user)
-    const userId= user.user_id;
-    return this.userService.getUserById(userId)
-  }
-  @Put('/mypage/:id')
-  updateUserInfo(@Param('id') userId:number,
-  @Body() data: UpdateUserDto
-  ) {
-    return this.userService.updateUserById(userId,"nickname","address", "phone_number", "password");
+  getUser(@Req() req,){
+    return this.userService.getUserById(req.user)
   }
 
-  @Delete('/mypage/id')
-  deleteUserInfo(@Param('id') userId: number,) {
-    return this.userService.deleteUserById(userId)
+  @Patch('/mypage')
+  updateUserInfo(
+    @Req() req,
+    @Body() data: UpdateMypageDto
+    ) {
+      return this.userService.updateUserById(req.user, data);
+    }
+
+  @Delete('/mypage')
+  deleteUserInfo(@Req() req,) {
+    return this.userService.deleteUserById(req.user)
   }
 }

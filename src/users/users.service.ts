@@ -12,6 +12,7 @@ import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateMypageDto } from './dto/update-mypage.dto';
 
 @Injectable()
 export class UsersService {
@@ -74,25 +75,24 @@ export class UsersService {
   }
 
     // My page API
-    async getUserById(userId: number) {
+    async getUserById(id: number) {
       return await this.userRepository.findOne({
-        where: { user_id:userId},
+        where: { user_id: id },
         select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
       });
     }
   
-      updateUserById(userId: number, nickname: string, address: string, phone_number: string, password: string) {
-      this.userRepository.update({
-        user_id:userId}, 
-        { 
-          nickname, 
-          address, 
-          phone_number, 
-          password
-        });
+    async updateUserById(id: number, bodyData: UpdateMypageDto) {
+      const { nickname, address, phone_number} = bodyData;
+      this.userRepository.update(id,{
+        nickname,
+        address,
+        phone_number, 
+      });
+      
     }
   
-    deleteUserById(id: number,) {
+    deleteUserById(id: number) {
       this.userRepository.softDelete(id);
     }
 
