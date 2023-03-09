@@ -1,11 +1,14 @@
-### 로그인 지금 안 됨
-POST 'http://localhost:3000/user/login'
-
+### 로그인
+POST http://localhost:3000/auth/login
 Content-Type: application/json
+
 {
   "email":"cac@gmail.com",
   "password":"1234"
 }
+### 로그아웃
+POST http://localhost:3000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI5LCJlbWFpbCI6ImNhY0BnbWFpbC5jb20iLCJpYXQiOjE2NzgzMzA5MjksImV4cCI6MTY3ODQxNzMyOX0.xJUKVWiWwHP9qP8m5fw9_H9JQR5IlFOpugNzXWrBxIw
 
 ### 회원가입
 POST http://localhost:3000/user/signup
