@@ -4,6 +4,8 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { UpdatePostDto } from './dto/update-Post.dto';
 import { PostCategoryType } from './post.entity';
+import { UserId } from 'src/auth/decorator/get-current-userid.decorator'; // 형집님
+import { UserInfo } from 'src/users/user-info.decorator'; // 희서님
 
 @Controller('posts')
 export class PostsController {
@@ -17,7 +19,7 @@ export class PostsController {
     }
     
     // 게시물 카테고리별 조회 -> 게시물 category로 확인
-    @Get('/:category')
+    @Get('category/:category')
     async getPostByCategory(@Param('category') postCategory: PostCategoryType) {
         return await this.postsService.getPostByCategory(postCategory);
     }
@@ -30,8 +32,9 @@ export class PostsController {
 
     // 게시물 작성
     @Post()
-    createPost(@Body() data: CreatePostDto) {
+    createPost(@UserInfo() userId: number, @Body() data: CreatePostDto) {
         return this.postsService.createPost(
+            userId,
             data.title,
             data.category,
             data.content,

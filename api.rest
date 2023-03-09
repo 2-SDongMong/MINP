@@ -34,11 +34,11 @@ POST http://localhost:3000/user/signup
 Content-Type: application/json
 
 {
-    "email": "test3@gmail.com",
-    "name": "test_name",
-    "nickname": "Nick Again3",
-    "address": "서울시 구로구",
-    "phone_number": "010-1234-5678",
+    "email": "post@gmail.com",
+    "name": "post_name",
+    "nickname": "Nick Post",
+    "address": "경남 통영시",
+    "phone_number": "010-0000-1111",
     "referral_code": "3btest",
     "password": "1234"
 }
@@ -49,13 +49,15 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "test3@gmail.com",
+    "email": "post@gmail.com",
     "password": "1234"
 }
 
 ###
 
 POST http://localhost:3000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM0ODYyLCJleHAiOjE2Nzg0MjEyNjJ9.X_N2YVGP5GbKEpWjQYOOyMDq6EUIJrJMllp_ldBwr9E
+
 
 ###
 
@@ -68,13 +70,28 @@ GET http://localhost:3000/posts
 ###
 POST http://localhost:3000/posts
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
 
 {
-    "title": "제목",
+    "title": "로그인후 작성",
     "category": "병원",
-    "content" : "힘드네요"
+    "content" : "으악"
 }
 
 ###
 GET http://localhost:3000/posts/2
+
+###
+PATCH http://localhost:3000/posts/3
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+
+{
+    "title": "제목2",
+    "category": "기타",
+    "content" : "수정했습니다"
+}
+
+###
+DELETE http://localhost:3000/posts/4
+

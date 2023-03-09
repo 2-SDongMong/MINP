@@ -18,7 +18,7 @@ export class PostsService {
     }
 
     async getPostByCategory(postsCategory: PostCategoryType) {
-        return await this.postsRepository.findOne({
+        return await this.postsRepository.find({
             where: { category : postsCategory, deleted_at: null }, 
             select: ["user_id", "title", "category", "content", "created_at", "updated_at"],
           });
@@ -33,9 +33,9 @@ export class PostsService {
       });
     }
 
-    createPost(title: string, category: PostCategoryType, content: string) {
+    createPost(userId: number, title: string, category: PostCategoryType, content: string) {
       this.postsRepository.insert({
-        user_id : 1, // 임의로 설정
+        user_id: userId,  
         title,
         category,
         content,
