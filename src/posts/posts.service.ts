@@ -5,37 +5,37 @@ import { Repository } from 'typeorm';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
-export class PostService {
+export class PostsService {
     constructor(
-      @InjectRepository(Post) private postRepository: Repository<Post>
+      @InjectRepository(Post) private postsRepository: Repository<Post>
     ) { }
 
-    //삭제예정
-    private posts = [];
-    private postPasswords = new Map();
-
     async getPosts() {
-      return await this.postRepository.find({
+      return await this.postsRepository.find({
         where: { deleted_at: null },
-        select: ["user_id", "title", "category", "content", "created_at"],
+        select: ["user_id", "post_id", "title", "category", "content", "created_at"],
       });
     }
 
-
-    // 카테고리 별 조회,...
-    // getPostByCategory(postCategory: string) {
-    //     throw new Error('Method not implemented.');
-    // }
-
+    async getPostByCategory(postsCategory: PostCategoryType) {
+        return await this.postsRepository.findOne({
+            where: { category : postsCategory, deleted_at: null }, 
+            select: ["user_id", "title", "category", "content", "created_at", "updated_at"],
+          });
+    }
+    
+    //post_images 테이블에서 같은 id를 post_id로 가지는 사진들의 post_image 컬럼을 조인해 조회하는거 아직 구현 못함
     async getPostById(id: number) {
-      return await this.postRepository.findOne({
-        where: { post_id : id, deleted_at: null }, // id 왜,, 빨간줄,,,
-        select: ["title", "category", "content", "created_at", "updated_at"],
+        console.log(id);
+      return await this.postsRepository.findOne({
+        where: { post_id : id, deleted_at: null }, 
+        select: ["user_id", "title", "category", "content", "created_at", "updated_at"],
       });
     }
 
     createPost(title: string, category: PostCategoryType, content: string) {
-      this.postRepository.insert({
+      this.postsRepository.insert({
+        user_id : 1, // 임의로 설정
         title,
         category,
         content,
@@ -43,29 +43,36 @@ export class PostService {
     }
 
     async updatePost(id: number, title: string, category: PostCategoryType, content: string) {
-      // 비밀번호를 받지 않으니까,, 그냥 아이디가 같다면 수정가능하게 바꾸면 되지 않을까...
-      // await this.checkPassword(id, password);
-      this.postRepository.update(id, { title, category, content });
+      // await this.checkPassword(id, password); // 이건 비밀번호를 검증하는 기능.. 우린 아이디 비교를 해야한다.
+
+      //현재 아이디를 비교하는 방법..
+      // user_id 가 null 이 아니고, 글에 작성된 id와 현재 로그인된 id가 같다면 > if문
+      this.postsRepository.update(id , { title, category, content });
     }
 
     async deletePost(id: number) {
-      // 비밀번호를 받지 않으니까,, 그냥 아이디가 같다면 수정가능하게 바꾸면 되지 않을까...
       //await this.checkPassword(id, password);
-      this.postRepository.softDelete(id);
+
+
+      // 게시글을 작성한 유저 본인이 맞는 경우, 해당 Post 테이블에서 deletedAt 항목을 ‘null’에서 ‘삭제처리한 datetime’으로 수정
+      this.postsRepository.softDelete(id);
     }
 
+    // user_id 가 null 이 아니고, 글에 작성된 id와 현재 로그인된 id가 같은지 검증하는 함수 구현
+
+
     // private async checkPassword(id: number, password: number) {
-    //   const article = await this.postRepository.findOne({
+    //   const post = await this.postRepository.findOne({
     //     where: { id, deletedAt: null },
     //     select: ["password"],
     //   });
-    //   if (_.isNil(article)) {
-    //     throw new NotFoundException(`Article not found. id: ${id}`);
+    //   if (_.isNil(post)) {
+    //     throw new NotFoundException(`post not found. id: ${id}`);
     //   }
   
-    //   if (article.password !== password.toString()) {
+    //   if (post.password !== password.toString()) {
     //     throw new UnauthorizedException(
-    //       `Article password is not correct. id: ${id}`
+    //       `post password is not correct. id: ${id}`
     //     );
     //   }
     // }

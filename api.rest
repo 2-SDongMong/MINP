@@ -63,3 +63,18 @@ PUT http://localhost:3000/user/update
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNiwiaWF0IjoxNjc4MTk2MjM4LCJleHAiOjE2NzgxOTk4Mzh9.-QKmG56ll9RgeacAC_GMGcA_cxit5yol34pEOElRdxA
 
 ###
+GET http://localhost:3000/posts
+
+###
+POST http://localhost:3000/posts
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+
+{
+    "title": "제목",
+    "category": "병원",
+    "content" : "힘드네요"
+}
+
+###
+GET http://localhost:3000/posts/2
