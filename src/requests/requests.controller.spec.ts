@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestsController } from './requests.controller';
 import { RequestsService } from './requests.service';
+import { ModuleMocker, MockFunctionMetadata } from 'jest-mock';
+
+const moduleMocker = new ModuleMocker(global);
 
 describe('RequestsController', () => {
   let controller: RequestsController;
@@ -10,7 +13,22 @@ describe('RequestsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RequestsController],
       providers: [RequestsService],
-    }).compile();
+    })
+      // RequestsService 특정 mock 만들기. jest.fn()이용.
+      .useMocker((token) => {
+        const results = ['test1', 'test2'];
+        if (token === RequestsService) {
+          return { getRequests: jest.fn().mockResolvedValue(results) };
+        }
+        if (typeof token === 'function') {
+          const mockMetadata = moduleMocker.getMetadata(
+            token
+          ) as MockFunctionMetadata<any, any>;
+          const Mock = moduleMocker.generateFromMetadata(mockMetadata);
+          return new Mock();
+        }
+      })
+      .compile();
 
     controller = module.get<RequestsController>(RequestsController);
     service = module.get<RequestsService>(RequestsService);

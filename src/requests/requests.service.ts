@@ -11,7 +11,7 @@ import { CreateRequestDto } from './dto/create-request.dto';
 export class RequestsService {
   constructor(
     @InjectRepository(Request)
-    private requestRepository: Repository<Request>,
+    private requestRepository: Repository<Request>
   ) {}
 
   async getRequests() {

@@ -21,12 +21,12 @@ PATCH http://localhost:3000/requests/10
 Content-Type: application/json
 
 {
-    "detail": "냥품 요청합니다!"
+    "detail": "냥품 요청합니다!@@"
 }
 
 ###
 
-DELETE http://localhost:3000/requests/4
+DELETE http://localhost:3000/requests/5
 
 ###
 
@@ -34,9 +34,9 @@ POST http://localhost:3000/user/signup
 Content-Type: application/json
 
 {
-    "email": "test3@gmail.com",
+    "email": "test4@gmail.com",
     "name": "test_name",
-    "nickname": "Nick Again3",
+    "nickname": "Nick Again4",
     "address": "서울시 구로구",
     "phone_number": "010-1234-5678",
     "referral_code": "3btest",
@@ -49,17 +49,18 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "test3@gmail.com",
+    "email": "test4@gmail.com",
     "password": "1234"
 }
 
 ###
 
 POST http://localhost:3000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzMDQ5NCwiZXhwIjoxNjc4NDE2ODk0fQ.rhPoBYs2586fgsL3booBMsuyWEdJfU7rG0Qvot_ttdc
 
 ###
 
 PUT http://localhost:3000/user/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNiwiaWF0IjoxNjc4MTk2MjM4LCJleHAiOjE2NzgxOTk4Mzh9.-QKmG56ll9RgeacAC_GMGcA_cxit5yol34pEOElRdxA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzMDQyMywiZXhwIjoxNjc4NDE2ODIzfQ.TOTbSZlKoGZksx2D132yqqn2UXJPblzXz_QLPYuIgjA
 
 ###

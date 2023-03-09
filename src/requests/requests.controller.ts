@@ -35,6 +35,10 @@ export class RequestsController {
     @Body() data: CreateRequestDto,
   ) {
     // FIXME: const userEmail = req.user;
+    console.log(
+      'inside requests.controller>createRequest, req.user: ',
+      req.user,
+    );
     const userId = user.user_id;
     return this.requestService.createRequest(userId, data);
   }
