@@ -13,11 +13,12 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
+import { where } from 'sequelize';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
   async create(userData: CreateUserDto) {
@@ -25,7 +26,7 @@ export class UsersService {
     const existUser = await this.getByEmail(userData.email);
     if (!_.isNil(existUser)) {
       throw new ConflictException(
-        `User already exists. email: ${userData.email}`,
+        `User already exists. email: ${userData.email}`
       );
     }
 
@@ -63,7 +64,7 @@ export class UsersService {
       select: ['password'],
     });
 
-    return a;  
+    return a;
   }
 
   async findOne(id: number) {
@@ -74,26 +75,61 @@ export class UsersService {
     return await this.userRepository.update(id, updateUserDto);
   }
 
-    // My page API
-    async getUserById(id: number) {
-      return await this.userRepository.findOne({
-        where: { user_id: id },
-        select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
-      });
-    }
-  
-    async updateUserById(id: number, bodyData: UpdateMypageDto) {
-      const { nickname, address, phone_number} = bodyData;
-      this.userRepository.update(id,{
-        nickname,
-        address,
-        phone_number, 
-      });
-      
-    }
-  
-    deleteUserById(id: number) {
-      this.userRepository.softDelete(id);
-    }
+  // My page API
+  async getUserById(id: number) {
+    return await this.userRepository.findOne({
+      where: { user_id: id },
+      select: [
+        'email',
+        'name',
+        'nickname',
+        'address',
+        'phone_number',
+        'password',
+        'status',
+      ],
+    });
+  }
 
+  async updateUserById(id: number, bodyData: UpdateMypageDto) {
+    const { nickname, address, phone_number } = bodyData;
+    this.userRepository.update(id, {
+      nickname,
+      address,
+      phone_number,
+    });
+  }
+
+  deleteUserById(id: number) {
+    this.userRepository.softDelete(id);
+  }
+
+  // Admin page API
+  async getUserByStatus(id: number) {
+    const admin = await this.userRepository.findOne({
+      where: { user_id: id },
+      select: ['status'],
+    });
+
+    if (admin.status === '관리자') {
+      const user = await this.userRepository.find({
+        where: { status: '가입 대기' },
+      });
+      return user;
+    }
+  }
+
+  async getAllMember(id: number) {
+    const admin = await this.userRepository.findOne({
+      where: { user_id: id },
+      select: ['status'],
+    });
+
+    if (admin.status === '관리자') {
+      const member = await this.userRepository.find({
+        where: { status: '일반' },
+      });
+      return member;
+    }
+  }
 }

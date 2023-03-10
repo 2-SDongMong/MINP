@@ -8,14 +8,14 @@ import { ProductCategory } from './entities/product-category.entity';
 export class ProductsCategoryService {
   constructor(
     @InjectRepository(ProductCategory)
-    private readonly productCategoryRepository: Repository<ProductCategory>,
+    private readonly productCategoryRepository: Repository<ProductCategory>
   ) {}
 
   async create(
-    createProductCategoryDto: CreateProductCategoryDto,
+    createProductCategoryDto: CreateProductCategoryDto
   ): Promise<ProductCategory> {
     const newProductCategory = this.productCategoryRepository.create(
-      createProductCategoryDto,
+      createProductCategoryDto
     );
     return await this.productCategoryRepository.save(newProductCategory);
   }
