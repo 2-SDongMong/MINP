@@ -23,14 +23,14 @@ export class ShareProductsController {
 
   @Get(':productId')
   async findEach(
-    @Param('productId') productId: string,
+    @Param('productId') productId: string
   ): Promise<ShareProducts> {
     return await this.shareProductsService.findEach(productId);
   }
 
   @Post()
   async createShare(
-    @Body() createShareProductDto: CreateShareProductDto,
+    @Body() createShareProductDto: CreateShareProductDto
   ): Promise<ShareProducts> {
     return await this.shareProductsService.createShare(createShareProductDto);
   }
@@ -38,7 +38,7 @@ export class ShareProductsController {
   @Patch(':productId')
   async updateShare(
     @Param('productId') productId: string,
-    @Body() updateShareProductDto: UpdateShareProductDto,
+    @Body() updateShareProductDto: UpdateShareProductDto
   ) {
     await this.shareProductsService.checkTradeOut({ productId });
     return await this.shareProductsService.update({

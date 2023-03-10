@@ -6,12 +6,12 @@ import { ProductsCategoryService } from './products-category.service';
 @Controller('products-category')
 export class ProductsCategoryController {
   constructor(
-    private readonly productsCategoryService: ProductsCategoryService,
+    private readonly productsCategoryService: ProductsCategoryService
   ) {}
 
   @Post()
   async create(
-    @Body() createProductCategoryDto: CreateProductCategoryDto,
+    @Body() createProductCategoryDto: CreateProductCategoryDto
   ): Promise<ProductCategory> {
     return await this.productsCategoryService.create(createProductCategoryDto);
   }

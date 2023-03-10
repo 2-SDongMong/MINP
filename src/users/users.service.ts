@@ -16,7 +16,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
   async create(userData: CreateUserDto) {
@@ -24,7 +24,7 @@ export class UsersService {
     const existUser = await this.getByEmail(userData.email);
     if (!_.isNil(existUser)) {
       throw new ConflictException(
-        `User already exists. email: ${userData.email}`,
+        `User already exists. email: ${userData.email}`
       );
     }
 
