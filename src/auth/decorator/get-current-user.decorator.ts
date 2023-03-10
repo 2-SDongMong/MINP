@@ -3,8 +3,8 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 export const GetCurrentUser = createParamDecorator(
   (data: string, context: ExecutionContext) => {
     const request = context.switchToHttp().getRequest();
-    if (!data) return request.user;
+    if (!data) return request.user.refreshToken;
 
-    return request.user[data];
+    return request.user.refreshToken;
   }
 );

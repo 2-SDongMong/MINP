@@ -25,7 +25,7 @@ export class AuthService {
       dto.password,
       findPassword.password
     );
-    console.log(isPasswordMatching);
+
     if (!isPasswordMatching) {
       throw new HttpException(
         '잘못된 인증 정보입니다.',
@@ -79,20 +79,17 @@ export class AuthService {
     return bcrypt.hash(data, 10);
   }
 
-  async refreshTokens(userId: number, rt: string) {
-    const user = await this.userService.findOne(userId);
-    //찾아 없으면 x
-    if (!user || !user.hashdRt) throw new ForbiddenException('Access Denied.');
-    //db의 토큰과 비교
-    const rtMatches = await bcrypt.compare(rt, user.hashdRt);
-
-    if (!rtMatches) throw new ForbiddenException('Access Denied.');
-    //토큰 받아 새로
-    const tokens = await this.getTokens(user.user_id, user.email);
-    //다시 넣어
-    const rtHash = await this.hashPassword(tokens.refresh_token);
-
-    await this.userService.update(user.user_id, { hashdRt: rtHash });
+  //2. access만료 refresh 유효 -> refresh 검증 후 access 재발급 refreshTokens ㄱㄱ
+  async refreshTokens(userId: object, refreshtoken: string) {
+    const user_id = userId['sub'];
+    const token = refreshtoken.split('bearer ')[1];
+    //bearer refreshtoken 이런 토큰
+    const user = await this.userService.findOne(user_id);
+    const refreshTokentCompare = await bcrypt.compare(token, user?.hashdRt);
+    if (!refreshTokentCompare) throw new ForbiddenException('Access Denied.');
+    const tokens = await this.getTokens(user?.user_id, user?.email);
+    const refreshTokenHash = await this.hashPassword(tokens.refresh_token);
+    await this.userService.update(user?.user_id, { hashdRt: refreshTokenHash });
 
     return tokens;
   }
