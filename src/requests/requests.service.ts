@@ -59,24 +59,34 @@ export class RequestsService {
         detail: true,
       },
     });
+
+    if (_.isNil(request)) {
+      throw new NotFoundException(`Request article not found. id: ${id}`);
+    }
+
     return request;
   }
 
   createRequest(id: number, bodyData: CreateRequestDto) {
+    const { reserved_time, detail } = bodyData;
     this.requestRepository.insert({
       user_id: id,
-      reserved_time: bodyData.reserved_time,
-      detail: bodyData.detail,
+      reserved_time,
+      detail,
     });
   }
 
-  async updateRequestById(id: number, bodyData: UpdateRequestDto) {
+  private async ExistenceCheckById(id: number) {
     const request = await this.requestRepository.findOne({
       where: { request_id: id },
     });
     if (_.isNil(request)) {
       throw new NotFoundException(`Request article not found. id: ${id}`);
     }
+  }
+
+  async updateRequestById(id: number, bodyData: UpdateRequestDto) {
+    this.ExistenceCheckById;
 
     const { reserved_time, detail } = bodyData;
 

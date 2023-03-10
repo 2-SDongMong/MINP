@@ -8,7 +8,6 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { Request } from 'express';
 import { UserInfo } from 'src/users/user-info.decorator';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
@@ -29,24 +28,15 @@ export class RequestsController {
   }
 
   @Post()
-  createRequest(
-    @UserInfo() user,
-    @Req() req: Request,
-    @Body() data: CreateRequestDto,
-  ) {
-    // FIXME: const userEmail = req.user;
-    console.log(
-      'inside requests.controller>createRequest, req.user: ',
-      req.user,
-    );
-    const userId = user.user_id;
-    return this.requestService.createRequest(userId, data);
+  createRequest(@UserInfo() user, @Req() req, @Body() data: CreateRequestDto) {
+    // FIXME: 어째선지 req: Request (Express)타입을 지정해주면 제대로 인식하지 못함
+    return this.requestService.createRequest(req.user, data);
   }
 
   @Patch('/:id')
   updateRequest(
     @Param('id') requestId: number,
-    @Body() data: UpdateRequestDto,
+    @Body() data: UpdateRequestDto
   ) {
     return this.requestService.updateRequestById(requestId, data);
   }

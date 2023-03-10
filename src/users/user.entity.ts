@@ -1,8 +1,8 @@
-import { CatLike } from 'src/cat-likes/cat-like.entity';
-import { Cat } from 'src/cats/cat.entity';
-import { ShareComment } from 'src/share-comments/share-comment.entity';
-import { SharePost } from 'src/share-posts/share-post.entity';
-import { Request } from 'src/requests/request.entity';
+import { CatLike } from '../cat-likes/cat-like.entity';
+import { Cat } from '../cats/cat.entity';
+import { ShareComment } from '../share-comments/share-comment.entity';
+import { SharePost } from '../share-posts/share-post.entity';
+import { Request } from '../requests/request.entity';
 import {
   Column,
   CreateDateColumn,
@@ -13,11 +13,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UserLike } from 'src/user-likes/user-like.entity';
-import { Message } from 'src/messages/message.entity';
-import { PostComment } from 'src/post-comments/post-comment.entity';
-import { Post } from 'src/posts/post.entity';
-import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
+import { UserLike } from '../user-likes/user-like.entity';
+import { Message } from '../messages/message.entity';
+import { PostComment } from '../post-comments/post-comment.entity';
+import { Post } from '../posts/post.entity';
+import { ShareProducts } from '../share-modules/share-products/entities/share-products.entity';
 
 export type UserStatusType = '가입 대기' | '일반' | '관리자';
 
@@ -90,7 +90,7 @@ export class User {
   })
   share_posts: SharePost[];
 
-  @OneToMany(()=>ShareProducts, (shareProducts)=>shareProducts.user,{
+  @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

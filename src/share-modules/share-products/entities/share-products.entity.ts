@@ -1,7 +1,7 @@
-import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
-import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
-import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
-import { User } from 'src/users/user.entity';
+import { ProductCategory } from '../../share-products-category/entities/product-category.entity';
+import { ProductsLocation } from '../../share-products-location/entities/products-location.entity';
+import { ProductsTag } from '../../share-products-tag/entities/products-tag.entity';
+import { User } from '../../../users/user.entity';
 import {
   Column,
   Entity,

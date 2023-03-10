@@ -2,17 +2,17 @@ GET http://localhost:3000/requests
 
 ###
 
-GET http://localhost:3000/requests/10
+GET http://localhost:3000/requests/23
 
 ###
 
 POST http://localhost:3000/requests
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODM0MTEzOCwiZXhwIjoxNjc4NDI3NTM4fQ.7iB3fHsDAmQT6EQVAHGCU3oM7tLfqqfwLOfIV9otu1k
 
 {
-    "reserved_time": "2023-03-29",
-    "detail": "냥품 요청이요!"
+    "reserved_time": "2023-03-31",
+    "detail": "냥품 요청이요44!"
 }
 
 ###
@@ -62,5 +62,38 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpb
 
 PUT http://localhost:3000/user/update
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzMDQyMywiZXhwIjoxNjc4NDE2ODIzfQ.TOTbSZlKoGZksx2D132yqqn2UXJPblzXz_QLPYuIgjA
+
+###
+GET http://localhost:3000/posts
+
+###
+POST http://localhost:3000/posts
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+
+{
+    "title": "제목",
+    "category": "기타",
+    "content" : "후기 쪄왔습니다"
+}
+
+###
+GET http://localhost:3000/posts/7
+
+###
+GET http://localhost:3000/posts/category/병원
+
+###
+PATCH http://localhost:3000/posts/2
+Content-type: application/json
+
+{
+    "title": "제목1",
+    "category": "기타",
+    "content" : "후기 쪄왔습니다1"
+}
+
+###
+DELETE http://localhost:3000/posts/6
 
 ###
