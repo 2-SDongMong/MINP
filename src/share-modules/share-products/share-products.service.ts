@@ -8,7 +8,7 @@ import { ShareProducts } from './entities/share-products.entity';
 export class ShareProductsService {
   constructor(
     @InjectRepository(ShareProducts)
-    private readonly shareProductsRepository: Repository<ShareProducts>,
+    private readonly shareProductsRepository: Repository<ShareProducts>
   ) {}
 
   async findAll(): Promise<ShareProducts[]> {
@@ -22,10 +22,10 @@ export class ShareProductsService {
   }
 
   async createShare(
-    createShareProductDto: CreateShareProductDto,
+    createShareProductDto: CreateShareProductDto
   ): Promise<ShareProducts> {
     const newShareProduct = this.shareProductsRepository.create(
-      createShareProductDto,
+      createShareProductDto
     );
     return await this.shareProductsRepository.save(newShareProduct);
   }
