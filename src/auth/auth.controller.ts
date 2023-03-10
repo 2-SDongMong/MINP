@@ -16,7 +16,6 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     async login(@Body() dto: LoginUserDto) {
       console.log("오류찾기 auth.controller.ts")
-      
       return await this.authService.login(dto);
     }
   
