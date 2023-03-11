@@ -6,12 +6,7 @@ import { ShareProductsController } from './share-products.controller';
 import { ShareProductsService } from './share-products.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ShareProducts]),
-    MulterModule.register({
-      dest: './upload',
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([ShareProducts])],
   controllers: [ShareProductsController],
   providers: [ShareProductsService],
 })

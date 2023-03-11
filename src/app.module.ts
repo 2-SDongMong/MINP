@@ -29,6 +29,7 @@ import { ShareProductsCategoryModule } from './share-modules/share-products-cate
 
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { ShareProductsImageModule } from './share-modules/share-products-image/products-image.module';
 
 @Module({
   imports: [
@@ -74,6 +75,8 @@ import { PassportModule } from '@nestjs/passport';
     ShareProductsModule,
 
     ShareProductsCategoryModule,
+
+    ShareProductsImageModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
@@ -86,8 +89,7 @@ export class AppModule implements NestModule {
         { path: 'auth/logout', method: RequestMethod.ALL },
         { path: 'requests', method: RequestMethod.POST },
         { path: 'user/mypage', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL},
-        
+        { path: 'cats', method: RequestMethod.ALL }
       );
   }
 }

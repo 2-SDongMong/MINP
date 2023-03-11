@@ -3,12 +3,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './commons/filter/http-exception.filter';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import basicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
-  const basicAuth = require('express-basic-auth');
   app.use(
     ['/docs', '/docs-json'],
     basicAuth({

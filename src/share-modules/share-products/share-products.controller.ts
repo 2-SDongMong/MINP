@@ -53,11 +53,4 @@ export class ShareProductsController {
   deleteProductById(@Param('id') id: string) {
     return this.shareProductsService.deleteById(id);
   }
-
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('image'))
-  uploadProductImg(@UploadedFile() files: Array<Express.Multer.File>) {
-    console.log(files);
-    return 'uploadImg';
-  }
 }
