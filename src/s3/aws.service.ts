@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { PromiseResult } from 'aws-sdk/lib/request';
 
 @Injectable()
-export class ProductsImageService {
+export class S3Service {
   private readonly awsS3: AWS.S3;
   public readonly S3_BUCKET_NAME: string;
 

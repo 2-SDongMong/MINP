@@ -21,15 +21,10 @@ import { PostCommentsModule } from './post-comments/post-comments.module';
 import { UserLikesModule } from './user-likes/user-likes.module';
 import { PostImagesModule } from './post-images/post-images.module';
 import { CatLikesModule } from './cat-likes/cat-likes.module';
-import { ShareCommentsModule } from './share-comments/share-comments.module';
-import { SharePostsModule } from './share-posts/share-posts.module';
-import { ShareImagesModule } from './share-images/share-images.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
-
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
-import { ShareProductsImageModule } from './share-modules/share-products-image/products-image.module';
 
 @Module({
   imports: [
@@ -66,17 +61,9 @@ import { ShareProductsImageModule } from './share-modules/share-products-image/p
 
     UserLikesModule,
 
-    ShareCommentsModule,
-
-    SharePostsModule,
-
-    ShareImagesModule,
-
     ShareProductsModule,
 
     ShareProductsCategoryModule,
-
-    ShareProductsImageModule,
   ],
   controllers: [AppController],
   providers: [AppService, AuthMiddleware],
@@ -89,7 +76,8 @@ export class AppModule implements NestModule {
         { path: 'auth/logout', method: RequestMethod.ALL },
         { path: 'requests', method: RequestMethod.POST },
         { path: 'user/mypage', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL }
+        { path: 'cats', method: RequestMethod.ALL },
+        { path: 'share-products', method: RequestMethod.POST }
       );
   }
 }

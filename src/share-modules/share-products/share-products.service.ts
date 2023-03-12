@@ -1,8 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductsImage } from '../share-products-image/entities/products-image.entity';
-import { ProductsImageService } from '../share-products-image/products-image.service';
 import { CreateShareProductDto } from './dto/create-share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
 
@@ -10,69 +8,49 @@ import { ShareProducts } from './entities/share-products.entity';
 export class ShareProductsService {
   constructor(
     @InjectRepository(ShareProducts)
-    private readonly shareProductsRepository: Repository<ShareProducts>,
-    @InjectRepository(ProductsImage)
-    private readonly productsImageRepository: Repository<ProductsImage>,
-    private readonly productsImageService: ProductsImageService
+    private readonly shareProductsRepository: Repository<ShareProducts>
   ) {}
 
   async findAll(): Promise<ShareProducts[]> {
-    return await this.shareProductsRepository.find();
-  }
-
-  async findEach(productId) {
-    return await this.shareProductsRepository.findOne({
-      where: { id: productId },
+    return await this.shareProductsRepository.find({
+      relations: ['productsCategory'],
     });
   }
 
-  async createShare(
-    createShareProductDto: CreateShareProductDto,
-    images: Express.Multer.File[]
-  ): Promise<{ product: ShareProducts; imageUrls: string[] }> {
-    const newShareProduct = this.shareProductsRepository.create(
-      createShareProductDto
-    );
-    const savedProduct = await this.shareProductsRepository.save(
-      newShareProduct
-    );
-
-    // 업로드한 이미지들을 S3에 업로드하고 각 이미지의 URL을 ShareProducts 엔티티에 추가
-    const imageUrls = [];
-    for (const image of images) {
-      const { key } = await this.productsImageService.uploadFileToS3(
-        'share-products',
-        image
-      );
-      imageUrls.push(
-        `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${key}`
-      );
-    }
-    savedProduct.imageUrls = imageUrls;
-
-    const updatedProduct = await this.shareProductsRepository.save(
-      savedProduct
-    );
-
-    return { product: updatedProduct, imageUrls };
+  async findEach({ id }) {
+    return await this.shareProductsRepository.findOne({
+      where: { id },
+      relations: ['productsCategory'],
+    });
   }
 
-  async update({ productId, updateShareProductDto }) {
+  async createShare(createProductDto: CreateShareProductDto) {
+    const { productsCategoryId, ...product } = createProductDto;
+
+    const result = await this.shareProductsRepository.save({
+      ...product,
+      productsCategory: { id: productsCategoryId },
+    });
+
+    return result;
+  }
+
+  async update({ id, updateShareProductDto }) {
     const myproduct = await this.shareProductsRepository.findOne({
-      where: { id: productId },
+      where: { id },
     });
 
     const newProduct = {
       ...myproduct,
-      id: productId,
+      id,
       ...updateShareProductDto,
     };
 
     return await this.shareProductsRepository.save(newProduct);
   }
-  async checkTradeOut({ productId }) {
+  async checkTradeOut({ id }) {
     const product = await this.shareProductsRepository.findOne({
-      where: { id: productId },
+      where: { id },
     });
     if (product.isTrade)
       throw new UnprocessableEntityException('이미 거래가 완료된 상품입니다.');

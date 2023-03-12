@@ -6,4 +6,7 @@ export class CreateShareProductDto {
 
   @IsString()
   readonly description: string;
+
+  @IsString()
+  readonly productsCategoryId: string;
 }

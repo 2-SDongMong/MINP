@@ -1,18 +1,15 @@
 import { ProductsCategory } from 'src/share-modules/share-products-category/entities/products-category.entity';
 import { ProductsImage } from 'src/share-modules/share-products-image/entities/products-image.entity';
-import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
-import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
 import { User } from 'src/users/user.entity';
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ schema: 'mooin_cat', name: 'share_products' })
@@ -29,10 +26,6 @@ export class ShareProducts {
   @Column({ default: false })
   isTrade: boolean;
 
-  @JoinColumn()
-  @OneToOne(() => ProductsLocation)
-  shareProductsLocation: ProductsLocation;
-
   @ManyToOne(() => ProductsCategory)
   productsCategory: ProductsCategory;
 
@@ -40,16 +33,14 @@ export class ShareProducts {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @JoinTable()
-  @ManyToMany(() => ProductsTag, (productsTag) => productsTag.shareProducts)
-  productsTag: ProductsTag[];
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt: Date;
 
-  @OneToMany(
-    () => ProductsImage,
-    (productsImage) => productsImage.shareProducts
-  )
-  productsImages: ProductsImage[];
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt: Date;
 
-  @Column({ type: 'simple-array' })
-  imageUrls: string[];
+  @OneToMany(() => ProductsImage, (productsImage) => productsImage.product, {
+    cascade: true,
+  })
+  images: ProductsImage[];
 }

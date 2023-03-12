@@ -6,10 +6,7 @@ import {
   Param,
   Patch,
   Post,
-  UploadedFiles,
-  UseInterceptors,
 } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateShareProductDto } from './dto/create-share-products.dto';
 import { UpdateShareProductDto } from './dto/update-share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
@@ -24,38 +21,32 @@ export class ShareProductsController {
     return await this.shareProductsService.findAll();
   }
 
-  @Get(':productId')
-  async findEach(
-    @Param('productId') productId: string
-  ): Promise<ShareProducts> {
-    return await this.shareProductsService.findEach(productId);
+  @Get(':id')
+  async findEach(@Param('id') id: string): Promise<ShareProducts> {
+    return await this.shareProductsService.findEach({ id });
   }
 
   @Post()
-  @UseInterceptors(FilesInterceptor('images', 5))
   async createShare(
-    @Body() createShareProductDto: CreateShareProductDto,
-    @UploadedFiles() images: Express.Multer.File[]
-  ) {
-    return await this.shareProductsService.createShare(
-      createShareProductDto,
-      images
-    );
+    @Body() createShareProductDto: CreateShareProductDto
+  ): Promise<ShareProducts> {
+    return await this.shareProductsService.createShare(createShareProductDto);
   }
 
-  @Patch(':productId')
+  @Patch(':id')
   async updateShare(
-    @Param('productId') productId: string,
+    @Param('id') id: string,
     @Body() updateShareProductDto: UpdateShareProductDto
   ) {
-    await this.shareProductsService.checkTradeOut({ productId });
+    await this.shareProductsService.checkTradeOut({ id });
     return await this.shareProductsService.update({
-      productId,
+      id,
       updateShareProductDto,
     });
   }
+
   @Delete(':id')
-  deleteProductById(@Param('id') id: string) {
-    return this.shareProductsService.deleteById(id);
+  async deleteById(@Param('id') id: string): Promise<void> {
+    await this.shareProductsService.deleteById(id);
   }
 }

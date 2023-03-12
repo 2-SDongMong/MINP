@@ -1,7 +1,5 @@
 import { CatLike } from 'src/cat-likes/cat-like.entity';
 import { Cat } from 'src/cats/cat.entity';
-import { ShareComment } from 'src/share-comments/share-comment.entity';
-import { SharePost } from 'src/share-posts/share-post.entity';
 import { Request } from 'src/requests/request.entity';
 import {
   Column,
@@ -78,19 +76,7 @@ export class User {
   })
   cat_likes: CatLike[];
 
-  @OneToMany(() => ShareComment, (shareComment) => shareComment.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  share_comments: ShareComment[];
-
-  @OneToMany(() => SharePost, (sharePost) => sharePost.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  share_posts: SharePost[];
-
-  @OneToMany(()=>ShareProducts, (shareProducts)=>shareProducts.user,{
+  @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
