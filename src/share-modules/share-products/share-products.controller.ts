@@ -6,10 +6,10 @@ import {
   Param,
   Patch,
   Post,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateShareProductDto } from './dto/create-share-products.dto';
 import { UpdateShareProductDto } from './dto/update-share-products.dto';
 import { ShareProducts } from './entities/share-products.entity';
@@ -32,10 +32,15 @@ export class ShareProductsController {
   }
 
   @Post()
+  @UseInterceptors(FilesInterceptor('images', 5))
   async createShare(
-    @Body() createShareProductDto: CreateShareProductDto
-  ): Promise<ShareProducts> {
-    return await this.shareProductsService.createShare(createShareProductDto);
+    @Body() createShareProductDto: CreateShareProductDto,
+    @UploadedFiles() images: Express.Multer.File[]
+  ) {
+    return await this.shareProductsService.createShare(
+      createShareProductDto,
+      images
+    );
   }
 
   @Patch(':productId')
@@ -49,7 +54,7 @@ export class ShareProductsController {
       updateShareProductDto,
     });
   }
-  @Delete('/products/:id')
+  @Delete(':id')
   deleteProductById(@Param('id') id: string) {
     return this.shareProductsService.deleteById(id);
   }

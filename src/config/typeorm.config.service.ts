@@ -10,6 +10,7 @@ import { Post } from 'src/posts/post.entity';
 import { ShareComment } from 'src/share-comments/share-comment.entity';
 import { ShareImage } from 'src/share-images/share-image.entity';
 import { ProductsCategory } from 'src/share-modules/share-products-category/entities/products-category.entity';
+import { ProductsImage } from 'src/share-modules/share-products-image/entities/products-image.entity';
 import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
 import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
 import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
@@ -46,6 +47,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ProductsLocation,
         ProductsTag,
         ShareProducts,
+        ProductsImage,
       ],
       synchronize: true,
       logging: ['error'],

@@ -1,32 +1,31 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './commons/filter/http-exception.filter';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { setupSwagger } from './config/swagger.config';
 import basicAuth from 'express-basic-auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
+
+  const configService = app.get(ConfigService);
+
+  setupSwagger(app);
+
   app.use(
     ['/docs', '/docs-json'],
     basicAuth({
       challenge: true,
       users: {
-        [process.env.SWAGGER_USER]: process.env.SWAGGER_PASSWORD,
+        [configService.get('SWAGGER_USER')]:
+          configService.get('SWAGGER_PASSWORD'),
       },
     })
   );
 
-  const config = new DocumentBuilder()
-    .setTitle('MINP')
-    .setDescription('The MINP API description')
-    .setVersion('1.0.0')
-    .addTag('cats')
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);
   app.enableCors({
     origin: true,
     credentials: true,
