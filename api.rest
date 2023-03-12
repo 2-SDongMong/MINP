@@ -8,7 +8,7 @@ GET http://localhost:3000/requests/26
 
 POST http://localhost:3000/requests
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 {
     "reserved_time": "2023-04-23",
@@ -16,7 +16,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpb
 }
 
 ###
-
 PATCH http://localhost:3000/requests/23
 Content-Type: application/json
 
@@ -26,11 +25,11 @@ Content-Type: application/json
 }
 
 ###
-
 DELETE http://localhost:3000/requests/5
 
 
 
+### messages ##############################
 ###
 GET http://localhost:3000/messages
 
@@ -60,6 +59,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpb
 DELETE http://localhost:3000/messages/2
 # Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
 
+
 ###
 POST http://localhost:3000/user/signup
 Content-Type: application/json
@@ -85,12 +85,14 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 ###
 POST http://localhost:3000/auth/refresh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMjQzOCwiZXhwIjoxNjc4NzA4ODM4fQ.Nl8WQaq9Lvvw-2wKD4q3vCha7QwUSyaHJEqo5Qea_a0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
+
+### posts #################################
 ###
 GET http://localhost:3000/posts
 
@@ -124,4 +126,11 @@ Content-type: application/json
 ###
 DELETE http://localhost:3000/posts/6
 
+
+### products-image #################################
 ###
+POST http://localhost:3000/products-image/upload
+Content-Type: application/json
+{
+    "image": 
+}
