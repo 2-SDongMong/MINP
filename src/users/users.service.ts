@@ -14,7 +14,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
-import { where } from 'sequelize';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
 import { ApiBadRequestResponse } from '@nestjs/swagger';
 
