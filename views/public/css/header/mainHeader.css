@@ -1,0 +1,38 @@
+/* Navbar */
+.navbarLogo {
+  margin-top: 7px;
+  margin-left: 111px;
+}
+
+.navbar {
+  font-family: Nanum Gothic;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1px 220px;
+}
+
+.navbarMenu {
+  display: flex;
+  list-style: none;
+  font-size: 18px;
+  color: white;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin-right: 250px;
+}
+
+.navbarMenu li {
+  padding: 8px 20px;
+}
+
+.navbarButton {
+    margin-right: 115px;
+}
+
+.navbarButton button {
+  font-family: Nanum Gothic;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
+  border: none;
+}

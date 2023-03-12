@@ -40,13 +40,17 @@ export class UsersController {
 
   // 유저 정보 수정
   @Patch('/mypage/:id')
-  updateUserInfo(@Req() req, @Param('id') userId:number, @Body() data: UpdateMypageDto) {
+  updateUserInfo(
+    @Req() req,
+    @Param('id') userId: number,
+    @Body() data: UpdateMypageDto
+  ) {
     return this.userService.updateUserById(req.user, userId, data);
   }
 
   // 유저 정보 삭제
   @Delete('/mypage/:id')
-  deleteUserInfo(@Req() req, @Param('id') userId:number) {
+  deleteUserInfo(@Req() req, @Param('id') userId: number) {
     return this.userService.deleteUserById(req.user, userId);
   }
 
@@ -57,10 +61,14 @@ export class UsersController {
     return this.userService.getUserByStatus(req.user);
   }
 
-    // 가입 신청 승인 API
+  // 가입 신청 승인 API
   @Patch('/admin/:id')
-  accessMember(@Req() req, @Param('id') userId: number , @Body() data: UpdateMemberDto) {
-    return this.userService.accessMember(req.user, userId, data )
+  accessMember(
+    @Req() req,
+    @Param('id') userId: number,
+    @Body() data: UpdateMemberDto
+  ) {
+    return this.userService.accessMember(req.user, userId, data);
   }
 
   // 일반 회원 목록 조회 API
@@ -72,9 +80,6 @@ export class UsersController {
   // 전체 회원 삭제 API
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
-    return this.userService.deleteMemberById(req.user, userId)
+    return this.userService.deleteMemberById(req.user, userId);
   }
-
-
-  
 }
