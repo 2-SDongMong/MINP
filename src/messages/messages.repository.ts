@@ -10,10 +10,32 @@ export class MessagesRepository extends Repository<Message> {
 
   async getMessageById(id: number): Promise<Partial<Message>> {
     const message = await this.createQueryBuilder('m')
-      .select(['a.message_id', 'a.sender_id', 'a.recipient_id', 'content'])
+      .select(['m.message_id', 'm.sender_id', 'm.recipient_id', 'm.content'])
+      .leftJoin('m.send_user', 'sender')
+      .leftJoin('m.receive_user', 'receiver')
+      .addSelect(['sender.nickname', 'receiver.nickname'])
       .where({ message_id: id })
-      //   .relation('a.sender_user')
       .getOne();
     return message;
+  }
+
+  async getReceivedMessages(recipientId: number): Promise<Partial<Message>[]> {
+    const messages = await this.createQueryBuilder('m')
+      .leftJoin('m.send_user', 'sender')
+      .leftJoin('m.receive_user', 'receiver')
+      .addSelect(['sender.nickname', 'receiver.nickname'])
+      .where('m.recipient_id = :recipientId', { recipientId })
+      .getMany();
+    return messages;
+  }
+
+  async getSentMessages(senderId: number): Promise<Partial<Message>[]> {
+    const messages = await this.createQueryBuilder('m')
+      .leftJoin('m.send_user', 'sender')
+      .leftJoin('m.receive_user', 'receiver')
+      .addSelect(['sender.nickname', 'receiver.nickname'])
+      .where('m.sender_id = :senderId', { senderId })
+      .getMany();
+    return messages;
   }
 }

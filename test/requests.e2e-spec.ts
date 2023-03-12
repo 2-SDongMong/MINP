@@ -162,7 +162,6 @@ describe('Requests (e2e)', () => {
           // FIXME: PATCH는 어째선지 이 Content-Type 테스트를 통과하지 못하므로 삭제할 것.
           // .expect('Content-Type', /json/)
           .expect(200)
-          .expect('')
       );
     });
 
@@ -182,6 +181,15 @@ describe('Requests (e2e)', () => {
       return request(app.getHttpServer())
         .delete('/requests/10')
         .expect(200)
+        .expect('');
+    });
+
+    // TODO: 유저가 작성자가 맞는지 테스트
+    it('should throw 401 UnauthorizationException when user id not match with author id', () => {
+      return request(app.getHttpServer())
+        .delete('/requests/10')
+        .set('user', '100')
+        .expect(401)
         .expect('');
     });
   });

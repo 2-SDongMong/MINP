@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/user.entity';
@@ -77,17 +81,31 @@ export class RequestsService {
     return await this.requestsRepository.save(newRequest);
   }
 
-  private async ExistenceCheckById(id: number) {
+  private async _existenceCheckById(id: number) {
     const request = await this.requestsRepository.findOne({
       where: { request_id: id },
     });
     if (_.isNil(request)) {
       throw new NotFoundException(`Request article not found. id: ${id}`);
     }
+    return request;
   }
 
-  async updateRequestById(id: number, bodyData: UpdateRequestDto) {
-    await this.ExistenceCheckById;
+  private async _authorCheckByUserId(authorId: number, userId: number) {
+    if (authorId !== userId) {
+      throw new UnauthorizedException(
+        `Unauthorized. user id: ${userId} not match with author id: ${authorId}`
+      );
+    }
+  }
+
+  async updateRequestById(
+    userId: number,
+    id: number,
+    bodyData: UpdateRequestDto
+  ) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
 
     const { reserved_time, detail } = bodyData;
 
@@ -105,7 +123,9 @@ export class RequestsService {
     this.requestsRepository.update(id, { reserved_time, detail });
   }
 
-  deleteRequestById(id: number) {
+  async deleteRequestById(userId: number, id: number) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.softDelete(id);
   }
 }

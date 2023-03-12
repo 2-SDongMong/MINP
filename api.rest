@@ -2,34 +2,65 @@ GET http://localhost:3000/requests
 
 ###
 
-GET http://localhost:3000/requests/23
+GET http://localhost:3000/requests/26
 
 ###
 
 POST http://localhost:3000/requests
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODM0MTEzOCwiZXhwIjoxNjc4NDI3NTM4fQ.7iB3fHsDAmQT6EQVAHGCU3oM7tLfqqfwLOfIV9otu1k
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
 
 {
-    "reserved_time": "2023-03-31",
-    "detail": "냥품 요청이요44!"
+    "reserved_time": "2023-04-23",
+    "detail": "순한 고양이 품앗이 부탁드려요"
 }
 
 ###
 
-PATCH http://localhost:3000/requests/10
+PATCH http://localhost:3000/requests/23
 Content-Type: application/json
 
 {
-    "detail": "냥품 요청합니다!@@"
+    "reserved_time": "2023-04-01",
+    "detail": "냥품 요청합니다~ new3!!"
 }
 
 ###
 
 DELETE http://localhost:3000/requests/5
 
-###
 
+
+###
+GET http://localhost:3000/messages
+
+###
+GET http://localhost:3000/messages/received
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+
+###
+GET http://localhost:3000/messages/sent
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+
+###
+GET http://localhost:3000/messages/11
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+
+###
+POST http://localhost:3000/messages
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
+
+{
+    "recipient_id": 30,
+    "content": "나에게 보내는 편지...❤ 오 간다 가ㅎㅎ"
+}
+
+###
+DELETE http://localhost:3000/messages/2
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+
+###
 POST http://localhost:3000/user/signup
 Content-Type: application/json
 
@@ -44,7 +75,6 @@ Content-Type: application/json
 }
 
 ###
-
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
@@ -54,14 +84,12 @@ Content-Type: application/json
 }
 
 ###
-
 POST http://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzMDQ5NCwiZXhwIjoxNjc4NDE2ODk0fQ.rhPoBYs2586fgsL3booBMsuyWEdJfU7rG0Qvot_ttdc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
 
 ###
-
-PUT http://localhost:3000/user/update
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODMzMDQyMywiZXhwIjoxNjc4NDE2ODIzfQ.TOTbSZlKoGZksx2D132yqqn2UXJPblzXz_QLPYuIgjA
+POST http://localhost:3000/auth/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMjQzOCwiZXhwIjoxNjc4NzA4ODM4fQ.Nl8WQaq9Lvvw-2wKD4q3vCha7QwUSyaHJEqo5Qea_a0
 
 ###
 GET http://localhost:3000/posts
@@ -69,7 +97,7 @@ GET http://localhost:3000/posts
 ###
 POST http://localhost:3000/posts
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMjQzOCwiZXhwIjoxNjc4NzA4ODM4fQ.Nl8WQaq9Lvvw-2wKD4q3vCha7QwUSyaHJEqo5Qea_a0
 
 {
     "title": "제목",

@@ -86,7 +86,11 @@ export class AppModule implements NestModule {
         { path: 'auth/logout', method: RequestMethod.ALL },
         { path: 'requests', method: RequestMethod.POST },
         { path: 'user/mypage', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL }
+        { path: 'cats', method: RequestMethod.ALL },
+        { path: 'messages', method: RequestMethod.POST },
+        { path: 'messages/sent', method: RequestMethod.GET },
+        { path: 'messages/received', method: RequestMethod.GET },
+        { path: 'messages/:id', method: RequestMethod.GET }
       );
   }
 }

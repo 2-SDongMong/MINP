@@ -40,6 +40,7 @@ export class RequestsController {
 
   @Patch('/:id')
   updateRequestById(
+    @Req() req,
     @Param('id') requestId: number,
     @Body() data: UpdateRequestDto
   ) {
@@ -49,11 +50,11 @@ export class RequestsController {
     //     "When 'detail' is given, it should not be an empty string."
     //   );
     // }
-    this.requestService.updateRequestById(requestId, data);
+    this.requestService.updateRequestById(req.user, requestId, data);
   }
 
   @Delete('/:id')
-  deleteRequestById(@Param('id') requestId: number) {
-    this.requestService.deleteRequestById(requestId);
+  deleteRequestById(@Req() req, @Param('id') requestId: number) {
+    this.requestService.deleteRequestById(req.user, requestId);
   }
 }
