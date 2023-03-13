@@ -17,7 +17,7 @@ import { UpdateMypageDto } from './dto/update-mypage.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(User) private userRepository: Repository<User>
   ) {}
 
   async create(userData: CreateUserDto) {
@@ -25,7 +25,7 @@ export class UsersService {
     const existUser = await this.getByEmail(userData.email);
     if (!_.isNil(existUser)) {
       throw new ConflictException(
-        `User already exists. email: ${userData.email}`,
+        `User already exists. email: ${userData.email}`
       );
     }
 
@@ -63,7 +63,7 @@ export class UsersService {
       select: ['password'],
     });
 
-    return a;  
+    return a;
   }
 
   async findOne(id: number) {
@@ -74,26 +74,31 @@ export class UsersService {
     return await this.userRepository.update(id, updateUserDto);
   }
 
-    // My page API
-    async getUserById(id: number) {
-      return await this.userRepository.findOne({
-        where: { user_id: id },
-        select: ['email', 'name', 'nickname', 'address', 'phone_number', 'password']
-      });
-    }
-  
-    async updateUserById(id: number, bodyData: UpdateMypageDto) {
-      const { nickname, address, phone_number} = bodyData;
-      this.userRepository.update(id,{
-        nickname,
-        address,
-        phone_number, 
-      });
-      
-    }
-  
-    deleteUserById(id: number) {
-      this.userRepository.softDelete(id);
-    }
+  // My page API
+  async getUserById(id: number) {
+    return await this.userRepository.findOne({
+      where: { user_id: id },
+      select: [
+        'email',
+        'name',
+        'nickname',
+        'address',
+        'phone_number',
+        'password',
+      ],
+    });
+  }
 
+  async updateUserById(id: number, bodyData: UpdateMypageDto) {
+    const { nickname, address, phone_number } = bodyData;
+    this.userRepository.update(id, {
+      nickname,
+      address,
+      phone_number,
+    });
+  }
+
+  deleteUserById(id: number) {
+    this.userRepository.softDelete(id);
+  }
 }

@@ -1,4 +1,13 @@
-import { Body,Controller, Get, Post, Put, Delete, Req, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Req,
+  Patch,
+} from '@nestjs/common';
 import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
@@ -23,20 +32,17 @@ export class UsersController {
 
   // My page API
   @Get('/mypage')
-  getUser(@Req() req,){
-    return this.userService.getUserById(req.user)
+  getUser(@Req() req) {
+    return this.userService.getUserById(req.user);
   }
 
   @Patch('/mypage')
-  updateUserInfo(
-    @Req() req,
-    @Body() data: UpdateMypageDto
-    ) {
-      return this.userService.updateUserById(req.user, data);
-    }
+  updateUserInfo(@Req() req, @Body() data: UpdateMypageDto) {
+    return this.userService.updateUserById(req.user, data);
+  }
 
   @Delete('/mypage')
-  deleteUserInfo(@Req() req,) {
-    return this.userService.deleteUserById(req.user)
+  deleteUserInfo(@Req() req) {
+    return this.userService.deleteUserById(req.user);
   }
 }

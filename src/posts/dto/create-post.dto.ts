@@ -2,7 +2,6 @@ import { IsString } from 'class-validator';
 import { PostCategoryType } from '../post.entity';
 
 export class CreatePostDto {
-
   @IsString()
   readonly title: string;
 
@@ -11,5 +10,4 @@ export class CreatePostDto {
 
   @IsString()
   readonly content?: string;
-
 }
