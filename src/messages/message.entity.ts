@@ -24,11 +24,17 @@ export class Message {
   @Column('varchar', { length: 500 })
   content: string;
 
+  @Column({ default: null })
+  read_at:  Date ;
+
   @CreateDateColumn()
   created_at: Date;
 
   @DeleteDateColumn()
-  deleted_at: Date | null;
+  sender_deleted_at: Date | null;
+
+  @DeleteDateColumn()
+  recipient_deleted_at: Date | null;
 
   @ManyToOne(() => User, (user) => user.send_messages, { cascade: true })
   @JoinColumn({ name: 'send_user_id' })

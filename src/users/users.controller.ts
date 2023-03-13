@@ -34,13 +34,8 @@ export class UsersController {
   // My page API
   // 유저 정보 조회
   @Get('/mypage')
-<<<<<<< HEAD
-  getUser(@Req() req,){
-    return this.usersService.getUserById(req.user)
-=======
   getUser(@Req() req) {
-    return this.userService.getUserById(req.user);
->>>>>>> 55bc570e9378cc8c369cad88559ba93abb900c64
+    return this.usersService.getUserById(req.user);
   }
 
   // 유저 정보 수정
@@ -49,30 +44,21 @@ export class UsersController {
     @Req() req,
     @Param('id') userId: number,
     @Body() data: UpdateMypageDto
-<<<<<<< HEAD
-    ) {
-      return this.usersService.updateUserById(req.user, data);
-    }
-
-  @Delete('/mypage')
-  deleteUserInfo(@Req() req,) {
-    return this.usersService.deleteUserById(req.user)
-=======
   ) {
-    return this.userService.updateUserById(req.user, userId, data);
+    return this.usersService.updateUserById(req.user, userId, data);
   }
 
   // 유저 정보 삭제
   @Delete('/mypage/:id')
   deleteUserInfo(@Req() req, @Param('id') userId: number) {
-    return this.userService.deleteUserById(req.user, userId);
+    return this.usersService.deleteUserById(req.user, userId);
   }
 
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
   getAllUser(@Req() req) {
-    return this.userService.getUserByStatus(req.user);
+    return this.usersService.getUserByStatus(req.user);
   }
 
   // 가입 신청 승인 API
@@ -82,19 +68,18 @@ export class UsersController {
     @Param('id') userId: number,
     @Body() data: UpdateMemberDto
   ) {
-    return this.userService.accessMember(req.user, userId, data);
+    return this.usersService.accessMember(req.user, userId, data);
   }
 
   // 일반 회원 목록 조회 API
   @Get('/admin/member')
   getMember(@Req() req) {
-    return this.userService.getAllMember(req.user);
+    return this.usersService.getAllMember(req.user);
   }
 
   // 전체 회원 삭제 API
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
-    return this.userService.deleteMemberById(req.user, userId);
->>>>>>> 55bc570e9378cc8c369cad88559ba93abb900c64
+    return this.usersService.deleteMemberById(req.user, userId);
   }
 }
