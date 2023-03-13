@@ -85,7 +85,10 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: 'auth/logout', method: RequestMethod.ALL },
-        { path: 'requests', method: RequestMethod.POST }
+        { path: 'requests', method: RequestMethod.POST },
+        { path: 'user/mypage', method: RequestMethod.ALL },
+        { path: 'cats', method: RequestMethod.ALL},
+        
       );
   }
 }
