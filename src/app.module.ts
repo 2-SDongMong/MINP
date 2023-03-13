@@ -29,6 +29,7 @@ import { ShareProductsCategoryModule } from './share-modules/share-products-cate
 
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { EmailService } from './email/email.service';
 
 @Module({
   imports: [
@@ -76,7 +77,7 @@ import { PassportModule } from '@nestjs/passport';
     ShareProductsCategoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthMiddleware],
+  providers: [AppService, AuthMiddleware, EmailService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -84,7 +85,7 @@ export class AppModule implements NestModule {
       .apply(AuthMiddleware)
       .forRoutes(
         { path: 'auth/logout', method: RequestMethod.ALL },
-        { path: 'requests', method: RequestMethod.POST },
+        { path: 'requests', method: RequestMethod.POST }
       );
   }
 }

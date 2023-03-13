@@ -32,7 +32,7 @@ export class RequestsController {
   createRequest(
     @UserInfo() user,
     @Req() req: Request,
-    @Body() data: CreateRequestDto,
+    @Body() data: CreateRequestDto
   ) {
     // FIXME: const userEmail = req.user;
     const userId = user.user_id;
@@ -42,7 +42,7 @@ export class RequestsController {
   @Patch('/:id')
   updateRequest(
     @Param('id') requestId: number,
-    @Body() data: UpdateRequestDto,
+    @Body() data: UpdateRequestDto
   ) {
     return this.requestService.updateRequestById(requestId, data);
   }

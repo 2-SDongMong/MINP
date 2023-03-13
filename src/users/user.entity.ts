@@ -90,7 +90,7 @@ export class User {
   })
   share_posts: SharePost[];
 
-  @OneToMany(()=>ShareProducts, (shareProducts)=>shareProducts.user,{
+  @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })

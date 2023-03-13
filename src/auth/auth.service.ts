@@ -1,31 +1,44 @@
-import { HttpException, HttpStatus, ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  ForbiddenException,
+  Injectable,
+  ConflictException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
+// import { MailerService } from '@nestjs-modules/mailer';
+// import { ConfigService } from '@nestjs/config';
+import { OAuth2Client } from 'google-auth-library';
+import * as nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
-    private jwtService: JwtService,
-    ) {}
+    private jwtService: JwtService
+  ) // private readonly mailerService:MailerService,
+  // private readonly configService: ConfigService
 
+  {}
 
   // login
-  public async login(dto:LoginUserDto){
-    const findPassword = await this.userService.findPassword(dto.email)
+  public async login(dto: LoginUserDto) {
+    const findPassword = await this.userService.findPassword(dto.email);
     const user = await this.userService.findOneByEmail(dto.email);
     const isPasswordMatching = await bcrypt.compare(
       dto.password,
-      findPassword.password,
+      findPassword.password
     );
-    
+
     if (!isPasswordMatching) {
       throw new HttpException(
         '잘못된 인증 정보입니다.',
-        HttpStatus.BAD_REQUEST,
+        HttpStatus.BAD_REQUEST
       );
     }
     user.password = undefined;
@@ -37,8 +50,52 @@ export class AuthService {
     return tokens;
   }
 
+  async sendMail(email) {
+    try {
+      const authNumber = Math.random().toString(36).slice(2);
+      const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_ID,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+      const mailOptions = {
+        from: process.env.EMAIL_ID,
+        to: email,
+        subject: '무인냥품 인증메시지입니다.',
+        html: `
+        <b>Hello</b>
+        <b>check number</b>
+        <span style="background-color: rgb(179, 178, 178);"><b>${authNumber}</b></span>
+      `,
+      };
+      await transport.sendMail(mailOptions);
+
+      return authNumber;
+    } catch (err) {
+      throw new HttpException(
+        {
+          message: 'messsage',
+          error: err.sqlMessage,
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+  }
+
+  async OAuthLogin({ req, res }) {
+    const googleEmail = req.user.email;
+    const user = await this.userService.findOneByEmail(googleEmail);
+    if (!user) {
+      throw new HttpException('없는 회원정보 입니다.', HttpStatus.FORBIDDEN);
+    }
+
+    this.getTokens(user.user_id, user.email);
+    res.redirect('리다이렝트할 url주소');
+  }
+
   async logout(userId: number) {
-    
     await this.userService.update(userId, { hashdRt: null });
   }
 
@@ -52,7 +109,7 @@ export class AuthService {
         {
           secret: 'JWT_ACCESS_SECRET',
           expiresIn: '24h',
-        },
+        }
       ),
       this.jwtService.signAsync(
         {
@@ -62,7 +119,7 @@ export class AuthService {
         {
           secret: 'JWT_REFRESH_SECRET',
           expiresIn: '30d',
-        },
+        }
       ),
     ]);
 
@@ -73,15 +130,12 @@ export class AuthService {
   }
 
   async hashPassword(data: string) {
-
     return bcrypt.hash(data, 10);
   }
-  
-  
 
- //2. access만료 refresh 유효 -> refresh 검증 후 access 재발급 refreshTokens ㄱㄱ
+  //2. access만료 refresh 유효 -> refresh 검증 후 access 재발급 refreshTokens ㄱㄱ
   async refreshTokens(userId: object, refreshtoken: string) {
-    const user_id = userId['sub']
+    const user_id = userId['sub'];
     const token = refreshtoken.split('bearer ')[1];
     //bearer refreshtoken 이런 토큰
     const user = await this.userService.findOne(user_id);
@@ -93,6 +147,5 @@ export class AuthService {
     await this.userService.update(user.user_id, { hashdRt: refreshTokenHash });
 
     return tokens;
-    }
-
+  }
 }
