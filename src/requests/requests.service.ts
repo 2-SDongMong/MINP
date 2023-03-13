@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/users/user.entity';
@@ -11,11 +15,11 @@ import { CreateRequestDto } from './dto/create-request.dto';
 export class RequestsService {
   constructor(
     @InjectRepository(Request)
-    private requestRepository: Repository<Request>
+    private requestsRepository: Repository<Request>
   ) {}
 
   async getRequests() {
-    const request = await this.requestRepository.find({
+    const request = await this.requestsRepository.find({
       relations: {
         user: {
           cats: true,
@@ -36,7 +40,7 @@ export class RequestsService {
   }
 
   async getRequestById(id: number) {
-    const request = await this.requestRepository.findOne({
+    const request = await this.requestsRepository.findOne({
       where: { request_id: id },
       relations: {
         user: {
@@ -45,6 +49,7 @@ export class RequestsService {
       },
       select: {
         user: {
+          user_id: true,
           nickname: true,
           cats: {
             name: true,
@@ -59,45 +64,69 @@ export class RequestsService {
         detail: true,
       },
     });
+
+    if (_.isNil(request)) {
+      throw new NotFoundException(`Request article not found. id: ${id}`);
+    }
+
     return request;
   }
 
-  createRequest(id: number, bodyData: CreateRequestDto) {
-    this.requestRepository.insert({
+  async createRequest(id: number, bodyData: CreateRequestDto) {
+    const { reserved_time, detail } = bodyData;
+    const newRequest = this.requestsRepository.create({
       user_id: id,
-      reserved_time: bodyData.reserved_time,
-      detail: bodyData.detail,
+      reserved_time,
+      detail,
     });
+    return await this.requestsRepository.save(newRequest);
   }
 
-  async updateRequestById(id: number, bodyData: UpdateRequestDto) {
-    const request = await this.requestRepository.findOne({
+  private async _existenceCheckById(id: number) {
+    const request = await this.requestsRepository.findOne({
       where: { request_id: id },
     });
     if (_.isNil(request)) {
       throw new NotFoundException(`Request article not found. id: ${id}`);
     }
+    return request;
+  }
+
+  private async _authorCheckByUserId(authorId: number, userId: number) {
+    if (authorId !== userId) {
+      throw new UnauthorizedException(
+        `Unauthorized. user id: ${userId} not match with author id: ${authorId}`
+      );
+    }
+  }
+
+  async updateRequestById(
+    userId: number,
+    id: number,
+    bodyData: UpdateRequestDto
+  ) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
+
+    const { reserved_time, detail } = bodyData;
 
     // reserved_time을 업데이트 하지 않는 경우(detail만 입력된 경우)
-    if (!bodyData.reserved_time) {
-      this.requestRepository.update(id, { detail: bodyData.detail });
+    if (!reserved_time) {
+      this.requestsRepository.update(id, { detail });
       return;
     }
     // detail을 업데이트 하지 않는 경우(reserved_time만 입력된 경우)
-    if (!bodyData.detail) {
-      this.requestRepository.update(id, {
-        reserved_time: bodyData.reserved_time,
-      });
+    if (!detail) {
+      this.requestsRepository.update(id, { reserved_time });
       return;
     }
     // reserved_time과 detail 항목을 모두 업데이트
-    this.requestRepository.update(id, {
-      reserved_time: bodyData.reserved_time,
-      detail: bodyData.detail,
-    });
+    this.requestsRepository.update(id, { reserved_time, detail });
   }
 
-  deleteRequestById(id: number) {
-    this.requestRepository.softDelete(id);
+  async deleteRequestById(userId: number, id: number) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
+    this.requestsRepository.softDelete(id);
   }
 }

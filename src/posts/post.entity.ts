@@ -1,6 +1,6 @@
-import { PostComment } from 'src/post-comments/post-comment.entity';
-import { PostImage } from 'src/post-images/post-image.entity';
-import { User } from 'src/users/user.entity';
+import { PostComment } from '../post-comments/post-comment.entity';
+import { PostImage } from '../post-images/post-image.entity';
+import { User } from '../users/user.entity';
 import {
   PrimaryGeneratedColumn,
   Column,

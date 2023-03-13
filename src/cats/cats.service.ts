@@ -49,13 +49,13 @@ export class CatsService {
   }
 
   async updateCatById(userId: number, catId: number, bodyData: UpdateCatDto) {
-    const eidtCat = await this.catRepository
+    const editCat = await this.catRepository
       .createQueryBuilder()
       .update(Cat)
       .set(bodyData)
       .where('cat_id = :catId', { catId: Number(catId) })
       .execute();
-    return eidtCat;
+    return editCat;
   }
 
   async deleteCatById(userId: number, catId: number) {

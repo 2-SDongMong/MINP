@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -8,8 +9,6 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { Request } from 'express';
-import { UserInfo } from 'src/users/user-info.decorator';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { RequestsService } from './requests.service';
@@ -29,26 +28,33 @@ export class RequestsController {
   }
 
   @Post()
-  createRequest(
-    @UserInfo() user,
-    @Req() req: Request,
-    @Body() data: CreateRequestDto
-  ) {
-    // FIXME: const userEmail = req.user;
-    const userId = user.user_id;
-    return this.requestService.createRequest(userId, data);
+  async createRequest(@Req() req, @Body() data: CreateRequestDto) {
+    // FIXME: 어째선지 req: Request (Express)타입을 지정해주면 제대로 인식하지 못함
+    if (data.detail === '') {
+      throw new BadRequestException(
+        "Required data 'detail' should not be an empty string."
+      );
+    }
+    return await this.requestService.createRequest(req.user, data);
   }
 
   @Patch('/:id')
-  updateRequest(
+  updateRequestById(
+    @Req() req,
     @Param('id') requestId: number,
     @Body() data: UpdateRequestDto
   ) {
-    return this.requestService.updateRequestById(requestId, data);
+    // TODO:
+    // if (data.detail && data.detail === '') {
+    //   throw new BadRequestException(
+    //     "When 'detail' is given, it should not be an empty string."
+    //   );
+    // }
+    this.requestService.updateRequestById(req.user, requestId, data);
   }
 
   @Delete('/:id')
-  deleteRequest(@Param('id') requestId: number) {
-    return this.requestService.deleteRequestById(requestId);
+  deleteRequestById(@Req() req, @Param('id') requestId: number) {
+    this.requestService.deleteRequestById(req.user, requestId);
   }
 }
