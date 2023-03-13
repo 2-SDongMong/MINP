@@ -25,10 +25,10 @@ export class ShareProductsService {
   }
 
   async createShare(createProductDto: CreateShareProductDto) {
-    const { productsCategoryId, ...product } = createProductDto;
+    const { productsCategoryId, ...shareProducts } = createProductDto;
 
     const result = await this.shareProductsRepository.save({
-      ...product,
+      ...shareProducts,
       productsCategory: { id: productsCategoryId },
     });
 
