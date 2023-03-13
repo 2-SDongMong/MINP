@@ -1,5 +1,5 @@
-import { CatLike } from 'src/cat-likes/cat-like.entity';
-import { User } from 'src/users/user.entity';
+import { CatLike } from '../cat-likes/cat-like.entity';
+import { User } from '../users/user.entity';
 import {
   Column,
   CreateDateColumn,

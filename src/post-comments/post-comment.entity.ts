@@ -1,5 +1,5 @@
-import { Post } from 'src/posts/post.entity';
-import { User } from 'src/users/user.entity';
+import { Post } from '../posts/post.entity';
+import { User } from '../users/user.entity';
 import {
   Column,
   CreateDateColumn,

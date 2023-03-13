@@ -1,5 +1,5 @@
-import { LikeBase } from 'src/entities/like.entity';
-import { User } from 'src/users/user.entity';
+import { LikeBase } from '../entities/like.entity';
+import { User } from '../users/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

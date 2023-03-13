@@ -1,5 +1,5 @@
-import { PostImageBase } from 'src/post-images/post-image.entity';
-import { SharePost } from 'src/share-posts/share-post.entity';
+import { PostImageBase } from '../post-images/post-image.entity';
+import { SharePost } from '../share-posts/share-post.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

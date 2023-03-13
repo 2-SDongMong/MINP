@@ -1,6 +1,6 @@
-import { CommentBase } from 'src/post-comments/post-comment.entity';
-import { SharePost } from 'src/share-posts/share-post.entity';
-import { User } from 'src/users/user.entity';
+import { CommentBase } from '../post-comments/post-comment.entity';
+import { SharePost } from '../share-posts/share-post.entity';
+import { User } from '../users/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
