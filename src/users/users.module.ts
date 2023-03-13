@@ -8,13 +8,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtConfigService } from 'src/config/jwt.config.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]),
-  JwtModule.registerAsync({
-    imports: [ConfigModule],
-    useClass: JwtConfigService,
-    inject: [ConfigService],
-  }),
-],
+  imports: [
+    TypeOrmModule.forFeature([User]),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useClass: JwtConfigService,
+      inject: [ConfigService],
+    }),
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService, TypeOrmModule],

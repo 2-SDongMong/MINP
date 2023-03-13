@@ -1,0 +1,18 @@
+/* Footer */
+.footerContent {
+  padding-top: 35px;
+}
+
+.footerList {
+  margin-right: 380px;
+}
+
+.footer li {
+  list-style: none;
+  display: flex;
+  justify-content: right;
+  font-family: Nanum Gothic;
+  font-size: 12px;
+  text-decoration: underline;
+  color: #b8b0a2;
+}
