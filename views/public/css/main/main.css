@@ -1,4 +1,7 @@
 /* Body */
+a {
+  font-family: Nanum Gothic;
+}
 .bodyContent1 {
   width: auto;
   height: 800px;
@@ -13,4 +16,62 @@
 .bodyContent3 {
   width: auto;
   height: 770px;
+}
+
+.contentTitle1 {
+  font-weight: bold;
+  font-size: 2rem;
+  width: auto;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.contentSub1 {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.location1 {
+  width: auto;
+  margin-right: 500px;
+}
+
+.contentCard1 {
+  margin-top: 10px;
+  width: auto;
+  height: 600px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.catCard {
+  width: 450px;
+  height: 600px;
+  background-color: #FBF7EC;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.status {
+  margin-top: 20PX;
+  margin-left: 20PX;
+  text-align: center;
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  border-radius: 20px;
+  color: #222222;
+  font-weight: bold;
+}
+
+.imgContainer {
+  width: auto;
+  height: 450PX;
+  background-color: thistle;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.period {
+  background-color: #F0DBAE;
+  color: #a59373;
 }
