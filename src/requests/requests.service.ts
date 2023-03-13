@@ -49,6 +49,7 @@ export class RequestsService {
       },
       select: {
         user: {
+          user_id: true,
           nickname: true,
           cats: {
             name: true,

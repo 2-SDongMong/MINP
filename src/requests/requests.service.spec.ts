@@ -3,68 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { RequestsService } from './requests.service';
 import { Request } from './request.entity';
-import { UpdateResult } from 'typeorm';
-
-const getRequestsSample = [
-  {
-    request_id: 9,
-    reserved_time: '2023-03-10',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 10,
-    reserved_time: '2023-03-09',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 26,
-    reserved_time: '2023-03-31',
-    user: {
-      nickname: 'Nick Again4',
-      cats: [],
-    },
-  },
-];
-
-const getRequestByIdSample = {
-  request_id: 26,
-  detail: '하루 낮 냥품 요청해요!',
-  reserved_time: '2023-03-31',
-  user: {
-    nickname: 'Nick Again4',
-    cats: [],
-  },
-};
-
-const createRequestSample = {
-  user_id: 1,
-  detail: '냥품 신청합니다',
-  reserved_time: '2023-05-05',
-  deleted_at: null,
-  request_id: 26,
-  created_at: '2023-03-11T04:46:27.466Z',
-  updated_at: '2023-03-11T04:46:27.466Z',
-};
-
-const mockRequestsRepository = {
-  find: jest.fn(() => getRequestsSample),
-  findOne: jest.fn((options) => getRequestByIdSample),
-  create: jest.fn((dto) => createRequestSample),
-  save: jest.fn((request) =>
-    Promise.resolve({
-      ...request,
-      request_id: 26,
-    })
-  ),
-  update: jest.fn((requestId, dto) => Promise<UpdateResult>),
-  softDelete: jest.fn((requestId) => Promise<UpdateResult>),
-};
+import {
+  getRequestByIdSample,
+  getRequestsSample,
+  createRequestSample,
+  mockRequestsRepository,
+} from './mock-data';
 
 describe('RequestsService', () => {
   let service: RequestsService;
@@ -121,7 +65,6 @@ describe('RequestsService', () => {
       expect(service.createRequest(userId, dto)).resolves.toEqual({
         ...createRequestSample,
         ...dto,
-        user_id: userId,
         reserved_time: dto.reserved_time.toJSON().split('T')[0],
       });
 
@@ -139,17 +82,18 @@ describe('RequestsService', () => {
   });
 
   // 수정 테스트
+  // TODO: userId로 작성자 본인인지 검사를 통과하도록 만들기. (현재 테스트 실패)
   describe('updateRequestById', () => {
-    it('should update the request of id: 1 with given dto: { reserved_time: "2023-05-05", detail: "냥품 신청합니다" }', () => {
-      const requestId = 1;
+    it('should update the request of id: 26 with given dto: { reserved_time: "2023-05-05", detail: "냥품 신청합니다" }', () => {
+      const requestId = 26;
       const dto = {
         reserved_time: new Date('2023-05-05'),
         detail: '냥품 신청합니다',
       };
 
-      expect(service.updateRequestById(requestId, dto)).resolves.toEqual(
-        undefined
-      );
+      expect(
+        service.updateRequestById(undefined, requestId, dto)
+      ).resolves.toEqual(undefined);
       expect(mockRequestsRepository.update).toHaveBeenCalledWith(
         requestId,
         dto
@@ -176,11 +120,14 @@ describe('RequestsService', () => {
   });
 
   // 삭제 테스트
+  // TODO: userId로 작성자 본인인지 검사를 통과하도록 만들기. (현재 테스트 실패)
   describe('deleteRequestById', () => {
     it('should delete the request with id: 1', () => {
-      const requestId = 1;
+      const requestId = 26;
 
-      expect(service.deleteRequestById(requestId)).toEqual(undefined);
+      expect(service.deleteRequestById(undefined, requestId)).toEqual(
+        undefined
+      );
       expect(mockRequestsRepository.softDelete).toHaveBeenCalledWith(requestId);
     });
   });

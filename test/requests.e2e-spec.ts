@@ -1,69 +1,14 @@
 import request from 'supertest';
 import { Test } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { RequestsService } from '../src/requests/requests.service';
 import { RequestsModule } from '../src/requests/requests.module';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
-import { UpdateResult } from 'typeorm';
-
-const getRequestsSample = [
-  {
-    request_id: 9,
-    reserved_time: '2023-03-10',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 10,
-    reserved_time: '2023-03-09',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 26,
-    reserved_time: '2023-03-31',
-    user: {
-      nickname: 'Nick Again4',
-      cats: [],
-    },
-  },
-];
-const getRequestByIdSample = {
-  request_id: 10,
-  detail: '냥품 요청합니다!',
-  reserved_time: '2023-03-09',
-  user: {
-    nickname: 'Nick',
-    cats: [],
-  },
-};
-const createRequestSample = {
-  user_id: 1,
-  detail: '냥품 신청합니다',
-  reserved_time: '2023-05-05',
-  deleted_at: null,
-  request_id: 26,
-  created_at: '2023-03-11T04:46:27.466Z',
-  updated_at: '2023-03-11T04:46:27.466Z',
-};
-// requests.service.spec.ts의 mockRequestsRepository와 동일
-const mockRequestsRepository = {
-  find: jest.fn().mockResolvedValue(getRequestsSample),
-  findOne: jest.fn((options) => getRequestByIdSample),
-  create: jest.fn((dto) => createRequestSample),
-  save: jest.fn((request) =>
-    Promise.resolve({
-      ...request,
-      request_id: 26,
-    })
-  ),
-  update: jest.fn((requestId, dto) => Promise<UpdateResult>),
-  softDelete: jest.fn((requestId) => Promise<UpdateResult>),
-};
+import { getRepositoryToken } from '@nestjs/typeorm';
+import {
+  getRequestByIdSample,
+  getRequestsSample,
+  createRequestSample,
+  mockRequestsRepository,
+} from '../src/requests/mock-data';
 
 // TODO: '본인'만 수정 및 삭제가 가능하도록 테스트하기
 // TODO: '해당하는 ID로 데이터를 찾지 못했을 때' 에러를 던지도록 테스트하기
@@ -184,7 +129,7 @@ describe('Requests (e2e)', () => {
         .expect('');
     });
 
-    // TODO: 유저가 작성자가 맞는지 테스트
+    // TODO: 유저가 작성자가 맞는지 테스트 (현재는 실패)
     it('should throw 401 UnauthorizationException when user id not match with author id', () => {
       return request(app.getHttpServer())
         .delete('/requests/10')

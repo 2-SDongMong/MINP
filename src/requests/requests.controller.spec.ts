@@ -3,75 +3,15 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { sample } from 'rxjs';
 import { RequestsController } from './requests.controller';
 import { RequestsService } from './requests.service';
+import {
+  getRequestByIdSample,
+  getRequestsSample,
+  createRequestSample,
+  mockRequestsService,
+} from './mock-data';
 
 const mockReq = {
   user: 1,
-};
-
-const getRequestsSample = [
-  {
-    request_id: 9,
-    reserved_time: '2023-03-10',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 10,
-    reserved_time: '2023-03-09',
-    user: {
-      nickname: 'Nick',
-      cats: [],
-    },
-  },
-  {
-    request_id: 26,
-    reserved_time: '2023-03-31',
-    user: {
-      nickname: 'Nick Again4',
-      cats: [],
-    },
-  },
-];
-
-const getRequestByIdSample = {
-  request_id: 26,
-  detail: '하루 낮 냥품 요청해요!',
-  reserved_time: '2023-03-31',
-  user: {
-    nickname: 'Nick Again4',
-    cats: [],
-  },
-};
-
-const createRequestSample = {
-  user_id: 30,
-  detail: '냥품 신청합니다',
-  reserved_time: '2023-05-05',
-  deleted_at: null,
-  request_id: 26,
-  created_at: '2023-03-11T04:46:27.466Z',
-  updated_at: '2023-03-11T04:46:27.466Z',
-};
-
-const mockRequestsService = {
-  getRequests: jest.fn(() => getRequestsSample),
-  getRequestById: jest.fn((requestId) => {
-    return {
-      ...getRequestByIdSample,
-      request_id: requestId,
-    };
-  }),
-  createRequest: jest.fn((req, dto) => {
-    return {
-      ...createRequestSample,
-      user_id: 1,
-      ...dto,
-    };
-  }),
-  updateRequestById: jest.fn((requestId, dto) => undefined),
-  deleteRequestById: jest.fn((requestId) => undefined),
 };
 
 describe('RequestsController', () => {
@@ -156,6 +96,7 @@ describe('RequestsController', () => {
   });
 
   // 수정 테스트
+  // TODO: userId로 작성자 본인인지 검사를 통과하도록 만들기. (현재 테스트 실패)
   describe('updateRequest', () => {
     it('should update the request of id: 1 with given dto: { reserved_time: "2023-05-05", detail: "냥품 신청합니다" }', () => {
       const requestId = 1;
@@ -164,7 +105,9 @@ describe('RequestsController', () => {
         detail: '냥품 신청합니다',
       };
 
-      expect(controller.updateRequestById(requestId, dto)).toEqual(undefined);
+      expect(controller.updateRequestById(undefined, requestId, dto)).toEqual(
+        undefined
+      );
       expect(mockRequestsService.updateRequestById).toHaveBeenCalledWith(
         requestId,
         dto
@@ -173,11 +116,14 @@ describe('RequestsController', () => {
   });
 
   // 삭제 테스트
+  // TODO: userId로 작성자 본인인지 검사를 통과하도록 만들기. (현재 테스트 실패)
   describe('deleteRequest', () => {
     it('should delete the request with id: 1', () => {
       const requestId = 1;
 
-      expect(controller.deleteRequestById(requestId)).toEqual(undefined);
+      expect(controller.deleteRequestById(undefined, requestId)).toEqual(
+        undefined
+      );
       expect(mockRequestsService.deleteRequestById).toHaveBeenCalledWith(
         requestId
       );
