@@ -1,4 +1,4 @@
-import { Body, PayloadTooLargeException, Post, Req, Res, UseGuards, Controller, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Post, UseGuards, Controller, HttpCode, HttpStatus } from '@nestjs/common';
 
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { AuthService } from './auth.service';

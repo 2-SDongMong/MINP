@@ -26,7 +26,6 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
-import { EmailService } from './email/email.service';
 
 @Module({
   imports: [
