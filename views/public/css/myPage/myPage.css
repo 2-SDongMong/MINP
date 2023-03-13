@@ -1,0 +1,33 @@
+body {
+  margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* body */
+.userContainer {
+  width: auto;
+  height: 600px;
+}
+
+.catContainer {
+  width: auto;
+  height: 600px;
+}
+
+/* mypage footer Img */
+.mypageFooter {
+  background-image: url("../../img/footer.jpg");
+  background-color: black;
+  background-size: cover;
+  width: auto;
+  height: 200px;
+}

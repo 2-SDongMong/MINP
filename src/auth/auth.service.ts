@@ -3,28 +3,20 @@ import {
   HttpStatus,
   ForbiddenException,
   Injectable,
-  ConflictException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
-// import { MailerService } from '@nestjs-modules/mailer';
-// import { ConfigService } from '@nestjs/config';
-import { OAuth2Client } from 'google-auth-library';
 import * as nodemailer from 'nodemailer';
-import dotenv from 'dotenv';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
     private jwtService: JwtService
-  ) // private readonly mailerService:MailerService,
-  // private readonly configService: ConfigService
-
-  {}
+  ) {}
 
   // login
   public async login(dto: LoginUserDto) {
@@ -34,6 +26,7 @@ export class AuthService {
       dto.password,
       findPassword.password
     );
+
 
     if (!isPasswordMatching) {
       throw new HttpException(
@@ -48,6 +41,10 @@ export class AuthService {
     await this.userService.update(user.user_id, { hashdRt: refreshTokentHash });
 
     return tokens;
+  }
+
+  async hashPassword(data: string) {
+    return bcrypt.hash(data, 10);
   }
 
   async sendMail(email) {
@@ -129,9 +126,8 @@ export class AuthService {
     };
   }
 
-  async hashPassword(data: string) {
-    return bcrypt.hash(data, 10);
-  }
+
+  
 
   //2. access만료 refresh 유효 -> refresh 검증 후 access 재발급 refreshTokens ㄱㄱ
   async refreshTokens(userId: object, refreshtoken: string) {
@@ -148,4 +144,6 @@ export class AuthService {
 
     return tokens;
   }
+  
 }
+

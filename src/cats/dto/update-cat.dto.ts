@@ -7,4 +7,3 @@ export class UpdateCatDto extends PartialType(CreateCatDto) {
   image?: string;
   character?: string;
 }
-

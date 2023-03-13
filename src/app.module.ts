@@ -4,8 +4,6 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './config/typeorm.config.service';
@@ -29,6 +27,8 @@ import { ShareProductsCategoryModule } from './share-modules/share-products-cate
 
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
+import { EjsRenderController } from './ejs-render/ejs-render.controller';
+import { EjsRenderModule } from './ejs-render/ejs-render.module';
 import { EmailService } from './email/email.service';
 
 @Module({
@@ -75,9 +75,11 @@ import { EmailService } from './email/email.service';
     ShareProductsModule,
 
     ShareProductsCategoryModule,
+
+    EjsRenderModule,
   ],
-  controllers: [AppController],
-  providers: [AppService, AuthMiddleware, EmailService],
+  controllers: [EjsRenderController],
+  providers: [AuthMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -87,8 +89,11 @@ export class AppModule implements NestModule {
         { path: 'auth/logout', method: RequestMethod.ALL },
         { path: 'requests', method: RequestMethod.POST },
         { path: 'user/mypage', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL},
-        
+        { path: 'user/mypage/:id', method: RequestMethod.ALL },
+        { path: 'user/admin', method: RequestMethod.ALL },
+        { path: 'user/admin/member', method: RequestMethod.ALL },
+        { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+        { path: 'cats', method: RequestMethod.ALL }
       );
   }
 }

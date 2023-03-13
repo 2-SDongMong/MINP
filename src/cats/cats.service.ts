@@ -10,19 +10,19 @@ import _ from 'lodash';
 @Injectable()
 export class CatsService {
   constructor(
-    @InjectRepository(Cat) 
-    private catRepository: Repository<Cat>,
+    @InjectRepository(Cat)
+    private catRepository: Repository<Cat>
   ) {}
 
   async getMyCats(id: number) {
     const cat = await this.catRepository.find({
-      where: { user_id: id},
+      where: { user_id: id },
       relations: {
         user: true,
       },
       select: {
         user: {
-          user_id: true
+          user_id: true,
         },
         cat_id: true,
         name: true,
@@ -30,7 +30,7 @@ export class CatsService {
         gender: true,
         neutered: true,
         image: true,
-        character: true
+        character: true,
       },
     });
     return cat;
@@ -44,30 +44,26 @@ export class CatsService {
       gender: bodyData.gender,
       neutered: bodyData.neutered,
       image: bodyData.image,
-      character:bodyData.character
+      character: bodyData.character,
     });
   }
 
   async updateCatById(userId: number, catId: number, bodyData: UpdateCatDto) {
-    const eidtCat = await this.catRepository
-    .createQueryBuilder()
-    .update(Cat)
-    .set(bodyData)
-    .where('cat_id = :catId', { catId : Number(catId) })
-    .execute();
-    return eidtCat;
+    const editCat = await this.catRepository
+      .createQueryBuilder()
+      .update(Cat)
+      .set(bodyData)
+      .where('cat_id = :catId', { catId: Number(catId) })
+      .execute();
+    return editCat;
   }
 
   async deleteCatById(userId: number, catId: number) {
     const removeCat = await this.catRepository
-    .createQueryBuilder()
-    .softDelete()
-    .where('cat_id = :catId', { catId: Number(catId) })
-    .execute();
+      .createQueryBuilder()
+      .softDelete()
+      .where('cat_id = :catId', { catId: Number(catId) })
+      .execute();
     return removeCat;
-
   }
-  
-
-
 }
