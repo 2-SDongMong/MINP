@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository, Timestamp } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Message } from './message.entity';
 
 @Injectable()
