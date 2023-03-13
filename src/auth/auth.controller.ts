@@ -15,6 +15,11 @@ import { AuthService } from './auth.service';
 import { GetCurrentUser } from './decorator/get-current-user.decorator';
 import { UserId } from './decorator/get-current-userid.decorator';
 import { RtGuard } from './guards/rt.guard';
+import { MailerService } from '@nestjs-modules/mailer';
+import sgMail from '@sendgrid/mail';
+import { Post } from '@nestjs/common/decorators/http/request-mapping.decorator';
+import { Body } from '@nestjs/common/decorators/http/route-params.decorator';
+import { UseGuards } from '@nestjs/common/decorators/core/use-guards.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,8 +29,25 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginUserDto) {
+    console.log('오류찾기 auth.controller.ts');
+
     return await this.authService.login(dto);
   }
+
+  @Post('')
+  async sendMail(@Body() body) {
+    return await this.authService.sendMail(body.email);
+  }
+
+  //구글 login
+  // @Get('/login/google')
+  // @UseGuards(AuthGuard('google'))
+  // async loginGoogle(
+  //   @Req() req: Request & IOAuthUser,
+  //   @Res() res: Response
+  //   ){
+  //   this.authService.OAuthLogin({req,res})
+  // }
 
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
