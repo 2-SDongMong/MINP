@@ -1,7 +1,7 @@
-import { PostBase } from 'src/posts/post.entity';
-import { ShareComment } from 'src/share-comments/share-comment.entity';
-import { ShareImage } from 'src/share-images/share-image.entity';
-import { User } from 'src/users/user.entity';
+import { PostBase } from '../posts/post.entity';
+import { ShareComment } from '../share-comments/share-comment.entity';
+import { ShareImage } from '../share-images/share-image.entity';
+import { User } from '../users/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
