@@ -1,4 +1,5 @@
 import { Body, PayloadTooLargeException, Post, Req, Res, UseGuards, Controller, HttpCode, HttpStatus } from '@nestjs/common';
+
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
 import { AuthService } from './auth.service';
 import { GetCurrentUser } from './decorator/get-current-user.decorator';
@@ -16,8 +17,6 @@ export class AuthController {
   @Post('/login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() dto: LoginUserDto) {
-    console.log('오류찾기 auth.controller.ts');
-
     return await this.authService.login(dto);
   }
 

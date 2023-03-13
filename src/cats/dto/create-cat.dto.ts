@@ -1,4 +1,4 @@
-import { IsNumber, IsString, IsBoolean } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from "@nestjs/class-validator";
 
 export class CreateCatDto {
   @IsString()

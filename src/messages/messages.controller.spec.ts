@@ -29,14 +29,14 @@ const user: User = {
   hashdRt: null,
   cat_likes: [],
   cats: [],
-  share_comments: [],
+  //share_dcomments: [],
   post_comments: [],
   posts: [],
   receive_messages: [],
   referral_code: '',
   requests: [],
   send_messages: [],
-  share_posts: [],
+  //share_posts: [],
   share_products: [],
   target_user_likes: [],
   user_likes: [],
@@ -50,7 +50,7 @@ const sampleMessage: Message = {
   created_at: new Date(),
   sender_deleted_at: null,
   recipient_deleted_at: null,
-  read_at:'안읽음',
+  read_at:null,
   send_user: user,
   receive_user: user,
 };
@@ -112,7 +112,8 @@ describe('MessagesController', () => {
   describe('getMessageById', () => {
     it('should get the message with id: 1', async () => {
       const message_id = 1;
-      await expect(controller.getMessageById(message_id)).resolves.toEqual({
+      const user_id = 1;
+      await expect(controller.getMessageById(message_id,user_id)).resolves.toEqual({
         message_id: expect.any(Number),
         ...sampleMessage,
       });

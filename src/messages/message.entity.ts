@@ -1,10 +1,9 @@
-import { User } from 'src/users/user.entity';
+import { User } from '../users/user.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
   DeleteDateColumn,
   JoinColumn,
   ManyToOne,
@@ -37,10 +36,10 @@ export class Message {
   recipient_deleted_at: Date | null;
 
   @ManyToOne(() => User, (user) => user.send_messages, { cascade: true })
-  @JoinColumn({ name: 'send_user_id' })
+  @JoinColumn({ name: 'sender_id' })
   send_user: User;
 
   @ManyToOne(() => User, (user) => user.receive_messages, { cascade: true })
-  @JoinColumn({ name: 'receive_user_id' })
+  @JoinColumn({ name: 'recipient_id' })
   receive_user: User;
 }

@@ -19,9 +19,6 @@ import { PostCommentsModule } from './post-comments/post-comments.module';
 import { UserLikesModule } from './user-likes/user-likes.module';
 import { PostImagesModule } from './post-images/post-images.module';
 import { CatLikesModule } from './cat-likes/cat-likes.module';
-import { ShareCommentsModule } from './share-comments/share-comments.module';
-import { SharePostsModule } from './share-posts/share-posts.module';
-import { ShareImagesModule } from './share-images/share-images.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
 
@@ -66,12 +63,6 @@ import { EmailService } from './email/email.service';
 
     UserLikesModule,
 
-    ShareCommentsModule,
-
-    SharePostsModule,
-
-    ShareImagesModule,
-
     ShareProductsModule,
 
     ShareProductsCategoryModule,
@@ -88,12 +79,17 @@ export class AppModule implements NestModule {
       .forRoutes(
         { path: 'auth/logout', method: RequestMethod.ALL },
         { path: 'requests', method: RequestMethod.POST },
+        { path: 'requests/:id', method: RequestMethod.PATCH },
+        { path: 'requests/:id', method: RequestMethod.DELETE },
         { path: 'user/mypage', method: RequestMethod.ALL },
+        { path: 'cats', method: RequestMethod.ALL },
+        { path: 'messages', method: RequestMethod.POST },
+        { path: 'messages/sent', method: RequestMethod.GET },
+        { path: 'messages/received', method: RequestMethod.GET },
         { path: 'user/mypage/:id', method: RequestMethod.ALL },
         { path: 'user/admin', method: RequestMethod.ALL },
         { path: 'user/admin/member', method: RequestMethod.ALL },
         { path: 'user/admin/member/:id', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL },
         { path: 'message', method: RequestMethod.ALL }
       );
   }

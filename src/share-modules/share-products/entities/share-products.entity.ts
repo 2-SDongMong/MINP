@@ -1,7 +1,5 @@
-import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
-import { ProductsLocation } from 'src/share-modules/share-products-location/entities/products-location.entity';
-import { ProductsTag } from 'src/share-modules/share-products-tag/entities/products-tag.entity';
-import { User } from 'src/users/user.entity';
+import { ProductCategory } from '../../share-products-category/entities/product-category.entity';
+import { User } from '../../../users/user.entity';
 import {
   Column,
   Entity,
@@ -27,18 +25,10 @@ export class ShareProducts {
   @Column({ default: false })
   isTrade: boolean;
 
-  @JoinColumn()
-  @OneToOne(() => ProductsLocation)
-  shareProductsLocation: ProductsLocation;
-
   @ManyToOne(() => ProductCategory)
   productCategory: ProductCategory;
 
   @ManyToOne(() => User, (user) => user.share_products, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @JoinTable()
-  @ManyToMany(() => ProductsTag, (productsTag) => productsTag.shareProducts)
-  productsTag: ProductsTag[];
 }
