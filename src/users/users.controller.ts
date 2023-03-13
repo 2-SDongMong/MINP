@@ -19,16 +19,16 @@ import { UpdateMemberDto } from './dto/update-member-status.dto';
 
 @Controller('user')
 export class UsersController {
-  constructor(private readonly userService: UsersService) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post('/signup')
   async createUser(@Body() dto: CreateUserDto) {
-    return await this.userService.create(dto);
+    return await this.usersService.create(dto);
   }
 
   @Put('/update')
   updateUser() {
-    this.userService.updateUser('email', 'new_name', 'new_password');
+    this.usersService.updateUser('email', 'new_name', 'new_password');
   }
 
   // My page API
