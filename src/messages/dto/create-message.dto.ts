@@ -6,4 +6,7 @@ export class CreateMessageDto {
 
   @IsString()
   readonly content: string;
+
+  @IsNumber()
+  readonly recipient_id: number;
 }
