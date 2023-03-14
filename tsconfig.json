@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "paths": {
+      "linked-module-name": ["node_modules/linked-module-name/src"],
+      "linked-module-name/*": ["node_modules/linked-module-name/src/*"]
+    },
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
