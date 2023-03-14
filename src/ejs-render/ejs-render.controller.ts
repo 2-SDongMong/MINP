@@ -1,6 +1,4 @@
 import { Controller, Get, Render, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
-// type ReqUser = Request & { userId: number };
 
 @Controller()
 export class EjsRenderController {
@@ -21,7 +19,6 @@ export class EjsRenderController {
   @Render('index')
   // FIXME: 로그인 페이지 완성 돼서 토큰값 받아오게 되면 수정하기
   myPage(@Req() req): { components: string; userId: number } {
-    console.log('/user/mypage GET, req.userId: ', req.userId);
     return { components: 'myPage', userId: req.userId };
   }
 
@@ -40,7 +37,6 @@ export class EjsRenderController {
   @Get('/request/list')
   @Render('index')
   requestList(@Req() req): { components: string; userId: number } {
-    console.log('/request/list GET, req.userId: ', req.userId);
     return { components: 'requestList', userId: req.userId };
   }
 
