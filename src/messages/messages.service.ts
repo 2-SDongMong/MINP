@@ -9,12 +9,23 @@ import { MessagesRepository } from './messages.repository';
 @Injectable()
 export class MessagesService {
   constructor(private readonly repository: MessagesRepository) {}
-
-  async getMessageById(id: number) {
+  async getMessageById(id: number, userId: number) {
     const message = await this.repository.getMessageById(id);
+
+    if (message.sender_id !== userId && message.read_at === null) {
+      const time = new Date();
+      this.repository.updateReadAt(message.message_id, time);
+    }
     if (_.isNil(message)) {
       throw new NotFoundException(`Message not found. id: ${id}`);
     }
+    return message;
+  }
+
+  async getUnreadMessages(userId: number) {
+    const message = await this.repository.getUnreadMessages(userId);
+    console.log(message);
+
     return message;
   }
 
@@ -39,4 +50,8 @@ export class MessagesService {
   deleteMessageById(id: number) {
     return this.repository.softDelete(id);
   }
+
+  //자기가 자기쪽지 읽음 표시
+
+  //
 }

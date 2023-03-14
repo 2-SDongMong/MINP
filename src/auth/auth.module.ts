@@ -22,5 +22,6 @@ import { UsersService } from 'src/users/users.service';
   ],
   providers: [AuthService, AtStrategiest, RtStrategiest, UsersService],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}

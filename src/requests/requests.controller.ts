@@ -28,14 +28,8 @@ export class RequestsController {
   }
 
   @Post()
-  async createRequest(@Req() req, @Body() data: CreateRequestDto) {
-    // FIXME: 어째선지 req: Request (Express)타입을 지정해주면 제대로 인식하지 못함
-    if (data.detail === '') {
-      throw new BadRequestException(
-        "Required data 'detail' should not be an empty string."
-      );
-    }
-    return await this.requestService.createRequest(req.user, data);
+  createRequest(@Req() req, @Body() data: CreateRequestDto) {
+    return this.requestService.createRequest(req.userId, data);
   }
 
   @Patch('/:id')
@@ -50,11 +44,11 @@ export class RequestsController {
     //     "When 'detail' is given, it should not be an empty string."
     //   );
     // }
-    this.requestService.updateRequestById(req.user, requestId, data);
+    this.requestService.updateRequestById(req.userId, requestId, data);
   }
 
   @Delete('/:id')
   deleteRequestById(@Req() req, @Param('id') requestId: number) {
-    this.requestService.deleteRequestById(req.user, requestId);
+    this.requestService.deleteRequestById(req.userId, requestId);
   }
 }
