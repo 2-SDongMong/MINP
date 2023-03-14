@@ -35,11 +35,7 @@ export class UsersController {
   // 유저 정보 조회
   @Get('/mypage')
   getUser(@Req() req) {
-<<<<<<< HEAD
-    return this.userService.getUserById(req.user);
-=======
     return this.usersService.getUserById(req.user);
->>>>>>> 05d944a ([추가] : 안 읽은 메시지 확인)
   }
 
   // 유저 정보 수정
