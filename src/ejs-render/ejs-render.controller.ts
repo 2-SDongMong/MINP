@@ -1,4 +1,4 @@
-import { Controller, Get, Render, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 
@@ -42,14 +42,16 @@ export class EjsRenderController {
 
   @Get('/request/list')
   @Render('index')
-  requestList(@Req() req) {
-    return { components: 'requestList', userId: req.userId };
+  async requestList(@Req() req) {
+    const requests = await this.requestsService.getRequests();
+    return { components: 'requestList', userId: req.userId, requests };
   }
 
-  @Get('')
+  @Get('requestDetail/:id')
   @Render('index')
-  requestDetail(@Req() req) {
-    return { components: 'requestDetail' };
+  async requestDetail(@Param('id') id: number, @Req() req) {
+    const request = await this.requestsService.getRequestById(id);
+    return { components: 'requestDetail', userId: req.userId, request };
   }
 
   @Get('')

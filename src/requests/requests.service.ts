@@ -37,6 +37,9 @@ export class RequestsService {
         updated_at: true,
         detail: true,
       },
+      order: {
+        updated_at: 'DESC',
+      },
     });
     return request;
   }
