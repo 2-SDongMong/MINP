@@ -31,14 +31,14 @@ const user: User = {
   hashdRt: null,
   cat_likes: [],
   cats: [],
-  share_comments: [],
+  //share_comments: [],
   post_comments: [],
   posts: [],
   receive_messages: [],
   referral_code: '',
   requests: [],
   send_messages: [],
-  share_posts: [],
+  //share_posts: [],
   share_products: [],
   target_user_likes: [],
   user_likes: [],
@@ -101,7 +101,7 @@ describe('MessagesService', () => {
     });
 
     it('should create a new message and return that', async () => {
-      expect(await service.create({ content: '네 그 때 갈게요!' })).toEqual({
+      expect(await service.createMessage(1,{ content: '네 그 때 갈게요!',recipient_id: 2 })).toEqual({
         id: expect.any(Number),
         content: '네 그 때 갈게요!',
       });
