@@ -24,7 +24,7 @@ export class Message {
   content: string;
 
   @Column({ default: null })
-  read_at:  Date ;
+  read_at: Date;
 
   @CreateDateColumn()
   created_at: Date;
