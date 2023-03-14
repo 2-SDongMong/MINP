@@ -1,0 +1,23 @@
+<!-- 나눔 게시글 작성 페이지입니다!
+페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+
+<!-- shareProduct.ejs -->
+<ul>
+  <% for (let i = 0; i < products.length; i++) { %>
+  <li><%= products[i].title %></li>
+  <% } %>
+</ul>
+
+<% if (totalPages > 1) { %>
+<ul class="pagination">
+  <% if (currentPage > 1) { %>
+  <li><a href="?page=<%= currentPage - 1 %>">&laquo;</a></li>
+  <% } %> <% for (let i = 1; i <= totalPages; i++) { %>
+  <li class="<%= currentPage === i ? 'active' : '' %>">
+    <a href="?page=<%= i %>"><%= i %></a>
+  </li>
+  <% } %> <% if (currentPage < totalPages) { %>
+  <li><a href="?page=<%= currentPage + 1 %>">&raquo;</a></li>
+  <% } %>
+</ul>
+<% } %>

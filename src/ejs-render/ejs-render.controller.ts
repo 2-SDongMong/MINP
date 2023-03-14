@@ -58,10 +58,10 @@ export class EjsRenderController {
     return { components: 'shareDetail' };
   }
 
-  @Get('')
+  @Get('/shareProduct')
   @Render('index')
-  sharePost(@Req() req): { components: string } {
-    return { components: 'sharePost' };
+  sharePost(@Req() req): { components: string; user: string } {
+    return { components: 'shareProduct', user: '1' };
   }
 
   @Get('')

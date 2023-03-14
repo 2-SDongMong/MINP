@@ -16,7 +16,7 @@ export class CreateProductsDto {
 
   @ApiProperty({
     type: ProductsCategoryDto,
-    example: '516e5f13-7bde-43c2-ad0a-96cc826ac518',
+    example: 'products_category_id',
     description: '상품 카테고리 ID',
     required: false, // 선택적 필드로 변경
   })

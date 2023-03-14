@@ -2,6 +2,8 @@ import { ProductsCategory } from '../../share-products-category/entities/product
 import { User } from '../../../users/user.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -22,6 +24,12 @@ export class Products {
 
   @Column({ default: false })
   isTrade: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @DeleteDateColumn()
+  deletedAt: Date | null;
 
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
   productsTradeLocation: ProductsTradeLocation[];
