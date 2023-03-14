@@ -9,7 +9,6 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
-import { UserInfo } from 'src/users/user.info.decorator';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import { RequestsService } from './requests.service';
@@ -29,14 +28,8 @@ export class RequestsController {
   }
 
   @Post()
-  createRequest(
-    @UserInfo() user,
-    @Req() req: Request,
-    @Body() data: CreateRequestDto
-  ) {
-    // FIXME: const userEmail = req.user;
-    const userId = user.user_id;
-    return this.requestService.createRequest(userId, data);
+  createRequest(@Req() req, @Body() data: CreateRequestDto) {
+    return this.requestService.createRequest(req.userId, data);
   }
 
   @Patch('/:id')
@@ -51,11 +44,11 @@ export class RequestsController {
     //     "When 'detail' is given, it should not be an empty string."
     //   );
     // }
-    this.requestService.updateRequestById(req.user, requestId, data);
+    this.requestService.updateRequestById(req.userId, requestId, data);
   }
 
   @Delete('/:id')
   deleteRequestById(@Req() req, @Param('id') requestId: number) {
-    this.requestService.deleteRequestById(req.user, requestId);
+    this.requestService.deleteRequestById(req.userId, requestId);
   }
 }

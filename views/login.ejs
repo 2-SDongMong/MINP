@@ -1,0 +1,47 @@
+<body>
+    <section>
+        <div class="loginCard">
+          <form>
+            <input type="text" id="loginEmail" placeholder="이메일을 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
+            <input type="password" id="loginPassword" placeholder="비밀번호를 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
+			<div>
+				<button onclick="login()" class="btn btn-outline-primary" type="button">로그인</button>
+				<button onclick="location.href='/signUp'" class="btn btn-outline-secondary" type="button">회원가입</button>
+			</div>
+          </form>
+        </div>
+    </section>
+</body>
+
+<script>
+	function login() {
+		const loginEmail = $('#loginEmail').val();
+		const loginPassword = $('#loginPassword').val();
+		if (!loginEmail) {
+		alert('이메일을 입력해주세요.');
+		} else if (!loginPassword) {
+		alert('비밀번호를 입력해주세요.');
+		} else {
+		$.ajax({
+			type: 'POST',
+			url: '/auth/login',
+			data: {
+				email: loginEmail,
+				password: loginPassword,
+			},
+			success: function (response) {
+				alert('로그인이 완료되었습니다.');
+				
+				// FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+				// localStorage.setItem('accessToken', response.access_token);
+				//   document.getElementById('loginpagebutton').style.display = 'none';
+				//   document.getElementById('logoutbutton').style.display = 'block';
+				window.location.href = '/';
+			},
+			error: function (err) {
+				alert(err.responseJSON.message);
+			},
+		});
+		}
+	}
+</script>
