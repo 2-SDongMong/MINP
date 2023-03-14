@@ -9,6 +9,7 @@ import { PostImage } from 'src/post-images/post-image.entity';
 import { Post } from 'src/posts/post.entity';
 import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
 import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
+
 import { UserLike } from 'src/user-likes/user-like.entity';
 import { User } from 'src/users/user.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -37,7 +38,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ProductCategory,
         ShareProducts,
       ],
-      synchronize: false, // true,
+      synchronize: true, // true, false
       logging: ['error'],
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),

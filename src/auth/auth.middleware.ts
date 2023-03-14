@@ -15,8 +15,8 @@ export class AuthMiddleware implements NestMiddleware {
 
   async use(req: any, res: any, next: Function) {
     const authHeader = req.headers.authorization;
-
-    const accessToken = authHeader && authHeader?.split(' ')[1];
+    console.log("어디서 멈춤?")
+    const accessToken = authHeader?.split(' ')[1];
     if (!accessToken) {
       return next();
     }
@@ -27,7 +27,7 @@ export class AuthMiddleware implements NestMiddleware {
       });
       const User = this.userService.findOneByEmail(email);
       req.user = (await User).user_id;
-
+      console.log((await User).user_id)
       next();
     } catch (err) {
       throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);

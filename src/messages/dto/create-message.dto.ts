@@ -6,4 +6,5 @@ export class CreateMessageDto {
 
   @IsString()
   readonly content: string;
+
 }
