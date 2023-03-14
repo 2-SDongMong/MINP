@@ -1,5 +1,6 @@
 import {
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -14,17 +15,36 @@ export class PostsService {
     @InjectRepository(Post) private postsRepository: Repository<Post>
   ) {}
 
+  private logger = new Logger('PostsService');
+
   async getPosts() {
+    this.logger.debug(`getPosts()`);
     return await this.postsRepository.find({
-      where: { deleted_at: null },
-      select: [
-        'user_id',
-        'post_id',
-        'title',
-        'category',
-        'content',
-        'created_at',
-      ],
+      //where: { deleted_at: null },
+      relations: {
+        user: {
+          cats: true,
+        },
+      },
+      select: {
+        user: {
+          user_id: true,
+          nickname: true,
+        },
+        post_id: true,
+        title: true,
+        category: true,
+        content: true,
+        created_at: true,
+      },
+      // select: [
+      //   'user_id',
+      //   'post_id',
+      //   'title',
+      //   'category',
+      //   'content',
+      //   'created_at',
+      // ],
     });
   }
 

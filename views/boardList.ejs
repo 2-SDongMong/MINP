@@ -1,2 +1,94 @@
-<!-- 게시판 전체보기 페이지입니다! 
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요!-->
+<section class="notice">
+    <div class="page-title">
+        <div class="container">
+            <h3>자유게시판</h3>
+        </div>
+    </div>
+  
+    <!-- board list area -->
+    <div id="board-list">
+        <div class="container">
+            <table class="board-table">
+                <thead>
+                <tr>
+                    <th scope="col" class="th-num">번호</th>
+                    <th scope="col" class="th-ctg">카테고리</th>
+                    <th scope="col" class="th-title">제목</th>
+                    <th scope="col" class="th-writer">작성자</th>
+                    <th scope="col" class="th-date">등록일</th>
+               </tr>
+                </thead>
+            <tbody>
+                <tr>
+                    <td>3</td>
+                    <td><a href="#!">병원</a></td>
+                    <th>
+                        <a href="#!">염창고양이사랑 동물병원 후기입니다.</a>
+                        <p>테스트</p>
+                    </th>
+                    <td>뭉치맘</td>
+                    <td>2022.03.14</td>
+                </tr>
+  
+                <tr>
+                    <td>2</td>
+                    <td><a href="#!">자랑</a></td>
+                    <th>
+                        <a href="#!">우리집 고양이 보실 분?</a>
+                    </th>
+                    <td>고래맘</td>
+                    <td>2022.03.13</td>
+                </tr>
+  
+                <tr>
+                    <td>1</td>
+                    <td><a href="#!">기타</a></td>
+                    <th>
+                        <a href="#!">저희 고양이가 이런 행동을 하는데 왜 그런 걸까요?</a>
+                    </th>
+                    <td>깜냥이</td>
+                    <td>2022.03.13</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- board seach area -->
+    <div id="board-search">
+        <div class="container">
+            <div class="search-window">
+                <form action="">
+                    <div class="search-wrap">
+                        <label for="search" class="blind">공지사항 내용 검색</label>
+                        <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
+                        <button type="submit" class="btn btn-dark">검색</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+  
+</section>
+
+<script>
+    $(document).ready(fuction() {
+        viewBoardLists();
+    });
+
+    async function viewBoardLists() {
+        $.ajax({
+            type: "GET",
+            url: '/posts',
+            success: function (response) {
+                
+
+            },
+            error: function (response) {
+                console.log(response.responseJSON.message);
+            }
+        })
+    }
+
+</script>

@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { PostCategoryType } from '../post.entity';
 
 export class CreatePostDto {
@@ -10,4 +10,7 @@ export class CreatePostDto {
 
   @IsString()
   readonly content?: string;
+
+  // @IsNumber()
+  // readonly user_id: number;
 }

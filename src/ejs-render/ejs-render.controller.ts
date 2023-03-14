@@ -64,10 +64,11 @@ export class EjsRenderController {
     return { components: 'sharePost' };
   }
 
-  @Get('')
+  @Get('boardList')
   @Render('index')
-  boardList(@Req() req): { components: string } {
-    return { components: 'boardList' };
+  boardList(@Req() req): { components: string, user: number } {
+    //const boardPosts = await postsService.getPosts();
+    return { components: 'boardList' , user: 1};
   }
 
   @Get('')
