@@ -82,7 +82,7 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
-    const googleEmail = req.user.email;
+    const googleEmail = req.userId.email;
     const user = await this.userService.findOneByEmail(googleEmail);
     if (!user) {
       throw new HttpException('없는 회원정보 입니다.', HttpStatus.FORBIDDEN);
