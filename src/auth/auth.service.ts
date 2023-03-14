@@ -4,12 +4,17 @@ import {
   ForbiddenException,
   Injectable,
   Res,
+  ConflictException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
+// import { MailerService } from '@nestjs-modules/mailer';
+// import { ConfigService } from '@nestjs/config';
+import * as nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +45,51 @@ export class AuthService {
     await this.userService.update(user.user_id, { hashdRt: refreshTokentHash });
 
     return tokens;
+  }
+
+  async sendMail(email) {
+    try {
+      const authNumber = Math.random().toString(36).slice(2);
+      const transport = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_ID,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+      const mailOptions = {
+        from: process.env.EMAIL_ID,
+        to: email,
+        subject: '무인냥품 인증메시지입니다.',
+        html: `
+        <b>Hello</b>
+        <b>check number</b>
+        <span style="background-color: rgb(179, 178, 178);"><b>${authNumber}</b></span>
+      `,
+      };
+      await transport.sendMail(mailOptions);
+
+      return authNumber;
+    } catch (err) {
+      throw new HttpException(
+        {
+          message: 'messsage',
+          error: err.sqlMessage,
+        },
+        HttpStatus.FORBIDDEN
+      );
+    }
+  }
+
+  async OAuthLogin({ req, res }) {
+    const googleEmail = req.user.email;
+    const user = await this.userService.findOneByEmail(googleEmail);
+    if (!user) {
+      throw new HttpException('없는 회원정보 입니다.', HttpStatus.FORBIDDEN);
+    }
+
+    this.getTokens(user.user_id, user.email);
+    res.redirect('리다이렝트할 url주소');
   }
 
   async logout(userId: number) {
@@ -86,11 +136,12 @@ export class AuthService {
     const token = refreshtoken.split('bearer ')[1];
     //bearer refreshtoken 이런 토큰
     const user = await this.userService.findOne(user_id);
-    const refreshTokentCompare = await bcrypt.compare(token, user?.hashdRt);
+    if (!user?.hashdRt) throw new ForbiddenException('Access Denied.');
+    const refreshTokentCompare = await bcrypt.compare(token, user.hashdRt);
     if (!refreshTokentCompare) throw new ForbiddenException('Access Denied.');
-    const tokens = await this.getTokens(user?.user_id, user?.email);
+    const tokens = await this.getTokens(user.user_id, user.email);
     const refreshTokenHash = await this.hashPassword(tokens.refreshToken);
-    await this.userService.update(user?.user_id, { hashdRt: refreshTokenHash });
+    await this.userService.update(user.user_id, { hashdRt: refreshTokenHash });
 
     return tokens;
   }

@@ -15,7 +15,7 @@ import { UserLike } from '../user-likes/user-like.entity';
 import { Message } from '../messages/message.entity';
 import { PostComment } from '../post-comments/post-comment.entity';
 import { Post } from '../posts/post.entity';
-import { ShareProducts } from '../share-modules/share-products/entities/share-products.entity';
+import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
 
 export type UserStatusType = '가입 대기' | '일반' | '관리자';
 
@@ -76,11 +76,11 @@ export class User {
   })
   cat_likes: CatLike[];
 
-  @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
+  @OneToMany(() => Products, (Products) => Products.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   })
-  share_products: ShareProducts[];
+  products: Products[];
 
   @OneToMany(() => Request, (request) => request.user, {
     onUpdate: 'CASCADE',

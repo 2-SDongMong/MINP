@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
-import { CreateProductCategoryDto } from './dto/create-share-product-category.dto';
-import { ProductCategory } from './entities/product-category.entity';
+import { ProductsCategoryDto } from './dto/share-product-category.dto';
+import { ProductsCategory } from './entities/products-category.entity';
 import { ProductsCategoryService } from './products-category.service';
 
 @Controller('products-category')
@@ -11,13 +11,13 @@ export class ProductsCategoryController {
 
   @Post()
   async create(
-    @Body() createProductCategoryDto: CreateProductCategoryDto
-  ): Promise<ProductCategory> {
-    return await this.productsCategoryService.create(createProductCategoryDto);
+    @Body() productsCategoryDto: ProductsCategoryDto
+  ): Promise<ProductsCategory> {
+    return await this.productsCategoryService.create(productsCategoryDto);
   }
 
   @Get()
-  async findAll(): Promise<ProductCategory[]> {
+  async findAll(): Promise<ProductsCategory[]> {
     return await this.productsCategoryService.findAll();
   }
 }

@@ -24,6 +24,8 @@ export class AuthMiddleware implements NestMiddleware {
 
     if (!accessToken) {
       throw new UnauthorizedException('AccessToken not found');
+
+      // FIXME: UnauthorizedException이 잘 던져지는 것을 확인하면 삭제하기
       return next();
     }
 
