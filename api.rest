@@ -1,3 +1,35 @@
+###
+GET http://localhost:3000/
+# Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM4LCJlbWFpbCI6InRlc3QwQGdtYWlsLmNvbSIsImlhdCI6MTY3ODc3MzEwMiwiZXhwIjoxNjc4ODU5NTAyfQ.cmAYKZMkt3BfYq2j8UXZyxie6x3iPOCVB12HDdCy_XY
+
+###
+GET http://localhost:3000/users/mypage
+
+###
+GET http://localhost:3000/user/mypage
+
+
+###
+GET http://localhost:3000/request/list
+
+
+###
+GET http://localhost:3000/cats
+###
+POST http://localhost:3000/cats
+Content-Type: application/json
+
+{
+    "name": "화이트",
+    "gender": "수",
+    "neutered": true,
+    "age": 5,
+    "character": "블럼",
+    "image": "/img/cat9.jfif"
+}
+
+
+###
 GET http://localhost:3000/requests
 
 ###
@@ -27,6 +59,38 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/requests/5
 
+
+
+###
+POST http://localhost:3000/user/signup
+Content-Type: application/json
+
+{
+    "email": "test0@gmail.com",
+    "name": "Nick Handerson",
+    "nickname": "Nick Again0",
+    "address": "서울시 구로구",
+    "phone_number": "010-1234-5678",
+    "referral_code": "3btest",
+    "password": "1234"
+}
+
+###
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "test0@gmail.com",
+    "password": "1234"
+}
+
+###
+POST http://localhost:3000/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
+
+###
+POST http://localhost:3000/auth/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 
 ### messages ##############################
@@ -93,6 +157,9 @@ POST http://localhost:3000/auth/refresh
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 
+=======
+### posts #################################
+
 ###
 GET http://localhost:3000/posts
 
@@ -102,16 +169,16 @@ Content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
 
 {
-    "title": "로그인후 작성",
+    "title": "230314 테스트",
     "category": "병원",
-    "content" : "으악"
+    "content" : "테스트"
 }
 
 ###
-GET http://localhost:3000/posts/2
+GET http://localhost:3000/posts/5
 
 ###
-PATCH http://localhost:3000/posts/3
+PATCH http://localhost:3000/posts/7
 Content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
 

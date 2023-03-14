@@ -34,6 +34,8 @@ export class RequestsService {
         },
         request_id: true,
         reserved_time: true,
+        updated_at: true,
+        detail: true,
       },
     });
     return request;

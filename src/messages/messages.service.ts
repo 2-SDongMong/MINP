@@ -8,53 +8,50 @@ import { MessagesRepository } from './messages.repository';
 
 @Injectable()
 export class MessagesService {
-    constructor(private readonly repository: MessagesRepository) { }
-    async getMessageById(id: number,userId:number) {
-        
-        const message = await this.repository.getMessageById(id);
-       
-        if( message.sender_id !==userId && message.read_at === null ){
-            const time = new Date();
-            this.repository.updateReadAt(message.message_id,time)
-        }
-        if (_.isNil(message)) {
-            throw new NotFoundException(`Message not found. id: ${id}`);
-        }
-        return message;
+  constructor(private readonly repository: MessagesRepository) {}
+  async getMessageById(id: number, userId: number) {
+    const message = await this.repository.getMessageById(id);
+
+    if (message.sender_id !== userId && message.read_at === null) {
+      const time = new Date();
+      this.repository.updateReadAt(message.message_id, time);
     }
-
-    async getUnreadMessages(userId:number){
-        const message = await this.repository.getUnreadMessages(userId)
-        console.log(message)
-
-        return message;
+    if (_.isNil(message)) {
+      throw new NotFoundException(`Message not found. id: ${id}`);
     }
+    return message;
+  }
 
-    async getMessages() {
-        return await this.repository.find();
-    }
+  async getUnreadMessages(userId: number) {
+    const message = await this.repository.getUnreadMessages(userId);
+    console.log(message);
 
-    async getReceivedMessages(recipientId: number) {
-        return await this.repository.getReceivedMessages(recipientId);
-    }
+    return message;
+  }
 
-    async getSentMessages(senderId: number) {
-        return await this.repository.getSentMessages(senderId);
-    }
+  async getMessages() {
+    return await this.repository.find();
+  }
 
-    async createMessage(senderId: number, data: CreateMessageDto) {
-        const newMessage = this.repository.create({ sender_id: senderId, ...data });
+  async getReceivedMessages(recipientId: number) {
+    return await this.repository.getReceivedMessages(recipientId);
+  }
 
-        return await this.repository.save(newMessage);
-    }
-   
-    deleteMessageById(id: number) {
-        return this.repository.softDelete(id);
-    }
-    
+  async getSentMessages(senderId: number) {
+    return await this.repository.getSentMessages(senderId);
+  }
 
+  async createMessage(senderId: number, data: CreateMessageDto) {
+    const newMessage = this.repository.create({ sender_id: senderId, ...data });
 
-    //자기가 자기쪽지 읽음 표시
+    return await this.repository.save(newMessage);
+  }
 
-    //
+  deleteMessageById(id: number) {
+    return this.repository.softDelete(id);
+  }
+
+  //자기가 자기쪽지 읽음 표시
+
+  //
 }

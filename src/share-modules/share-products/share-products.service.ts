@@ -1,57 +1,74 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateShareProductDto } from './dto/create-share-products.dto';
-import { ShareProducts } from './entities/share-products.entity';
+import { ProductsCategory } from '../share-products-category/entities/products-category.entity';
+import { Products } from './entities/share-products.entity';
 
 @Injectable()
-export class ShareProductsService {
+export class ProductsService {
   constructor(
-    @InjectRepository(ShareProducts)
-    private readonly shareProductsRepository: Repository<ShareProducts>
+    @InjectRepository(Products)
+    private readonly productsRepository: Repository<Products>
   ) {}
 
-  async findAll(): Promise<ShareProducts[]> {
-    return await this.shareProductsRepository.find();
-  }
-
-  async findEach(productId) {
-    return await this.shareProductsRepository.findOne({
-      where: { id: productId },
+  async findAll() {
+    return await this.productsRepository.find({
+      relations: ['productsTradeLocation', 'productsCategory'],
     });
   }
 
-  async createShare(
-    createShareProductDto: CreateShareProductDto
-  ): Promise<ShareProducts> {
-    const newShareProduct = this.shareProductsRepository.create(
-      createShareProductDto
-    );
-    return await this.shareProductsRepository.save(newShareProduct);
+  async findOne(id) {
+    return await this.productsRepository.findOne({
+      where: { id },
+      relations: ['productsTradeLocation', 'productsCategory'],
+    });
   }
-  async update({ productId, updateShareProductDto }) {
-    const myproduct = await this.shareProductsRepository.findOne({
-      where: { id: productId },
+
+  async create(createProductsDto) {
+    const { title, description, productsTradeLocation, productsCategoryId } =
+      createProductsDto;
+
+    // 데이터 유효성 검증
+    if (
+      !title ||
+      !description ||
+      !productsTradeLocation ||
+      !productsCategoryId
+    ) {
+      throw new UnprocessableEntityException('Invalid product data');
+    }
+
+    const result = await this.productsRepository.save({
+      title,
+      description,
+      productsTradeLocation: { ...productsTradeLocation },
+      productsCategory: { id: productsCategoryId },
     });
 
-    const newProduct = {
-      ...myproduct,
-      id: productId,
-      ...updateShareProductDto,
-    };
-
-    return await this.shareProductsRepository.save(newProduct);
+    return result;
   }
-  async checkTradeOut({ productId }) {
-    const product = await this.shareProductsRepository.findOne({
-      where: { id: productId },
+
+  async update(id, updateProductsDto) {
+    const { productsTradeLocation, ...products } = updateProductsDto;
+    const result = await this.productsRepository.update(id, {
+      ...products,
+      productsTradeLocation: { ...productsTradeLocation },
     });
-    if (product.isTrade)
-      throw new UnprocessableEntityException('이미 거래가 완료된 상품입니다.');
-  }
 
-  async deleteById(id: string): Promise<boolean> {
-    const result = await this.shareProductsRepository.delete({ id });
     return result.affected > 0;
+  }
+
+  async delete(id) {
+    const result = await this.productsRepository.delete(id);
+    return result.affected > 0;
+  }
+
+  async checkTrade(id) {
+    const products = await this.productsRepository.findOne(id);
+    if (products.isTrade) {
+      throw new UnprocessableEntityException(
+        'This products is already trade out'
+      );
+    }
   }
 }

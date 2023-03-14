@@ -8,6 +8,6 @@ import { RequestsService } from './requests.service';
   imports: [TypeOrmModule.forFeature([Request])],
   controllers: [RequestsController],
   providers: [RequestsService],
-  //TODO: exports: [RequestsService],
+  exports: [RequestsService],
 })
 export class RequestsModule {}

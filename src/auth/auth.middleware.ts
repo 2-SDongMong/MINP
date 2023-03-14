@@ -14,10 +14,19 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: any, res: any, next: Function) {
-    const authHeader = req.headers.authorization;
-    console.log("어디서 멈춤?")
-    const accessToken = authHeader?.split(' ')[1];
+    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+    // const authHeader = req.headers.authorization;
+
+    // console.log('authMiddleware: ', authHeader);
+    // const accessToken = authHeader && authHeader?.split(' ')[1];
+
+    const { accessToken } = req.cookies;
+
     if (!accessToken) {
+      // throw new UnauthorizedException('AccessToken not found');
+
+      // FIXME: UnauthorizedException이 잘 던져지는 것을 확인하면 삭제하기 => 잘 안됨.
+      // => accessToken이 없으면 일단 다음 미들웨어로 건낸다.
       return next();
     }
 
@@ -25,12 +34,17 @@ export class AuthMiddleware implements NestMiddleware {
       const { email } = this.jwtService.verify(accessToken, {
         secret: 'JWT_ACCESS_SECRET',
       });
-      const User = this.userService.findOneByEmail(email);
-      req.user = (await User).user_id;
-      console.log((await User).user_id)
+      const User = await this.userService.findOneByEmail(email);
+      req.userId = User.user_id;
+      req.user = User;
+
       next();
     } catch (err) {
-      throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);
+      // FIXME: 여기서 바로 에러를 던지는 대신 넘겨주는 이점을 생각해보기.
+      // throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);
+
+      res.clearCookie('accessToken');
+      next(err);
     }
   }
 }

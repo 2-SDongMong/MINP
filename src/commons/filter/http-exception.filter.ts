@@ -10,6 +10,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     console.log('예외발생');
     console.log('예외내용:', message);
     console.log('예외코드:', status);
+    console.log('stack:', exception.stack);
     console.log('<===========================>');
   }
 }

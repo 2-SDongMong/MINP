@@ -3,6 +3,7 @@ import {
   HttpStatus,
   ForbiddenException,
   Injectable,
+  Res,
   ConflictException,
 } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
@@ -40,7 +41,7 @@ export class AuthService {
     user.password = undefined;
 
     const tokens = await this.getTokens(user.user_id, user.email);
-    const refreshTokentHash = await this.hashPassword(tokens.refresh_token);
+    const refreshTokentHash = await this.hashPassword(tokens.refreshToken);
     await this.userService.update(user.user_id, { hashdRt: refreshTokentHash });
 
     return tokens;
@@ -81,7 +82,7 @@ export class AuthService {
   }
 
   async OAuthLogin({ req, res }) {
-    const googleEmail = req.user.email;
+    const googleEmail = req.userId.email;
     const user = await this.userService.findOneByEmail(googleEmail);
     if (!user) {
       throw new HttpException('없는 회원정보 입니다.', HttpStatus.FORBIDDEN);
@@ -96,7 +97,7 @@ export class AuthService {
   }
 
   async getTokens(userId: number, email: string) {
-    const [accesstoken, refreshtoken] = await Promise.all([
+    const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
@@ -120,8 +121,8 @@ export class AuthService {
     ]);
 
     return {
-      access_token: accesstoken,
-      refresh_token: refreshtoken,
+      accessToken,
+      refreshToken,
     };
   }
 
@@ -139,7 +140,7 @@ export class AuthService {
     const refreshTokentCompare = await bcrypt.compare(token, user.hashdRt);
     if (!refreshTokentCompare) throw new ForbiddenException('Access Denied.');
     const tokens = await this.getTokens(user.user_id, user.email);
-    const refreshTokenHash = await this.hashPassword(tokens.refresh_token);
+    const refreshTokenHash = await this.hashPassword(tokens.refreshToken);
     await this.userService.update(user.user_id, { hashdRt: refreshTokenHash });
 
     return tokens;
