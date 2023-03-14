@@ -7,8 +7,9 @@ import { Message } from 'src/messages/message.entity';
 import { PostComment } from 'src/post-comments/post-comment.entity';
 import { PostImage } from 'src/post-images/post-image.entity';
 import { Post } from 'src/posts/post.entity';
-import { ProductCategory } from 'src/share-modules/share-products-category/entities/product-category.entity';
-import { ShareProducts } from 'src/share-modules/share-products/entities/share-products.entity';
+import { ProductsCategory } from 'src/share-modules/share-products-category/entities/products-category.entity';
+import { ProductsTradeLocation } from 'src/share-modules/share-products-trade-location/entities/products-trade-location.entity';
+import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
 import { UserLike } from 'src/user-likes/user-like.entity';
 import { User } from 'src/users/user.entity';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -34,9 +35,9 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         PostImage,
         CatLike,
         UserLike,
-        ProductCategory,
-        ShareProducts,
-      ],
+        ProductsCategory,
+        Products,
+        ProductsTradeLocation,
       synchronize: true, // true, false
       logging: ['error'],
       autoLoadEntities: true,
