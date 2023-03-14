@@ -18,7 +18,7 @@ p {
   font-size: 2rem;
   width: auto;
   text-align: center;
-  margin-top: 140px;
+  margin-top: 135px;
 }
 /* 위치정보 */
 .contentSub1 {
@@ -35,7 +35,7 @@ p {
   font-weight: bold;
   color: #222222;
   width: auto;
-  margin-left: 220px;
+  margin-left: 210px;
 }
 
 .locationDetail {
@@ -49,14 +49,14 @@ p {
   font-size: 20px;
   font-weight: bold;
   color: #222222;
-  margin-right: 210px;
+  margin-right: 220px;
 }
 
 /* 품앗이 카드 캐러셀 */
 .slideWarpper1{
   position: relative;
   overflow: hidden;
-  height: 730px;
+  height: 740px;
   width: 1330px;
   margin: 0 auto;
 }
@@ -74,6 +74,7 @@ p {
 
 /* 품앗이 card */
 .catCard {
+  margin-top: 10px;
   width: 610px;
   height: 720px;
   background-color: #FBF7EC;
@@ -231,7 +232,7 @@ p {
 .slideWarpper2{
   position: relative;
   overflow: hidden;
-  height: 400px;
+  height: 385px;
   width: 1330px;
   margin: 0 auto;
 }
@@ -244,10 +245,14 @@ p {
 
 .slides2 li:not(:last-child) {
   float: left;
-  margin-right: 20px;
+  margin-right: 30px;
 }
 
 /* 나눔 카드 */
+.slideWarpper2 {
+  margin-top: 10px;
+}
+
 .shareCard {
   margin-top: 10px;
   width: 410px;
