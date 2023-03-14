@@ -8,7 +8,6 @@ import {
   Req,
   Patch,
 } from '@nestjs/common';
-import { UserInfo } from 'src/users/user.info.decorator';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
@@ -20,7 +19,7 @@ export class CatsController {
   // 유저 ID에 속성 된 고양이 전체 상세보기
   @Get('/')
   async getMyCats(@Req() req) {
-    return await this.catService.getMyCats(req.user);
+    return await this.catService.getMyCats(req.userId);
   }
 
   // 고양이ID로 고양이 한 마리만 상세보기 API,굳이 필요하진 않을 거 같지만 일단 둠
@@ -31,7 +30,7 @@ export class CatsController {
 
   @Post('/')
   createCat(@Req() req, @Body() data: CreateCatDto) {
-    return this.catService.createCat(req.user, data);
+    return this.catService.createCat(req.userId, data);
   }
 
   @Patch('/:id')
@@ -40,11 +39,11 @@ export class CatsController {
     @Param('id') catId: number,
     @Body() data: UpdateCatDto
   ) {
-    return this.catService.updateCatById(req.user, catId, data);
+    return this.catService.updateCatById(req.userId, catId, data);
   }
 
   @Delete('/:id')
   deleteCat(@Req() req, @Param('id') catId: number) {
-    return this.catService.deleteCatById(req.user, catId);
+    return this.catService.deleteCatById(req.userId, catId);
   }
 }

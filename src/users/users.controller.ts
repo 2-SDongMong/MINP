@@ -17,7 +17,7 @@ import { UsersService } from './users.service';
 import { Request } from 'express';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 

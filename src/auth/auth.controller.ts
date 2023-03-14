@@ -15,6 +15,7 @@ import { AuthService } from './auth.service';
 import { GetCurrentUser } from './decorator/get-current-user.decorator';
 import { UserId } from './decorator/get-current-userid.decorator';
 import { RtGuard } from './guards/rt.guard';
+import { Request, Response } from 'express';
 
 @Controller('auth')
 export class AuthController {
@@ -23,14 +24,31 @@ export class AuthController {
 
   @Post('/login')
   @HttpCode(HttpStatus.OK)
-  async login(@Body() dto: LoginUserDto) {
-    return await this.authService.login(dto);
+  async login(
+    @Body() dto: LoginUserDto,
+    @Req() req: Request,
+    @Res() res: Response
+  ) {
+    const { accessToken, refreshToken } = await this.authService.login(dto);
+
+    // 쿠키에 accessToken 할당
+    res.cookie('accessToken', accessToken);
+
+    return res.json({ accessToken });
+
+    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+    // return await this.authService.login(dto);
   }
 
   @Post('/logout')
   @HttpCode(HttpStatus.OK)
-  async logout(@UserId() userId: number) {
-    return await this.authService.logout(userId);
+  async logout(@UserId() userId: number, @Res() res) {
+    // 쿠키에서 accessToken 제거
+    res.clearCookie('accessToken');
+
+    // users테이블에서 hashdRt 항목 null로 변경
+    await this.authService.logout(userId);
+    return res.json({ message: '정상적으로 로그아웃 되었습니다.' });
   }
 
   @Post('/refresh')

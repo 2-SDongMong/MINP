@@ -14,10 +14,16 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: any, res: any, next: Function) {
-    const authHeader = req.headers.authorization;
+    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+    // const authHeader = req.headers.authorization;
 
-    const accessToken = authHeader && authHeader?.split(' ')[1];
+    // console.log('authMiddleware: ', authHeader);
+    // const accessToken = authHeader && authHeader?.split(' ')[1];
+
+    const { accessToken } = req.cookies;
+
     if (!accessToken) {
+      throw new UnauthorizedException('AccessToken not found');
       return next();
     }
 
@@ -25,8 +31,9 @@ export class AuthMiddleware implements NestMiddleware {
       const { email } = this.jwtService.verify(accessToken, {
         secret: 'JWT_ACCESS_SECRET',
       });
-      const User = this.userService.findOneByEmail(email);
-      req.user = (await User).user_id;
+      const User = await this.userService.findOneByEmail(email);
+      req.userId = User.user_id;
+      req.user = User;
 
       next();
     } catch (err) {

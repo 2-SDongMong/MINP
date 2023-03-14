@@ -1,25 +1,28 @@
 import { Controller, Get, Render, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+// type ReqUser = Request & { userId: number };
 
 @Controller()
 export class EjsRenderController {
   @Get('/')
   @Render('index')
-  index(@Req() req): { components: string; user: string } {
-    return { components: 'main', user: '1' };
+  main(@Req() req): { components: string; userId: number } {
+    console.log('/ GET, req.userId: ', req.userId);
+    return { components: 'main', userId: req.userId };
   }
 
-  @Get('')
+  @Get('/signUp')
   @Render('index')
-  signUp(@Req() req): { components: string } {
-    return { components: 'signUp' };
+  signUp(@Req() req): { components: string; userId: number } {
+    return { components: 'signUp', userId: req.userId };
   }
 
   @Get('/user/mypage')
   @Render('index')
   // FIXME: 로그인 페이지 완성 돼서 토큰값 받아오게 되면 수정하기
-  myPage(@Req() req): { components: string; user: string } {
-    return { components: 'myPage', user: '1' };
+  myPage(@Req() req): { components: string; userId: number } {
+    console.log('/user/mypage GET, req.userId: ', req.userId);
+    return { components: 'myPage', userId: req.userId };
   }
 
   @Get('')
@@ -28,10 +31,17 @@ export class EjsRenderController {
     return { components: 'admin' };
   }
 
-  @Get('')
+  @Get('/login')
   @Render('index')
-  requestList(@Req() req): { components: string } {
-    return { components: 'requestList' };
+  login(@Req() req): { components: string; userId: number } {
+    return { components: 'login', userId: req.userId };
+  }
+
+  @Get('/request/list')
+  @Render('index')
+  requestList(@Req() req): { components: string; userId: number } {
+    console.log('/request/list GET, req.userId: ', req.userId);
+    return { components: 'requestList', userId: req.userId };
   }
 
   @Get('')
