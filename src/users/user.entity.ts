@@ -76,17 +76,7 @@ export class User {
   })
   cat_likes: CatLike[];
 
-  @OneToMany(() => ShareComment, (shareComment) => shareComment.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  share_comments: ShareComment[];
-
-  @OneToMany(() => SharePost, (sharePost) => sharePost.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  share_posts: SharePost[];
+ 
 
   @OneToMany(() => ShareProducts, (shareProducts) => shareProducts.user, {
     onUpdate: 'CASCADE',
