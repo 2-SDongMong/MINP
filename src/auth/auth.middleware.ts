@@ -23,9 +23,10 @@ export class AuthMiddleware implements NestMiddleware {
     const { accessToken } = req.cookies;
 
     if (!accessToken) {
-      throw new UnauthorizedException('AccessToken not found');
+      // throw new UnauthorizedException('AccessToken not found');
 
-      // FIXME: UnauthorizedException이 잘 던져지는 것을 확인하면 삭제하기
+      // FIXME: UnauthorizedException이 잘 던져지는 것을 확인하면 삭제하기 => 잘 안됨.
+      // => accessToken이 없으면 일단 다음 미들웨어로 건낸다.
       return next();
     }
 
@@ -39,7 +40,11 @@ export class AuthMiddleware implements NestMiddleware {
 
       next();
     } catch (err) {
-      throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);
+      // FIXME: 여기서 바로 에러를 던지는 대신 넘겨주는 이점을 생각해보기.
+      // throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);
+
+      res.clearCookie('accessToken');
+      next(err);
     }
   }
 }

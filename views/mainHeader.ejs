@@ -7,9 +7,9 @@
 
   
     </div>
-        <%if (userId == 0) {%>
+        <%if (!userId) {%>
           <ul class="navbarMenu">
-            <li><a href="/">품앗이 신청</a><%= userId %></li>
+            <li><a href="/">품앗이 신청</a></li>
             <li><a href="/">냥품나눔</a></li>
             <li><a href="/">자유게시판</a></li>
           </ul>
@@ -20,7 +20,7 @@
           </div>
         <%} else{%>
           <ul class="navbarMenu">
-            <li><a href="/">품앗이 신청</a><%= userId %></li>
+            <li><a href="/">품앗이 신청</a></li>
             <li><a href="/">냥품나눔</a></li>
             <li><a href="/">자유게시판</a></li>
           </ul>
@@ -37,7 +37,7 @@
 <script>
   function logout() {
       $.ajax({
-          type: 'GET',
+          type: 'POST',
           url: '/auth/logout',
           success: function (response) {
               alert(response.message);
