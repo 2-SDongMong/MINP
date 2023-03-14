@@ -26,6 +26,7 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
+import { EmailService } from './email/email.service';
 
 @Module({
   imports: [
@@ -88,7 +89,9 @@ export class AppModule implements NestModule {
         { path: 'user/mypage/:id', method: RequestMethod.ALL },
         { path: 'user/admin', method: RequestMethod.ALL },
         { path: 'user/admin/member', method: RequestMethod.ALL },
-        { path: 'user/admin/member/:id', method: RequestMethod.ALL }
+        { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+        { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+        { path: 'message', method: RequestMethod.ALL }
       );
   }
 }
