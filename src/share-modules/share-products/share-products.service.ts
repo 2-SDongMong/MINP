@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Pagination, PaginationOptions } from 'src/util/pagiante';
 import { Repository } from 'typeorm';
-import { ProductsCategory } from '../share-products-category/entities/products-category.entity';
 import { Products } from './entities/share-products.entity';
 
 @Injectable()
@@ -70,5 +70,20 @@ export class ProductsService {
         'This products is already trade out'
       );
     }
+  }
+
+  async list(options: PaginationOptions): Promise<Pagination<Products>> {
+    const { take, page } = options;
+    const [results, total] = await this.productsRepository.findAndCount({
+      select: ['id', 'title'],
+      take: take,
+      skip: take * (page - 1),
+      order: { createdAt: 'DESC' },
+    });
+    return new Pagination({
+      results,
+      total,
+      currentPage: page,
+    });
   }
 }
