@@ -1,7 +1,7 @@
 /* Navbar */
 .navbarLogo {
-  margin-top: 7px;
-  margin-left: 111px;
+  margin-top: 40px;
+  margin-left: 100px;
 }
 
 .navbar {
@@ -13,6 +13,7 @@
 }
 
 .navbarMenu {
+  margin-top: 55px;
   display: flex;
   list-style: none;
   font-size: 18px;
@@ -26,6 +27,7 @@
 }
 
 .navbarButton {
+  margin-top: 38px;
     margin-right: 115px;
 }
 

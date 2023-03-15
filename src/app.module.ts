@@ -21,7 +21,6 @@ import { PostImagesModule } from './post-images/post-images.module';
 import { CatLikesModule } from './cat-likes/cat-likes.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
-
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
