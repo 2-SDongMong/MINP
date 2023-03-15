@@ -11,9 +11,14 @@ export class EjsRenderController {
 
   @Get('/')
   @Render('index')
-  main(@Req() req) {
+  async main(@Req() req) {
     console.log('/ GET, req.userId: ', req.userId);
-    return { components: 'main', userId: req.userId };
+    const requests = await this.requestsService.getRequests();
+    return {
+      components: 'main',
+      userId: req.userId,
+      requests: requests.slice(0, 6),
+    };
   }
 
   @Get('/signUp')
@@ -51,13 +56,17 @@ export class EjsRenderController {
   @Render('index')
   async requestDetail(@Param('id') id: number, @Req() req) {
     const request = await this.requestsService.getRequestById(id);
-    return { components: 'requestDetail', userId: req.userId, request };
+    return {
+      components: 'requestDetail',
+      userId: req.userId,
+      request: request[0],
+    };
   }
 
-  @Get('')
+  @Get('request/post')
   @Render('index')
   requestPost(@Req() req) {
-    return { components: 'requestPost' };
+    return { components: 'requestPost', userId: req.userId };
   }
 
   @Get('')

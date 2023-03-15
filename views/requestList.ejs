@@ -5,7 +5,79 @@
 			<h1 class="text-center">품앗이 구해요</h1>
 		</div>
 		<br/>
-		<div id="request-cards-container" >
+		<div class="d-flex justify-content-between">
+			<div class="" id="">
+			  <div class="">
+				현재 위치: <span>고양시</span>
+			  </div>
+			</div>
+			<div>
+				<button onclick="location.href='/request/post'" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+			</div>
+		</div>
+
+		<br/>
+
+		<div class="request-cards-container" >
+			<% for (let i = 0; i < 8; i++) { 
+				console.log(requests[1]);
+				const request = requests[i]; 
+				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
+					let updated = ''
+					if (minutesAgo < 60) {
+						updated += parseInt(minutesAgo) + '분'
+					} else if (minutesAgo / 60 <= 48) {
+						updated += parseInt(minutesAgo / 60) + '시간'
+					} else {
+						updated += minutesAgo / 60 / 24 + '일'
+					} %>
+				<div class="col">
+					<div class="card h-100" style="border-radius: 20px">
+
+						<div class="cat-card">
+							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
+							<img src="" alt="">
+							<div class="status">
+								<p onclick="location.href='/requestDetail/<%= request.request_id %>'">모집중</p>
+							</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="period">
+									기간
+								</div>
+								<div class="cat-info-content">
+									<%= request.reserved_time %>
+								</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="name">
+								연락
+								</div>
+								<div class="cat-info-content">
+								<%= request.user.nickname %>
+								</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="character">
+									지역
+								</div>
+								<div class="cat-info-content">
+									<%= request.request_id %>
+								</div>
+							</div>
+							
+							<div class="more">
+								<small class="text-muted align-center"><%= updated %> 전 업데이트</small>
+								<button class="moreBtn" onclick="location.href='/requestDetail/<%= request.request_id %>'">> 자세히 보기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<% } %>
+		</div>
+		
+
+		<!-- <div class="request-cards-container" >
 			<% for (let i = 0; i < 8; i++) { 
 				const request = requests[i]; 
 				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
@@ -37,7 +109,7 @@
 					</div>
 				</div>
 			<% } %>
-		</div>
+		</div> -->
 	</div>
 </section>
 
@@ -96,12 +168,3 @@
 		})
 	}
 </script>
-<style>
-	#request-cards-container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-		grid-gap: 1.5rem;
-		justify-content: center;
-		align-items: center;
-	}
-</style>

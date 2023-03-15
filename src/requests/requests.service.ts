@@ -45,7 +45,7 @@ export class RequestsService {
   }
 
   async getRequestById(id: number) {
-    const request = await this.requestsRepository.findOne({
+    const request = await this.requestsRepository.find({
       where: { request_id: id },
       relations: {
         user: {
@@ -62,6 +62,7 @@ export class RequestsService {
             gender: true,
             neutered: true,
             image: true,
+            character: true,
           },
         },
         request_id: true,

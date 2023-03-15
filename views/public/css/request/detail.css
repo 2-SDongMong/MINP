@@ -1,0 +1,124 @@
+
+/* 품앗이 타이틀 */
+.contentTitle1 {
+  font-family: Nanum Gothic;
+  font-weight: bold;
+  font-size: 2rem;
+  width: auto;
+  text-align: center;
+  margin-top: 135px;
+}
+/* 위치정보 */
+.contentSub1 {
+  margin-top: 60px;
+}
+
+.locationContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.location {
+  font-family: Nanum Gothic;
+  font-weight: bold;
+  color: #222222;
+  width: auto;
+  margin-left: 210px;
+}
+
+.locationDetail {
+  font-family: Nanum Gothic;
+  color: #222222;
+  width: auto;
+  margin-right: 1070px;
+}
+
+.page {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222222;
+  margin-right: 220px;
+}
+
+
+/* 품앗이 card */
+.cat-cards-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+	grid-gap: 1.5rem;
+	justify-content: center;
+	align-items: center;
+  margin: 40px 0px 20px 0px;
+}
+
+.cat-cards-container .cat-card {
+  width: 100%;
+  height: auto;
+  background-color: #FBF7EC;
+  border-radius: 20px;
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+}
+
+.cat-cards-container .imgContainer {
+  width: 100%;
+  height: 550px;
+  background-color: thistle;
+  border-radius: 20px 20px 0px 0px;
+  background-image: url('https://post-phinf.pstatic.net/MjAyMDA5MjJfMjMg/MDAxNjAwNzYwMjU0MDY4.KTTFulC4Cx62e4ytINV9lFs4U9J0OyzCNtk1x9AtFyYg.v94-zgRkFUF4R4MyCYhT0_FLMaFUhxZTKTCMfQ9_rM0g.JPEG/shutterstock_631128263.jpg?type=w1200');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.cat-info-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60px;
+  height: 30px;
+  margin: 10px 0px 0px 15px;
+  background-color: #F0DBAE;
+  border-radius: 20px;
+}
+
+.cat-info-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0px 0px 10px;
+}
+
+.two-column-container {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: row;
+}
+
+.left-column-container {
+  display: flex;
+  width: 50%;
+}
+
+.right-column-container {
+  display: flex;
+}
+
+.whole-column-container {
+  display: flex;
+}
+
+.catCharacter {
+  width: 423px;
+  height: 30px;
+  margin-bottom: 20px;
+}
+
+.cat-cards-container .card, .request-detail-container .card {
+  border-radius: 20px;
+}
+
+.request-detail-container button {
+  height: 60px;
+}

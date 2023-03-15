@@ -1,78 +1,106 @@
 
-<section style="width: 80%; margin: 30px auto; justify-content: center;">
-    <div>
-		<div class="d-flex justify-content-center">
-			<h1 class="text-center">품앗이 지원</h1>
-		</div>
-		<br/>
-		<br/>
-		<br/>
-		<div id="request-cards-container" >
-			<div class="col">
-				<div class="card h-100">
-					<img src= <%= request.user.cats[0].image %> class="card-img-top" alt="...">
-					
+<section style="width: 80%; margin: 30px auto;">
+	<div class="d-flex justify-content-center">
+		<h1 class="text-center">품앗이 지원</h1>
+	</div>
+
+	<div class="cat-cards-container" >
+	<% const cats = request.user.cats;
+		for (let i = 0; i < cats.length; i++) { 
+		console.log(cats[0]);
+		const { name, age, gender, neutered, image, character } = cats[i]; %>
+
+		<div class="col">
+			<div class="card h-100">
+
+				<div class="cat-card">
+					<div class="imgContainer" style="background-image: url('<%= image %>');">
+						<img src="" alt="">
+					</div>
+
+					<div class="two-column-container">
+						<div class="left-column-container">
+							<div class="cat-info-title" id="name">
+							이름
+							</div>
+							<div class="cat-info-content">
+							<%= name %>
+							</div>
+						</div>
+						<div class="right-column-container">
+							<div  class="cat-info-title" id="age">
+							나이
+							</div>
+							<div  class="cat-info-content catAge">
+							<%= age %>
+							</div>
+						</div>
+					</div>
+					<div class="two-column-container">
+						<div class="left-column-container">
+							<div class="cat-info-title" id="gender">
+							성별
+							</div>
+							<div class="cat-info-content catGender">
+							<%= gender %>
+							</div>
+						</div>
+						<div class="right-column-container">
+							<div  class="cat-info-title" id="neutered">
+							중성화 여부
+							</div>
+							<div  class="cat-info-content catNeutered">
+							<%= neutered %>
+							</div>
+						</div>
+					</div>
+					<div class="whole-column-container">
+						<div class="cat-info-title" id="character">
+							성격
+						</div>
+						<div class="cat-info-content catCharacter">
+							<%= character %>.
+							사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col">
-				<div class="card h-100">
-					<div class="card-header">집사 정보</div>
-					<div class="card-body">
-						<h5 class="card-title">기간: <%= request.reserved_time %></h5>
-						<div class="d-flex justify-content-between">
-							<h5 class="card-title">이름: <%= request.user.nickname %></h5>
-						</div>
-					</div>
-					</br>
+		</div>
+	<% } %>
+	</div>
 
-					<div class="card-header">반려묘 정보</div>
-					<div class="card-body">
-						<p class="card-title"><span>기간</span>: <%= request.reserved_time %></p>
-						<div class="d-flex justify-content-between">
-							<p class="card-title"><span>이름</span>: <%= request.user.cats[0].name %></p>
-							<p class="card-title"><span>나이</span>: <%= request.user.cats[0].age %></p>
-						</div>
-						<p class="card-title"><span>성격</span>: <%= request.user.cats[0].character %></p>
-					</div>
-					</br>
+	<br/>
 
-					<div class="card inner-card">
-						<div class="card-body">
-						<p><%= request.detail %></p>
-						</div>
-					</div>
-				</br>
-				<button onclick="location.href='/message/<%= request.user.user_id %>'" class="btn btn-outline-secondary w-100 btn-lg" type="button" style="border-radius: 20px;">쪽지 보내기</button>
+	<div class="request-detail-container" >
+		<% 		
+		const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
+		let updated = ''
+		if (minutesAgo < 60) {
+			updated += parseInt(minutesAgo) + '분'
+		} else if (minutesAgo / 60 <= 48) {
+			updated += parseInt(minutesAgo / 60) + '시간'
+		} else {
+			updated += minutesAgo / 60 / 24 + '일'
+		} 
+		%>
+
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-header">집사 정보</div>
+				<div class="card-body">
+					<p class="card-title">돌봄이 필요한 기간: <%= request.reserved_time %></p>
+					<p class="card-title">닉네임: <%= request.user.nickname %></p>
+					<p class="card-title">동네: <%= request.request_id %></p>
 				</div>
+				</br>
+
+				<div class="card-header">요청 및 상세 사항</div>
+				<div class="card-body">
+					<p><%= request.detail %></p>
+				</div>
+			</br>
+			<button onclick="location.href='/message/<%= request.user.user_id %>'" class="btn btn-outline-secondary w-100 btn-lg" type="button" style="border-radius: 20px;">쪽지 보내기</button>
 			</div>
 		</div>
 	</div>
 </section>
-
-<script>
-
-	$(document).ready(function () {
-		// viewRequests();
-	})
-
-</script>
-<style>
-	#request-cards-container {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-		grid-gap: 3.5rem;
-		justify-content: center;
-		align-items: center;
-	}
-
-	img {
-		width: 145%;
-		height: auto;
-		border-radius: 14px;
-	}
-	
-	.card, button {
-		border-radius: 24px;
-	}
-
-</style>
