@@ -37,7 +37,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ProductCategory,
         ShareProducts,
       ],
-      synchronize: true, // true, false
+      synchronize: false, // true, false
       logging: ['error'],
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),

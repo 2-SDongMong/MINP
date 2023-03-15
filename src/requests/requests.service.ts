@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { User } from 'src/users/user.entity';
 import { Request } from './request.entity';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import _ from 'lodash';

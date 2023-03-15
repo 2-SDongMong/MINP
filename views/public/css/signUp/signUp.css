@@ -1,0 +1,26 @@
+
+a {
+	cursor: pointer;
+  transition: all 200ms linear;
+}
+
+.form-group{ 
+    position: relative;
+    display: block;
+      margin: 0;
+      padding: 0;
+  }
+  .card-3d-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    transition: all 600ms ease-out;
+    text-align: center;
+}
+.section.text-center {
+    text-align: center;
+}

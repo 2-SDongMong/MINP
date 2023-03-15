@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource, Repository, Timestamp } from 'typeorm';
+import { DataSource, IsNull, Repository, Timestamp } from 'typeorm';
 import { Message } from './message.entity';
 
 @Injectable()
@@ -48,13 +48,17 @@ export class MessagesRepository extends Repository<Message> {
     return messages
   }
 
-  async getUnreadMessages(userId){
+  async getUnreadMessages(userId:number){
     const messages = await this.createQueryBuilder('m')
+      .select(['m.content'])
+      .addSelect(['sender.nickname', 'receiver.nickname'])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
       .addSelect(['sender.nickname', 'receiver.nickname'])
-      .where("m.sender_id = :userId OR m.read_at = :null", { sender_id: userId, read_at: null })
-      .getMany();
+      .where("m.sender_id = :userId ", { userId })
+      .andWhere("m.read_at IS NULL" )
+      .getMany()
+
     return messages
   }
 }

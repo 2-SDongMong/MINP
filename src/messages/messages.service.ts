@@ -1,9 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { Repository } from 'typeorm';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { Message } from './message.entity';
 import { MessagesRepository } from './messages.repository';
 
 @Injectable()
@@ -25,8 +22,7 @@ export class MessagesService {
 
     async getUnreadMessages(userId:number){
         const message = await this.repository.getUnreadMessages(userId)
-        console.log(message)
-
+       
         return message;
     }
 
