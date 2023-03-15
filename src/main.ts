@@ -8,6 +8,7 @@ import { ConfigService } from '@nestjs/config';
 import basicAuth from 'express-basic-auth';
 import { setupSwagger } from './config/swagger.config.service';
 import cookieParser from 'cookie-parser';
+import { config } from 'dotenv';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -22,7 +23,7 @@ async function bootstrap() {
   app.use(cookieParser());
 
   const configService = app.get(ConfigService);
-
+  config();
   setupSwagger(app);
 
   app.use(

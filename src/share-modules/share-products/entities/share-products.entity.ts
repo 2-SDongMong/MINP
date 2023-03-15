@@ -23,6 +23,9 @@ export class Products {
   @Column({ default: false })
   isTrade: boolean;
 
+  @Column({ nullable: true }) // 이미지 URL은 옵셔널하게 설정
+  imageUrl: string;
+
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
   productsTradeLocation: ProductsTradeLocation[];
 

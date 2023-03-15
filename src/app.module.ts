@@ -26,6 +26,7 @@ import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
 import { EmailService } from './email/email.service';
+import { AwsModule } from './s3-upload/aws.module';
 
 @Module({
   imports: [
@@ -69,7 +70,7 @@ import { EmailService } from './email/email.service';
     EjsRenderModule,
   ],
   controllers: [EjsRenderController],
-  // providers: [AuthMiddleware],
+  providers: [AwsModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

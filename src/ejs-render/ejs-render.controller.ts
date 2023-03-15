@@ -1,12 +1,14 @@
-import { Controller, Get, Render, Req, Res } from '@nestjs/common';
+import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
+import { ProductsService } from 'src/share-modules/share-products/share-products.service';
 
 @Controller()
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
+    private readonly productsService: ProductsService
   ) {}
 
   @Get('/')
@@ -58,22 +60,31 @@ export class EjsRenderController {
     return { components: 'requestPost' };
   }
 
-  @Get('')
+  @Get('/shareList')
   @Render('index')
-  shareList(@Req() req) {
-    return { components: 'shareList' };
+  async ShareList(@Req() req) {
+    const products = await this.productsService.findAll();
+    return { components: 'shareList', userId: req.userId, products };
   }
 
-  @Get('')
+  @Get('/shareDetail/:id')
   @Render('index')
-  shareDetail(@Req() req) {
-    return { components: 'shareDetail' };
+  async ShareDetail(@Param('id') id: string, @Req() req) {
+    const product = await this.productsService.findOne(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
+    return {
+      components: 'shareDetail',
+      userId: req.userId,
+      product,
+    };
   }
 
-  @Get('')
+  @Get('/shareProduct')
   @Render('index')
-  sharePost(@Req() req) {
-    return { components: 'sharePost' };
+  ShareProduct(@Req() req) {
+    return { components: 'shareProduct', userId: req.userId };
   }
 
   @Get('')

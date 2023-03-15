@@ -6,14 +6,22 @@ import {
   Param,
   Patch,
   Post,
+  Render,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AwsService } from 'src/s3-upload/aws.service';
 import { CreateProductsDto } from './dto/create-share-products.dto';
 import { UpdateProductsDto } from './dto/update-share-products.dto';
 import { ProductsService } from './share-products.service';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly awsService: AwsService
+  ) {}
 
   @Get()
   async getAllProducts() {
@@ -25,9 +33,22 @@ export class ProductsController {
     return await this.productsService.findOne(id);
   }
 
-  @Post()
-  async createProduct(@Body() createProductsDto: CreateProductsDto) {
-    return await this.productsService.create(createProductsDto);
+  @Post('create')
+  @UseInterceptors(FileInterceptor('image'))
+  async createProduct(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() createProductDto: CreateProductsDto
+  ) {
+    // Upload the image to S3 and get the image URL
+    const folder = 'product_images'; // replace with your desired folder name
+    const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+    console.log('imageUrl:', imageUrl);
+
+    // Add the image URL to the product data
+    createProductDto.imageUrl = imageUrl;
+
+    // Save the product with the image URL
+    return await this.productsService.create(createProductDto);
   }
 
   @Patch(':id')

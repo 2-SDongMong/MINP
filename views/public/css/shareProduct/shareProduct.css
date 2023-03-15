@@ -1,0 +1,8 @@
+.card-img-top {
+  max-height: 200px; /* 이미지 높이 조절 */
+  object-fit: cover; /* 이미지를 적절하게 조절 */
+}
+
+.card {
+  min-height: 350px; /* 카드 높이 조절 */
+}
