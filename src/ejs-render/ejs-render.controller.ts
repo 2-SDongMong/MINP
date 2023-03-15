@@ -18,8 +18,8 @@ export class EjsRenderController {
 
   @Get('/signUp')
   @Render('index')
-  signUp(@Req() req): { components: string; user: string} {
-    return { components: 'signUp', user: '1' };
+  signUp(@Req() req){
+    return { components: 'signUp', userId: req.userId  };
   }
 
   @Get('/user/mypage')

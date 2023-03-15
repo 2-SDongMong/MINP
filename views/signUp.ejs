@@ -1,39 +1,124 @@
 <!-- 회원가입 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
 <!-- styles -->
-<link rel="stylesheet" href="/css/signUp/signUp.css">
+
+<body>
+    <section>
+        <link rel="stylesheet" href="/css/signUp/signUp.css">
 
 
-<div class="section text-center">
-    <h4 class="mb-4 pb-3">Sign Up</h4>
-    <div class="form-group">
-        <input type="text" name="lognickname" class="form-style" placeholder="Your Full Nickname" id="lognickname" autocomplete="off">
-        <i class="input-icon uil uil-user"></i>
-    </div>	
-    <div class="form-group">
-        <input type="text" name="logname" class="form-style" placeholder="Your Full Name" id="logname" autocomplete="off">
-        <i class="input-icon uil uil-user"></i>
-    </div>	
-    <div class="form-group mt-2">
-        <input type="email" name="logemail" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off">
-        <i class="input-icon uil uil-at"></i>
-    </div>	
-    <div class="form-group mt-2">
-        <input type="password" name="logpass" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off">
-        <i class="input-icon uil uil-lock-alt"></i>
-    </div>
-    <div class="form-group mt-2">
-        <input type="text" name="logaddress" class="form-style" placeholder="Your Address" id="logaddress" autocomplete="off">
-        <i class="input-icon uil uil-lock-alt"></i>
-    </div>
-    <div class="form-group mt-2">
-        <input type="tel" name="logphonenumber" class="form-style" placeholder="Your Phone" id="logphonenumber" autocomplete="off">
-        <i class="input-icon uil uil-lock-alt"></i>
-    </div>
-    <div class="form-group mt-2">
-        <input type="text" name="logreferralcode" class="form-style" placeholder="Your referral_code" id="logreferralcode" autocomplete="off">
-        <i class="input-icon uil uil-lock-alt"></i>
-    </div>
+        <div class="section text-center">
+            <h4 class="mb-4 pb-3">Sign Up</h4>
+            <div class="form-group">
+                <input type="text" name="signupNickname" class="form-style" placeholder="Your Full Nickname" id="signupNickname" autocomplete="off">
+            </div>	
+            <div class="form-group">
+                <input type="text" name="signupName" class="form-style" placeholder="Your Full Name" id="signupName" autocomplete="off">
+            </div>	
+            <div class="form-group mt-2">
+                <input type="email" name="signupEmail" class="form-style" placeholder="Your Email" id="signupEmail" autocomplete="off">
+                <button onclick="sendmail()" class="btn btn-outline-primary" type="button">인증번호 발송</button>
+            </div>	
+            <div class="form-group mt-2">
+                <input type="text" id="checkNumber" placeholder="인증번호 입력해 주세요."/>
+                <button onclick="check()" class="btn btn-outline-primary" type="button">인증</button>
+            </div>	
+            <div class="form-group mt-2">
+                <input type="password" name="signupPass" class="form-style" placeholder="Your Password" id="signupPass" autocomplete="off">
+            </div>
+            <div class="form-group mt-2">
+                <input type="text" name="signupAddress" class="form-style" placeholder="Your Address" id="signupAddress" autocomplete="off">
+            </div>
+            <div class="form-group mt-2">
+                <input type="tel" name="signupPhonenumber" class="form-style" placeholder="Your Phone" id="signupPhonenumber" autocomplete="off">
+            </div>
+            <div class="form-group mt-2">
+                <input type="text" name="signupReferralcode" class="form-style" placeholder="Your referral_code" id="signupReferralcode" autocomplete="off">
+            </div>
+
+        <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary" type="button">signup</button>
+        <p class="margin">이미 계정을 갖고 계신가요? <a href="./login">지금 로그인하기</a></p>
+       
+        </div>
+    </section>
+</body>
+
+  <script>
     
-    <a href="#" class="btn mt-4">submit</a>
-  </div>
+    function sendmail(){
+        const signupEmail = $('#signupEmail').val();
+        console.log(signupEmail)
+        if (!signupEmail) {
+		    alert('이메일을 입력해주세요.');
+        } else{
+            $.ajax({
+                type: 'POST',
+                url: '/auth',
+                data: {email:signupEmail},
+                success : function(response){
+                    window.sessionStorage.setItem(`${signupEmail}`,response)
+                    return response;
+                }
+            })
+        }
+    }
+    function check(){
+        const checkNumber = $('#checkNumber').val();
+        const signupEmail = $('#signupEmail').val();
+        console.log(checkNumber)
+        console.log("세션",window.sessionStorage.getItem(signupEmail))
+        if(checkNumber===window.sessionStorage.getItem(signupEmail)){
+            const target = document.getElementById('target_btn')
+            target.disabled = false
+        }else{
+            alert("인증번호확인")
+        }
+        
+    }
+    function signUp(){
+        console.log("사인업")
+        const signupNickname = $('#signupNickname').val();
+        const signupName = $('#signupName').val();
+        const signupEmail = $('#signupEmail').val();
+        const signupPass = $('#signupPass').val();
+        const signupAddress = $('#signupAddress').val();
+        const signupPhonenumber = $('#signupPhonenumber').val();
+        const signupReferralcode = $('#signupReferralcode').val();
+        if (!signupNickname) {
+		alert('닉네임을 입력해주세요.');
+		} else if (!signupName) {
+		alert('이름을 입력해주세요.');
+        } else if (!signupEmail) {
+		alert('이메일을 입력해주세요.');
+        } else if (!signupPass) {
+		alert('비밀번호를 입력해주세요.');
+        } else if (!signupAddress) {
+		alert('주소를 입력해주세요.');
+        } else if (!signupReferralcode) {
+		alert('연락처를 입력해주세요.');
+        } else{
+            $.ajax({
+                type: 'POST',
+                url:'/users/signup',
+                data: {
+                    nickname: signupNickname,
+                    name: signupName,
+                    email: signupEmail,
+                    password: signupPass,
+                    address: signupAddress,
+                    phone_number: signupPhonenumber,
+                    referral_code: signupReferralcode
+                },
+                success: function (response) {
+				alert('회원가입이 완료되었습니다.');
+				
+				// FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+				// localStorage.setItem('accessToken', response.access_token);
+				//   document.getElementById('loginpagebutton').style.display = 'none';
+				//   document.getElementById('logoutbutton').style.display = 'block';
+				window.location.href = './login';
+                }
+            })
+        }
+    }
+  </script>
