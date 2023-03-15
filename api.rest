@@ -62,7 +62,7 @@ DELETE http://localhost:3000/requests/5
 
 
 ###
-POST http://localhost:3000/user/signup
+POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
@@ -125,13 +125,13 @@ DELETE http://localhost:3000/messages/2
 
 
 ###
-POST http://localhost:3000/user/signup
+POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-    "email": "post@gmail.com",
+    "email": "post2@gmail.com",
     "name": "post_name",
-    "nickname": "Nick Post",
+    "nickname": "Nick Post2",
     "address": "경남 통영시",
     "phone_number": "010-0000-1111",
     "referral_code": "3btest",
@@ -143,7 +143,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "post@gmail.com",
+    "email": "post2@gmail.com",
     "password": "1234"
 }
 
@@ -166,7 +166,7 @@ GET http://localhost:3000/posts
 ###
 POST http://localhost:3000/posts
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
+//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
 
 {
     "title": "230314 테스트",

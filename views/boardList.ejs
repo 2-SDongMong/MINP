@@ -19,36 +19,20 @@
                </tr>
                 </thead>
             <tbody>
+                <% for (let i = 0; i < posts.length ; i++) {
+                    const post = posts[i];
+                    const created_at = post.created_at.toLocaleString(); %>
+                
                 <tr>
-                    <td>3</td>
-                    <td><a href="#!">병원</a></td>
+                    <td><%= post.post_id %></td>
+                    <td><a href="#!"><%= post.category %></a></td> 
                     <th>
-                        <a href="#!">염창고양이사랑 동물병원 후기입니다.</a>
-                        <p>테스트</p>
+                        <a href="#!"><%= post.title %></a>
                     </th>
-                    <td>뭉치맘</td>
-                    <td>2022.03.14</td>
+                    <td><%= post.user.nickname %></td>
+                    <td><%= created_at %></td>
                 </tr>
-  
-                <tr>
-                    <td>2</td>
-                    <td><a href="#!">자랑</a></td>
-                    <th>
-                        <a href="#!">우리집 고양이 보실 분?</a>
-                    </th>
-                    <td>고래맘</td>
-                    <td>2022.03.13</td>
-                </tr>
-  
-                <tr>
-                    <td>1</td>
-                    <td><a href="#!">기타</a></td>
-                    <th>
-                        <a href="#!">저희 고양이가 이런 행동을 하는데 왜 그런 걸까요?</a>
-                    </th>
-                    <td>깜냥이</td>
-                    <td>2022.03.13</td>
-                </tr>
+                <% } %>
                 </tbody>
             </table>
         </div>

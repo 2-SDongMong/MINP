@@ -6,7 +6,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
+//import { UsersService } from 'src/users/users.service';
 import { IsNull, Not, Repository } from 'typeorm';
+import { CreatePostDto } from './dto/create-post.dto';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -17,26 +19,52 @@ export class PostsService {
 
   private logger = new Logger('PostsService');
 
-  async getPosts() {
+  async getPosts(page: number = 1) {
     this.logger.debug(`getPosts()`);
-    return await this.postsRepository.find({
-      //where: { deleted_at: null },
-      relations: {
-        user: {
-          cats: true,
-        },
-      },
-      select: {
-        user: {
-          user_id: true,
-          nickname: true,
-        },
-        post_id: true,
-        title: true,
-        category: true,
-        content: true,
-        created_at: true,
-      },
+
+    const take = 3;
+
+    const [posts, total] = await this.postsRepository.findAndCount({
+      take,
+      skip: (page - 1) * take, 
+    });
+
+    const last_Page = Math.ceil(total/take);
+
+    if (last_Page >= page) {
+      return {
+        data: posts,
+        meta: {
+          total,
+          page,
+          last_Page: Math.ceil(total / take),
+        }
+      }
+    } else {
+        throw new NotFoundException('해당 페이지는 존재하지 않습니다')
+    }  
+
+    // 수정전2
+    // return await this.postsRepository.find({
+    //   //where: { deleted_at: null },
+    //   relations: {
+    //     user: {
+    //       cats: true,
+    //     },
+    //   },
+    //   select: {
+    //     user: {
+    //       user_id: true,
+    //       nickname: true,
+    //     },
+    //     post_id: true,
+    //     title: true,
+    //     category: true,
+    //     content: true,
+    //     created_at: true,
+      // },
+
+      // 수정 전1
       // select: [
       //   'user_id',
       //   'post_id',
@@ -45,7 +73,7 @@ export class PostsService {
       //   'content',
       //   'created_at',
       // ],
-    });
+    // });
   }
 
   async getPostByCategory(postsCategory: PostCategoryType) {
@@ -62,12 +90,7 @@ export class PostsService {
     });
   }
 
-  //post_images 테이블에서 같은 id를 post_id로 가지는 사진들의 post_image 컬럼을 조인해 조회하는거 아직 구현 못함
   async getPostById(post_id: number) {
-    // user_id 가 null 일 경우 로그인하라는 안내 > 로그인한 회원만 상세보기 가능
-
-    // user_id 가 null 이 아니라면
-    // 아래 해당 데이터 호출
     return await this.postsRepository.findOne({
       // 조건확인으로 IsNull() 을 사용해도 될까? -> 일단 사용
       where: { user_id: Not(IsNull()), post_id, deleted_at: IsNull() },
@@ -87,16 +110,22 @@ export class PostsService {
     title: string,
     category: PostCategoryType,
     content: string
+    // data: CreatePostDto,
+    // usersService: UsersService,
   ) {
-    // user_id 가 null 일 경우 로그인하라는 안내
 
-    // user_id 가 null 이 아니라면 아래 해당 데이터 삽입
     this.postsRepository.insert({
       user_id: userId,
       title,
       category,
       content,
     });
+
+    // this.postsRepository.insert({
+    //   //user_id: userId,
+    //   data,
+    //   usersService,
+    // });
   }
 
   async updatePost(

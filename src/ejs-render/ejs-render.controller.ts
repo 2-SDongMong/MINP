@@ -78,8 +78,9 @@ export class EjsRenderController {
 
   @Get('boardList')
   @Render('index')
-  boardList(@Req() req) {
-    return { components: 'boardList' };
+  async boardList(@Req() req) {
+    const posts = await this.postsService.getPosts();
+    return { components: 'boardList', userId: req.userId, posts };
   }
 
   @Get('')

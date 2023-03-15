@@ -8,6 +8,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -16,25 +17,25 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { DeletePostDto } from './dto/delete-post.dto';
 import { UpdatePostDto } from './dto/update-Post.dto';
 import { PostCategoryType } from './post.entity';
-import { UserId } from 'src/auth/decorator/get-current-userid.decorator'; // 형집님
-import { UserInfo } from 'src/users/user-info.decorator'; // 희서님
-import { UsersService } from 'src/users/users.service';
+//import { UserId } from 'src/auth/decorator/get-current-userid.decorator'; // 형집님
+//import { UserInfo } from 'src/users/user-info.decorator'; // 희서님
+//import { UsersService } from 'src/users/users.service';
 
 @Controller('posts')
 export class PostsController {
   // 서비스 주입
   constructor(
-    private readonly postsService: PostsService
-    // private readonly userService: UsersService
+    private readonly postsService: PostsService,
+    //private readonly userService: UsersService
     ) {}
 
   private logger = new Logger('PostsController');
 
-  // 게시물 목록을 조회
+  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
-  async getPosts() {
+  async getPosts(@Query('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
-    return await this.postsService.getPosts();
+    return await this.postsService.getPosts(page);
   }
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
@@ -55,12 +56,14 @@ export class PostsController {
   // 게시물 작성
   @Post()
   @UsePipes(ValidationPipe)
-  createPost(@UserInfo() userId: number, @Body() data: CreatePostDto) {
+  createPost(@Param('id') userId: number, @Body() data: CreatePostDto) {
     return this.postsService.createPost(
       userId,
       data.title,
       data.category,
       data.content
+      // data,
+      // this.UsersService,
     );
   }
 
