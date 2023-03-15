@@ -1,81 +1,68 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpCode,
-    HttpStatus,
-    Param,
-    Post,
-    Req,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Req,
 } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesService } from './messages.service';
 
 @Controller('messages')
 export class MessagesController {
-    constructor(private readonly messagesService: MessagesService) { }
- 
-    @Get()
-    async getMessages() {
-        return await this.messagesService.getMessages();
-    }
+  constructor(private readonly messagesService: MessagesService) {}
 
-    @Get('/received')
-    async getReceivedMessages(@Req() req) {
-        return await this.messagesService.getReceivedMessages(req.user);
-    }
+  @Get()
+  async getMessages() {
+    return await this.messagesService.getMessages();
+  }
 
-    @Get('/unread')
-    async getUnreadMessages(@Req() req){
-        return await this.messagesService.getUnreadMessages(req.user);
-    }
+  @Get('/received')
+  async getReceivedMessages(@Req() req) {
+    return await this.messagesService.getReceivedMessages(req.userId);
+  }
 
-    @Get('/sent')
-    async getSentMessages(@Req() req) {
-        return await this.messagesService.getSentMessages(req.user);
-    }
-    @Get('/:id')
-    async getMessageById(@Param('id') messageId: number,@Req() req) {
-        return await this.messagesService.getMessageById(messageId,req.user);
-    }
+  @Get('/unread')
+  async getUnreadMessages(@Req() req) {
+    return await this.messagesService.getUnreadMessages(req.userId);
+  }
 
-    @Post()
-    async createMessage(@Req() req, @Body() data: CreateMessageDto) {
-        
-        return await this.messagesService.createMessage(req.user, data);
-    }
+  @Get('/sent')
+  async getSentMessages(@Req() req) {
+    return await this.messagesService.getSentMessages(req.userId);
+  }
+  @Get('/:id')
+  async getMessageById(@Param('id') messageId: number, @Req() req) {
+    return await this.messagesService.getMessageById(messageId, req.userId);
+  }
 
-    @Delete('/:id')
-    async deleteMessageById(@Param('id') messageId: number) {
-        return this.messagesService.deleteMessageById(messageId);
-    }
+  @Post()
+  async createMessage(@Req() req, @Body() data: CreateMessageDto) {
+    return await this.messagesService.createMessage(req.userId, data);
+  }
 
-    //1 메시지 보내기 post
-    //from to 
+  @Delete('/:id')
+  async deleteMessageById(@Param('id') messageId: number) {
+    return this.messagesService.deleteMessageById(messageId);
+  }
 
-    
+  //1 메시지 보내기 post
+  //from to
 
-    ////////메시지 모두 user_id 에 맞는거만 middleware에서 빼오고
+  ////////메시지 모두 user_id 에 맞는거만 middleware에서 빼오고
 
-    //2 메시지 전체조회
+  //2 메시지 전체조회
 
+  //3 메시지 안읽은거 조회
+  //메시지 상태 안 읽음
 
-    //3 메시지 안읽은거 조회
-    //메시지 상태 안 읽음 
+  //4 메시지 상세조회
+  //메시지 아이디 받아와서 조회
 
-
-    //4 메시지 상세조회
-    //메시지 아이디 받아와서 조회
-
-
-    //5 메시지 삭제
-    //메시지 아이디 받아와서 삭제
-
-
-
-
-
-
-
+  //5 메시지 삭제
+  //메시지 아이디 받아와서 삭제
 }

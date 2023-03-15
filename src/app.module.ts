@@ -21,7 +21,6 @@ import { PostImagesModule } from './post-images/post-images.module';
 import { CatLikesModule } from './cat-likes/cat-likes.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
-
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
@@ -70,29 +69,32 @@ import { EmailService } from './email/email.service';
     EjsRenderModule,
   ],
   controllers: [EjsRenderController],
-  providers: [AuthMiddleware],
+  // providers: [AuthMiddleware],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes(
-        { path: 'auth/logout', method: RequestMethod.ALL },
-        { path: 'requests', method: RequestMethod.POST },
-        { path: 'requests/:id', method: RequestMethod.PATCH },
-        { path: 'requests/:id', method: RequestMethod.DELETE },
-        { path: 'user/mypage', method: RequestMethod.ALL },
-        { path: 'cats', method: RequestMethod.ALL },
-        { path: 'messages', method: RequestMethod.POST },
-        { path: 'messages/sent', method: RequestMethod.GET },
-        { path: 'messages/unread', method: RequestMethod.GET },
-        { path: 'messages/:id', method: RequestMethod.GET },
-        { path: 'messages/received', method: RequestMethod.GET },
-        { path: 'user/mypage/:id', method: RequestMethod.ALL },
-        { path: 'user/admin', method: RequestMethod.ALL },
-        { path: 'user/admin/member', method: RequestMethod.ALL },
-        { path: 'user/admin/member/:id', method: RequestMethod.ALL },
-        { path: 'user/admin/member/:id', method: RequestMethod.ALL },
-      );
+    consumer.apply(AuthMiddleware).forRoutes(
+      { path: 'auth/logout', method: RequestMethod.ALL },
+      { path: 'requests', method: RequestMethod.POST },
+      { path: 'requests/:id', method: RequestMethod.PATCH },
+      { path: 'requests/:id', method: RequestMethod.DELETE },
+      { path: 'user/mypage', method: RequestMethod.ALL },
+      { path: 'cats', method: RequestMethod.ALL },
+      { path: 'messages', method: RequestMethod.POST },
+      { path: 'messages/sent', method: RequestMethod.GET },
+      { path: 'messages/received', method: RequestMethod.GET },
+      { path: 'messages/unread', method: RequestMethod.GET },
+      { path: 'messages/:id', method: RequestMethod.GET },
+      { path: 'user/mypage/:id', method: RequestMethod.ALL },
+      { path: 'user/admin', method: RequestMethod.ALL },
+      { path: 'user/admin/member', method: RequestMethod.ALL },
+      { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+      { path: 'message', method: RequestMethod.ALL },
+
+      // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
+      // { path: 'views/.', method: RequestMethod.GET }
+      EjsRenderController
+    );
+    
   }
 }

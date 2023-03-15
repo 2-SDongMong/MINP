@@ -7,7 +7,7 @@
 
   
     </div>  
-      <%if (user == '1') {%>
+      <%if (!userId) { %>
         <ul class="navbarMenu2">
           <li><a href="/">품앗이 신청</a></li>
           <li><a href="/">냥품나눔</a></li>
@@ -18,7 +18,7 @@
           <button id="loginBtn" onclick="location.href='/login'">로그인</button>
           <button id="signupBtn" onclick="location.href='/signUp'">회원가입</button>
         </div>
-      <%} else{%>
+      <%} else { %>
         <ul class="navbarMenu">
           <li><a href="/">품앗이 신청</a></li>
           <li><a href="/">냥품나눔</a></li>
@@ -26,12 +26,29 @@
         </ul>
 
         <div class="navbarButton">
-          <button id="mypageBtn" onclick="location.href=''">마이 페이지</button>
-          <button id="logoutBtn" onclick="location.href=''">로그아웃</button>
+          <button id="mypageBtn" onclick="location.href='/user/myPage'">마이 페이지</button>
+          <button id="logoutBtn" onclick="logout()">로그아웃</button>
         </div>
-      <%}%>
+      <% } %>
   
   </nav>
   
   
 </header>
+
+<script>
+  function logout() {
+      $.ajax({
+          type: 'POST',
+          url: '/auth/logout',
+          success: function (response) {
+              alert(response.message);
+              window.location.href = '/';
+          },
+          error: function (response) {
+              alert(response.responseJSON.message);
+              window.location.reload();
+          },
+      });
+  }
+</script>

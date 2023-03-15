@@ -12,12 +12,10 @@ import {
 import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
-import { UserInfo } from './user.info.decorator';
 import { UsersService } from './users.service';
-import { Request } from 'express';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
 
-@Controller('user')
+@Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -35,7 +33,7 @@ export class UsersController {
   // 유저 정보 조회
   @Get('/mypage')
   getUser(@Req() req) {
-    return this.usersService.getUserById(req.user);
+    return this.usersService.getUserById(req.userId);
   }
 
   // 유저 정보 수정
@@ -45,20 +43,20 @@ export class UsersController {
     @Param('id') userId: number,
     @Body() data: UpdateMypageDto
   ) {
-    return this.usersService.updateUserById(req.user, userId, data);
+    return this.usersService.updateUserById(req.userId, userId, data);
   }
 
   // 유저 정보 삭제
   @Delete('/mypage/:id')
   deleteUserInfo(@Req() req, @Param('id') userId: number) {
-    return this.usersService.deleteUserById(req.user, userId);
+    return this.usersService.deleteUserById(req.userId, userId);
   }
 
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
   getAllUser(@Req() req) {
-    return this.usersService.getUserByStatus(req.user);
+    return this.usersService.getUserByStatus(req.userId);
   }
 
   // 가입 신청 승인 API
@@ -68,18 +66,18 @@ export class UsersController {
     @Param('id') userId: number,
     @Body() data: UpdateMemberDto
   ) {
-    return this.usersService.accessMember(req.user, userId, data);
+    return this.usersService.accessMember(req.userId, userId, data);
   }
 
   // 일반 회원 목록 조회 API
   @Get('/admin/member')
   getMember(@Req() req) {
-    return this.usersService.getAllMember(req.user);
+    return this.usersService.getAllMember(req.userId);
   }
 
   // 전체 회원 삭제 API
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
-    return this.usersService.deleteMemberById(req.user, userId);
+    return this.usersService.deleteMemberById(req.userId, userId);
   }
 }

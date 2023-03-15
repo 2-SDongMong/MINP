@@ -20,12 +20,7 @@ import { UsersService } from 'src/users/users.service';
       inject: [ConfigService],
     }),
   ],
-  providers: [
-    AuthService,
-    AtStrategiest,
-    RtStrategiest,
-    UsersService,
-  ],
+  providers: [AuthService, AtStrategiest, RtStrategiest, UsersService],
   controllers: [AuthController],
   exports: [AuthService],
 })

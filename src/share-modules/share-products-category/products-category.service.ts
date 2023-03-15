@@ -1,26 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateProductCategoryDto } from './dto/create-share-product-category.dto';
-import { ProductCategory } from './entities/product-category.entity';
+import { ProductsCategoryDto } from './dto/share-product-category.dto';
+import { ProductsCategory } from './entities/products-category.entity';
 
 @Injectable()
 export class ProductsCategoryService {
   constructor(
-    @InjectRepository(ProductCategory)
-    private readonly productCategoryRepository: Repository<ProductCategory>
+    @InjectRepository(ProductsCategory)
+    private readonly productsCategoryRepository: Repository<ProductsCategory>
   ) {}
 
   async create(
-    createProductCategoryDto: CreateProductCategoryDto
-  ): Promise<ProductCategory> {
-    const newProductCategory = this.productCategoryRepository.create(
-      createProductCategoryDto
-    );
-    return await this.productCategoryRepository.save(newProductCategory);
+    productsCategoryDto: ProductsCategoryDto
+  ): Promise<ProductsCategory> {
+    const newProductsCategory =
+      this.productsCategoryRepository.create(productsCategoryDto);
+    return await this.productsCategoryRepository.save(newProductsCategory);
   }
 
-  async findAll(): Promise<ProductCategory[]> {
-    return await this.productCategoryRepository.find();
+  async findAll(): Promise<ProductsCategory[]> {
+    return await this.productsCategoryRepository.find();
   }
 }

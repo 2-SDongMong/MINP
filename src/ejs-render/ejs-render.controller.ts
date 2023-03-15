@@ -1,12 +1,19 @@
 import { Controller, Get, Render, Req, Res } from '@nestjs/common';
-import { Response } from 'express';
+import { PostsService } from 'src/posts/posts.service';
+import { RequestsService } from 'src/requests/requests.service';
 
 @Controller()
 export class EjsRenderController {
+  constructor(
+    private readonly requestsService: RequestsService,
+    private readonly postsService: PostsService
+  ) {}
+
   @Get('/')
   @Render('index')
-  index(@Req() req): { components: string; user: string } {
-    return { components: 'main', user: '1' };
+  main(@Req() req) {
+    console.log('/ GET, req.userId: ', req.userId);
+    return { components: 'main', userId: req.userId };
   }
 
   @Get('/signUp')
@@ -17,74 +24,79 @@ export class EjsRenderController {
 
   @Get('/user/mypage')
   @Render('index')
-  // FIXME: 로그인 페이지 완성 돼서 토큰값 받아오게 되면 수정하기
-  myPage(@Req() req): { components: string; user: string } {
-    return { components: 'myPage', user: '1' };
+  myPage(@Req() req) {
+    return { components: 'myPage', user: req.user };
   }
 
   @Get('')
   @Render('index')
-  admin(@Req() req): { components: string } {
+  admin(@Req() req) {
     return { components: 'admin' };
   }
 
-  @Get('')
+  @Get('/login')
   @Render('index')
-  requestList(@Req() req): { components: string } {
-    return { components: 'requestList' };
+  login(@Req() req) {
+    return { components: 'login', userId: req.userId };
+  }
+
+  @Get('/request/list')
+  @Render('index')
+  requestList(@Req() req) {
+    return { components: 'requestList', userId: req.userId };
   }
 
   @Get('')
   @Render('index')
-  requestDetail(@Req() req): { components: string } {
+  requestDetail(@Req() req) {
     return { components: 'requestDetail' };
   }
 
   @Get('')
   @Render('index')
-  requestPost(@Req() req): { components: string } {
+  requestPost(@Req() req) {
     return { components: 'requestPost' };
   }
 
   @Get('')
   @Render('index')
-  shareList(@Req() req): { components: string } {
+  shareList(@Req() req) {
     return { components: 'shareList' };
   }
 
   @Get('')
   @Render('index')
-  shareDetail(@Req() req): { components: string } {
+  shareDetail(@Req() req) {
     return { components: 'shareDetail' };
   }
 
   @Get('')
   @Render('index')
-  sharePost(@Req() req): { components: string } {
+  sharePost(@Req() req) {
     return { components: 'sharePost' };
   }
 
   @Get('')
   @Render('index')
-  boardList(@Req() req): { components: string } {
+  boardList(@Req() req) {
     return { components: 'boardList' };
   }
 
   @Get('')
   @Render('index')
-  boardDetail(@Req() req): { components: string } {
+  boardDetail(@Req() req) {
     return { components: 'boardDetail' };
   }
 
   @Get('')
   @Render('index')
-  boardPost(@Req() req): { components: string } {
+  boardPost(@Req() req) {
     return { components: 'boardPost' };
   }
 
   @Get('')
   @Render('index')
-  message(@Req() req): { components: string } {
+  message(@Req() req) {
     return { components: 'message' };
   }
 }

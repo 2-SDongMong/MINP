@@ -4,8 +4,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PromiseResult } from 'aws-sdk/lib/request';
 
-// sharp
-
 @Injectable()
 export class S3Service {
   private readonly awsS3: AWS.S3;

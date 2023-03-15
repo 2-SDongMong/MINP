@@ -1,16 +1,407 @@
-/* Body */
-.bodyContent1 {
-  width: auto;
-  height: 800px;
+li {
+  list-style: none;
 }
 
+p {
+  margin: 0px 0px 0px 0px;
+  cursor: pointer;
+}
+/* 품앗이 섹션 */
+.bodyContent1 {
+  width: auto;
+  height: 1000px;
+}
+/* 품앗이 타이틀 */
+.contentTitle1 {
+  font-family: Nanum Gothic;
+  font-weight: bold;
+  font-size: 2rem;
+  width: auto;
+  text-align: center;
+  margin-top: 135px;
+}
+/* 위치정보 */
+.contentSub1 {
+  margin-top: 60px;
+}
+
+.locationContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.location {
+  font-family: Nanum Gothic;
+  font-weight: bold;
+  color: #222222;
+  width: auto;
+  margin-left: 210px;
+}
+
+.locationDetail {
+  font-family: Nanum Gothic;
+  color: #222222;
+  width: auto;
+  margin-right: 1070px;
+}
+
+.page {
+  font-size: 20px;
+  font-weight: bold;
+  color: #222222;
+  margin-right: 220px;
+}
+
+/* 품앗이 카드 캐러셀 */
+.slideWarpper1{
+  position: relative;
+  overflow: hidden;
+  height: 740px;
+  width: 1330px;
+  margin: 0 auto;
+}
+
+.slides1 {
+  position: absolute;
+  left: 0; top: 0;
+  transition: left 0.5s ease-out;
+}
+
+.slides1 li:not(:last-child) {
+  float: left;
+  margin-right: 40px;
+}
+
+/* 품앗이 card */
+.catCard {
+  margin-top: 10px;
+  width: 610px;
+  height: 720px;
+  background-color: #FBF7EC;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.status { 
+  font-family: Nanum Gothic;
+  color: #222222;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20PX;
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.imgContainer {
+  width: 610px;
+  height: 550px;
+  background-color: thistle;
+  border-radius: 20px 20px 0px 0px;
+  background-image: url('https://post-phinf.pstatic.net/MjAyMDA5MjJfMjMg/MDAxNjAwNzYwMjU0MDY4.KTTFulC4Cx62e4ytINV9lFs4U9J0OyzCNtk1x9AtFyYg.v94-zgRkFUF4R4MyCYhT0_FLMaFUhxZTKTCMfQ9_rM0g.JPEG/shutterstock_631128263.jpg?type=w1200');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.catInfo {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  margin: 10px 0px 0px 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F0DBAE;
+  color: #a59373;
+  width: 60px;
+  height: 30px;
+  border-radius: 20px;
+}
+
+.periodContainer {
+  display: flex;  
+}
+
+.periodDetail {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+  margin: 10px 0px 0px 0px;
+  width: 238px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nameContainer {
+  display: flex;
+}
+
+.catName {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+  margin: 10px 0px 0px 0px;
+  width: 50px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ageContainer {
+  display: flex;
+  margin-right: 220px;
+}
+
+.catAge {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+  margin: 10px 0px 0px 0px;
+  width: 17px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.characterContainer {
+  display: flex;
+}
+
+.catCharacter {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+  margin: 10px 0px 0px 0px;
+  width: 423px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.more {
+  display: flex;
+  justify-content: flex-end;
+  width: 350px;
+  margin-left: 250px;
+}
+
+.moreBtn {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  color: #a59373;
+  margin-top: 17px;
+  background-color: #FBF7EC;
+  border: none;
+  width: auto;
+  padding: auto;
+}
+
+/* 나눔 섹션 */
 .bodyContent2 {
   background-color: #fcf7ee;
   width: auto;
-  height: 770px;
+  height: 820px;
 }
 
+.contentTitle2 {
+  font-family: Nanum Gothic;
+  font-weight: bold;
+  font-size: 2rem;
+  width: auto;
+  text-align: center;
+  padding-top: 140px;
+}
+
+#section2 {
+  margin-top: 70px;
+}
+
+/* 캐러셀 */
+.slideWarpper2{
+  position: relative;
+  overflow: hidden;
+  height: 385px;
+  width: 1330px;
+  margin: 0 auto;
+}
+
+.slides2 {
+  position: absolute;
+  left: 0; top: 0;
+  transition: left 0.5s ease-out;
+}
+
+.slides2 li:not(:last-child) {
+  float: left;
+  margin-right: 30px;
+}
+
+/* 나눔 카드 */
+.slideWarpper2 {
+  margin-top: 10px;
+}
+
+.shareCard {
+  margin-top: 10px;
+  width: 410px;
+}
+
+.imgContainer2 {
+  width: 410px;
+  height: 240px;
+  background-color: thistle;
+  border-radius: 20px 20px 20px 20px;
+  background-image: url('https://contents.lotteon.com/itemimage/_v094830/LO/20/31/04/58/57/_2/03/10/45/85/8/LO2031045857_2031045858_1.jpg/dims/optimize/dims/resizemc/400x400');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;  
+}
+
+.status2 {
+  font-family: Nanum Gothic;
+  color: #222222;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20PX;
+  width: 80px;
+  height: 40px;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.shareContainer {
+  display: flex;
+}
+
+.shareInfo {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  margin: 10px 0px 0px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F0DBAE;
+  color: #a59373;
+  width: 60px;
+  height: 30px;
+  border-radius: 20px;
+}
+
+#item {
+  margin-left: 5px;
+}
+
+.postContainer {
+  margin-top: 15px;
+}
+
+.shareTitle {
+  font-family: Nanum Gothic;
+  font-size: 19px;
+  color: #222222;
+  font-weight: bold;
+}
+
+.shareContent {
+  font-family: Nanum Gothic;
+  color: #222222;
+  margin-top: 10px;
+}
+
+.shareMore {
+  display: flex;
+  justify-content: flex-end;
+  width: 350px;
+  margin-left: 1127px;
+  margin-top: 20px;
+}
+
+.showMoreBtn {
+  font-family: Nanum Gothic;
+  font-size: 17px;
+  color: #a59373;
+  margin-top: 17px;
+  background-color: #FBF7EC;
+  border: none;
+  width: auto;
+  padding: auto;
+}
+
+/* 게시판 섹션 */
 .bodyContent3 {
   width: auto;
   height: 770px;
+}
+
+#boardTitle {
+  margin-top: -30px;
+}
+
+#boardBtn {
+  background-color: white;
+}
+
+.boardTable {
+  margin-top: 10px;
+}
+
+.boardView {
+  font-family: Nanum Gothic;
+  margin: auto;
+  border-top: #a59373 2px solid;
+  border-bottom: #a59373 1px solid;
+  width: 1330px;
+}
+
+th {
+  width: 20px;
+  text-align: left;
+}
+
+td {
+  height: 60px;
+  text-align: left;
+}
+
+.shortContent {
+  width: 150px;
+  font-weight: bold;
+}
+.longContent{
+  width: 875px;
+}
+
+#table2 {
+  border-top: none;
+}
+
+#table3 {
+  border-top: none;
+}
+
+#table4 {
+  border-top: none;
+}
+
+#table5 {
+  border-top: none;
+}
+
+#table6 {
+  border-top: none;
+  border-bottom: #a59373 2px solid;
 }
