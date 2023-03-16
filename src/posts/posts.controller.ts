@@ -15,6 +15,10 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
+<<<<<<< HEAD
+=======
+import { DeletePostDto } from './dto/delete-post.dto';
+>>>>>>> dc616f92d4726b2deaaa6099a0ed27e2691be695
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
 
