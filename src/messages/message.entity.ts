@@ -30,10 +30,7 @@ export class Message {
   created_at: Date;
 
   @DeleteDateColumn()
-  sender_deleted_at: Date | null;
-
-  @DeleteDateColumn()
-  recipient_deleted_at: Date | null;
+  deleted_at: Date | null;
 
   @ManyToOne(() => User, (user) => user.send_messages, { cascade: true })
   @JoinColumn({ name: 'sender_id' })

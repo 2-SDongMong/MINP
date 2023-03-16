@@ -1,12 +1,13 @@
 import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
-
+import { MessagesService } from 'src/messages/messages.service'
 @Controller()
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
+    private readonly messagesService: MessagesService
   ) {}
 
   @Get('/')
@@ -23,8 +24,8 @@ export class EjsRenderController {
 
   @Get('/signUp')
   @Render('index')
-  signUp(@Req() req) {
-    return { components: 'signUp', userId: req.userId };
+  signUp(@Req() req){
+    return { components: 'signUp', userId: req.userId  };
   }
 
   @Get('/user/mypage')
@@ -44,6 +45,7 @@ export class EjsRenderController {
   login(@Req() req) {
     return { components: 'login', userId: req.userId };
   }
+
 
   @Get('/request/list')
   @Render('index')
@@ -105,9 +107,18 @@ export class EjsRenderController {
     return { components: 'boardPost' };
   }
 
-  @Get('')
+  @Get('/message/:type')
   @Render('index')
-  message(@Req() req) {
-    return { components: 'message' };
+  async receivedMessages(@Req() req,@Param('type') messageType:string) {
+    let messages
+    if(messageType=='received'){
+      messages = await this.messagesService.getReceivedMessages(req.userId);
+    } else if(messageType=='sent'){
+      messages = await this.messagesService.getSentMessages(req.userId);
+    } else{
+      messages = await this.messagesService.getUnreadMessages(req.userId);
+    }
+
+    return { components: 'message', userId: req.userId, messages };
   }
 }

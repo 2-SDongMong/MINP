@@ -9,5 +9,6 @@ import { MessagesRepository } from './messages.repository';
   imports: [TypeOrmModule.forFeature([Message])],
   controllers: [MessagesController],
   providers: [MessagesService, MessagesRepository],
+  exports: [MessagesService],
 })
 export class MessagesModule {}
