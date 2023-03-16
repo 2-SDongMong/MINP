@@ -90,10 +90,18 @@ export class AppModule implements NestModule {
       { path: 'message', method: RequestMethod.ALL },
       { path: 'messages/sent', method: RequestMethod.GET },
       { path: 'messages/received', method: RequestMethod.GET },
+      { path: 'messages/unread', method: RequestMethod.GET },
+      { path: 'messages/:id', method: RequestMethod.GET },
+      { path: 'user/mypage/:id', method: RequestMethod.ALL },
+      { path: 'user/admin', method: RequestMethod.ALL },
+      { path: 'user/admin/member', method: RequestMethod.ALL },
+      { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+      { path: 'message', method: RequestMethod.ALL },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
       // { path: 'views/.', method: RequestMethod.GET }
       EjsRenderController
     );
+    
   }
 }

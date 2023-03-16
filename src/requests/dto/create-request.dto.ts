@@ -5,5 +5,8 @@ export class CreateRequestDto {
   readonly detail: string;
 
   @IsDateString()
-  readonly reserved_time: Date;
+  readonly reserved_begin_date: Date;
+
+  @IsDateString()
+  readonly reserved_end_date: Date;
 }

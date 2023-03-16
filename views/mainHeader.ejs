@@ -9,24 +9,26 @@
     </div>
         <%if (!userId) {%>
           <ul class="navbarMenu">
-            <li><a href="/">품앗이 신청</a></li>
+            <li><a href="/request/list">품앗이 신청</a></li>
             <li><a href="/">냥품나눔</a></li>
             <li><a href="/">자유게시판</a></li>
           </ul>
   
           <div class="navbarButton">
+            
             <button id="loginBtn" onclick="location.href='/login'">로그인</button>
             <button id="signupBtn" onclick="location.href='/signUp'">회원가입</button>
           </div>
         <%} else{%>
           <ul class="navbarMenu">
-            <li><a href="/">품앗이 신청</a></li>
+            <li><a href="/request/list">품앗이 신청</a></li>
             <li><a href="/">냥품나눔</a></li>
             <li><a href="/">자유게시판</a></li>
           </ul>
   
           <div class="navbarButton">
-            <button id="mypageBtn" onclick="location.href='/mypage'">마이 페이지</button>
+            <button id="messageBtn" onclick="location.href='/message/received'">쪽지함</button>
+            <button id="mypageBtn" onclick="location.href='user/myPage'">마이 페이지</button>
             <button id="logoutBtn" onclick="logout()">로그아웃</button>
           </div>
         <%}%>

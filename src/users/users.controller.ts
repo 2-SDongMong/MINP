@@ -19,7 +19,7 @@ import { UpdateMemberDto } from './dto/update-member-status.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('/signup')
+  @Post('/signUp')
   async createUser(@Body() dto: CreateUserDto) {
     return await this.usersService.create(dto);
   }
