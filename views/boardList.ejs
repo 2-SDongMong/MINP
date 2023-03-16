@@ -8,7 +8,7 @@
     <!-- board list area -->
     <div id="board-list">
         <div class="container">
-            <table class="board-table">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col" class="th-num">번호</th>
@@ -19,45 +19,64 @@
                </tr>
                 </thead>
             <tbody>
-                <% for (let i = 0; i < posts.length ; i++) {
-                    const post = posts[i];
+                <% for (let i = 0; i < posts.data.length ; i++) {
+                    const post = posts.data[i];
                     const created_at = post.created_at.toLocaleString(); %>
                 
                 <tr>
-                    <td><%= post.post_id %></td>
+                    <td scope="row"><%= post.post_id %></td>
                     <td><a href="#!"><%= post.category %></a></td> 
-                    <th>
-                        <a href="#!"><%= post.title %></a>
-                    </th>
-                    <td><%= post.user.nickname %></td>
+                    <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
+                    <td><%= post.user_id %></td>
                     <td><%= created_at %></td>
                 </tr>
                 <% } %>
                 </tbody>
             </table>
+
         </div>
     </div>
 
-    <!-- board seach area -->
-    <div id="board-search">
-        <div class="container">
-            <div class="search-window">
-                <form action="">
-                    <div class="search-wrap">
-                        <label for="search" class="blind">공지사항 내용 검색</label>
-                        <input id="search" type="search" name="" placeholder="검색어를 입력해주세요." value="">
-                        <button type="submit" class="btn btn-dark">검색</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+    <div class="pgn">
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <% for (let i = 1; i < posts.meta.last_Page ; i++) {
+                const post = posts.data[i];
+                const created_at = post.created_at.toLocaleString(); %>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <% } %>
+
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+        </nav>
     </div>
-   
+    <a href='/boardWrite' class="btn btn-success">글쓰기</a>
+
+    
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand">검색</a>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+    </nav>  
   
 </section>
 
 <script>
-    $(document).ready(fuction() {
+    $(document).ready(function() {
         viewBoardLists();
     });
 
@@ -67,12 +86,11 @@
             url: '/posts',
             success: function (response) {
                 
-
             },
-            error: function (response) {
+            error: function (err) {
                 console.log(response.responseJSON.message);
             }
-        })
+        });
     }
 
 </script>

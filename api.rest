@@ -169,9 +169,9 @@ Content-type: application/json
 //Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
 
 {
-    "title": "230314 테스트",
-    "category": "병원",
-    "content" : "테스트"
+    "title": "삭제용1",
+    "category": "자랑",
+    "content" : "삭제용으로 만든 글"
 }
 
 ###

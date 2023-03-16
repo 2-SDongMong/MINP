@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -26,14 +27,19 @@ export class PostsController {
   // 서비스 주입
   constructor(
     private readonly postsService: PostsService,
-    //private readonly userService: UsersService
     ) {}
 
   private logger = new Logger('PostsController');
 
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
-  async getPosts(@Query('page') page: number = 1) {
+  // async getPosts() {
+  //   this.logger.debug(`getPosts()`);
+  //   return await this.postsService.getPosts();
+  // }
+
+  //페이지네이션
+    async getPosts(@Param('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
     return await this.postsService.getPosts(page);
   }
@@ -54,37 +60,36 @@ export class PostsController {
   }
 
   // 게시물 작성
-  @Post()
+  @Post('/wirte')
   @UsePipes(ValidationPipe)
-  createPost(@Param('id') userId: number, @Body() data: CreatePostDto) {
+  createPost(@Req() req, @Body() data: CreatePostDto) {
     return this.postsService.createPost(
-      userId,
+      req.userId, 
       data.title,
       data.category,
-      data.content
-      // data,
-      // this.UsersService,
+      data.content,
     );
   }
 
   // 게시물 수정
   @Patch('/:id')
   @UsePipes(ValidationPipe)
-  async updatePost(@Param('id') postId: number, @Body() data: UpdatePostDto) {
+  updatePost(@Req() req, @Param('id') postId: number, @Body() data: UpdatePostDto) {
     this.logger.debug(`UpdatePostDto() : ${UpdatePostDto}`);
-    return await this.postsService.updatePost(
+    return this.postsService.updatePost(
+      req.userId,
       postId,
       data.title,
       data.category,
-      data.content
+      data.content,
     );
   }
 
   // 게시글 삭제
   @Delete('/:id')
   @UsePipes(ValidationPipe)
-  async deletePost(@Param('id', ParseIntPipe) postId: number, @Body() data: DeletePostDto) {
-    this.logger.debug(`deletePost()`);
-    return await this.postsService.deletePost(postId);
+  async deletePost(@Req() req, @Param('id', ParseIntPipe) postId: number) {
+    this.logger.debug(`deletePost() : ${postId}`);
+    return await this.postsService.deletePost(req.userId, postId);
   }
 }

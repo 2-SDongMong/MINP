@@ -10,7 +10,4 @@ export class CreatePostDto {
 
   @IsString()
   readonly content?: string;
-
-  @IsNumber()
-  readonly user_id: number;
 }

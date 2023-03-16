@@ -1,4 +1,5 @@
-import { Controller, Get, Render, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query, Render, Req, Res } from '@nestjs/common';
+import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 
@@ -6,7 +7,7 @@ import { RequestsService } from 'src/requests/requests.service';
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
-    private readonly postsService: PostsService
+    private readonly postsService: PostsService,
   ) {}
 
   @Get('/')
@@ -78,21 +79,34 @@ export class EjsRenderController {
 
   @Get('boardList')
   @Render('index')
-  async boardList(@Req() req) {
-    const posts = await this.postsService.getPosts();
+  async boardList(@Req() req, @Query('page') pageNum: number) {
+    const posts = await this.postsService.getPosts(pageNum);
+    console.log(posts);
     return { components: 'boardList', userId: req.userId, posts };
   }
 
-  @Get('')
+  @Get('boardDetail/:id')
   @Render('index')
-  boardDetail(@Req() req) {
-    return { components: 'boardDetail' };
+  async boardDetail(@Req() req, @Param('id') postId: number) {
+    const post = await this.postsService.getPostById(postId);
+    return { components: 'boardDetail', userId: req.userId, post };
   }
 
-  @Get('')
+  //글쓰기버튼을 누르면 글쓰기페이지가 나오게
+  @Get('boardWrite')
   @Render('index')
-  boardPost(@Req() req) {
-    return { components: 'boardPost' };
+  boardWrite(@Req() req) {
+    // 카테고리 값을 글쓰기창 페이지 select에 넘기고 싶은데 값을 가져오는 방법을 모르겠음
+    return { components: 'boardWrite', userId: req.userId };
+  }
+  
+  //작성완료 버튼을 누르면 아래가 실행되어야 함
+  @Get('boardPost')
+  @Render('index')
+  async boardPost(@Req() req, @Body() data: CreatePostDto) {
+    const wirtePost = await this.postsService.createPost(req.userId, data.title, data.category, data.content );
+    console.log("넘어옴");
+    return { components: 'boardPost', wirtePost };
   }
 
   @Get('')

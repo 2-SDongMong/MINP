@@ -1,2 +1,59 @@
-<!-- 게시판 작성 페이지입니다!
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+<div class="container">
+
+    <form>
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" placeholder="title" id="postTitle">
+        </div>
+
+        <div class="form-group">
+            <label for="title">category:</label>
+            <select class="form-select" aria-label="Default select example" id="postCategory">
+                <option value="기타">기타</option>
+                <option value="병원">병원</option>
+                <option value="자랑">자랑</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="content">Content:</label>
+            <textarea class="form-control" rows="5" id="postContent"></textarea>
+        </div>
+        
+        <button onclick="postSave()" id="btn-save" class="btn btn-primary" type="button">작성완료</button>
+    </form>
+    <button class="btn btn-secondary" onclick="history.back()">글목록</button>
+</div>
+
+<script>
+	function postSave() {
+		const postTitle = $('#postTitle').val();
+		const postCategory = $('#postCategory').val();
+        const postContent = $('#postContent').val();
+
+		if (!postTitle) {
+		alert('제목을 입력해주세요.');
+		} else if (!postContent) {
+		alert('내용을 입력해주세요.');
+		} else {
+		$.ajax({
+			type: 'POST',
+			url: '/posts/wirte',
+			data: {
+                user_id : req.user_id,
+				title: postTitle,
+				category: postCategory,
+                content: postContent,
+			},
+			success: function (response) {
+				alert('글작성이 완료되었습니다.');
+
+				window.location.href = '/boardList?page=1';
+			},
+			error: function (err) {
+				alert(err.responseJSON.message);
+			},
+		});
+		}
+	}
+</script>

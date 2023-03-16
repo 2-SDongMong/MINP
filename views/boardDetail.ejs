@@ -1,2 +1,44 @@
-<!-- 게시판 상세보기 페이지입니다!
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+<div class="container">
+    <button class="btn btn-secondary" onclick="history.back()">글목록</button>
+    <% if (post.user_id == userId) { %>
+        <button id="btn-update" class="btn btn-warning" onclick="postDelete()" type="button">수정</button>
+        <button id="btn-delete" class="btn btn-danger" onclick="">삭제</button>
+    <% } %>
+    <br><br>
+
+    <div>
+        <h3><%= post.title %></h3>
+        <h5><%= post.category %></h5>
+    </div>
+    <hr />
+    <div>
+        <div>작성자: <%= post.user_id %></div>
+        <div><%= post.created_at.toLocaleString() %></div>
+    </div>
+    <hr />
+    <div>
+        <div><%= post.content %></div>
+    </div>
+    <br><br>
+</div>
+
+<script>
+    function postDelete() {
+        $.ajax({
+            type: "DELETE",
+            url: '/posts/:id',
+            data: {
+                userId,
+				post_id: post.post_id,
+			},
+            success: function (response) {
+                alert('삭제되었습니다.');
+                window.location.href = '/';
+            },
+            error: function (err) {
+                console.log(response.responseJSON.message);
+            }
+        });
+    }
+
+</script>

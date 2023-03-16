@@ -22,7 +22,8 @@ export class PostsService {
   async getPosts(page: number = 1) {
     this.logger.debug(`getPosts()`);
 
-    const take = 3;
+    // 페이지네이션 
+    const take = 10;
 
     const [posts, total] = await this.postsRepository.findAndCount({
       take,
@@ -36,15 +37,15 @@ export class PostsService {
         data: posts,
         meta: {
           total,
-          page,
-          last_Page: Math.ceil(total / take),
+          page: page <=0 ? page = 1 : page,
+          last_Page: last_Page,
         }
       }
     } else {
         throw new NotFoundException('해당 페이지는 존재하지 않습니다')
     }  
 
-    // 수정전2
+    //수정전2
     // return await this.postsRepository.find({
     //   //where: { deleted_at: null },
     //   relations: {
@@ -62,7 +63,7 @@ export class PostsService {
     //     category: true,
     //     content: true,
     //     created_at: true,
-      // },
+    //   },
 
       // 수정 전1
       // select: [
@@ -92,8 +93,7 @@ export class PostsService {
 
   async getPostById(post_id: number) {
     return await this.postsRepository.findOne({
-      // 조건확인으로 IsNull() 을 사용해도 될까? -> 일단 사용
-      where: { user_id: Not(IsNull()), post_id, deleted_at: IsNull() },
+      where: { post_id, deleted_at: IsNull() },
       select: [
         'user_id',
         'title',
@@ -110,8 +110,6 @@ export class PostsService {
     title: string,
     category: PostCategoryType,
     content: string
-    // data: CreatePostDto,
-    // usersService: UsersService,
   ) {
 
     this.postsRepository.insert({
@@ -120,51 +118,42 @@ export class PostsService {
       category,
       content,
     });
-
-    // this.postsRepository.insert({
-    //   //user_id: userId,
-    //   data,
-    //   usersService,
-    // });
   }
 
   async updatePost(
+    userId: number,
     id: number,
     title: string,
     category: PostCategoryType,
     content: string
   ) {
-    // await this.checkPassword(id, password); // 이건 비밀번호를 검증하는 기능.. 우린 아이디 비교를 해야한다.
+    const post = await this._existenceCheckById(id);
+    this._authorCheckByUserId(post.user_id, userId);
 
-    // 현재 아이디를 비교하는 방법..
-    // user_id 가 null 이 아니고, 글에 작성된 id와 현재 로그인된 id가 같다면
-    if (id === id) {
-      this.postsRepository.update(id, { title, category, content });
+    this.postsRepository.update(id, { title, category, content });
+  }
+
+  async deletePost(userId: number, postId: number) {
+    const post = await this._existenceCheckById(postId);
+    this._authorCheckByUserId(post.user_id, userId);
+    this.postsRepository.softDelete(postId);
+  }
+
+  private async _existenceCheckById(id: number) {
+    const post = await this.postsRepository.findOne({
+      where: { post_id: id },
+    });
+    if (_.isNil(post)) {
+      throw new NotFoundException(`Post article not found. id: ${id}`);
+    }
+    return post;
+  }
+
+  private async _authorCheckByUserId(authorId: number, userId: number) {
+    if (authorId !== userId) {
+      throw new UnauthorizedException(
+        `Unauthorized. user id: ${userId} not match with author id: ${authorId}`
+      );
     }
   }
-
-  async deletePost(id: number) {
-    //await this.checkPassword(id, password);
-
-    // 게시글을 작성한 유저 본인이 맞는 경우, 해당 Post 테이블에서 deletedAt 항목을 ‘null’에서 ‘삭제처리한 datetime’으로 수정
-    this.postsRepository.softDelete(id);
-  }
-
-  // user_id 가 null 이 아니고, 글에 작성된 id와 현재 로그인된 id가 같은지 검증하는 함수 구현
-
-  // private async checkPassword(id: number, password: number) {
-  //   const post = await this.postRepository.findOne({
-  //     where: { id, deletedAt: null },
-  //     select: ["password"],
-  //   });
-  //   if (_.isNil(post)) {
-  //     throw new NotFoundException(`post not found. id: ${id}`);
-  //   }
-
-  //   if (post.password !== password.toString()) {
-  //     throw new UnauthorizedException(
-  //       `post password is not correct. id: ${id}`
-  //     );
-  //   }
-  // }
 }
