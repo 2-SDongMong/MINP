@@ -49,7 +49,6 @@ export class AuthService {
   //
   async sendMail(email) {
     try {
-      console.log(email)
       const authNumber = Math.random().toString(36).slice(2);
       const transport = nodemailer.createTransport({
         service: 'gmail',

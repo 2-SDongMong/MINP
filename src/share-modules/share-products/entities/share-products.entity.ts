@@ -20,8 +20,10 @@ export class Products {
   description: string;
   @Column({ default: false })
   isTrade: boolean;
+
   @Column({ nullable: true })
   imageUrl: string;
+
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
   productsTradeLocation: ProductsTradeLocation[];
   @ManyToOne(() => ProductsCategory, { eager: true })
@@ -29,8 +31,10 @@ export class Products {
   @ManyToOne(() => User, (user) => user.products, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
   createdAt: Date;
+
   @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
   deletedAt: Date | null;
 }
