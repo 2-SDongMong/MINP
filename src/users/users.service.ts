@@ -86,12 +86,12 @@ export class UsersService {
     return await this.userRepository.findOne({
       where: { user_id: id },
       select: [
+        'user_id',
         'email',
         'name',
         'nickname',
         'address',
         'phone_number',
-        'password',
         'status',
       ],
     });
@@ -108,7 +108,7 @@ export class UsersService {
         phone_number,
       });
       return '회원정보 수정이 완료되었습니다.';
-    } else {
+      } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
   }
