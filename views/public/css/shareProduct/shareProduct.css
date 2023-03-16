@@ -5,13 +5,28 @@ body {
 
 #productForm {
   background-color: #fff;
-  max-width: 100vh;
+  max-width: 90vh;
   margin: 50px auto;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 100px;
 }
 
+.sp_nav {
+  background-color: #b8b0a2;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sp_nav-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin-left: 20px;
+  transition: color 0.3s;
+}
 textarea,
 input,
 select {

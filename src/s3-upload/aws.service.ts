@@ -21,6 +21,12 @@ export class AwsService {
     folder: string,
     file: Express.Multer.File
   ): Promise<string> {
+    if (!file || !file.originalname) {
+      throw new BadRequestException(
+        'File upload failed: Missing or incomplete file data'
+      );
+    }
+    console.log('Received file:', file);
     try {
       const key = `${folder}/${Date.now()}_${path.basename(
         file.originalname
