@@ -28,10 +28,10 @@ export class EjsRenderController {
     return { components: 'signUp', userId: req.userId  };
   }
 
-  @Get('/user/mypage')
+  @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', user: req.user };
+    return { components: 'myPage', userId: req.userId, user: req.user };
   }
 
   @Get('')

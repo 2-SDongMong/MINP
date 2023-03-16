@@ -3,7 +3,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email":"minp-admin1@gmail.com",
+  "email":"0003@gmail.com",
   "password":"0000"
 }
 ### 로그아웃
@@ -11,13 +11,13 @@ POST http://localhost:3000/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpbCI6Im1pbnAtYWRtaW4xQGdtYWlsLmNvbSIsImlhdCI6MTY3ODUzMzEwMCwiZXhwIjoxNjc4NjE5NTAwfQ.f-v2PxwizugCdXFaHH2h6AtfzGStrPzR0lzJix__S6o
 
 ### 회원가입
-POST http://localhost:3000/user/signup
+POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email":"0000@gmail.com",
-  "name": "삭제용",
-  "nickname":"김삭제",
+  "email":"0003@gmail.com",
+  "name": "테스트",
+  "nickname":"김테스트3",
   "address":"경기도 고양시 고양구 고양동",
   "password":"0000",
   "phone_number":"010-0000-0000",
@@ -54,18 +54,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpb
 ### cat 정보 생성하기
 POST http://localhost:3000/cats
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc4OTA1NTU5LCJleHAiOjE2Nzg5OTE5NTl9.3J46iG6po18Wielmpn3dy_dvjka8EQEYJDVAVCZk3P8
 
 {
-      "name": "뭉치",
-      "age":  8,
-      "gender": "남",
-      "neutered": true,
+      "name": "몽키",
+      "age":  1,
+      "gender": "여",
+      "neutered": false,
       "image": "", 
       "character": "잠이 많고 사람을 좋아합니다. 장난감을 좋아해요."
 }
 
-### cat 정보 생성하기
+### cat 정보 수정하기
 PATCH  http://localhost:3000/cats/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I

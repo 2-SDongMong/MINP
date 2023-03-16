@@ -367,17 +367,14 @@ p {
   width: 1330px;
 }
 
-th {
+.blank {
   width: 20px;
   text-align: left;
 }
 
-td {
+.shortContent {
   height: 60px;
   text-align: left;
-}
-
-.shortContent {
   width: 150px;
   font-weight: bold;
 }
