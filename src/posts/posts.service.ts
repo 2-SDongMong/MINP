@@ -6,9 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-//import { UsersService } from 'src/users/users.service';
 import { IsNull, Not, Repository } from 'typeorm';
-import { CreatePostDto } from './dto/create-post.dto';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -44,37 +42,6 @@ export class PostsService {
     } else {
         throw new NotFoundException('해당 페이지는 존재하지 않습니다')
     }  
-
-    //수정전2
-    // return await this.postsRepository.find({
-    //   //where: { deleted_at: null },
-    //   relations: {
-    //     user: {
-    //       cats: true,
-    //     },
-    //   },
-    //   select: {
-    //     user: {
-    //       user_id: true,
-    //       nickname: true,
-    //     },
-    //     post_id: true,
-    //     title: true,
-    //     category: true,
-    //     content: true,
-    //     created_at: true,
-    //   },
-
-      // 수정 전1
-      // select: [
-      //   'user_id',
-      //   'post_id',
-      //   'title',
-      //   'category',
-      //   'content',
-      //   'created_at',
-      // ],
-    // });
   }
 
   async getPostByCategory(postsCategory: PostCategoryType) {
@@ -138,6 +105,7 @@ export class PostsService {
     this._authorCheckByUserId(post.user_id, userId);
     this.postsRepository.softDelete(postId);
   }
+
 
   private async _existenceCheckById(id: number) {
     const post = await this.postsRepository.findOne({

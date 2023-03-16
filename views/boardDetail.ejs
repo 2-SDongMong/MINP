@@ -1,8 +1,8 @@
 <div class="container">
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
     <% if (post.user_id == userId) { %>
-        <button id="btn-update" class="btn btn-warning" onclick="postDelete()" type="button">수정</button>
-        <button id="btn-delete" class="btn btn-danger" onclick="">삭제</button>
+        <button id="btn-update" class="btn btn-warning" onclick="" type="button">수정</button>
+        <button id="btn-delete" class="btn btn-danger" onclick="postDelete(post.post_id)" type="button">삭제</button>
     <% } %>
     <br><br>
 
@@ -23,19 +23,25 @@
 </div>
 
 <script>
-    function postDelete() {
+    
+     function postDelete(postId) {
+
+        if (!postId) {
+			alert('아이디값 없음')
+			return;
+		}
+
         $.ajax({
             type: "DELETE",
             url: '/posts/:id',
             data: {
-                userId,
-				post_id: post.post_id,
+				postId: postId,
 			},
             success: function (response) {
                 alert('삭제되었습니다.');
                 window.location.href = '/';
             },
-            error: function (err) {
+            error: function (response) {
                 console.log(response.responseJSON.message);
             }
         });

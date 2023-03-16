@@ -15,12 +15,9 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
-import { DeletePostDto } from './dto/delete-post.dto';
-import { UpdatePostDto } from './dto/update-Post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
-//import { UserId } from 'src/auth/decorator/get-current-userid.decorator'; // 형집님
-//import { UserInfo } from 'src/users/user-info.decorator'; // 희서님
-//import { UsersService } from 'src/users/users.service';
+
 
 @Controller('posts')
 export class PostsController {
@@ -60,7 +57,7 @@ export class PostsController {
   }
 
   // 게시물 작성
-  @Post('/wirte')
+  @Post()
   @UsePipes(ValidationPipe)
   createPost(@Req() req, @Body() data: CreatePostDto) {
     return this.postsService.createPost(

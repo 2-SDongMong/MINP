@@ -32,28 +32,28 @@
         const postContent = $('#postContent').val();
 
 		if (!postTitle) {
-		alert('제목을 입력해주세요.');
+			alert('제목을 입력해주세요.');
+			return;
 		} else if (!postContent) {
-		alert('내용을 입력해주세요.');
+			alert('내용을 입력해주세요.');
+			return;
 		} else {
-		$.ajax({
-			type: 'POST',
-			url: '/posts/wirte',
-			data: {
-                user_id : req.user_id,
-				title: postTitle,
-				category: postCategory,
-                content: postContent,
-			},
-			success: function (response) {
-				alert('글작성이 완료되었습니다.');
-
-				window.location.href = '/boardList?page=1';
-			},
-			error: function (err) {
-				alert(err.responseJSON.message);
-			},
-		});
+			$.ajax({
+				type: 'POST',
+				url: '/posts',
+				data: {
+					title: postTitle,
+					category: postCategory,
+                	content: postContent,
+				},
+				success: function (response) {
+					alert('게시글이 작성되었습니다.');
+					window.location.href = '/boardList?page=1';
+				},
+				error: function (response) {
+					console.log(response.responseJSON.message);
+				},
+			});
 		}
 	}
 </script>

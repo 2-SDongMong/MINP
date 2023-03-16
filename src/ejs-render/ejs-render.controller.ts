@@ -14,7 +14,6 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    console.log('/ GET, req.userId: ', req.userId);
     const requests = await this.requestsService.getRequests();
     return {
       components: 'main',
@@ -105,21 +104,10 @@ export class EjsRenderController {
     return { components: 'boardDetail', userId: req.userId, post };
   }
 
-  //글쓰기버튼을 누르면 글쓰기페이지가 나오게
-  @Get('boardWrite')
-  @Render('index')
-  boardWrite(@Req() req) {
-    // 카테고리 값을 글쓰기창 페이지 select에 넘기고 싶은데 값을 가져오는 방법을 모르겠음
-    return { components: 'boardWrite', userId: req.userId };
-  }
-  
-  //작성완료 버튼을 누르면 아래가 실행되어야 함
   @Get('boardPost')
   @Render('index')
-  async boardPost(@Req() req, @Body() data: CreatePostDto) {
-    const wirtePost = await this.postsService.createPost(req.userId, data.title, data.category, data.content );
-    console.log("넘어옴");
-    return { components: 'boardPost', wirtePost };
+  async boardPost(@Req() req) {
+    return { components: 'boardPost', userId: req.userId };
   }
 
   @Get('/message/:type')
