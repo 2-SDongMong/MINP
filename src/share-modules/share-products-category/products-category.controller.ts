@@ -3,7 +3,7 @@ import { ProductsCategoryDto } from './dto/share-product-category.dto';
 import { ProductsCategory } from './entities/products-category.entity';
 import { ProductsCategoryService } from './products-category.service';
 
-@Controller('products-category')
+@Controller('productsCategory')
 export class ProductsCategoryController {
   constructor(
     private readonly productsCategoryService: ProductsCategoryService

@@ -1,2 +1,28 @@
 <!-- 나눔 게시판 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+
+<a class="nav-link" href="/shareProduct">상품 등록</a>
+
+<div class="container">
+  <div class="row">
+    <% products.forEach(product => { %>
+    <div class="col-md-4">
+      <div class="card my-3">
+        <a href="/shareDetail/<%= product.id %>">
+          <img
+            src="<%= product.imageUrl ? product.imageUrl : './public/img/무인냥품큰logo.png' %>"
+            class="card-img-top"
+            alt="<%= product.title %>"
+          />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="/shareDetail/<%= product.id %>"><%= product.title %></a>
+          </h5>
+          <p class="card-text"><%= product.description %></p>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+</div>

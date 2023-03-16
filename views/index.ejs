@@ -21,10 +21,16 @@
   <link rel="stylesheet" href="/css/request/list.css">
   <link rel="stylesheet" href="/css/request/detail.css">
   <link rel="stylesheet" href="/css/request/post.css">
+  <link rel="stylesheet" href="/css/shareProduct/shareProduct.css">
+  <link rel="stylesheet" href="/css/shareProduct/shareList.css">
 
   <!-- JS -->
   <script defer type="text/javascript" src="/js/main/main.js"></script>
+
+  <script defer type="text/javascript" src="/js/shareProduct/shareProduct.js"></script>
+
   <script defer type="text/javascript" src="/js/myPage/myPage.js"></script>
+
   
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -57,7 +63,7 @@
 
   <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
   <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
-  <% if (components === 'sharePost') { %> <%- include('sharePost.ejs') %> <% } %>
+  <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
 
   <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
   <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>

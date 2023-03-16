@@ -1,2 +1,19 @@
 <!-- 나눔글 상세보기 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
+    </div>
+    <div class="col-md-6">
+      <h2><%= product.title %></h2>
+      <p><%= product.description %></p>
+      <p>Category: <%= product.productsCategory.name %></p>
+      <p>
+        Location: <%= product.productsTradeLocation.city %>, <%=
+        product.productsTradeLocation.cityDetail %>
+      </p>
+    </div>
+  </div>
+</div>

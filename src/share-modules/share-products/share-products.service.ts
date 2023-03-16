@@ -1,7 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductsCategory } from '../share-products-category/entities/products-category.entity';
 import { Products } from './entities/share-products.entity';
 
 @Injectable()
@@ -25,8 +24,13 @@ export class ProductsService {
   }
 
   async create(createProductsDto) {
-    const { title, description, productsTradeLocation, productsCategoryId } =
-      createProductsDto;
+    const {
+      title,
+      description,
+      productsTradeLocation,
+      productsCategoryId,
+      imageUrl,
+    } = createProductsDto;
 
     // 데이터 유효성 검증
     if (
@@ -43,6 +47,7 @@ export class ProductsService {
       description,
       productsTradeLocation: { ...productsTradeLocation },
       productsCategory: { id: productsCategoryId },
+      imageUrl, // imageUrl 추가
     });
 
     return result;
