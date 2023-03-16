@@ -37,21 +37,21 @@ export class MessagesController {
   }
   @Get('/:id')
   async getMessageById(@Param('id') messageId, @Req() req) {
-    messageId=Number(messageId.replace(':',''))
+    messageId = Number(messageId.replace(':', ''));
     return await this.messagesService.getMessageById(messageId, req.userId);
   }
 
   @Post('/')
-  async createMessage(@Body() data: CreateMessageDto,@Req() req ) {
-    console.log("messagecontroller",data)
-    console.log("messagecontroller",req.userId)
+  async createMessage(@Body() data: CreateMessageDto, @Req() req) {
+    console.log('messagecontroller', data);
+    console.log('messagecontroller', req.userId);
     return await this.messagesService.createMessage(req.userId, data);
   }
 
   @Delete('/:id')
   async deleteMessageById(@Param('id') messageId) {
-    console.log("delete",messageId)
-    messageId=Number(messageId.replace(':',''))
+    console.log('delete', messageId);
+    messageId = Number(messageId.replace(':', ''));
     return this.messagesService.deleteMessageById(messageId);
   }
 }

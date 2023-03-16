@@ -7,7 +7,7 @@ import { MessagesRepository } from './messages.repository';
 export class MessagesService {
   constructor(private readonly repository: MessagesRepository) {}
   async getMessageById(id: number, userId: number) {
-    console.log(id)
+    console.log(id);
     const message = await this.repository.getMessageById(id);
 
     if (message.sender_id !== userId && message.read_at === null) {
@@ -20,10 +20,10 @@ export class MessagesService {
     return message;
   }
 
-  async getUnreadMessages(userId:number){
-      const message = await this.repository.getUnreadMessages(userId)
-      console.log(message)
-      return message;
+  async getUnreadMessages(userId: number) {
+    const message = await this.repository.getUnreadMessages(userId);
+    console.log(message);
+    return message;
   }
 
   async getMessages() {

@@ -41,7 +41,7 @@ export class AuthController {
 
   @Post('')
   async sendMail(@Body() body) {
-    console.log("con",body)
+    console.log('con', body);
     return await this.authService.sendMail(body.email);
   }
 

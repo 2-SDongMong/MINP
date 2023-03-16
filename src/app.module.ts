@@ -101,6 +101,5 @@ export class AppModule implements NestModule {
       // { path: 'views/.', method: RequestMethod.GET }
       EjsRenderController
     );
-    
   }
 }
