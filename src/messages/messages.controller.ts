@@ -43,14 +43,11 @@ export class MessagesController {
 
   @Post('/')
   async createMessage(@Body() data: CreateMessageDto, @Req() req) {
-    console.log('messagecontroller', data);
-    console.log('messagecontroller', req.userId);
     return await this.messagesService.createMessage(req.userId, data);
   }
 
   @Delete('/:id')
   async deleteMessageById(@Param('id') messageId) {
-    console.log('delete', messageId);
     messageId = Number(messageId.replace(':', ''));
     return this.messagesService.deleteMessageById(messageId);
   }

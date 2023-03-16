@@ -1,0 +1,25 @@
+<!-- 나눔 게시글 작성 페이지입니다!
+페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+<form id="productForm" action="/shareList" enctype="multipart/form-data">
+  <img
+    id="imagePreview"
+    src=""
+    alt="Image preview"
+    style="display: none; width: 100%; max-height: 300px; object-fit: contain"
+  />
+  <input type="file" id="imageInput" name="image" required />
+  <select id="categorySelect" name="categorySelect" required>
+    <option value="">상품의 카테고리를 골라주세요!</option>
+  </select>
+  <input type="text" name="city" placeholder="City" required />
+  <input type="text" name="cityDetail" placeholder="City Detail" required />
+  <input type="text" name="title" placeholder="Product title" required />
+  <textarea
+    name="description"
+    placeholder="Product description"
+    required
+    rows="5"
+  ></textarea>
+
+  <button type="submit">Submit</button>
+</form>

@@ -26,6 +26,7 @@ import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
 import { EmailService } from './email/email.service';
+import { AwsModule } from './s3-upload/aws.module';
 
 @Module({
   imports: [
@@ -69,7 +70,7 @@ import { EmailService } from './email/email.service';
     EjsRenderModule,
   ],
   controllers: [EjsRenderController],
-  // providers: [AuthMiddleware],
+  providers: [AwsModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
@@ -96,6 +97,9 @@ export class AppModule implements NestModule {
       { path: 'user/admin', method: RequestMethod.ALL },
       { path: 'user/admin/member', method: RequestMethod.ALL },
       { path: 'user/admin/member/:id', method: RequestMethod.ALL },
+      { path: 'posts', method: RequestMethod.POST },
+      { path: 'posts/:id', method: RequestMethod.PATCH },
+      { path: 'posts/:id', method: RequestMethod.DELETE },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
       // { path: 'views/.', method: RequestMethod.GET }
