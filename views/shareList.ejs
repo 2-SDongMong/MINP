@@ -1,28 +1,50 @@
+<link rel="stylesheet" href="/css/shareProduct/shareList.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap"
+  rel="stylesheet"
+/>
 <!-- 나눔 게시판 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+<nav class="sp_nav">
+  <a class="sp_nav-link" href="/shareList">상품조회</a>
+  <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+</nav>
+<div>
+  <div class="sp_share_top"><h1 id="sp_shareH">Sharing</h1></div>
 
-<a class="nav-link" href="/shareProduct">상품 등록</a>
-
-<div class="container">
-  <div class="row">
-    <% products.forEach(product => { %>
-    <div class="col-md-4">
-      <div class="card my-3">
-        <a href="/shareDetail/<%= product.id %>">
-          <img
-            src="<%= product.imageUrl ? product.imageUrl : './public/img/무인냥품큰logo.png' %>"
-            class="card-img-top"
-            alt="<%= product.title %>"
-          />
-        </a>
-        <div class="card-body">
-          <h5 class="card-title">
-            <a href="/shareDetail/<%= product.id %>"><%= product.title %></a>
-          </h5>
-          <p class="card-text"><%= product.description %></p>
+  <div class="sp_share-container">
+    <div class="row">
+      <% products.forEach(product => { %>
+      <div class="col-md-4">
+        <div class="sp_card my-3">
+          <a href="/shareDetail/<%= product.id %>">
+            <img
+              src="<%= product.imageUrl ? product.imageUrl : 'https://minp.s3.ap-northeast-2.amazonaws.com/product_images/1678968069841_%C3%A1%C2%84%C2%86%C3%A1%C2%85%C2%AE%C3%A1%C2%84%C2%8B%C3%A1%C2%85%C2%B5%C3%A1%C2%86%C2%AB%C3%A1%C2%84%C2%82%C3%A1%C2%85%C2%A3%C3%A1%C2%86%C2%BC%C3%A1%C2%84%C2%91%C3%A1%C2%85%C2%AE%C3%A1%C2%86%C2%B7%C3%A1%C2%84%C2%8F%C3%A1%C2%85%C2%B3%C3%A1%C2%86%C2%ABlogo.png'%>"
+              class="sp_card-img-top"
+              alt="<%= product.title %>"
+            />
+          </a>
+          <div class="sp_card-body">
+            <h5 class="sp_card-title">
+              <a href="/shareDetail/<%= product.id %>"><%= product.title %></a>
+            </h5>
+            <p class="sp_card-text"><%= product.description %></p>
+            <% if (product.productsCategoryId) { %>
+            <p class="sp_card-category">
+              카테고리: <%= products.productsCategory.name %>
+            </p>
+            <% } %>
+            <p class="sp_card-location">
+              지역: <%= product.productsTradeLocation.city %>, <%=
+              product.productsTradeLocation.cityDetail %>
+            </p>
+          </div>
         </div>
       </div>
+      <% }); %>
     </div>
-    <% }); %>
+    <div style="height: 50px"></div>
   </div>
 </div>

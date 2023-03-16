@@ -19,7 +19,7 @@ function loadCategories() {
 $(document).ready(function () {
   loadCategories();
 
-  $('#productForm').on('submit', function (event) {
+  $('#productForm').on('submit', async function (event) {
     event.preventDefault();
 
     let formData = new FormData(this);
@@ -27,18 +27,31 @@ $(document).ready(function () {
     const city = formData.get('city');
     const cityDetail = formData.get('cityDetail');
 
+    if (!city || !cityDetail || !categoryId) {
+      alert('모든 필드를 채워주세요.');
+      return;
+    }
+
     formData.delete('city');
     formData.delete('cityDetail');
 
-    formData.append(
-      'productsTradeLocation',
-      JSON.stringify({ city, cityDetail })
-    );
+    formData.append('city', city);
+    formData.append('cityDetail', cityDetail);
 
     if (categoryId) {
       formData.append('productsCategoryId', categoryId);
     }
 
+    const productsTradeLocation = {
+      city,
+      cityDetail,
+    };
+    formData.append(
+      'productsTradeLocation',
+      JSON.stringify(productsTradeLocation)
+    );
+
+    // 상품 생성 요청을 보냅니다.
     $.ajax({
       url: '/products/create',
       type: 'POST',
