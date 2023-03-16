@@ -36,33 +36,22 @@ export class MessagesController {
     return await this.messagesService.getSentMessages(req.userId);
   }
   @Get('/:id')
-  async getMessageById(@Param('id') messageId: number, @Req() req) {
+  async getMessageById(@Param('id') messageId, @Req() req) {
+    messageId=Number(messageId.replace(':',''))
     return await this.messagesService.getMessageById(messageId, req.userId);
   }
 
-  @Post()
-  async createMessage(@Req() req, @Body() data: CreateMessageDto) {
+  @Post('/')
+  async createMessage(@Body() data: CreateMessageDto,@Req() req ) {
+    console.log("messagecontroller",data)
+    console.log("messagecontroller",req.userId)
     return await this.messagesService.createMessage(req.userId, data);
   }
 
   @Delete('/:id')
-  async deleteMessageById(@Param('id') messageId: number) {
+  async deleteMessageById(@Param('id') messageId) {
+    console.log("delete",messageId)
+    messageId=Number(messageId.replace(':',''))
     return this.messagesService.deleteMessageById(messageId);
   }
-
-  //1 메시지 보내기 post
-  //from to
-
-  ////////메시지 모두 user_id 에 맞는거만 middleware에서 빼오고
-
-  //2 메시지 전체조회
-
-  //3 메시지 안읽은거 조회
-  //메시지 상태 안 읽음
-
-  //4 메시지 상세조회
-  //메시지 아이디 받아와서 조회
-
-  //5 메시지 삭제
-  //메시지 아이디 받아와서 삭제
 }

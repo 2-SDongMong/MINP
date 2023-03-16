@@ -25,8 +25,9 @@ export class MessagesRepository extends Repository<Message> {
     return message;
   }
 
-  async getReceivedMessages(recipientId: number): Promise<Partial<Message>[]> {
+  async getReceivedMessages(recipientId: number) {
     const messages = await this.createQueryBuilder('m')
+      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
       .addSelect(['sender.nickname', 'receiver.nickname'])
@@ -35,8 +36,9 @@ export class MessagesRepository extends Repository<Message> {
     return messages;
   }
 
-  async getSentMessages(senderId: number): Promise<Partial<Message>[]> {
+  async getSentMessages(senderId: number) {
     const messages = await this.createQueryBuilder('m')
+      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
       .addSelect(['sender.nickname', 'receiver.nickname'])
@@ -56,12 +58,11 @@ export class MessagesRepository extends Repository<Message> {
 
   async getUnreadMessages(userId:number){
     const messages = await this.createQueryBuilder('m')
-      .select(['m.content'])
+      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
       .addSelect(['sender.nickname', 'receiver.nickname'])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
-      .addSelect(['sender.nickname', 'receiver.nickname'])
-      .where("m.sender_id = :userId ", { userId })
+      .where("m.recipient_id = :userId ", { userId })
       .andWhere("m.read_at IS NULL" )
       .getMany()
 

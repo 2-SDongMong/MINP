@@ -56,8 +56,6 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string) {
-    console.log(email);
-
     return await this.userRepository.findOneBy({ email: email });
   }
   async findPassword(email: string) {
