@@ -37,12 +37,15 @@ export class RequestsService {
         updated_at: true,
         detail: true,
       },
+      order: {
+        updated_at: 'DESC',
+      },
     });
     return request;
   }
 
   async getRequestById(id: number) {
-    const request = await this.requestsRepository.findOne({
+    const request = await this.requestsRepository.find({
       where: { request_id: id },
       relations: {
         user: {
@@ -59,6 +62,7 @@ export class RequestsService {
             gender: true,
             neutered: true,
             image: true,
+            character: true,
           },
         },
         request_id: true,
