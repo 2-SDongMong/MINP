@@ -15,10 +15,6 @@ import {
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
-<<<<<<< HEAD
-=======
-import { DeletePostDto } from './dto/delete-post.dto';
->>>>>>> dc616f92d4726b2deaaa6099a0ed27e2691be695
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
 
@@ -48,7 +44,6 @@ export class PostsController {
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
   async getPostByCategory(@Param('category') postCategory: PostCategoryType) {
-    console.log(postCategory);
     return await this.postsService.getPostByCategory(postCategory);
   }
 
