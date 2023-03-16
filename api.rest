@@ -20,6 +20,7 @@ POST http://localhost:3000/cats
 Content-Type: application/json
 
 {
+
     "name": "화이트",
     "gender": "수",
     "neutered": true,
@@ -34,7 +35,7 @@ GET http://localhost:3000/requests
 
 ###
 
-GET http://localhost:3000/requests/26
+GET http://localhost:3000/requests/11
 
 ###
 
@@ -43,8 +44,9 @@ Content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 {
-    "reserved_time": "2023-04-23",
-    "detail": "순한 고양이 품앗이 부탁드려요"
+    "reserved_begin_date": "2023-04-27",
+    "reserved_end_date": "2023-04-27",
+    "detail": "reserved_time => reserved_begin/end_date으로 변경했습니다. 잘 되는지 우선 Rest Client 테스트 중. "
 }
 
 ###
@@ -52,7 +54,8 @@ PATCH http://localhost:3000/requests/23
 Content-Type: application/json
 
 {
-    "reserved_time": "2023-04-01",
+    "reserved_begin_date": "2023-04-01",
+    "reserved_end_date": "2023-04-01",
     "detail": "냥품 요청합니다~ new3!!"
 }
 

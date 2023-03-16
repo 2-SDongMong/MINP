@@ -1,2 +1,112 @@
-<!-- 품앗이 상세보기 페이지입니다!
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+
+<section style="width: 80%; margin: 30px auto;">
+	<div class="d-flex justify-content-center">
+		<h1 class="text-center">품앗이 지원</h1>
+	</div>
+
+	<div class="cat-cards-container" >
+	<% const cats = request.user.cats;
+		for (let i = 0; i < cats.length; i++) { 
+		console.log(cats[0]);
+		const { name, age, gender, neutered, image, character } = cats[i]; %>
+
+		<div class="col">
+			<div class="card h-100">
+
+				<div class="cat-card">
+					<div class="imgContainer" style="background-image: url('<%= image %>');">
+						<img src="" alt="">
+					</div>
+
+					<div class="two-column-container">
+						<div class="left-column-container">
+							<div class="cat-info-title" id="name">
+							이름
+							</div>
+							<div class="cat-info-content">
+							<%= name %>
+							</div>
+						</div>
+						<div class="right-column-container">
+							<div  class="cat-info-title" id="age">
+							나이
+							</div>
+							<div  class="cat-info-content catAge">
+							<%= age %>
+							</div>
+						</div>
+					</div>
+					<div class="two-column-container">
+						<div class="left-column-container">
+							<div class="cat-info-title" id="gender">
+							성별
+							</div>
+							<div class="cat-info-content catGender">
+							<%= gender %>
+							</div>
+						</div>
+						<div class="right-column-container">
+							<div  class="cat-info-title" id="neutered">
+							중성화 여부
+							</div>
+							<div  class="cat-info-content catNeutered">
+							<%= neutered %>
+							</div>
+						</div>
+					</div>
+					<div class="whole-column-container">
+						<div class="cat-info-title" id="character">
+							성격
+						</div>
+						<div class="cat-info-content catCharacter">
+							<%= character %>.
+							사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<% } %>
+	</div>
+
+	<br/>
+
+	<div class="request-detail-container" >
+		<% 		
+		const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
+		let updated = ''
+		if (minutesAgo < 60) {
+			updated += parseInt(minutesAgo) + '분'
+		} else if (minutesAgo / 60 <= 48) {
+			updated += parseInt(minutesAgo / 60) + '시간'
+		} else {
+			updated += minutesAgo / 60 / 24 + '일'
+		} 
+		let reserved_dates = ''
+		if (request.reserved_end_date == request.reserved_begin_date) {
+			reserved_dates = request.reserved_begin_date;
+		} else {
+			reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+		}
+		%>
+
+		<div class="col">
+			<div class="card h-100">
+				<div class="card-header">집사 정보</div>
+				<div class="card-body">
+					<p class="card-title">돌봄이 필요한 기간: <%= reserved_dates %></p>
+					<p class="card-title">닉네임: <%= request.user.nickname %></p>
+					<p class="card-title">동네: <%= request.request_id %></p>
+				</div>
+				</br>
+
+				<div class="card-header">요청 및 상세 사항</div>
+				<div class="card-body">
+					<p><%= request.detail %></p>
+				</div>
+			</br>
+			<button onclick="location.href='/message/<%= request.user.user_id %>'" class="btn btn-outline-secondary w-100 btn-lg" type="button" style="border-radius: 20px;">쪽지 보내기</button>
+			</div>
+		</div>
+	</div>
+</section>

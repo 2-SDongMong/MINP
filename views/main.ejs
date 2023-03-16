@@ -29,51 +29,63 @@
       </div>
       <div class="slideWarpper1">
         <ul class="slides1">
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
+          <% for (let i = 0; i < requests.length; i++) {
+            const request = requests[i]; 
+            let reserved_dates = ''
+            if (request.reserved_end_date == request.reserved_begin_date) {
+              reserved_dates = request.reserved_begin_date;
+            } else {
+              reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+            }
+            %>
+            <li class="catCard">
+              <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
+                <img src="" alt="">
+                <div class="status">
+                  <p>모집현황</p>
                 </div>
               </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
+              <div class="periodContainer">
+                <div class="catInfo" id="period">
+                  기간
                 </div>
-                <div  class="catAge">
-                  8
+                <div class="periodDetail">
+                  <%= reserved_dates %>
                 </div>
               </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
+              <div class="infoContainer">
+                <div class="nameContainer">
+                  <div class="catInfo" id="name">
+                    이름
+                  </div>
+                  <div class="catName">
+                    <%= request.user.cats[0].name %>
+                  </div>
+                </div>
+                <div class="ageContainer">
+                  <div  class="catInfo" id="age">
+                    나이
+                  </div>
+                  <div  class="catAge">
+                    <%= request.user.cats[0].age %>
+                  </div>
+                </div>
               </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
+              <div class="characterContainer">
+                <div class="catInfo" id="character">
+                  성격
+                </div>
+                <div class="catCharacter">
+                  <%= request.user.cats[0].character %>
+                  사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
+                </div>
               </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
+              <div class="more">
+                <button class="moreBtn" onclick="location.href='/requestDetail/<%= request.request_id %>'">> 자세히 보기</button>
+              </div>
+            </li>
+          <% } %>
+          
           <li class="catCard">
             <div class="imgContainer">
               <img src="" alt="">
