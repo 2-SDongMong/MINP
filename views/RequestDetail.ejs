@@ -73,7 +73,7 @@
 
 	<div class="request-detail-container" >
 		<% 		
-		const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
+		const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
 		let updated = ''
 		if (minutesAgo < 60) {
 			updated += parseInt(minutesAgo) + '분'
@@ -82,13 +82,19 @@
 		} else {
 			updated += minutesAgo / 60 / 24 + '일'
 		} 
+		let reserved_dates = ''
+		if (request.reserved_end_date == request.reserved_begin_date) {
+			reserved_dates = request.reserved_begin_date;
+		} else {
+			reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+		}
 		%>
 
 		<div class="col">
 			<div class="card h-100">
 				<div class="card-header">집사 정보</div>
 				<div class="card-body">
-					<p class="card-title">돌봄이 필요한 기간: <%= request.reserved_time %></p>
+					<p class="card-title">돌봄이 필요한 기간: <%= reserved_dates %></p>
 					<p class="card-title">닉네임: <%= request.user.nickname %></p>
 					<p class="card-title">동네: <%= request.request_id %></p>
 				</div>

@@ -30,8 +30,14 @@
       <div class="slideWarpper1">
         <ul class="slides1">
           <% for (let i = 0; i < requests.length; i++) {
-            console.log(requests[1]);
-            const request = requests[i]; %>
+            const request = requests[i]; 
+            let reserved_dates = ''
+            if (request.reserved_end_date == request.reserved_begin_date) {
+              reserved_dates = request.reserved_begin_date;
+            } else {
+              reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+            }
+            %>
             <li class="catCard">
               <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
                 <img src="" alt="">
@@ -44,7 +50,7 @@
                   기간
                 </div>
                 <div class="periodDetail">
-                  <%= request.reserved_time %> ~ 0000년00월00일
+                  <%= reserved_dates %>
                 </div>
               </div>
               <div class="infoContainer">
