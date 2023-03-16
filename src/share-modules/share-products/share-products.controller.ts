@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Render,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -39,15 +38,10 @@ export class ProductsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() createProductDto: CreateProductsDto
   ) {
-    // Upload the image to S3 and get the image URL
-    const folder = 'product_images'; // replace with your desired folder name
+    const folder = 'product_images';
     const imageUrl = await this.awsService.uploadFileToS3(folder, file);
     console.log('imageUrl:', imageUrl);
-
-    // Add the image URL to the product data
     createProductDto.imageUrl = imageUrl;
-
-    // Save the product with the image URL
     return await this.productsService.create(createProductDto);
   }
 

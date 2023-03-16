@@ -1,8 +1,58 @@
-.card-img-top {
-  max-height: 200px; /* 이미지 높이 조절 */
-  object-fit: cover; /* 이미지를 적절하게 조절 */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
 }
 
-.card {
-  min-height: 350px; /* 카드 높이 조절 */
+#productForm {
+  background-color: #fff;
+  max-width: 100vh;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+textarea,
+input,
+select {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input[type='file'] {
+  margin-bottom: 15px;
+}
+
+button[type='submit'] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #e3ae5b;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+button[type='submit']:hover {
+  background-color: #fd9365;
+}
+
+input[name='city'],
+input[name='cityDetail'] {
+  display: inline-block;
+  width: calc(50% - 10px);
+}
+
+input[name='cityDetail'] {
+  margin-left: 10px;
 }

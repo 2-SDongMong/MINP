@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Render,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { ProductsService } from 'src/share-modules/share-products/share-products.service';

@@ -2,6 +2,8 @@ import { ProductsCategory } from '../../share-products-category/entities/product
 import { User } from '../../../users/user.entity';
 import {
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -23,7 +25,7 @@ export class Products {
   @Column({ default: false })
   isTrade: boolean;
 
-  @Column({ nullable: true }) // 이미지 URL은 옵셔널하게 설정
+  @Column({ nullable: true })
   imageUrl: string;
 
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
@@ -35,4 +37,10 @@ export class Products {
   @ManyToOne(() => User, (user) => user.products, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
+  createdAt: Date;
+
+  @DeleteDateColumn({ name: 'deleted_at', type: 'timestamp', nullable: true })
+  deletedAt: Date | null;
 }

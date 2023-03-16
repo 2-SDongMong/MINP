@@ -1,6 +1,6 @@
 function loadCategories() {
   $.ajax({
-    url: '/productsCategory', // Replace with your API endpoint
+    url: '/productsCategory',
     type: 'GET',
     success: function (categories) {
       const categorySelect = $('#categorySelect');
@@ -47,11 +47,35 @@ $(document).ready(function () {
       contentType: false,
       success: function (response) {
         alert('상품이 등록되었습니다!');
-        window.location.href = '/shareProduct';
+        window.location.href = '/shareList';
       },
       error: function (error) {
         alert('상품 등록에 실패했습니다. 다시 시도해주세요.');
       },
     });
   });
+});
+
+function previewImage() {
+  const input = document.getElementById('imageInput');
+  const preview = document.getElementById('imagePreview');
+
+  input.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener('load', function () {
+        preview.src = this.result;
+        preview.style.display = 'block'; // 미리보기 이미지를 표시합니다.
+      });
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '';
+      preview.style.display = 'none'; // 이미지가 선택되지 않았을 때 미리보기를 숨깁니다.
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  previewImage();
 });
