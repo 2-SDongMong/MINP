@@ -1,11 +1,12 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
+import { PostCategoryType } from '../post.entity';
 
 export class CreatePostDto {
   @IsString()
-  readonly category: string;
+  readonly title: string;
 
   @IsString()
-  readonly title: string;
+  readonly category: PostCategoryType;
 
   @IsString()
   readonly content?: string;

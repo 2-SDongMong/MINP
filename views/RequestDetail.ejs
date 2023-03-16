@@ -7,7 +7,6 @@
 	<div class="cat-cards-container" >
 	<% const cats = request.user.cats;
 		for (let i = 0; i < cats.length; i++) { 
-		console.log(cats[0]);
 		const { name, age, gender, neutered, image, character } = cats[i]; %>
 
 		<div class="col">
