@@ -1,6 +1,9 @@
 
-<div class="justify-content-center" style="width: 80%; max-width: 560px;">
-    
+<section style="width: 80%; max-width: 670px; margin: 30px auto;">
+	<div class="d-flex justify-content-center">
+		<h1 class="text-center">품앗이 지원</h1>
+	</div>
+
   <div class="input-group mb-3">
 	<span class="input-group-text">기간 선택</span>
 	<input type="date" id="start-date" class="form-control" placeholder="Username" aria-label="Username">
@@ -21,7 +24,7 @@
 	<button onclick="location.href='/request/list'" type="button" class="btn btn-outline-secondary">취소</button>
   </div>
 
-</div>
+</section>
 
 <script>
 	async function createRequest() {
@@ -35,6 +38,10 @@
 		}
 		if (!endDate) {
 			alert('끝 날짜를 입력해주세요')
+			return;
+		}
+		if (startDate > endDate) {
+			alert('끝 날짜는 시작 날짜보다 이를 수 없습니다')
 			return;
 		}
 		if (!detail) {
