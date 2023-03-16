@@ -22,7 +22,13 @@ export class Request {
   detail: string;
 
   @Column('date')
-  reserved_time: Date;
+  reserved_begin_date: Date;
+
+  @Column('date')
+  reserved_end_date: Date;
+
+  @Column('boolean', { default: true })
+  is_ongoing: Boolean;
 
   @CreateDateColumn()
   created_at: Date;

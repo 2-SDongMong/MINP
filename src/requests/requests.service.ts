@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -33,7 +34,8 @@ export class RequestsService {
           },
         },
         request_id: true,
-        reserved_time: true,
+        reserved_begin_date: true,
+        reserved_end_date: true,
         updated_at: true,
         detail: true,
       },
@@ -65,8 +67,9 @@ export class RequestsService {
             character: true,
           },
         },
-        request_id: true,
-        reserved_time: true,
+        request_id: false, // true,
+        reserved_begin_date: true,
+        reserved_end_date: true,
         detail: true,
       },
     });
@@ -79,10 +82,11 @@ export class RequestsService {
   }
 
   async createRequest(id: number, bodyData: CreateRequestDto) {
-    const { reserved_time, detail } = bodyData;
+    const { reserved_begin_date, reserved_end_date, detail } = bodyData;
     const newRequest = this.requestsRepository.create({
       user_id: id,
-      reserved_time,
+      reserved_begin_date,
+      reserved_end_date,
       detail,
     });
     return await this.requestsRepository.save(newRequest);
@@ -114,20 +118,31 @@ export class RequestsService {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
 
-    const { reserved_time, detail } = bodyData;
+    const { reserved_begin_date, reserved_end_date, detail } = bodyData;
 
+    // FIXME: reserved_begin_date, reserved_end_date 포함 detail까지 모두 입력해야 수정이 가능한 것으로 변경 확정하기
     // reserved_time을 업데이트 하지 않는 경우(detail만 입력된 경우)
-    if (!reserved_time) {
-      this.requestsRepository.update(id, { detail });
-      return;
+    if (!reserved_begin_date) {
+      throw new BadRequestException(
+        `희망 시작 날짜가 유효하지 않습니다. 시작 날짜: ${reserved_begin_date}`
+      );
     }
-    // detail을 업데이트 하지 않는 경우(reserved_time만 입력된 경우)
+    if (!reserved_end_date) {
+      throw new BadRequestException(
+        `희망 끝 날짜가 유효하지 않습니다. 끝 날짜: ${reserved_end_date}`
+      );
+    }
+    // detail값이 유효하지 않은 경우(reserved_time만 입력된 경우)
     if (!detail) {
-      this.requestsRepository.update(id, { reserved_time });
-      return;
+      throw new BadRequestException(`상세 요청 형식이 유효하지 않습니다`);
     }
+
     // reserved_time과 detail 항목을 모두 업데이트
-    this.requestsRepository.update(id, { reserved_time, detail });
+    this.requestsRepository.update(id, {
+      reserved_begin_date,
+      reserved_end_date,
+      detail,
+    });
   }
 
   async deleteRequestById(userId: number, id: number) {

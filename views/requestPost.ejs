@@ -1,48 +1,63 @@
-<!-- 품앗이 요청 작성 페이지입니다!
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
 
 <div class="justify-content-center" style="width: 80%; max-width: 560px;">
     
   <div class="input-group mb-3">
 	<span class="input-group-text">기간 선택</span>
-	<input type="date" class="form-control" placeholder="Username" aria-label="Username">
+	<input type="date" id="start-date" class="form-control" placeholder="Username" aria-label="Username">
 	<span class="input-group-text"> ~ </span>
-	<input type="date" class="form-control" placeholder="Server" aria-label="Server">
+	<input type="date" id="end-date" class="form-control" placeholder="Server" aria-label="Server">
   </div>
   
   <div class="col-md-2">
 	<span class="input-group-text"> 상세 요청 </span>
   </div>
   <div class="form-floating">
-	<textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 250px"></textarea>
-	<label for="floatingTextarea2">Comments</label>
+	<textarea id="detail" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 250px"></textarea>
+	<label for="floatingTextarea2">요청시 특이 사항과 상세 설명을 작성해주세요(500자 이내)</label>
   </div>
-  <!-- <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">Email</label>
-    <input type="email" class="form-control" id="inputEmail4">
+
+  <div class="d-flex">
+	<button onclick="createRequest()" type="button" class="btn btn-outline-dark">제출</button>
+	<button onclick="location.href='/request/list'" type="button" class="btn btn-outline-secondary">취소</button>
   </div>
-  <div class="col-md-6">
-    <label for="inputPassword4" class="form-label">Password</label>
-    <input type="password" class="form-control" id="inputPassword4">
-  </div> -->
-<div class="row row-md-9">
-  <div class="col-md-3">
-	<span class="input-group-text"> 기간 선택 </span>
-  </div>
-  <div class="col-md-4">
-	<input type="date" class="form-control" placeholder="부터"></textarea>
-  </div>
-  <div class="col-md-1">
-	-
-	</div>
-  <div class="col-md-4">
-	<input type="date" class="form-control" placeholder="까지"></textarea>
-  </div>
+
 </div>
 
-  <div class="input-group">
-	<span class="input-group-text">상세 요청 사항</span>
-	<textarea class="form-control" aria-label="With textarea" style="height:300px"></textarea>
-  </div>
+<script>
+	async function createRequest() {
+		const startDate = $('#start-date').val()
+		const endDate = $('#end-date').val()
+		const detail = $('#detail').val()
 
-</div>  
+		if (!startDate) {
+			alert('시작 날짜를 입력해주세요')
+			return;
+		}
+		if (!endDate) {
+			alert('끝 날짜를 입력해주세요')
+			return;
+		}
+		if (!detail) {
+			alert('상세 요청 사항을 입력해주세요')
+			return;
+		}
+
+		$.ajax({
+			type: 'POST',
+			url: '/requests',
+			data: {
+				reserved_begin_date: startDate,
+				reserved_end_date: endDate,
+				detail,
+			},
+			success: function (response) {
+				alert('게시글 작성을 완료하였습니다')
+				location.href = '/request/list';
+			},
+			error: function (response) {
+				console.log(response);
+				console.log(response.responseJSON.message);
+			}
+		})
+	}
+</script>

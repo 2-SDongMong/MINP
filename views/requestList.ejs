@@ -22,15 +22,24 @@
 			<% for (let i = 0; i < 8; i++) { 
 				console.log(requests[1]);
 				const request = requests[i]; 
-				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
-					let updated = ''
-					if (minutesAgo < 60) {
-						updated += parseInt(minutesAgo) + '분'
-					} else if (minutesAgo / 60 <= 48) {
-						updated += parseInt(minutesAgo / 60) + '시간'
-					} else {
-						updated += minutesAgo / 60 / 24 + '일'
-					} %>
+				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
+				let updated = ''
+				if (minutesAgo < 60) {
+					updated += parseInt(minutesAgo) + '분'
+				} else if (minutesAgo / 60 <= 48) {
+					updated += parseInt(minutesAgo / 60) + '시간'
+				} else {
+					updated += minutesAgo / 60 / 24 + '일'
+				} 
+
+				let reserved_dates = ''
+				if (request.reserved_end_date == request.reserved_begin_date) {
+					reserved_dates = request.reserved_begin_date;
+				} else {
+					reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+				}
+				%>
+
 				<div class="col">
 					<div class="card h-100" style="border-radius: 20px">
 
@@ -46,7 +55,7 @@
 									기간
 								</div>
 								<div class="cat-info-content">
-									<%= request.reserved_time %>
+									<%= reserved_dates %> 
 								</div>
 							</div>
 							<div class="whole-column-container">
