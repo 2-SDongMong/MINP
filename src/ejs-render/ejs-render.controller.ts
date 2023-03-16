@@ -40,10 +40,10 @@ export class EjsRenderController {
     return { components: 'signUp', userId: req.userId };
   }
 
-  @Get('/user/mypage')
+  @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', user: req.user };
+    return { components: 'myPage', userId: req.userId, user: req.user };
   }
 
   @Get('')
@@ -144,7 +144,7 @@ export class EjsRenderController {
       messages = await this.messagesService.getSentMessages(req.userId);
     } else {
       messages = await this.messagesService.getUnreadMessages(req.userId);
-    }
+    } 
 
     return { components: 'message', userId: req.userId, messages };
   }
