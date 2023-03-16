@@ -2,20 +2,17 @@ import {
   BadRequestException,
   ConflictException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { InsertResult, Repository } from 'typeorm';
+import {  Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
-import { ApiBadRequestResponse } from '@nestjs/swagger';
 
 @Injectable()
 export class UsersService {
@@ -59,8 +56,6 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string) {
-    console.log(email);
-
     return await this.userRepository.findOneBy({ email: email });
   }
   async findPassword(email: string) {
