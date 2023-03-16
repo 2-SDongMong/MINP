@@ -96,7 +96,6 @@ export class AppModule implements NestModule {
       { path: 'user/admin', method: RequestMethod.ALL },
       { path: 'user/admin/member', method: RequestMethod.ALL },
       { path: 'user/admin/member/:id', method: RequestMethod.ALL },
-      { path: 'message', method: RequestMethod.ALL },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
       // { path: 'views/.', method: RequestMethod.GET }
