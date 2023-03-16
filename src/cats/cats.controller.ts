@@ -19,7 +19,8 @@ export class CatsController {
   // 유저 ID에 속성 된 고양이 전체 상세보기
   @Get('/')
   async getMyCats(@Req() req) {
-    return await this.catService.getMyCats(req.userId);
+    const data = await this.catService.getMyCats(req.userId);
+    return data;
   }
 
   // 고양이ID로 고양이 한 마리만 상세보기 API,굳이 필요하진 않을 거 같지만 일단 둠
@@ -34,12 +35,13 @@ export class CatsController {
   }
 
   @Patch('/:id')
-  updateCat(
+  async updateCat(
     @Req() req,
     @Param('id') catId: number,
     @Body() data: UpdateCatDto
   ) {
-    return this.catService.updateCatById(req.userId, catId, data);
+    console.log('hello')
+    return await this.catService.updateCatById(req.userId, catId, data);
   }
 
   @Delete('/:id')

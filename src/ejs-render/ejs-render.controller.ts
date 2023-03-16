@@ -1,4 +1,5 @@
-import { Controller, Get, Param, Render, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Query, Render, Req, Res } from '@nestjs/common';
+import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service'
@@ -13,7 +14,6 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    console.log('/ GET, req.userId: ', req.userId);
     const requests = await this.requestsService.getRequests();
     return {
       components: 'main',
@@ -28,10 +28,10 @@ export class EjsRenderController {
     return { components: 'signUp', userId: req.userId  };
   }
 
-  @Get('/user/mypage')
+  @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', user: req.user };
+    return { components: 'myPage', userId: req.userId, user: req.user };
   }
 
   @Get('')
@@ -89,22 +89,25 @@ export class EjsRenderController {
     return { components: 'sharePost' };
   }
 
-  @Get('')
+  @Get('boardList')
   @Render('index')
-  boardList(@Req() req) {
-    return { components: 'boardList' };
+  async boardList(@Req() req, @Query('page') pageNum: number) {
+    const posts = await this.postsService.getPosts(pageNum);
+    console.log(posts);
+    return { components: 'boardList', userId: req.userId, posts };
   }
 
-  @Get('')
+  @Get('boardDetail/:id')
   @Render('index')
-  boardDetail(@Req() req) {
-    return { components: 'boardDetail' };
+  async boardDetail(@Req() req, @Param('id') postId: number) {
+    const post = await this.postsService.getPostById(postId);
+    return { components: 'boardDetail', userId: req.userId, post };
   }
 
-  @Get('')
+  @Get('boardPost')
   @Render('index')
-  boardPost(@Req() req) {
-    return { components: 'boardPost' };
+  async boardPost(@Req() req) {
+    return { components: 'boardPost', userId: req.userId };
   }
 
   @Get('/message/:type')
