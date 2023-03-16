@@ -47,7 +47,6 @@
     
     function sendmail(){
         const signupEmail = $('#signupEmail').val();
-        console.log(signupEmail)
         if (!signupEmail) {
 		    alert('이메일을 입력해주세요.');
         } else{
@@ -65,8 +64,6 @@
     function check(){
         const checkNumber = $('#checkNumber').val();
         const signupEmail = $('#signupEmail').val();
-        console.log(checkNumber)
-        console.log("세션",window.sessionStorage.getItem(signupEmail))
         if(checkNumber===window.sessionStorage.getItem(signupEmail)){
             const target = document.getElementById('target_btn')
             target.disabled = false
@@ -76,7 +73,6 @@
         
     }
     function signUp(){
-        console.log("사인업")
         const signupNickname = $('#signupNickname').val();
         const signupName = $('#signupName').val();
         const signupEmail = $('#signupEmail').val();

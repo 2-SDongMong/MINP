@@ -82,4 +82,11 @@ export class UsersController {
   deleteMember(@Req() req, @Param('id') userId: number) {
     return this.usersService.deleteMemberById(req.userId, userId);
   }
+
+  //이메일로 유저 찾기
+  @Post('/a')
+  async getUserId(@Body() email){
+    const a = await this.usersService.findOneByEmail(email.email);
+    return a.user_id; 
+  }
 }
