@@ -19,9 +19,9 @@ export class MessagesService {
     return message;
   }
 
-  async getUnreadMessages(userId:number){
-      const message = await this.repository.getUnreadMessages(userId)
-      return message;
+  async getUnreadMessages(userId: number) {
+    const message = await this.repository.getUnreadMessages(userId);
+    return message;
   }
 
   async getMessages() {
