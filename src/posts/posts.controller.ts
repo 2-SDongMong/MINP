@@ -16,7 +16,7 @@ import {
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { DeletePostDto } from './dto/delete-post.dto';
-import { UpdatePostDto } from './dto/update-Post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
 //import { UserId } from 'src/auth/decorator/get-current-userid.decorator'; // 형집님
 //import { UserInfo } from 'src/users/user-info.decorator'; // 희서님
