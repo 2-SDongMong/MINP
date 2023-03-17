@@ -1,54 +1,49 @@
 <header>
   <nav class="navbar2">
-
     <div class="navbarLogo2">
       <div logo></div>
-      <a href="/"><img src="/img/basiclogo.png" alt="" ></a> 
+      <a href="/"><img src="/img/basiclogo.png" alt="" /></a>
+    </div>
+    <%if (!userId) { %>
+    <ul class="navbarMenu2">
+      <li><a href="/request/list">품앗이 신청</a></li>
+      <li><a href="/shareList">냥품나눔</a></li>
+      <li><a href="/boardList?page=1">자유게시판</a></li>
+    </ul>
 
-  
-    </div>  
-      <%if (!userId) { %>
-        <ul class="navbarMenu2">
-          <li><a href="/request/list">품앗이 신청</a></li>
-          <li><a href="/">냥품나눔</a></li>
-          <li><a href="/boardList?page=1">자유게시판</a></li>
-        </ul>
-
-        <div class="navbarButton2">
-          <button id="loginBtn" onclick="location.href='/login'">로그인</button>
-          <button id="signupBtn" onclick="location.href='/signUp'">회원가입</button>
-        </div>
-      <%} else { %>
-        <ul class="navbarMenu2">
-          <li><a href="/request/list">품앗이 신청</a></li>
-          <li><a href="/">냥품나눔</a></li>
-          <li><a href="/boardList?page=1">자유게시판</a></li>
-        </ul>
+    <div class="navbarButton2">
+      <button id="loginBtn" onclick="location.href='/login'">로그인</button>
+      <button id="signupBtn" onclick="location.href='/signUp'">회원가입</button>
+    </div>
+    <%} else { %>
+    <ul class="navbarMenu2">
+      <li><a href="/request/list">품앗이 신청</a></li>
+      <li><a href="/shareList">냥품나눔</a></li>
+      <li><a href="/boardList?page=1">자유게시판</a></li>
+    </ul>
 
         <div class="navbarButton2">
           <button id="mypageBtn" onclick="location.href='/mypage'">마이 페이지</button>
           <button id="logoutBtn" onclick="logout()">로그아웃</button>
         </div>
       <% } %>
-  
+
   </nav>
-  
-  
 </header>
 
 <script>
   function logout() {
-      $.ajax({
-          type: 'POST',
-          url: '/auth/logout',
-          success: function (response) {
-              alert(response.message);
-              window.location.href = '/';
-          },
-          error: function (response) {
-              alert(response.responseJSON.message);
-              window.location.reload();
-          },
-      });
+    $.ajax({
+      type: 'POST',
+      url: '/auth/logout',
+      success: function (response) {
+        alert(response.message);
+        window.location.href = '/';
+      },
+      error: function (response) {
+        alert(response.responseJSON.message);
+        window.location.reload();
+      },
+    });
   }
 </script>

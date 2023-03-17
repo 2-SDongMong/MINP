@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AwsService } from 'src/s3-upload/aws.service';
+import { ProductsTradeLocation } from '../share-products-trade-location/entities/products-trade-location.entity';
 import { CreateProductsDto } from './dto/create-share-products.dto';
 import { UpdateProductsDto } from './dto/update-share-products.dto';
 import { ProductsService } from './share-products.service';
@@ -40,8 +41,16 @@ export class ProductsController {
   ) {
     const folder = 'product_images';
     const imageUrl = await this.awsService.uploadFileToS3(folder, file);
-    console.log('imageUrl:', imageUrl);
     createProductDto.imageUrl = imageUrl;
+
+    // ProductsTradeLocation 객체를 생성하고 city와 cityDetail을 설정합니다.
+    const productsTradeLocation = new ProductsTradeLocation();
+    productsTradeLocation.city = createProductDto.productsTradeLocation.city;
+    productsTradeLocation.cityDetail =
+      createProductDto.productsTradeLocation.cityDetail;
+
+    createProductDto.productsTradeLocation = productsTradeLocation;
+
     return await this.productsService.create(createProductDto);
   }
 

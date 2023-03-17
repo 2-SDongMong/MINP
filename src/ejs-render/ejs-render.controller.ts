@@ -98,7 +98,11 @@ export class EjsRenderController {
   @Render('index')
   async ShareList(@Req() req) {
     const products = await this.productsService.findAll();
-    return { components: 'shareList', userId: req.userId, products };
+    return {
+      components: 'shareList',
+      userId: req.userId,
+      products,
+    };
   }
 
   @Get('/shareDetail/:id')
@@ -120,6 +124,7 @@ export class EjsRenderController {
   ShareProduct(@Req() req) {
     return { components: 'shareProduct', userId: req.userId };
   }
+
   @Get('boardList')
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {
