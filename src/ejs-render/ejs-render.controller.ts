@@ -15,10 +15,12 @@ export class EjsRenderController {
   @Render('index')
   async main(@Req() req) {
     const requests = await this.requestsService.getRequests();
+    const posts = await this.postsService.getPosts();
     return {
       components: 'main',
       userId: req.userId,
       requests: requests.slice(0, 6),
+      posts,
     };
   }
 

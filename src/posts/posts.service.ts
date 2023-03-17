@@ -28,6 +28,25 @@ export class PostsService {
       skip: (page - 1) * take, 
     });
 
+    // posts 에 user를 연결시켜서 닉네임을 가져오고 싶음
+    // 그런데 posts는 상수... 재할당이 안됨
+
+    // posts = await this.postsRepository.find({
+    //   relations: {
+    //     user: {
+    //       cats: true,
+    //     },
+    //   },
+    //   select: {
+    //     user: {
+    //       nickname: true,
+    //       cats: {
+    //         image: true,
+    //       },
+    //     },
+
+    // }) 
+
     const last_Page = Math.ceil(total/take);
 
     if (last_Page >= page) {
@@ -100,6 +119,7 @@ export class PostsService {
     this.postsRepository.update(id, { title, category, content });
   }
 
+
   async deletePost(userId: number, postId: number) {
     const post = await this._existenceCheckById(postId);
     this._authorCheckByUserId(post.user_id, userId);
@@ -107,7 +127,7 @@ export class PostsService {
   }
 
 
-  private async _existenceCheckById(id: number) {
+    private async _existenceCheckById(id: number) {
     const post = await this.postsRepository.findOne({
       where: { post_id: id },
     });

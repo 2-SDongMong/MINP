@@ -46,11 +46,10 @@
                 </a>
               </li>
 
-              <% for (let i = 1; i < posts.meta.last_Page ; i++) {
-                const post = posts.data[i];
-                const created_at = post.created_at.toLocaleString(); %>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <% } %>
+
+              <li class="page-item"><a class="page-link" href="/boardList?page=1"><%= 1 %></a></li>
+              <li class="page-item"><a class="page-link" href="/boardList?page=2"><%= 2 %></a></li>
+
 
               <li class="page-item">
                 <a class="page-link" href="#" aria-label="Next">
