@@ -12,7 +12,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-textarea,
+/* textarea,
 input,
 select {
   display: block;
@@ -25,7 +25,7 @@ select {
 
 textarea {
   resize: vertical;
-}
+} */
 
 input[type='file'] {
   margin-bottom: 15px;

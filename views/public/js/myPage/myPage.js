@@ -82,6 +82,38 @@ function deleteUser(id) {
   })
 }
 
+
+// 고양이 추가
+const addCatModal = document.querySelector('.addCatModal');
+const addCatModalBody = addCatModal.querySelector('.addCatModalBody')
+const catModalOn = document.querySelector('.addCatBtn');
+
+// 열기
+catModalOn.addEventListener('click', () => {
+  addCatModal.style.display = 'block';
+})
+
+// 닫기
+addCatModal.addEventListener('click', (e) => {
+  if (e.target !== addCatModalBody) addCatModal.style.display = 'none';
+});
+
+function addMyCat() {
+  const catName = $()
+  $.ajax({
+    type: 'POST',
+    url: '/cats',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    async: false,
+    data: JSON.stringify({
+
+    })
+
+  })
+}
+
+
 // 고양이 정보 불러오기
 
 function showMyCat() {
@@ -188,7 +220,6 @@ function showMyCat() {
 }
 
 function modifyMyCat(id) {
-
   // const catImg = $('#catFile').val();
   const catAge = $('#catAge2').val();
   let catNeutered = $('#catNeutered').val();
@@ -200,9 +231,8 @@ function modifyMyCat(id) {
   if (catNeutered === 'false') {
     catNeutered = false
   }
-  console.log(catAge)
-  console.log(typeof(catNeutered))
-  console.log(catCharacter)
+
+
   $.ajax({
     type: 'PATCH',
     url: `/cats/${id}`,
