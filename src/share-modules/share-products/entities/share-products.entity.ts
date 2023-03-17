@@ -26,7 +26,7 @@ export class Products {
 
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
   productsTradeLocation: ProductsTradeLocation;
-  
+
   @ManyToOne(() => ProductsCategory, { eager: true })
   productsCategory: ProductsCategory;
   @ManyToOne(() => User, (user) => user.products, { cascade: true })

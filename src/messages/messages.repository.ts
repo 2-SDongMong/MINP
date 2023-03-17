@@ -27,7 +27,13 @@ export class MessagesRepository extends Repository<Message> {
 
   async getReceivedMessages(recipientId: number) {
     const messages = await this.createQueryBuilder('m')
-      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
+      .select([
+        'm.content',
+        'm.message_id',
+        'm.created_at',
+        'm.recipient_id',
+        'm.sender_id',
+      ])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
       .addSelect(['sender.nickname', 'receiver.nickname'])
@@ -38,7 +44,13 @@ export class MessagesRepository extends Repository<Message> {
 
   async getSentMessages(senderId: number) {
     const messages = await this.createQueryBuilder('m')
-      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
+      .select([
+        'm.content',
+        'm.message_id',
+        'm.created_at',
+        'm.recipient_id',
+        'm.sender_id',
+      ])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
       .addSelect(['sender.nickname', 'receiver.nickname'])
@@ -56,16 +68,22 @@ export class MessagesRepository extends Repository<Message> {
     return messages;
   }
 
-  async getUnreadMessages(userId:number){
+  async getUnreadMessages(userId: number) {
     const messages = await this.createQueryBuilder('m')
-      .select(['m.content','m.message_id','m.created_at','m.recipient_id','m.sender_id'])
+      .select([
+        'm.content',
+        'm.message_id',
+        'm.created_at',
+        'm.recipient_id',
+        'm.sender_id',
+      ])
       .addSelect(['sender.nickname', 'receiver.nickname'])
       .leftJoin('m.send_user', 'sender')
       .leftJoin('m.receive_user', 'receiver')
-      .where("m.recipient_id = :userId ", { userId })
-      .andWhere("m.read_at IS NULL" )
-      .getMany()
+      .where('m.recipient_id = :userId ', { userId })
+      .andWhere('m.read_at IS NULL')
+      .getMany();
 
-    return messages
+    return messages;
   }
 }

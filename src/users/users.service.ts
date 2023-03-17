@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import {  Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -103,7 +103,7 @@ export class UsersService {
         phone_number,
       });
       return '회원정보 수정이 완료되었습니다.';
-      } else {
+    } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
   }
