@@ -20,47 +20,28 @@ export class PostsService {
   async getPosts(page: number = 1) {
     this.logger.debug(`getPosts()`);
 
-    // 페이지네이션 
+    // 페이지네이션
     const take = 10;
 
     const [posts, total] = await this.postsRepository.findAndCount({
       take,
-      skip: (page - 1) * take, 
+      skip: (page - 1) * take,
     });
 
-    // posts 에 user를 연결시켜서 닉네임을 가져오고 싶음
-    // 그런데 posts는 상수... 재할당이 안됨
-
-    // posts = await this.postsRepository.find({
-    //   relations: {
-    //     user: {
-    //       cats: true,
-    //     },
-    //   },
-    //   select: {
-    //     user: {
-    //       nickname: true,
-    //       cats: {
-    //         image: true,
-    //       },
-    //     },
-
-    // }) 
-
-    const last_Page = Math.ceil(total/take);
+    const last_Page = Math.ceil(total / take);
 
     if (last_Page >= page) {
       return {
         data: posts,
         meta: {
           total,
-          page: page <=0 ? page = 1 : page,
+          page: page <= 0 ? (page = 1) : page,
           last_Page: last_Page,
-        }
-      }
+        },
+      };
     } else {
-        throw new NotFoundException('해당 페이지는 존재하지 않습니다')
-    }  
+      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+    }
   }
 
   async getPostByCategory(postsCategory: PostCategoryType) {
@@ -97,7 +78,6 @@ export class PostsService {
     category: PostCategoryType,
     content: string
   ) {
-
     this.postsRepository.insert({
       user_id: userId,
       title,
@@ -126,8 +106,7 @@ export class PostsService {
     this.postsRepository.softDelete(postId);
   }
 
-
-    private async _existenceCheckById(id: number) {
+  private async _existenceCheckById(id: number) {
     const post = await this.postsRepository.findOne({
       where: { post_id: id },
     });

@@ -1,2 +1,32 @@
+<link rel="stylesheet" href="/css/shareProduct/shareDetail.css" />
 <!-- 나눔글 상세보기 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
+<nav class="sp_nav">
+  <a class="sp_nav-link" href="/shareList">상품조회</a>
+  <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+</nav>
+
+<div class="container">
+  <div class="row product-detail">
+    <div class="col-md-6">
+      <div class="product-image">
+        <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p class="product-category">
+        카테고리: <%= product.productsCategory.name %>
+      </p>
+      <p class="product-location">
+        원하는 거래장소: <%= product.productsTradeLocation.city %>, <%=
+        product.productsTradeLocation.cityDetail %>
+      </p>
+      <div class="product-info">
+        <h2 class="product-title"><%= product.title %></h2>
+        <p class="product-description"><%= product.description %></p>
+
+        <a class="add-to-cart" href="#">나눔신청</a>
+      </div>
+    </div>
+  </div>
+</div>

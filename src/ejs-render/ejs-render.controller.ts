@@ -1,14 +1,26 @@
-import { Body, Controller, Get, Param, Query, Render, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Param,
+  Query,
+  Render,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
-import { MessagesService } from 'src/messages/messages.service'
+import { MessagesService } from 'src/messages/messages.service';
+import { ProductsService } from 'src/share-modules/share-products/share-products.service';
 @Controller()
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
     private readonly postsService: PostsService,
-    private readonly messagesService: MessagesService
+    private readonly messagesService: MessagesService,
+    private readonly productsService: ProductsService
   ) {}
 
   @Get('/')
@@ -26,14 +38,14 @@ export class EjsRenderController {
 
   @Get('/signUp')
   @Render('index')
-  signUp(@Req() req){
-    return { components: 'signUp', userId: req.userId  };
+  signUp(@Req() req) {
+    return { components: 'signUp', userId: req.userId };
   }
 
-  @Get('/user/mypage')
+  @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', user: req.user };
+    return { components: 'myPage', userId: req.userId, user: req.user };
   }
 
   @Get('')
@@ -48,7 +60,6 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId };
   }
 
-
   @Get('/request/list')
   @Render('index')
   async requestList(@Req() req) {
@@ -56,7 +67,7 @@ export class EjsRenderController {
     return { components: 'requestList', userId: req.userId, requests };
   }
 
-  @Get('requestDetail/:id')
+  @Get('request/detail/:id')
   @Render('index')
   async requestDetail(@Param('id') id: number, @Req() req) {
     const request = await this.requestsService.getRequestById(id);
@@ -64,6 +75,7 @@ export class EjsRenderController {
       components: 'requestDetail',
       userId: req.userId,
       request: request[0],
+      user: req.user,
     };
   }
 
@@ -73,22 +85,46 @@ export class EjsRenderController {
     return { components: 'requestPost', userId: req.userId };
   }
 
-  @Get('')
+  @Get('request/modify/:id')
   @Render('index')
-  shareList(@Req() req) {
-    return { components: 'shareList' };
+  async requestModify(@Param('id') id: number, @Req() req) {
+    const request = await this.requestsService.getRequestById(id);
+    return {
+      components: 'requestModify',
+      userId: req.userId,
+      request: request[0],
+    };
   }
 
-  @Get('')
+  @Get('/shareList')
   @Render('index')
-  shareDetail(@Req() req) {
-    return { components: 'shareDetail' };
+  async ShareList(@Req() req) {
+    const products = await this.productsService.findAll();
+    return {
+      components: 'shareList',
+      userId: req.userId,
+      products,
+    };
   }
 
-  @Get('')
+  @Get('/shareDetail/:id')
   @Render('index')
-  sharePost(@Req() req) {
-    return { components: 'sharePost' };
+  async ShareDetail(@Param('id') id: string, @Req() req) {
+    const product = await this.productsService.findOne(id);
+    if (!product) {
+      throw new NotFoundException(`Product with id ${id} not found`);
+    }
+    return {
+      components: 'shareDetail',
+      userId: req.userId,
+      product,
+    };
+  }
+
+  @Get('/shareProduct')
+  @Render('index')
+  ShareProduct(@Req() req) {
+    return { components: 'shareProduct', userId: req.userId };
   }
 
   @Get('boardList')
@@ -114,13 +150,13 @@ export class EjsRenderController {
 
   @Get('/message/:type')
   @Render('index')
-  async receivedMessages(@Req() req,@Param('type') messageType:string) {
-    let messages
-    if(messageType=='received'){
+  async receivedMessages(@Req() req, @Param('type') messageType: string) {
+    let messages;
+    if (messageType == 'received') {
       messages = await this.messagesService.getReceivedMessages(req.userId);
-    } else if(messageType=='sent'){
+    } else if (messageType == 'sent') {
       messages = await this.messagesService.getSentMessages(req.userId);
-    } else{
+    } else {
       messages = await this.messagesService.getUnreadMessages(req.userId);
     }
 

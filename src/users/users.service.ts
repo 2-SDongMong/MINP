@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import {  Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -81,12 +81,12 @@ export class UsersService {
     return await this.userRepository.findOne({
       where: { user_id: id },
       select: [
+        'user_id',
         'email',
         'name',
         'nickname',
         'address',
         'phone_number',
-        'password',
         'status',
       ],
     });

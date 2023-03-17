@@ -32,18 +32,20 @@ export class UsersController {
   // My page API
   // 유저 정보 조회
   @Get('/mypage')
-  getUser(@Req() req) {
-    return this.usersService.getUserById(req.userId);
+  async getUser(@Req() req) {
+    const data = await this.usersService.getUserById(req.userId);
+    return data;
   }
 
   // 유저 정보 수정
   @Patch('/mypage/:id')
-  updateUserInfo(
+  async updateUserInfo(
     @Req() req,
     @Param('id') userId: number,
     @Body() data: UpdateMypageDto
   ) {
-    return this.usersService.updateUserById(req.userId, userId, data);
+    await this.usersService.updateUserById(req.userId, userId, data);
+    return true;
   }
 
   // 유저 정보 삭제
@@ -79,5 +81,12 @@ export class UsersController {
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
     return this.usersService.deleteMemberById(req.userId, userId);
+  }
+
+  //이메일로 유저 찾기
+  @Post('/a')
+  async getUserId(@Body() email) {
+    const a = await this.usersService.findOneByEmail(email.email);
+    return a.user_id;
   }
 }

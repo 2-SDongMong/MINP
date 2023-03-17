@@ -1,7 +1,52 @@
-  <div class="userContainer">
-    유저 정보(id): <%= userId %> 유저 ID!
+<script defer type="text/javascript" src="/js/myPage/myPage.js"></script>
+
+<div class="title">
+    마이 페이지
   </div>
+
+  <div class="userContainer">
+    <div class="subTitle" id="humanTitle">
+      집사 정보
+    </div>
+    <div class="humanInfo">
+      
+    </div>
+    
+  </div>
+
   <div class="catContainer">
-    고양이 정보
+    <div class="subTitleContainer">
+      <div class="subTitle" id="catTitle">
+        고양이 정보
+        <button class="addBtn">추가</button>
+      </div>
+    <div class="catInfo1">
+
+    </div>
+
+  </div>
+
+  <div class="myPostContainer">
+    <div class="subTitle" id="myPostTitle">
+      내가 쓴 글
+    </div>
+    <div class="myPostTable">
+      <table class="boardView" id="table1">
+        <tr>
+          <th class="blank"></th><td class="shortContent">동물 병원 후기</td>
+          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
+          <td class="shortContent">뭉치맘</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table2">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">집사 사담</td>
+          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
+          <td class="shortContent">고양이만세</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+    </div>
   </div>
 

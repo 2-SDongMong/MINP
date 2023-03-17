@@ -35,16 +35,15 @@ export class AuthService {
         HttpStatus.BAD_REQUEST
       );
     }
-    
+
     const tokens = await this.getTokens(user.user_id, user.email);
     const refreshTokentHash = await this.hashPassword(tokens.refreshToken);
     await this.userService.update(user.user_id, { hashdRt: refreshTokentHash });
 
     return tokens;
   }
-  //인증번호를 백에서 db에 테이블을 만들어서 비교를 
+  //인증번호를 백에서 db에 테이블을 만들어서 비교를
   //받아와서 비교하는 함수
-    
 
   //
   async sendMail(email) {
@@ -69,7 +68,7 @@ export class AuthService {
       };
       await transport.sendMail(mailOptions);
 
-      return authNumber;///////////지워
+      return authNumber; ///////////지워
     } catch (err) {
       throw new HttpException(
         {

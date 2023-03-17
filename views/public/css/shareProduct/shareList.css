@@ -1,0 +1,90 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+}
+
+.sp_nav {
+  background-color: #b8b0a2;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sp_nav-link {
+  color: #fff;
+  font-size: 18px;
+  text-decoration: none;
+  margin-left: 20px;
+  transition: color 0.3s;
+}
+
+.sp_share_top {
+  background-image: url(https://minp.s3.ap-northeast-2.amazonaws.com/product_images/1678987797117_cat-g533d73361_1920.jpg);
+  width: 100%;
+  height: 40vh;
+  background-size: cover;
+  background-position: 10% 10%;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.sp_share_top h1 {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+  font-weight: bolder;
+  font-size: 60px;
+  color: white;
+  font-family: 'Montserrat', sans-serif; /* 원하는 글꼴로 변경하세요 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.sp_share-container {
+  max-width: 100vw;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #b8b0a2;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sp_card-img-top {
+  height: 240px;
+  width: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.sp_card {
+  min-height: 350px;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sp_card-body {
+  padding: 20px;
+}
+
+.sp_card-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.sp_card-title a {
+  color: #333;
+  text-decoration: none;
+}
+
+.sp_card-title a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.sp_card-text {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+}

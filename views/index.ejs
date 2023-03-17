@@ -24,10 +24,12 @@
 
   <!-- JS -->
   <script defer type="text/javascript" src="/js/main/main.js"></script>
+  <script defer type="text/javascript" src="/js/shareProduct/shareProduct.js"></script>
+  <script defer type="text/javascript" src="/js/shareProduct/shareList.js"></script>
   
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
+  
 </head>
 <body>
   
@@ -53,10 +55,11 @@
   <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
   <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
   <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
+  <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
 
   <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
   <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
-  <% if (components === 'sharePost') { %> <%- include('sharePost.ejs') %> <% } %>
+  <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
 
   <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
   <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>
