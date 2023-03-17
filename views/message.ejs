@@ -90,7 +90,7 @@
           recipient_id: Number(sender_id)
         }),
         success: function (response) {
-
+          document.location.href = document.location.href;
           alert('전송이 완료되었습니다.');
 
         },
@@ -131,7 +131,7 @@
           recipient_id: Number(sender_id)
         }),
         success: function (response) {
-
+          document.location.href = document.location.href;
           alert('전송이 완료되었습니다.');
 
         },
@@ -147,6 +147,7 @@
       type: 'DELETE',
       url: `/messages/:${message_id}`,
       success: function (data) {
+        document.location.href = document.location.href;
         alert("삭제완료")
         return data;
       },
