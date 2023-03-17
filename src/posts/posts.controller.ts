@@ -18,13 +18,10 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
 
-
 @Controller('posts')
 export class PostsController {
   // 서비스 주입
-  constructor(
-    private readonly postsService: PostsService,
-    ) {}
+  constructor(private readonly postsService: PostsService) {}
 
   private logger = new Logger('PostsController');
 
@@ -36,7 +33,7 @@ export class PostsController {
   // }
 
   //페이지네이션
-    async getPosts(@Param('page') page: number = 1) {
+  async getPosts(@Param('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
     return await this.postsService.getPosts(page);
   }
@@ -60,24 +57,28 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   createPost(@Req() req, @Body() data: CreatePostDto) {
     return this.postsService.createPost(
-      req.userId, 
+      req.userId,
       data.title,
       data.category,
-      data.content,
+      data.content
     );
   }
 
   // 게시물 수정
   @Patch('/:id')
   @UsePipes(ValidationPipe)
-  updatePost(@Req() req, @Param('id') postId: number, @Body() data: UpdatePostDto) {
+  updatePost(
+    @Req() req,
+    @Param('id') postId: number,
+    @Body() data: UpdatePostDto
+  ) {
     this.logger.debug(`UpdatePostDto() : ${UpdatePostDto}`);
     return this.postsService.updatePost(
       req.userId,
       postId,
       data.title,
       data.category,
-      data.content,
+      data.content
     );
   }
 

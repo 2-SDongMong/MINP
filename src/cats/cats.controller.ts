@@ -40,7 +40,7 @@ export class CatsController {
     @Param('id') catId: number,
     @Body() data: UpdateCatDto
   ) {
-    console.log('hello')
+    console.log('hello');
     return await this.catService.updateCatById(req.userId, catId, data);
   }
 

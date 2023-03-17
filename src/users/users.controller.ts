@@ -33,7 +33,7 @@ export class UsersController {
   // 유저 정보 조회
   @Get('/mypage')
   async getUser(@Req() req) {
-    const data = await this.usersService.getUserById(req.userId)
+    const data = await this.usersService.getUserById(req.userId);
     return data;
   }
 
@@ -45,7 +45,7 @@ export class UsersController {
     @Body() data: UpdateMypageDto
   ) {
     await this.usersService.updateUserById(req.userId, userId, data);
-    return true 
+    return true;
   }
 
   // 유저 정보 삭제
@@ -85,8 +85,8 @@ export class UsersController {
 
   //이메일로 유저 찾기
   @Post('/a')
-  async getUserId(@Body() email){
+  async getUserId(@Body() email) {
     const a = await this.usersService.findOneByEmail(email.email);
-    return a.user_id; 
+    return a.user_id;
   }
 }
