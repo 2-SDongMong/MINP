@@ -8,9 +8,16 @@ import { ConfigService } from '@nestjs/config';
 import basicAuth from 'express-basic-auth';
 import { setupSwagger } from './config/swagger.config.service';
 import cookieParser from 'cookie-parser';
+import * as fs from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('src/config/cert.key'),
+    cert: fs.readFileSync('src/config/cert.crt'),
+  };
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    httpsOptions,
+  });
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new HttpExceptionFilter());
 
@@ -40,6 +47,8 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(3000);
+  await app.listen(3000, () => {
+    console.log('3000번 포트로 서버가 열렸습니다. https://localhost:3000');
+  });
 }
 bootstrap();
