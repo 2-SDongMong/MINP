@@ -32,9 +32,15 @@
             <td>
               <%= message.content %>
             </td>
-            <td>
-              <%= message.send_user.nickname %>
-            </td>
+            <% if (message.sender_id!==userId){ %>
+              <td>
+                <%= message.send_user.nickname %>
+              </td>
+            <% } else{ %>
+              <td>
+                <%= message.receive_user.nickname %>
+              </td>
+            <% } %>
             <td>
               <%= message.created_at %>
             </td>
