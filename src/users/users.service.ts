@@ -58,6 +58,14 @@ export class UsersService {
   async findOneByEmail(email: string) {
     return await this.userRepository.findOneBy({ email: email });
   }
+  async checkNickname(nickname: string){
+    const existNickname = await this.userRepository.findOneBy({nickname:nickname})
+    if (!_.isNil(existNickname)) {
+      return 1;
+    }else{
+      return 2;
+    }
+  }
   async findPassword(email: string) {
     const a = await this.userRepository.findOne({
       where: { email, deleted_at: null },
@@ -182,4 +190,5 @@ export class UsersService {
     });
     return user;
   }
+  
 }

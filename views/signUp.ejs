@@ -11,13 +11,14 @@
             <h4 class="mb-4 pb-3">Sign Up</h4>
             <div class="form-group">
                 <input type="text" name="signupNickname" class="form-style" placeholder="Your Full Nickname" id="signupNickname" autocomplete="off">
+                <button onclick="checkNick()" class="btn btn-outline-primary" type="button">중복 확인</button>
             </div>	
             <div class="form-group">
                 <input type="text" name="signupName" class="form-style" placeholder="Your Full Name" id="signupName" autocomplete="off">
             </div>	
             <div class="form-group mt-2">
                 <input type="email" name="signupEmail" class="form-style" placeholder="Your Email" id="signupEmail" autocomplete="off">
-                <button onclick="sendmail()" class="btn btn-outline-primary" type="button">인증번호 발송</button>
+                <button onclick="sendmail()"id="target_btn_nickname" class="btn btn-outline-primary"disabled="disabled" type="button">인증번호 발송</button>
             </div>	
             <div class="form-group mt-2">
                 <input type="text" id="checkNumber" placeholder="인증번호 입력해 주세요."/>
@@ -35,15 +36,39 @@
             <div class="form-group mt-2">
                 <input type="text" name="signupReferralcode" class="form-style" placeholder="Your referral_code" id="signupReferralcode" autocomplete="off">
             </div>
-
-        <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary" type="button">signup</button>
-        <p class="margin">이미 계정을 갖고 계신가요? <a href="./login">지금 로그인하기</a></p>
-       
+            
+            <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary" type="button">signup</button>
+            <p class="margin">이미 계정을 갖고 계신가요? <a href="./login">지금 로그인하기</a></p>
+           
         </div>
     </section>
 </body>
 
   <script>
+
+    function checkNick(){
+        const signupNickname = $('#signupNickname').val();
+        console.log(signupNickname)
+        $.ajax({
+            type: 'POST',
+            url:'/users/signup/check',
+            data:{nickname : signupNickname},
+            dataType: "text",
+            async:false,
+            success: function (data) {
+                aa=data
+                
+            }
+        });
+        window.sessionStorage.setItem(`${signupNickname}`,aa)
+        if(aa==='2'){
+            alert("사용가능한 닉네임입니다")
+            const target = document.getElementById('target_btn_nickname')
+            target.disabled = false
+        }else{
+            alert("중복된 닉네임입니다")
+        }
+    }
     
     function sendmail(){
         const signupEmail = $('#signupEmail').val();
@@ -64,11 +89,13 @@
     function check(){
         const checkNumber = $('#checkNumber').val();
         const signupEmail = $('#signupEmail').val();
+        
         if(checkNumber===window.sessionStorage.getItem(signupEmail)){
+
             const target = document.getElementById('target_btn')
             target.disabled = false
         }else{
-            alert("인증번호확인")
+            alert("인증번호확인부탁드립니다.")
         }
         
     }
