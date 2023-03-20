@@ -87,7 +87,6 @@ export class AppModule implements NestModule {
       { path: 'cats', method: RequestMethod.ALL },
       { path: 'cats/:id', method: RequestMethod.PATCH },
       { path: 'messages', method: RequestMethod.POST },
-      { path: 'message', method: RequestMethod.ALL },
       { path: 'messages/sent', method: RequestMethod.GET },
       { path: 'messages/received', method: RequestMethod.GET },
       { path: 'messages/unread', method: RequestMethod.GET },
