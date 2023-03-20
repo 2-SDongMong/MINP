@@ -5,6 +5,7 @@
   href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&display=swap"
   rel="stylesheet"
 />
+
 <!-- 나눔 게시판 페이지입니다!
 페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
 <nav class="sp_nav">
@@ -15,36 +16,74 @@
   <div class="sp_share_top"><h1 id="sp_shareH">Sharing</h1></div>
 
   <div class="sp_share-container">
-    <div class="row">
-      <% products.forEach(product => { %>
-      <div class="col-md-4">
-        <div class="sp_card my-3">
-          <a href="/shareDetail/<%= product.id %>">
-            <img
-              src="<%= product.imageUrl ? product.imageUrl : 'https://minp.s3.ap-northeast-2.amazonaws.com/product_images/1678968069841_%C3%A1%C2%84%C2%86%C3%A1%C2%85%C2%AE%C3%A1%C2%84%C2%8B%C3%A1%C2%85%C2%B5%C3%A1%C2%86%C2%AB%C3%A1%C2%84%C2%82%C3%A1%C2%85%C2%A3%C3%A1%C2%86%C2%BC%C3%A1%C2%84%C2%91%C3%A1%C2%85%C2%AE%C3%A1%C2%86%C2%B7%C3%A1%C2%84%C2%8F%C3%A1%C2%85%C2%B3%C3%A1%C2%86%C2%ABlogo.png'%>"
-              class="sp_card-img-top"
-              alt="<%= product.title %>"
-            />
-          </a>
-          <div class="sp_card-body">
-            <h5 class="sp_card-title">
-              <a href="/shareDetail/<%= product.id %>"><%= product.title %></a>
-            </h5>
-            <p class="sp_card-text"><%= product.description %></p>
-            <% if (product.productsCategoryId) { %>
-            <p class="sp_card-category">
-              카테고리: <%= products.productsCategory.name %>
-            </p>
-            <% } %>
-            <p class="sp_card-location">
-              지역: <%= product.productsTradeLocation.city %>, <%=
-              product.productsTradeLocation.cityDetail %>
-            </p>
-          </div>
-        </div>
-      </div>
-      <% }); %>
-    </div>
+    <div class="row"></div>
     <div style="height: 50px"></div>
   </div>
 </div>
+
+<!-- 나눔 게시판 페이지입니다! -->
+<script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    const products = JSON.parse(
+      '<%- JSON.stringify(products).replace(/</g, "\\\\u003c") %>'
+    );
+    const sortedProducts = products.sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt); // 내림차순 정렬
+    });
+
+    const container = document.querySelector('.row');
+    for (const product of sortedProducts) {
+      const address = await getAddressFromLocation(
+        product.productsTradeLocation
+      );
+      container.innerHTML += `
+        <div class="col-md-3">
+          <div class="sp_card my-2">
+            <a href="/shareDetail/${product.id}">
+              <p class="sp_card-location">${address}</p>
+              <img
+                src="${
+                  product.imageUrl ||
+                  'https://minp.s3.ap-northeast-2.amazonaws.com/product_images/1678968069841_%C3%A1%C2%84%C2%86%C3%A1%C2%85%C2%AE%C3%A1%C2%84%C2%8B%C3%A1%C2%85%C2%B5%C3%A1%C2%86%C2%AB%C3%A1%C2%84%C2%82%C3%A1%C2%85%C2%A3%C3%A1%C2%86%C2%BC%C3%A1%C2%84%C2%91%C3%A1%C2%85%C2%AE%C3%A1%C2%86%C2%B7%C3%A1%C2%84%C2%8F%C3%A1%C2%85%C2%B3%C3%A1%C2%86%C2%ABlogo.png'
+                }"
+                class="sp_card-img-top"
+                alt="${product.title}"
+              />
+            </a>
+            <div class="sp_card-body">
+              <h5 class="sp_card-title">
+                ${
+                  product.productsCategory
+                    ? `<p class="sp_card-category"> ${product.productsCategory.name}</p>`
+                    : ''
+                }
+
+                <a  href="/shareDetail/${product.id}">${product.title}</a>
+              <p class="sp_card-text">${product.description}</p>
+            </div>
+          </div>
+        </div>`;
+    }
+  });
+
+  async function getAddressFromLocation(location) {
+    const apiUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${location.longitude}&y=${location.latitude}&input_coord=WGS84`;
+
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `KakaoAK ${'5be4ec4a35f01b4330b109be70e6fcc3'}`,
+      },
+    });
+
+    const json = await response.json();
+    const documents = json.documents;
+    if (documents.length > 0) {
+      const region1depthName = documents[0].address.region_1depth_name;
+      const region2depthName = documents[0].address.region_2depth_name;
+      const address = `${region1depthName} ${region2depthName}`;
+      return address;
+    } else {
+      return '지역이 지정되지 않았습니다';
+    }
+  }
+</script>
