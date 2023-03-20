@@ -99,4 +99,10 @@ export class UsersController {
   ) {
     this.usersService.updateAddressCertified(req.userId, isCertified);
   }
+
+  //닉네임 중복 확인
+  @Post('/signup/check')
+  async checkNickname(@Body() nickname) {
+    return this.usersService.checkNickname(nickname.nickname);
+  }
 }
