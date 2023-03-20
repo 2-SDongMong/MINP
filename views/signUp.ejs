@@ -57,11 +57,9 @@
             async:false,
             success: function (data) {
                 aa=data
-                
             }
         });
-        window.sessionStorage.setItem(`${signupNickname}`,aa)
-        if(aa==='2'){
+        if(aa===false){
             alert("사용가능한 닉네임입니다")
             const target = document.getElementById('target_btn_nickname')
             target.disabled = false

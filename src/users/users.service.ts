@@ -61,9 +61,9 @@ export class UsersService {
   async checkNickname(nickname: string){
     const existNickname = await this.userRepository.findOneBy({nickname:nickname})
     if (!_.isNil(existNickname)) {
-      return 1;
+      return false;
     }else{
-      return 2;
+      return true;
     }
   }
   async findPassword(email: string) {
