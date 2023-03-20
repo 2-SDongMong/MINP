@@ -65,7 +65,7 @@ export class EjsRenderController {
     return { components: 'requestList', userId: req.userId, requests };
   }
 
-  @Get('requestDetail/:id')
+  @Get('request/detail/:id')
   @Render('index')
   async requestDetail(@Param('id') id: number, @Req() req) {
     const request = await this.requestsService.getRequestById(id);
@@ -73,6 +73,7 @@ export class EjsRenderController {
       components: 'requestDetail',
       userId: req.userId,
       request: request[0],
+      user: req.user,
     };
   }
 
@@ -82,11 +83,26 @@ export class EjsRenderController {
     return { components: 'requestPost', userId: req.userId };
   }
 
+  @Get('request/modify/:id')
+  @Render('index')
+  async requestModify(@Param('id') id: number, @Req() req) {
+    const request = await this.requestsService.getRequestById(id);
+    return {
+      components: 'requestModify',
+      userId: req.userId,
+      request: request[0],
+    };
+  }
+
   @Get('/shareList')
   @Render('index')
   async ShareList(@Req() req) {
     const products = await this.productsService.findAll();
-    return { components: 'shareList', userId: req.userId, products };
+    return {
+      components: 'shareList',
+      userId: req.userId,
+      products,
+    };
   }
 
   @Get('/shareDetail/:id')
@@ -108,6 +124,7 @@ export class EjsRenderController {
   ShareProduct(@Req() req) {
     return { components: 'shareProduct', userId: req.userId };
   }
+
   @Get('boardList')
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {

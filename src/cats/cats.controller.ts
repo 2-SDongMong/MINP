@@ -18,16 +18,10 @@ export class CatsController {
 
   // 유저 ID에 속성 된 고양이 전체 상세보기
   @Get('/')
-  async getMyCats(@Req() req) {
-    const data = await this.catService.getMyCats(req.userId);
+  async getMyCat(@Req() req) {
+    const data = await this.catService.getMyCat(req.userId);
     return data;
   }
-
-  // 고양이ID로 고양이 한 마리만 상세보기 API,굳이 필요하진 않을 거 같지만 일단 둠
-  // @Get('/:id')
-  // async getMyCatsById(@Param('id') catId: number) {
-  //   return await this.catService.getMyCatsById(catId);
-  // }
 
   @Post('/')
   createCat(@Req() req, @Body() data: CreateCatDto) {

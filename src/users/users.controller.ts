@@ -54,6 +54,46 @@ export class UsersController {
     return this.usersService.deleteUserById(req.userId, userId);
   }
 
+  // 내가 쓴 게시글 조회
+  // 품앗이 요청 
+  @Get('/requests')
+  async showMyRequest(@Req() req) {
+    const data = await this.usersService.showMyRequest(req.userId);
+    return data;
+  }
+
+  // 내가 쓴 품앗이 요청 삭제
+  @Delete('requests/:id')
+  deleteMyRequest(@Req() req, @Param('id') requestId: number) {
+    return this.usersService.deleteMyRequest(req.userId, requestId);
+  }
+
+  // 나눔 게시글
+  // @Get('/share')
+  // async showMyShare(@Req() req) {
+  //   const data = await this.usersService.showMyShare(req.userId);
+  //   return data;
+  // }
+
+  // 내가 쓴 나눔 게시글 삭제
+  // @Delete('share/id')
+  // async deleteMyShare(@Req() req, @Param('id') shareId: number) {
+  //   return this.usersService.deleteMyShare(req.userId, shareId);
+  // }
+
+  // 자유 게시판 조회
+  @Get('/post')
+  async showMyPost(@Req() req) {
+    const data = await this.usersService.showMyPost(req.userId);
+    return data;
+  }
+
+  // 내가 쓴 자유 게시판 삭제
+  @Delete('/post/:id')
+  async deleteMyPost(@Req() req, @Param('id') postId: number) {
+    return this.usersService.deleteMyPost(req.userId, postId);
+  }
+
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
@@ -81,5 +121,12 @@ export class UsersController {
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
     return this.usersService.deleteMemberById(req.userId, userId);
+  }
+
+  //이메일로 유저 찾기
+  @Post('/a')
+  async getUserId(@Body() email) {
+    const a = await this.usersService.findOneByEmail(email.email);
+    return a.user_id;
   }
 }

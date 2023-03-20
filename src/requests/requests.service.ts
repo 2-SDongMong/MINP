@@ -66,7 +66,7 @@ export class RequestsService {
             character: true,
           },
         },
-        request_id: false, // true,
+        request_id: true,
         reserved_begin_date: true,
         reserved_end_date: true,
         detail: true,
@@ -137,7 +137,7 @@ export class RequestsService {
     }
 
     // reserved_time과 detail 항목을 모두 업데이트
-    this.requestsRepository.update(id, {
+    await this.requestsRepository.update(id, {
       reserved_begin_date,
       reserved_end_date,
       detail,

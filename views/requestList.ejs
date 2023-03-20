@@ -46,7 +46,7 @@
 							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
 							<img src="" alt="">
 							<div class="status">
-								<p onclick="location.href='/requestDetail/<%= request.request_id %>'">모집중</p>
+								<p onclick="location.href='/request/detail/<%= request.request_id %>'">모집중</p>
 							</div>
 							</div>
 							<div class="whole-column-container">
@@ -76,7 +76,7 @@
 							
 							<div class="more">
 								<small class="text-muted align-center"><%= updated %> 전 업데이트</small>
-								<button class="moreBtn" onclick="location.href='/requestDetail/<%= request.request_id %>'">> 자세히 보기</button>
+								<button class="moreBtn" onclick="location.href='/request/detail/<%= request.request_id %>'">> 자세히 보기</button>
 							</div>
 						</div>
 					</div>
@@ -111,7 +111,7 @@
 						<div class="card-footer">
 							<div class="d-flex justify-content-between">
 								<small class="text-muted align-center"><%= updated %> 전 업데이트</small>
-								<button onclick="location.href='/requestDetail/<%= request.request_id %>'" class="btn btn-outline-dark btn-sm" type="button">자세히</button>
+								<button onclick="location.href='/request/detail/<%= request.request_id %>'" class="btn btn-outline-dark btn-sm" type="button">자세히</button>
 							</div>
 						</div>
 					</div>

@@ -8,19 +8,19 @@ Content-Type: application/json
 }
 ### 로그아웃
 POST http://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpbCI6Im1pbnAtYWRtaW4xQGdtYWlsLmNvbSIsImlhdCI6MTY3ODUzMzEwMCwiZXhwIjoxNjc4NjE5NTAwfQ.f-v2PxwizugCdXFaHH2h6AtfzGStrPzR0lzJix__S6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjM5OTY5LCJleHAiOjE2NzkzMjYzNjl9.ag9RhBoMuzUwNDUgvfiOQuKRiXLCvSflloqB4195ybA
 
 ### 회원가입
 POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email":"0003@gmail.com",
-  "name": "테스트",
-  "nickname":"김테스트3",
+  "email":"0005@gmail.com",
+  "name": "김마음",
+  "nickname":"마음이",
   "address":"경기도 고양시 고양구 고양동",
   "password":"0000",
-  "phone_number":"010-0000-0000",
+  "phone_number":"010-0000-0003",
   "referral_code":""
 }
 
@@ -101,3 +101,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpb
 DELETE    http://localhost:3000/user/admin/member/31
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpbCI6Im1pbnAtYWRtaW4xQGdtYWlsLmNvbSIsImlhdCI6MTY3ODUzMzEwMCwiZXhwIjoxNjc4NjE5NTAwfQ.f-v2PxwizugCdXFaHH2h6AtfzGStrPzR0lzJix__S6o
+
+### admin  내가 쓴 품앗이 조회
+GET   http://localhost:3000/users/requests
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjM5OTY5LCJleHAiOjE2NzkzMjYzNjl9.ag9RhBoMuzUwNDUgvfiOQuKRiXLCvSflloqB4195ybA
+
+### admin  내가 쓴 품앗이 삭제
+DELETE    http://localhost:3000/users/requests/55
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjAyNzcyLCJleHAiOjE2NzkyODkxNzJ9.MIsRLgPr9uYFXT3JgubTMkjvVFXumO3GGmZADr9zV-o
+
+
+### admin  내가 쓴 자유게시판 조회
+GET   http://localhost:3000/users/post
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjM5OTY5LCJleHAiOjE2NzkzMjYzNjl9.ag9RhBoMuzUwNDUgvfiOQuKRiXLCvSflloqB4195ybA
+
+### admin  내가 쓴 자유게시판 글 삭제
+DELETE    http://localhost:3000/users/post/33
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjM5OTY5LCJleHAiOjE2NzkzMjYzNjl9.ag9RhBoMuzUwNDUgvfiOQuKRiXLCvSflloqB4195ybA

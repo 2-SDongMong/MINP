@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import _ from 'lodash';
+import _, { identity } from 'lodash';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,11 +13,17 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
+import { Request } from 'src/requests/request.entity';
+import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
+import { Post } from 'src/posts/post.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>
+    @InjectRepository(User) private userRepository: Repository<User>, 
+    @InjectRepository(Request) private requestsRepository: Repository<Request>,
+    @InjectRepository(Products) private productsRepository: Repository<Products>,
+    @InjectRepository(Post) private postsRepository: Repository<Post>
   ) {}
 
   async create(userData: CreateUserDto) {
@@ -95,6 +101,12 @@ export class UsersService {
   // 유저 정보 수정
   async updateUserById(id: number, userId: number, bodyData: UpdateMypageDto) {
     const user = await this.findUser(id);
+    const nickname = await this.userRepository.find({
+      where: {nickname: bodyData.nickname}
+    });
+    if (nickname.length > 0) {
+      throw new BadRequestException('이미 존재하는 닉네임 입니다.')
+    }
     if (user.user_id === Number(userId)) {
       const { nickname, address, phone_number } = bodyData;
       await this.userRepository.update(id, {
@@ -113,6 +125,108 @@ export class UsersService {
     const user = await this.findUser(id);
     if (user.user_id === Number(userId)) {
       await this.userRepository.softDelete(id);
+    } else {
+      throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
+    }
+  }
+
+  // 내가 쓴 게시글 조회
+  // 품앗이 요청
+  async showMyRequest(id: number) {
+      const myRequest = await this.requestsRepository.find({
+        where: { user_id: id },
+        relations: {
+          user: true,
+        },
+        select: {
+          user: {
+            nickname: true,
+          },
+          reserved_begin_date: true,
+          reserved_end_date: true,
+          created_at: true
+        },
+      });
+      return myRequest;
+  }
+
+  // 내가 쓴 품앗이 삭제
+  async deleteMyRequest(id: number, requestId: number) {
+    const myRequest = await this.requestsRepository.findOne({
+      where: {
+        user_id: id, 
+        request_id: requestId
+      }
+    })
+    if (myRequest) {
+      await this.requestsRepository.softDelete(requestId);
+    } else {
+      throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
+    }
+  }
+
+  // 나눔 게시글 조회
+  // async showMyShare(id: number) {
+  //   const myShare = await this.productsRepository.find({
+  //     where: { user_id: id },
+  //     relations: {
+  //       user: true,
+  //     },
+  //     select: {
+  //       user: {
+  //         nickname: true,
+  //       },
+  //       title: true,
+  //       createdAt: true
+  //     },
+  //   });
+  //   return myShare;
+  // }
+
+  // 내가 쓴 나눔 게시글 삭제
+  // async deleteMyShare(id: number, shareId: number) {
+  //   const myShare = await this.productsRepository.findOne({
+  //     where: {
+  //       user_id: id,
+  //       id: shareId
+  //     }
+  //   })
+  //   if (myShare) {
+  //     await this.productsRepository.softDelete(shareId)
+  //   } else {
+  //     throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
+  //   }
+  // }
+
+  // 자유 게시판 조회
+  async showMyPost(id: number) {
+    const myPost = await this.postsRepository.find({
+      where: {user_id: id},
+      relations: {
+        user: true,
+      },
+      select: {
+        user: {
+          nickname: true,
+        },
+        title: true,
+        category: true,
+        created_at: true
+      },
+    });
+    return myPost;
+  }
+
+  // 내가 쓴 자유 게시판 삭제
+  async deleteMyPost(id: number, postId: number) {
+    const myPost = await this.postsRepository.findOne({
+      where: {
+        user_id: id,
+        post_id: postId
+      }
+    })
+    if (myPost) {
+      await this.postsRepository.softDelete(postId)
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }

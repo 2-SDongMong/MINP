@@ -264,7 +264,7 @@
 .catInfo3 {
   font-family: Nanum Gothic;
   font-size: 14px;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 3px 0px 0px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -381,7 +381,7 @@
 /* cat page button */
 .edit2 {
   display: flex;
-  margin: 60px 0px 0px -280px;
+  margin: 95px 0px 0px -279px;
 }
 
 /* my posts */

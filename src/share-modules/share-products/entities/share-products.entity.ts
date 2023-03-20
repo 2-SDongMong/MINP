@@ -25,7 +25,8 @@ export class Products {
   imageUrl: string;
 
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
-  productsTradeLocation: ProductsTradeLocation[];
+  productsTradeLocation: ProductsTradeLocation;
+
   @ManyToOne(() => ProductsCategory, { eager: true })
   productsCategory: ProductsCategory;
   @ManyToOne(() => User, (user) => user.products, { cascade: true })
