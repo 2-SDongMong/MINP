@@ -14,13 +14,15 @@ import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service';
 import { ProductsService } from 'src/share-modules/share-products/share-products.service';
+import { ConfigService } from '@nestjs/config';
 @Controller()
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
     private readonly postsService: PostsService,
     private readonly messagesService: MessagesService,
-    private readonly productsService: ProductsService
+    private readonly productsService: ProductsService,
+    private readonly configService: ConfigService
   ) {}
 
   @Get('/')
@@ -43,7 +45,8 @@ export class EjsRenderController {
   @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', userId: req.userId, user: req.user };
+    const KAKAO_APP_KEY = this.configService.get<string>('KAKAO_APP_KEY');
+    return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
   }
 
   @Get('')
