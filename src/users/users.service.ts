@@ -17,6 +17,7 @@ import { UpdateMemberDto } from './dto/update-member-status.dto';
 import { Request } from 'src/requests/request.entity';
 import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
 import { Post } from 'src/posts/post.entity';
+import { UpdateAddressCertifiedDto } from './dto/update-address-certified.dto';
 
 @Injectable()
 export class UsersService {
@@ -65,11 +66,13 @@ export class UsersService {
   async findOneByEmail(email: string) {
     return await this.userRepository.findOneBy({ email: email });
   }
-  async checkNickname(nickname: string){
-    const existNickname = await this.userRepository.findOneBy({nickname:nickname})
+  async checkNickname(nickname: string) {
+    const existNickname = await this.userRepository.findOneBy({
+      nickname: nickname,
+    });
     if (!_.isNil(existNickname)) {
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -100,7 +103,9 @@ export class UsersService {
         'email',
         'name',
         'nickname',
-        'address',
+        'address_road',
+        'address_bname',
+        'address_certified',
         'phone_number',
         'status',
       ],
@@ -110,7 +115,7 @@ export class UsersService {
   // 유저 정보 수정
   async updateUserById(id: number, userId: number, bodyData: UpdateMypageDto) {
     const user = await this.findUser(id);
-    const { nickname, address, phone_number } = bodyData;
+    const { nickname, address_road, address_bname, address_certified, phone_number } = bodyData;
     if (!nickname) {
       throw new BadRequestException('닉네임은 필수 입력 항목입니다.');
     }
@@ -119,9 +124,18 @@ export class UsersService {
       throw new BadRequestException('이미 존재하는 닉네임 입니다.');
     }
     if (user.user_id === Number(userId)) {
+      const {
+        nickname,
+        address_road,
+        address_bname,
+        address_certified,
+        phone_number,
+      } = bodyData;
       await this.userRepository.update(id, {
         nickname,
-        address,
+        address_road,
+        address_bname,
+        address_certified,
         phone_number,
       });
       return '회원정보 수정이 완료되었습니다.';
@@ -307,5 +321,22 @@ export class UsersService {
     });
     return user;
   }
-  
+
+  /* 
+    유저의 현재 위치의 '동네명'이 회원 가입 시 등록한 주소의 '동네명'과 일치 또는
+    현재 위치 좌표와 회원 가입시 등록한 '도로명' 주소로 찾은 좌표 사이 거리가 1km 내라면
+    동네(위치) 인증으로 처리 
+    프론트에서 위의 로직이 실행되며 이 API는 호출시 단순히 위치 인증 여부 컬럼
+    (user.address_certified)을 '참'으로 변경함
+  */
+  updateAddressCertified(id: number, isCertified: UpdateAddressCertifiedDto) {
+    const { address_certified } = isCertified;
+    console.log(
+      'inside user.service, isCertified boolean? ',
+      address_certified,
+      'id: ',
+      id
+    );
+    this.userRepository.update(id, { address_certified });
+  }
 }
