@@ -89,6 +89,7 @@ export class UsersController {
   async getUserId(@Body() email) {
     const a = await this.usersService.findOneByEmail(email.email);
     return a.user_id;
+
   }
 
   // 유저의 '위치(동네) 인증' 처리: address_certified을 false -> true로 변경
@@ -104,5 +105,6 @@ export class UsersController {
   @Post('/signup/check')
   async checkNickname(@Body() nickname) {
     return this.usersService.checkNickname(nickname.nickname);
+
   }
 }

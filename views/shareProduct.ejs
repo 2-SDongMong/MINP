@@ -1,10 +1,24 @@
 <link rel="stylesheet" href="/css/shareProduct/shareProduct.css" />
-<script defer type="text/javascript" src="/js/shareProduct/shareProduct.js"></script>
+
 
 <nav class="sp_nav">
   <a class="sp_nav-link" href="/shareList">상품조회</a>
 </nav>
+
 <form id="productForm" action="/shareList" enctype="multipart/form-data">
+  <div id="map" style="width: 100%; height: 300px; margin-top: 10px"></div>
+  <br />
+  <input
+    type="text"
+    id="sample5_address"
+    placeholder="주소검색을 눌러주세요!"
+  />
+  <input
+    type="button"
+    onclick="sample5_execDaumPostcode()"
+    value="주소 검색"
+  /><br />
+
   <img
     id="imagePreview"
     src=""
@@ -15,8 +29,7 @@
   <select id="categorySelect" name="categorySelect" required>
     <option value="">상품의 카테고리를 골라주세요!</option>
   </select>
-  <input type="text" name="city" placeholder="City" required />
-  <input type="text" name="cityDetail" placeholder="City Detail" required />
+
   <input type="text" name="title" placeholder="Product title" required />
   <textarea
     name="description"
@@ -24,6 +37,162 @@
     required
     rows="5"
   ></textarea>
+  <input type="hidden" id="latitude" name="latitude" />
+  <input type="hidden" id="longitude" name="longitude" />
 
   <button type="submit">Submit</button>
 </form>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=ab5390b901e8557e868df0ed0ed4f1a4&libraries=services"></script>
+<script>
+  const userId = '<%= userId %>';
+  if (!userId) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login'; // 로그인 페이지로 이동
+  }
+
+  var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+      center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+      level: 5, // 지도의 확대 레벨
+    };
+
+  //지도를 미리 생성
+  var map = new daum.maps.Map(mapContainer, mapOption);
+  //주소-좌표 변환 객체를 생성
+  var geocoder = new daum.maps.services.Geocoder();
+  //마커를 미리 생성
+  var marker = new daum.maps.Marker({
+    position: new daum.maps.LatLng(37.537187, 127.005476),
+    map: map,
+  });
+
+  function sample5_execDaumPostcode() {
+    new daum.Postcode({
+      oncomplete: function (data) {
+        var addr = data.address; // 최종 주소 변수
+
+        // 주소 정보를 해당 필드에 넣는다.
+        document.getElementById('sample5_address').value = addr;
+        // 주소로 상세 정보를 검색
+        geocoder.addressSearch(data.address, function (results, status) {
+          // 정상적으로 검색이 완료됐으면
+          if (status === daum.maps.services.Status.OK) {
+            var result = results[0]; //첫번째 결과의 값을 활용
+
+            // 해당 주소에 대한 좌표를 받아서
+            var coords = new daum.maps.LatLng(result.y, result.x);
+
+            // Save latitude and longitude values in hidden input fields
+            document.getElementById('latitude').value = coords.getLat();
+            document.getElementById('longitude').value = coords.getLng();
+
+            // 지도를 보여준다.
+            mapContainer.style.display = 'block';
+            map.relayout();
+            // 지도 중심을 변경한다.
+            map.setCenter(coords);
+            // 마커를 결과값으로 받은 위치로 옮긴다.
+            marker.setPosition(coords);
+          }
+        });
+      },
+    }).open();
+  }
+  function loadCategories() {
+    $.ajax({
+      url: '/productsCategory',
+      type: 'GET',
+      success: function (categories) {
+        const categorySelect = $('#categorySelect');
+        categories.forEach((category) => {
+          categorySelect.append(
+            `<option value="${category.id}">${category.name}</option>`
+          );
+        });
+      },
+      error: function (error) {
+        console.error('Failed to load categories:', error);
+      },
+    });
+  }
+  $(document).ready(function () {
+    loadCategories();
+
+    $('#productForm').on('submit', async function (event) {
+      event.preventDefault();
+
+      let formData = new FormData(this);
+      const categoryId = $('#categorySelect').val();
+      const latitude = formData.get('latitude');
+      const longitude = formData.get('longitude');
+
+      if (!latitude || !longitude || !categoryId) {
+        alert('모든 필드를 채워주세요.');
+        return;
+      }
+
+      formData.delete('latitude');
+      formData.delete('longitude');
+
+      formData.append('latitude', latitude);
+      formData.append('longitude', longitude);
+
+      if (categoryId) {
+        formData.append('productsCategoryId', categoryId);
+      }
+
+      // 로그인한 사용자의 ID를 추가합니다.
+      formData.append('userId', userId);
+      console.log(userId);
+      const productsTradeLocation = {
+        latitude,
+        longitude,
+      };
+      formData.append(
+        'productsTradeLocation',
+        JSON.stringify(productsTradeLocation)
+      );
+
+      // 상품 생성 요청을 보냅니다.
+      $.ajax({
+        url: '/products/create',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          alert('상품이 등록되었습니다!');
+          window.location.href = '/shareList';
+        },
+        error: function (error) {
+          alert('상품 등록에 실패했습니다. 다시 시도해주세요.');
+        },
+      });
+    });
+  });
+
+  function previewImage() {
+    const input = document.getElementById('imageInput');
+    const preview = document.getElementById('imagePreview');
+
+    input.addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.addEventListener('load', function () {
+          preview.src = this.result;
+          preview.style.display = 'block'; // 미리보기 이미지를 표시합니다.
+        });
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = '';
+        preview.style.display = 'none'; // 이미지가 선택되지 않았을 때 미리보기를 숨깁니다.
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    previewImage();
+  });
+</script>

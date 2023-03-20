@@ -5,7 +5,7 @@
   <a class="sp_nav-link" href="/shareList">상품조회</a>
   <a class="sp_nav-link" href="/shareProduct">상품등록</a>
 </nav>
-
+<h5 class="product-title"><%= product.user.nickname %></h5>
 <div class="container">
   <div class="row product-detail">
     <div class="col-md-6">
@@ -14,19 +14,48 @@
       </div>
     </div>
     <div class="col-md-6">
-      <p class="product-category">
-        카테고리: <%= product.productsCategory.name %>
-      </p>
-      <p class="product-location">
-        원하는 거래장소: <%= product.productsTradeLocation.city %>, <%=
-        product.productsTradeLocation.cityDetail %>
-      </p>
+      <p class="sp_card-location"></p>
+      <p class="product-category"><%= product.productsCategory.name %></p>
       <div class="product-info">
         <h2 class="product-title"><%= product.title %></h2>
         <p class="product-description"><%= product.description %></p>
-
-        <a class="add-to-cart" href="#">나눔신청</a>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', async function () {
+    const product = JSON.parse(
+      '<%- JSON.stringify(product).replace(/</g, "\\\\u003c") %>'
+    );
+
+    // 주소 정보를 가져와서 출력합니다
+    const addressElem = document.querySelector('.sp_card-location');
+    const address = await getAddressFromLocation(product.productsTradeLocation);
+    addressElem.textContent = address;
+  });
+
+  async function getAddressFromLocation(location) {
+    const apiKey = '5be4ec4a35f01b4330b109be70e6fcc3'; // 발급받은 인증키를 입력합니다
+    const apiUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${location.longitude}&y=${location.latitude}&input_coord=WGS84`;
+
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `KakaoAK ${apiKey}`,
+      },
+    });
+
+    const json = await response.json();
+    const documents = json.documents;
+    if (documents.length > 0) {
+      const region1depthName = documents[0].address.region_1depth_name;
+      const region2depthName = documents[0].address.region_2depth_name;
+      const address = `${region1depthName} ${region2depthName}`;
+
+      return address;
+    } else {
+      return '주소를 찾을 수 없습니다';
+    }
+  }
+</script>
