@@ -24,7 +24,6 @@ export class UsersController {
     return await this.usersService.create(dto);
   }
 
-
   @Put('/update')
   updateUser() {
     this.usersService.updateUser('email', 'new_name', 'new_password');
@@ -117,7 +116,6 @@ export class UsersController {
   getMember(@Req() req) {
     return this.usersService.getAllMember(req.userId);
   }
-  
 
   // 전체 회원 삭제 API
   @Delete('/admin/member/:id')
@@ -130,12 +128,5 @@ export class UsersController {
   async getUserId(@Body() email) {
     const a = await this.usersService.findOneByEmail(email.email);
     return a.user_id;
-  }
-
-  
-  //닉네임 중복 확인
-  @Post('/signup/check')
-  async checkNickname(@Body() nickname){
-    return this.usersService.checkNickname(nickname.nickname);
   }
 }

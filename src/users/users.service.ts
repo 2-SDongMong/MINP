@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Body,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -109,14 +110,15 @@ export class UsersService {
   // 유저 정보 수정
   async updateUserById(id: number, userId: number, bodyData: UpdateMypageDto) {
     const user = await this.findUser(id);
-    const nickname = await this.userRepository.find({
-      where: {nickname: bodyData.nickname}
-    });
-    if (nickname.length > 0) {
-      throw new BadRequestException('이미 존재하는 닉네임 입니다.')
+    const { nickname, address, phone_number } = bodyData;
+    if (!nickname) {
+      throw new BadRequestException('닉네임은 필수 입력 항목입니다.');
+    }
+    const exists = await this.userRepository.findOne({where: {nickname}});
+    if (exists && exists.user_id !== userId) {
+      throw new BadRequestException('이미 존재하는 닉네임 입니다.');
     }
     if (user.user_id === Number(userId)) {
-      const { nickname, address, phone_number } = bodyData;
       await this.userRepository.update(id, {
         nickname,
         address,
@@ -255,16 +257,17 @@ export class UsersService {
   }
 
   // 가입 신청 승인 -> enum... 어떻게 함...
-  async accessMember(id: number, userId: number, bodyData: UpdateMemberDto) {
+  async accessMember(id: number, userId: number, data: UpdateMemberDto) {
     const user = await this.findUser(id);
+    console.log(user)
     if (user.status === '관리자') {
-      const editStatus = await this.userRepository
+        const editStatus = await this.userRepository
         .createQueryBuilder()
         .update(User)
-        .set(bodyData)
-        .where('user_id = :userId', { uerId: Number(userId) })
+        .set(data)
+        .where('user_id = :userId', { userId: Number(userId) })
         .execute();
-      return editStatus;
+      return editStatus;   
     } else {
       throw new UnauthorizedException('권한이 없습니다.');
     }
@@ -274,9 +277,9 @@ export class UsersService {
   async getAllMember(id: number) {
     const user = await this.findUser(id);
     if (user.status === '관리자') {
-      const member = await this.userRepository.find({
-        where: { status: '일반' },
-      });
+      const member = await this.userRepository.createQueryBuilder('user')
+      .where('user.status IN (:...statuses)', { statuses: ['일반', '관리자'] })
+      .getMany();
       return member;
     } else {
       throw new UnauthorizedException('권한이 없습니다.');
