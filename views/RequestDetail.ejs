@@ -3,6 +3,10 @@
 	<div class="d-flex justify-content-center">
 		<h1 class="text-center">품앗이 지원</h1>
 	</div>
+	<br/>
+	<div>
+		<button onclick="location.href='/request/list'" class="btn btn-outline-dark" type="button" style="border-radius: 20px;">목록으로</button>
+	</div>
 
 	<div class="cat-cards-container" >
 	<% const cats = request.user.cats;
@@ -104,8 +108,124 @@
 					<p><%= request.detail %></p>
 				</div>
 			</br>
-			<button onclick="location.href='/message/<%= request.user.user_id %>'" class="btn btn-outline-secondary w-100 btn-lg" type="button" style="border-radius: 20px;">쪽지 보내기</button>
+			<% if (request.user.user_id != userId) { %>
+				<button class="btn btn-outline-secondary w-100 btn-lg" type="button" id="modal_opne_btn" style="border-radius: 20px;">쪽지 보내기</button>
+				<div id="modal">
+   
+					<div class="modal_content">
+					  to <%= request.user.nickname %>
+					  <div class="form-group">
+						<label for="message">Message</label>
+						<textarea class="form-control"id="inputContent" name="inputContent" ></textarea>
+					  </div>
+					  <button onclick="sendMessage(<%= request.user.user_id %>)" class="btn btn-outline-primary"
+						type="button">submit</button>  
+					   
+						<button type="button" id="modal_close_btn">모달 창 닫기</button>
+					   
+					</div>
+				   
+					<div class="modal_layer"></div>
+				  </div>
+			<% } else { %>
+				<div class="d-flex">
+					<button onclick="location.href='/request/modify/<%= request.request_id %>'" class="btn btn-outline-primary" type="button">수정</button>
+					<button onclick="deleteRequest('<%= request.request_id %>')" class="btn btn-outline-secondary" type="button">삭제</button>
+				</div>
+			<% } %>
 			</div>
 		</div>
 	</div>
 </section>
+
+<script>
+	function sendMessage(sender_id) {
+		const inputContent = $('#inputContent').val();
+		if (!inputContent) {
+		alert('내용을 입력해주세요.');
+		} else {
+		$.ajax({
+			type: 'POST',
+			url: '/messages',
+			data: JSON.stringify({
+				content: inputContent,
+				recipient_id: Number(sender_id)
+				}),
+			success: function (response) {
+			document.location.href = document.location.href;
+			alert('전송이 완료되었습니다.');
+
+			},
+			beforeSend: function (xhrObj) {
+			xhrObj.setRequestHeader("Content-Type", "application/json");
+			xhrObj.setRequestHeader("Accept", "application/json");
+			},
+		})
+		}
+	}
+	function check(a,b){
+		console.log(a,b)
+	}
+	document.getElementById("modal_opne_btn").onclick = function() {
+        document.getElementById("modal").style.display="block";
+    }
+   
+    document.getElementById("modal_close_btn").onclick = function() {
+        document.getElementById("modal").style.display="none";
+    } 
+	function deleteRequest(id) {
+		const isReal = confirm('정말 삭제하시겠습니까? 되돌릴 수 없습니다');
+		if (!isReal) {
+			return 
+		}
+		$.ajax({
+			type: 'DELETE',
+			url: `/requests/${id}`,
+			success: function (response) {
+				alert('품앗이 게시글을 삭제하였습니다')
+				location.href = '/request/list';
+			},
+			error: function (response) {
+				console.log(response);
+				console.log(response.responseJSON.message);
+			}
+		})
+	}
+</script>
+
+<style>
+	#modal {
+  position:relative;
+  display: none;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+#modal h2 {
+  margin:0;   
+}
+
+#modal button {
+  display:inline-block;
+  width:100px;
+  margin-left:calc(100% - 100px - 10px);
+}
+
+#modal .modal_content {
+  width:300px;
+  margin:200px auto;
+  padding:20px 10px;
+  background:#fff;
+  border:2px solid #666;
+}
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+} 
+</style>

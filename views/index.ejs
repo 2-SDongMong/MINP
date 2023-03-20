@@ -22,8 +22,6 @@
   <link rel="stylesheet" href="/css/request/detail.css">
   <link rel="stylesheet" href="/css/request/post.css">
 
-
-
   <!-- JS -->
 
 
@@ -32,14 +30,12 @@
 
 
 
+
   <script defer type="text/javascript" src="/js/myPage/myPage.js"></script>
 
-
-  
   <!-- jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   
-
 </head>
 <body>
   
@@ -65,6 +61,7 @@
   <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
   <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
   <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
+  <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
 
   <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
   <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>

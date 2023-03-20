@@ -37,18 +37,18 @@ export class MessagesController {
   }
   @Get('/:id')
   async getMessageById(@Param('id') messageId, @Req() req) {
-    messageId=Number(messageId.replace(':',''))
+    messageId = Number(messageId.replace(':', ''));
     return await this.messagesService.getMessageById(messageId, req.userId);
   }
 
   @Post('/')
-  async createMessage(@Body() data: CreateMessageDto,@Req() req ) {
+  async createMessage(@Body() data: CreateMessageDto, @Req() req) {
     return await this.messagesService.createMessage(req.userId, data);
   }
 
   @Delete('/:id')
   async deleteMessageById(@Param('id') messageId) {
-    messageId=Number(messageId.replace(':',''))
+    messageId = Number(messageId.replace(':', ''));
     return this.messagesService.deleteMessageById(messageId);
   }
 }

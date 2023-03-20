@@ -8,7 +8,9 @@ export class CreateUserDto {
   @IsString()
   readonly email: string;
   @IsString()
-  readonly address: string;
+  readonly address_road: string;
+  @IsString()
+  readonly address_bname: string;
   @IsString()
   readonly phone_number: string;
   @IsString()

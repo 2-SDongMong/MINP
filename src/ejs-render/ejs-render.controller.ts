@@ -14,13 +14,15 @@ import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service';
 import { ProductsService } from 'src/share-modules/share-products/share-products.service';
+import { ConfigService } from '@nestjs/config';
 @Controller()
 export class EjsRenderController {
   constructor(
     private readonly requestsService: RequestsService,
     private readonly postsService: PostsService,
     private readonly messagesService: MessagesService,
-    private readonly productsService: ProductsService
+    private readonly productsService: ProductsService,
+    private readonly configService: ConfigService
   ) {}
 
   @Get('/')
@@ -43,7 +45,8 @@ export class EjsRenderController {
   @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
-    return { components: 'myPage', userId: req.userId, user: req.user };
+    const KAKAO_APP_KEY = this.configService.get<string>('KAKAO_APP_KEY');
+    return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
   }
 
   @Get('')
@@ -65,7 +68,7 @@ export class EjsRenderController {
     return { components: 'requestList', userId: req.userId, requests };
   }
 
-  @Get('requestDetail/:id')
+  @Get('request/detail/:id')
   @Render('index')
   async requestDetail(@Param('id') id: number, @Req() req) {
     const request = await this.requestsService.getRequestById(id);
@@ -73,6 +76,7 @@ export class EjsRenderController {
       components: 'requestDetail',
       userId: req.userId,
       request: request[0],
+      user: req.user,
     };
   }
 
@@ -80,6 +84,17 @@ export class EjsRenderController {
   @Render('index')
   requestPost(@Req() req) {
     return { components: 'requestPost', userId: req.userId };
+  }
+
+  @Get('request/modify/:id')
+  @Render('index')
+  async requestModify(@Param('id') id: number, @Req() req) {
+    const request = await this.requestsService.getRequestById(id);
+    return {
+      components: 'requestModify',
+      userId: req.userId,
+      request: request[0],
+    };
   }
 
   @Get('/shareList')
