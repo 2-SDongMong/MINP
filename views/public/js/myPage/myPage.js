@@ -33,7 +33,7 @@ function showMyPage() {
             <input value="${response.address_road}" class="infoContent1" type="text" id="address_road" placeholder="주소" readonly>
             <input value="${response.address_bname}" class="infoContent1" type="text" id="address_bname" placeholder="동" readonly>
             <input type="button" onclick="findAddress()" class="btn btn-outline-secondary" value="주소 검색"><br>
-            </div>
+          </div>
           <div class="">
             <li class="miniTitle">동네 인증 상태</li>
             <input value="${addressCertified}" class="infoContent1" type="text" id="address_certified" placeholder"위치 인증 여부" readonly>
