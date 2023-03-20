@@ -84,6 +84,7 @@ export class AppModule implements NestModule {
       { path: 'users/admin', method: RequestMethod.ALL },
       { path: 'users/admin/member', method: RequestMethod.ALL },
       { path: 'users/admin/member/:id', method: RequestMethod.ALL },
+      { path: 'users/address/certify', method: RequestMethod.PATCH },
       { path: 'cats', method: RequestMethod.ALL },
       { path: 'cats/:id', method: RequestMethod.PATCH },
       { path: 'messages', method: RequestMethod.POST },

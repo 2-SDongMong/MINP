@@ -38,7 +38,13 @@ export class User {
   email: string;
 
   @Column('varchar', { length: 50 })
-  address: string;
+  address_road: string;
+
+  @Column('varchar', { length: 50 })
+  address_bname: string;
+
+  @Column('boolean', { default: false })
+  address_certified: Boolean;
 
   @Column('varchar', { length: 20 })
   phone_number: string;

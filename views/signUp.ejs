@@ -1,6 +1,6 @@
-<!-- 회원가입 페이지입니다!
-페이지 Body부분에 보여지는 코드입니다. <Body></Body> 생략하시고 시작해주세요! -->
-<!-- styles -->
+
+<!-- 다음 우편번호 찾기 API -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <body>
     <section>
@@ -29,22 +29,20 @@
                 <button onclick="check()" class="btn btn-outline-primary" type="button">인증</button>
             </div>
             <div class="form-group mt-2">
-                <input type="password" name="signupPass" class="form-style" placeholder="Your Password" id="signupPass"
-                    autocomplete="off">
+                <input type="password" name="signupPass" class="form-style" placeholder="비밀번호" id="signupPass" autocomplete="off">
             </div>
             <div class="form-group mt-2">
-                <p><input type="text" id="address_kakao" placeholder="도로명주소 클릭" name="address" readonly /></p>
-                <input type="text" name="signupAddress" class="form-style" placeholder="상세주소" id="signupAddress"
-                    autocomplete="off">
-
+                <input type="text" name="signupAddress" class="form-style" placeholder="Your Address" id="signupAddress" autocomplete="off">
+                <li class="miniTitle">주소</li>
+                <input class="form-style" type="text" value="" id="signupAddressRoad" placeholder="도로명" readonly>
+                <input class="form-style" type="text" value="" id="signupAddressBname" placeholder="동" readonly>
+                <input type="button" onclick="findAddress()" class="btn btn-outline-secondary" value="주소 검색"><br>
             </div>
             <div class="form-group mt-2">
-                <input type="tel" name="signupPhonenumber" class="form-style" placeholder="Your Phone"
-                    id="signupPhonenumber" autocomplete="off">
+                <input type="tel" name="signupPhonenumber" class="form-style" placeholder="핸드폰 번호" id="signupPhonenumber" autocomplete="off">
             </div>
             <div class="form-group mt-2">
-                <input type="text" name="signupReferralcode" class="form-style" placeholder="Your referral_code"
-                    id="signupReferralcode" autocomplete="off">
+                <input type="text" name="signupReferralcode" class="form-style" placeholder="추천인 코드" id="signupReferralcode" autocomplete="off">
             </div>
 
             <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary"
@@ -119,12 +117,28 @@
         }
 
     }
-    function signUp() {
+    
+    // '주소 검색' 버튼 클릭시 다음 우편번호 찾기 api로 주소 검색
+    function findAddress() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var address_road = data.address; // 최종 도로명 주소
+                var address_bname = data.bname? data.bname : ''; // 동 (지번주소)
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("signupAddressRoad").value = address_road;
+                document.getElementById("signupAddressBname").value = address_bname;
+            }
+        }).open();
+    }
+
+    function signUp(){
         const signupNickname = $('#signupNickname').val();
         const signupName = $('#signupName').val();
         const signupEmail = $('#signupEmail').val();
         const signupPass = $('#signupPass').val();
-        const signupAddress = $('#address_kakao').val() + ' ' + $('#signupAddress').val();
+        const signupAddressRoad = $('#signupAddressRoad').val();
+        const signupAddressBname = $('#signupAddressBname').val();
         const signupPhonenumber = $('#signupPhonenumber').val();
         const signupReferralcode = $('#signupReferralcode').val();
         if (!signupNickname) {
@@ -134,12 +148,12 @@
         } else if (!signupEmail) {
             alert('이메일을 입력해주세요.');
         } else if (!signupPass) {
-            alert('비밀번호를 입력해주세요.');
-        } else if (!signupAddress) {
-            alert('주소를 입력해주세요.');
+		alert('비밀번호를 입력해주세요.');
+        } else if (!signupAddressRoad) {
+		alert('주소를 입력해주세요.');
         } else if (!signupPhonenumber) {
-            alert('연락처를 입력해주세요.');
-        } else {
+		alert('연락처를 입력해주세요.');
+        } else{
             $.ajax({
                 type: 'POST',
                 url: '/users/signup',
@@ -148,7 +162,8 @@
                     name: signupName,
                     email: signupEmail,
                     password: signupPass,
-                    address: signupAddress,
+                    address_road: signupAddressRoad,
+                    address_bname: signupAddressBname,
                     phone_number: signupPhonenumber,
                     referral_code: signupReferralcode
                 },
