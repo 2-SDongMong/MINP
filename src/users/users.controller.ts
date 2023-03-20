@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
 import { UsersService } from './users.service';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
+import { UpdateAddressCertifiedDto } from './dto/update-address-certified.dto';
 
 @Controller('users')
 export class UsersController {
@@ -88,5 +89,20 @@ export class UsersController {
   async getUserId(@Body() email) {
     const a = await this.usersService.findOneByEmail(email.email);
     return a.user_id;
+  }
+
+  // 유저의 '위치(동네) 인증' 처리: address_certified을 false -> true로 변경
+  @Patch('address/certify')
+  updateAddressCertified(
+    @Req() req,
+    @Body() isCertified: UpdateAddressCertifiedDto
+  ) {
+    this.usersService.updateAddressCertified(req.userId, isCertified);
+  }
+
+  //닉네임 중복 확인
+  @Post('/signup/check')
+  async checkNickname(@Body() nickname) {
+    return this.usersService.checkNickname(nickname.nickname);
   }
 }
