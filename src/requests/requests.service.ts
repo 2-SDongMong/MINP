@@ -7,9 +7,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Request } from './request.entity';
+import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
 import _ from 'lodash';
-import { CreateRequestDto } from './dto/create-request.dto';
 
 @Injectable()
 export class RequestsService {
@@ -37,6 +37,7 @@ export class RequestsService {
         reserved_end_date: true,
         updated_at: true,
         detail: true,
+        is_ongoing: true,
       },
       order: {
         updated_at: 'DESC',
@@ -70,6 +71,7 @@ export class RequestsService {
         reserved_begin_date: true,
         reserved_end_date: true,
         detail: true,
+        is_ongoing: true,
       },
     });
 

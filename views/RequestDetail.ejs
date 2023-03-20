@@ -83,7 +83,7 @@
 		} else if (minutesAgo / 60 <= 48) {
 			updated += parseInt(minutesAgo / 60) + '시간'
 		} else {
-			updated += minutesAgo / 60 / 24 + '일'
+			updated += parseInt(minutesAgo / 60 / 24) + '일'
 		} 
 		let reserved_dates = ''
 		if (request.reserved_end_date == request.reserved_begin_date) {
@@ -99,7 +99,7 @@
 				<div class="card-body">
 					<p class="card-title">돌봄이 필요한 기간: <%= reserved_dates %></p>
 					<p class="card-title">닉네임: <%= request.user.nickname %></p>
-					<p class="card-title">동네: <%= request.request_id %></p>
+					<p class="card-title">동네: <%= request.user.address_bname %></p>
 				</div>
 				</br>
 

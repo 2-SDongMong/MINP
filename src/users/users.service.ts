@@ -213,12 +213,6 @@ export class UsersService {
   */
   updateAddressCertified(id: number, isCertified: UpdateAddressCertifiedDto) {
     const { address_certified } = isCertified;
-    console.log(
-      'inside user.service, isCertified boolean? ',
-      address_certified,
-      'id: ',
-      id
-    );
     this.userRepository.update(id, { address_certified });
   }
 }
