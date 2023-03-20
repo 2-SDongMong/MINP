@@ -24,58 +24,81 @@
       <div class="modal_layer"></div>
     </div>
   </thead>
+  <div>
+    <div class="box1">
+      내용
+    </div>
+    <div class="box1">
+      보낸사람/받는사람
+    </div>
+    <div class="box1">
+      시간
+    </div>
+  </div>
+  <br>
+  <hr />
   <% messages.forEach(message=> { %>
     <tbody>
       <details onclick="detail(<%= message.message_id %>)">
         <summary>
-          <tr>
-            <td>
+          
+            <div class="box1">
               <%= message.content %>
-            </td>
+            </div>
             <% if (message.sender_id!==userId){ %>
-              <td>
+              <div class="box1">
                 <%= message.send_user.nickname %>
-              </td>
-            <% } else{ %>
-              <td>
-                <%= message.receive_user.nickname %>
-              </td>
-            <% } %>
-            <td>
-              <%= message.created_at %>
-            </td>
-          </tr>
-        </summary>
-
-        <%= message.content %>
-        <button onclick="deleteMessage(<%= message.message_id %>)" id="target_btn" class="btn btn-outline-primary"
-          type="button">삭제</button>
-          <% if (message.sender_id!==userId){ %>
-            <div class="popup-wrapper">
-              <div id="popup-container">
-                  <h5>답장</h5>
-                  <form>
-                      <div class="form-group">
-                        <label>보내는 사람 : 나</label>
-                        <%= message.receive_user.nickname %>
-                      </div>
-                      <div class="form-group">
-                        <label >받는 사람</label>
-                        <%= message.send_user.nickname %>
-                      </div>
-                      <div class="form-group">
-                          <label for="message">Message</label>
-                          <textarea class="form-control"id="inputContent" name="inputContent" ></textarea>
-                      </div>
-                  </form>
-                  <button onclick="sendMessage(<%= message.sender_id %>)" class="btn btn-outline-primary"
-                    type="button">submit</button>           
               </div>
+            <% } else{ %>
+              <div class="box1">
+                <%= message.receive_user.nickname %>
+              </div>
+            <% } %>
+            <div class="box1">
+              <%= message.created_at %>
+            </div>
+          
+        </summary>
+        <div id="inmessage">
+          <div><%= message.content %></div>
+          <button onclick="deleteMessage(<%= message.message_id %>)" id="target_btn" type="button">삭제</button>
+
+
+            <% if (message.sender_id!==userId){ %>
+            <button type="button" id="modal_opne_btn1">답장</button></div>
+            <div id="modal1">
+              <div class="modal_content">
+                <div class="form-group">
+                  <label>보내는 사람 : 나</label>
+                  <%= message.receive_user.nickname %>
+                </div>
+                <div class="form-group">
+                  <label >받는 사람</label>
+                  <%= message.send_user.nickname %>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea class="form-control"id="inputContent" name="inputContent" ></textarea>
+                </div>
+                <button onclick="sendMessage(<%= message.sender_id %>)" class="btn btn-outline-primary"
+                  type="button">submit</button>   
+                  <button type="button" id="modal_close_btn1">모달 창 닫기</button>               
+              </div>           
+              <div class="modal_layer"></div>
+            </div>
+
+
+        </div>
+
+
+         
+            
           <% } %>
           
             
       </details>
-    </tbody>
+    </tbody><br>
 
     
     <% }) %>
@@ -171,16 +194,36 @@
   }
 
   document.getElementById("modal_opne_btn").onclick = function() {
-        document.getElementById("modal").style.display="block";
+        document.getElementById("moda").style.display="block";
     }
    
     document.getElementById("modal_close_btn").onclick = function() {
-        document.getElementById("modal").style.display="none";
+        document.getElementById("moda").style.display="none";
     }   
-  
+    document.getElementById("modal_opne_btn1").onclick = function() {
+        document.getElementById("modal1").style.display="block";
+    }
+   
+    document.getElementById("modal_close_btn1").onclick = function() {
+        document.getElementById("modal1").style.display="none";
+    } 
 </script>
 
 <style>
+  #inmessage{
+    text-align: center;
+    background-color: gainsboro;
+  }
+  .box1{
+    float: left;
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    
+    min-width: 300px;
+    max-width: 300px;
+  }
 .popup-position{
     display:none;
     position: fixed;
@@ -215,7 +258,13 @@ text-align: left;
   height:100%;
   z-index:1;
 }
-
+#modal1 {
+  position:relative;
+  display: none;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
 #modal h2 {
   margin:0;   
 }
@@ -233,7 +282,13 @@ text-align: left;
   background:#fff;
   border:2px solid #666;
 }
-
+#modal1 .modal_content {
+  width:300px;
+  margin:200px auto;
+  padding:20px 10px;
+  background:#fff;
+  border:2px solid #666;
+}
 #modal .modal_layer {
   position:fixed;
   top:0;
@@ -243,4 +298,13 @@ text-align: left;
   background:rgba(0, 0, 0, 0.5);
   z-index:-1;
 }   
+#modal1 .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+}  
 </style>
