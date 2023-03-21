@@ -31,31 +31,32 @@ export class CatsController {
   }
   // FIXME: 이미지 업로더 수정
   @Post('/')
-  @UseInterceptors(FileInterceptor('image'))
+  // @UseInterceptors(FileInterceptor('image'))
   async createCat(
     @Req() req,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCatDto
   ) {
-    console.log(data)
-    console.log(file)
-    const folder = 'cat_images';
-    const image = await this.awsService.uploadFileToS3(folder, file);
-    data.image = image;
-    return this.catService.createCat(req.userId, data);
+    // console.log(data);
+    // console.log(file);
+    // const folder = 'cat_images';
+    // const image = await this.awsService.uploadFileToS3(folder, file);
+    // data.image = image;
+    const newCat = await this.catService.createCat(req.userId, data);
+    return newCat;
   }
 
   @Patch('/:id')
-  @UseInterceptors(FileInterceptor('image'))
+  // @UseInterceptors(FileInterceptor('image'))
   async updateCat(
     @Req() req,
     @Param('id') catId: number,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
     @Body() data: UpdateCatDto
   ) {
-    const folder = 'cat_images';
-    const image = await this.awsService.uploadFileToS3(folder, file);
-    data.image = image;
+    // const folder = 'cat_images';
+    // const image = await this.awsService.uploadFileToS3(folder, file);
+    // data.image = image;
     return await this.catService.updateCatById(req.userId, catId, data);
   }
 
