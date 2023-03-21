@@ -53,7 +53,7 @@ export class EjsRenderController {
   @Get('/admin')
   @Render('index')
   admin(@Req() req) {
-    return { components: 'admin', userId: req.userId};
+    return { components: 'admin', userId: req.userId };
   }
 
   @Get('/login')

@@ -29,36 +29,19 @@ export class CatsController {
     const data = await this.catService.getMyCat(req.userId);
     return data;
   }
-  // FIXME: 이미지 업로더 수정
-  @Post('/')
-  @UseInterceptors(FileInterceptor('image'))
-  async createCat(
-    @Req() req,
-    @UploadedFile() file: Express.Multer.File,
-    @Body() data: CreateCatDto
-  ) {
-    if(file) {
-      console.log(data)
-      console.log(file)
-      const folder = 'cat_images';
-      const imageUrl = await this.s3Service.uploadFileToS3(folder, file);
-      // data.image = imageUrl;
-    }
 
-    return this.catService.createCat(req.userId, data);
+  @Post('/')
+  async createCat(@Req() req, @Body() data: CreateCatDto) {
+    const newCat = await this.catService.createCat(req.userId, data);
+    return newCat;
   }
 
   @Patch('/:id')
-  @UseInterceptors(FileInterceptor('image'))
   async updateCat(
     @Req() req,
     @Param('id') catId: number,
-    @UploadedFile() file: Express.Multer.File,
     @Body() data: UpdateCatDto
   ) {
-    const folder = 'cat_images';
-    const image = await this.s3Service.uploadFileToS3(folder, file);
-    // data.image = image;
     return await this.catService.updateCatById(req.userId, catId, data);
   }
 
