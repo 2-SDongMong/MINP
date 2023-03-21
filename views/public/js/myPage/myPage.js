@@ -119,6 +119,40 @@ function deleteUser(id) {
   })
 }
 
+
+// 고양이 추가
+const addCatModal = document.querySelector('.addCatModal');
+const addCatModalBody = addCatModal.querySelector('.addCatModalBody')
+const catModalOn = document.querySelector('.addCatBtn');
+
+// 열기
+catModalOn.addEventListener('click', () => {
+  addCatModal.style.display = 'block';
+})
+
+// 닫기
+window.onclick = function(event) {
+  if (event.target == addCatModal) {
+    addCatModal.style.display = "none";
+  }
+}
+
+function addMyCat() {
+  const catName = $()
+  $.ajax({
+    type: 'POST',
+    url: '/cats',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    async: false,
+    data: JSON.stringify({
+
+    })
+
+  })
+}
+
+
 // 고양이 정보 불러오기
 
 function showMyCat() {
@@ -133,7 +167,7 @@ function showMyCat() {
         let catAge = rows[i]['age'];
         let catGender = rows[i]['gender'];
         let catNeutered = rows[i]['neutered'];
-// FIXME: 이미지 업로드 완성되면 수정 let catImg = rows[i]['image'];
+        let catImg = rows[i]['image'];
         let catCharacter = rows[i]['character'];
         let catId = rows[i]['cat_id'];
 
@@ -156,7 +190,7 @@ function showMyCat() {
       <div class="lineContainer2">
         <li class="catPageCard">
           <div class="imgContainer3">
-            <img src="" alt="">
+            <img class="catPic" src="${catImg}" alt="">
           </div>
           <label for="catFile">
             <div class="uploaderBtn">사진 선택</div>
@@ -225,8 +259,7 @@ function showMyCat() {
 }
 
 function modifyMyCat(id) {
-
-  // const catImg = $('#catFile').val();
+  const catImg = $('#catFile').val();
   const catAge = $('#catAge2').val();
   let catNeutered = $('#catNeutered').val();
   const catCharacter = $('#catCharacter2').val();
@@ -237,9 +270,8 @@ function modifyMyCat(id) {
   if (catNeutered === 'false') {
     catNeutered = false
   }
-  console.log(catAge)
-  console.log(typeof(catNeutered))
-  console.log(catCharacter)
+
+
   $.ajax({
     type: 'PATCH',
     url: `/cats/${id}`,
@@ -247,7 +279,7 @@ function modifyMyCat(id) {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      image: '1',
+      image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter

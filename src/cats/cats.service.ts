@@ -14,7 +14,7 @@ export class CatsService {
     private catRepository: Repository<Cat>
   ) {}
 
-  async getMyCats(id: number) {
+  async getMyCat(id: number) {
     const cat = await this.catRepository.find({
       where: { user_id: id },
       relations: {
