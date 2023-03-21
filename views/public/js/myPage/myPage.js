@@ -160,7 +160,7 @@ function showMyCat() {
         let catAge = rows[i]['age'];
         let catGender = rows[i]['gender'];
         let catNeutered = rows[i]['neutered'];
-// FIXME: 이미지 업로드 완성되면 수정 let catImg = rows[i]['image'];
+        let catImg = rows[i]['image'];
         let catCharacter = rows[i]['character'];
         let catId = rows[i]['cat_id'];
 
@@ -183,7 +183,7 @@ function showMyCat() {
       <div class="lineContainer2">
         <li class="catPageCard">
           <div class="imgContainer3">
-            <img src="" alt="">
+            <img class="catPic" src="${catImg}" alt="">
           </div>
           <label for="catFile">
             <div class="uploaderBtn">사진 선택</div>
@@ -252,7 +252,7 @@ function showMyCat() {
 }
 
 function modifyMyCat(id) {
-  // const catImg = $('#catFile').val();
+  const catImg = $('#catFile').val();
   const catAge = $('#catAge2').val();
   let catNeutered = $('#catNeutered').val();
   const catCharacter = $('#catCharacter2').val();
@@ -272,7 +272,7 @@ function modifyMyCat(id) {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      image: '1',
+      image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter

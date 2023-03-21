@@ -29,7 +29,7 @@ export class CatsController {
     const data = await this.catService.getMyCat(req.userId);
     return data;
   }
-
+// FIXME: 이미지 업로더 수정
   @Post('/')
   @UseInterceptors(FileInterceptor('image'))
   async createCat(

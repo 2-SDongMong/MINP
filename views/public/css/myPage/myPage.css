@@ -147,10 +147,15 @@
   height: 550px;
   background-color: thistle;
   border-radius: 20px 20px 0px 0px;
-  background-image: url('https://post-phinf.pstatic.net/MjAyMDA5MjJfMjMg/MDAxNjAwNzYwMjU0MDY4.KTTFulC4Cx62e4ytINV9lFs4U9J0OyzCNtk1x9AtFyYg.v94-zgRkFUF4R4MyCYhT0_FLMaFUhxZTKTCMfQ9_rM0g.JPEG/shutterstock_631128263.jpg?type=w1200');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.catPic {
+  width: 610px;
+  height: 550px;
+  border-radius: 20px 20px 0px 0px;
 }
 
 #catName2 {
@@ -416,7 +421,7 @@
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  margin: 18px 0px 0px 0px;
+  margin: 10px 0px 0px 5px;
   width: 423px;
   height: 30px;
   display: flex;

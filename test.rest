@@ -1,9 +1,9 @@
 ### 로그인
-POST http://localhost:3000/auth/login
+POST https://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email":"minp-admin2@gmail.com",
+  "email":"0003@gmail.com",
   "password":"0000"
 }
 ### 로그아웃
