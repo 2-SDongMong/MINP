@@ -1,10 +1,11 @@
+// if (window.location.pathname === '/mypage') {
 
-let user;
 
-$(document).ready(
-  function() {
-    showMyPage(),
-    showMyCat()
+
+$(document).ready(function() {
+    showMyPage();
+    showMyCat();
+    catModalEventRegister();
   }
 )
 
@@ -12,6 +13,7 @@ function showMyPage() {
   $.ajax({
     type: 'GET',
     url: 'users/mypage',
+    async: false,
     data: {},
     success: function (response) {
       user = response;
@@ -119,37 +121,22 @@ function deleteUser(id) {
   })
 }
 
-
-// 고양이 추가
-const addCatModal = document.querySelector('.addCatModal');
-const addCatModalBody = addCatModal.querySelector('.addCatModalBody')
-const catModalOn = document.querySelector('.addCatBtn');
-
-// 열기
-catModalOn.addEventListener('click', () => {
-  addCatModal.style.display = 'block';
-})
-
-// 닫기
-window.onclick = function(event) {
-  if (event.target == addCatModal) {
-    addCatModal.style.display = "none";
-  }
-}
-
-function addMyCat() {
-  const catName = $()
-  $.ajax({
-    type: 'POST',
-    url: '/cats',
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    async: false,
-    data: JSON.stringify({
-
-    })
-
+function catModalEventRegister() {
+  // 고양이 추가
+  const addCatModal = document.querySelector('.addCatModal');
+  const clsModalBtn = document.querySelector('.clsModalBtn');
+  const catModalOn = document.querySelector('.addCatBtn');
+  
+  // 열기
+  catModalOn.addEventListener('click', () => {
+    addCatModal.style.display = 'block';
   })
+  
+  // 버튼으로 창 닫기
+  clsModalBtn.addEventListener('click', () => {
+    addCatModal.style.display = 'none';
+  })
+  
 }
 
 
@@ -189,13 +176,13 @@ function showMyCat() {
         let tempHtml = `      
       <div class="lineContainer2">
         <li class="catPageCard">
-          <div class="imgContainer3">
-            <img class="catPic" src="${catImg}" alt="">
+          <div class="imgContainer3" id="catPic${catId}" style="background-image: url(${catImg});">
+            <img class="catPic" alt="">
           </div>
           <label for="catFile">
             <div class="uploaderBtn">사진 선택</div>
           </label>
-          <input class="uploader" type="file" id="catFile">
+          <input class="uploader" type="file" id="catFile" onchange="upload_image(this, ${catId})">
           <div class="infoContainer2">
             <div class="nameContainer2">
               <div class="catInfo2" id="name2">
@@ -210,7 +197,7 @@ function showMyCat() {
                 나이
               </div>
               <div class="catAge2">
-                <input value="${catAge}" class="catContent" id="catAge2">                
+                <input value="${catAge}" class="catContent catAge2Input" id="catAge${catId}">                
               </div>
             </div>
           </div>
@@ -230,7 +217,7 @@ function showMyCat() {
                 중성화 여부
               </div>
               <div class="neuteredSelect">
-                <select class="neuteredSelect2" id="catNeutered" name="neutered">
+                <select class="neuteredSelect2" id="catNeutered${catId}" name="neutered">
                   <option value="${neutered3}">${neutered}</option>
                   <option value="${neutered4}">${neutered2}</option>
                 </select>
@@ -242,7 +229,7 @@ function showMyCat() {
               성격
             </div>
             <div class="catCharacter2">
-              <input value="${catCharacter}" class="catContent" id="catCharacter2">              
+              <input value="${catCharacter}" class="catContent catCharacter2Input" id="catCharacter${catId}">              
             </div>
             <div class="edit2">
               <button onclick="modifyMyCat(${catId})" class="editBtn2">수정</button>
@@ -258,11 +245,94 @@ function showMyCat() {
   })
 }
 
+function addCatUploadImage(input) {
+  if (input.files.length === 0) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('image', input.files[0]);
+
+  $.ajax({
+    type: 'POST',
+    url: '/products/imageUpload',
+    processData: false,
+    contentType: false,
+    data: formData,
+    success: function (response) {
+      console.log('upload success. received url: ', response.url)
+      $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
+  });
+  }
+
+function upload_image(input, catId) {
+  console.log('catId, before ajax: ', catId)
+  if (input.files.length === 0) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('image', input.files[0]);
+
+  $.ajax({
+    type: 'POST',
+    url: '/products/imageUpload',
+    processData: false,
+    contentType: false,
+    data: formData,
+    success: function (response) {
+      console.log('upload success. received url: ', response.url)
+      console.log('catId: ', catId)
+      $(`#catPic${catId}`).attr('style', `background-image: url(${response.url});`);
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
+  });
+}
+
+
+function addMyCat() {
+  const name = $('#catName2').val();
+  const age = +$('#catAge4').val();
+  const gender = $('#catGender').val();
+  const neutered = $('#catNeutered').val() === 'yes';
+  const character = $('#catCharacter3').val();
+  const image = $(`#addCatShowImage`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+
+  console.log('age: ', age)
+  console.log('image: ', image)
+  console.log('neutered: ', neutered)
+  $.ajax({
+    type: 'POST',
+    url: '/cats',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({
+      name, age, gender, neutered, character, image
+    }), 
+    success: function (response) {
+      alert('고양이 프로필을 성공적으로 등록하였습니다')
+      window.location.reload();
+    },
+    error: function (response) {
+      console.log(response)
+    }
+  })
+}
+
+
 function modifyMyCat(id) {
-  const catImg = $('#catFile').val();
-  const catAge = $('#catAge2').val();
-  let catNeutered = $('#catNeutered').val();
-  const catCharacter = $('#catCharacter2').val();
+  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+  console.log('catImg url: ', catImg)
+  const catAge = $(`#catAge${id}`).val();
+  let catNeutered = $(`#catNeutered${id}`).val();
+  const catCharacter = $(`#catCharacter2${id}`).val();
   
   if (catNeutered === 'true') {
     catNeutered = true
@@ -271,7 +341,6 @@ function modifyMyCat(id) {
     catNeutered = false
   }
 
-
   $.ajax({
     type: 'PATCH',
     url: `/cats/${id}`,
@@ -279,18 +348,26 @@ function modifyMyCat(id) {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      image: catImg,
+      // image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter
     }),
-    success: function(response) {
+    success: function (response) {
+      alert('수정이 완료되었습니다')
       window.location.reload()
+    }, 
+    error: function (response) {
+      console.log('error: ', response);
     }
   })  
 }
 
 function deleteMyCat(id) {
+  const check = confirm('정말 삭제하시겠습니까?')
+  if (!check) {
+    return;
+  }
   $.ajax({
     type: 'DELETE',
     url: `/cats/${id}`,
@@ -423,5 +500,4 @@ function verifyLocation() {
     return navigator.geolocation.getCurrentPosition(success, error);
   }
 }
-
 

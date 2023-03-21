@@ -3,7 +3,7 @@ POST https://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email":"0003@gmail.com",
+  "email":"minp-admin2@gmail.com",
   "password":"0000"
 }
 ### 로그아웃
@@ -82,14 +82,14 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM1LCJlbWFpbCI6ImNhdHRAZ21haWwuY29tIiwiaWF0IjoxNjc4MzQ4MzMwLCJleHAiOjE2Nzg0MzQ3MzB9.unJaqHTCiXODRZ0m-rh_joj8wxFSZWdroekLnQYC8-I
 
 ### admin 가입 신청 대기 조회
-GET   http://localhost:3000/users/admin
+GET   https://localhost:3000/users/admin
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpbCI6Im1pbnAtYWRtaW4xQGdtYWlsLmNvbSIsImlhdCI6MTY3ODUzMzEwMCwiZXhwIjoxNjc4NjE5NTAwfQ.f-v2PxwizugCdXFaHH2h6AtfzGStrPzR0lzJix__S6o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjU0LCJlbWFpbCI6Im1pbnAtYWRtaW4yQGdtYWlsLmNvbSIsImlhdCI6MTY3OTQwNzA2MSwiZXhwIjoxNjc5NDkzNDYxfQ.-_LxwUOstF2IivZFdcWMClcorhLuhssvK3PLraYyBac
 
 ### admin  회원 목록 조회
-GET   http://localhost:3000/users/admin/member
+GET   https://localhost:3000/users/admin/member
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjU0LCJlbWFpbCI6Im1pbnAtYWRtaW4yQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI5MTAxMiwiZXhwIjoxNjc5Mzc3NDEyfQ.ZHmduE9N_kd1wOMxM8viSnaN4GGslURRnIm23BKzVrA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjU0LCJlbWFpbCI6Im1pbnAtYWRtaW4yQGdtYWlsLmNvbSIsImlhdCI6MTY3OTQwNzA2MSwiZXhwIjoxNjc5NDkzNDYxfQ.-_LxwUOstF2IivZFdcWMClcorhLuhssvK3PLraYyBac
 
 ### admin  가입 상태 수정
 PATCH    http://localhost:3000/users/admin/51
