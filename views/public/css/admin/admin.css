@@ -1,0 +1,19 @@
+.statusTable {
+  margin-top: 10px;
+}
+
+.statusView {
+  font-family: Nanum Gothic;
+  margin: auto;
+  border-top: #a59373 2px solid;
+  border-bottom: #a59373 1px solid;
+  width: 1070px;
+}
+
+.statusBlock {
+  width: 91px;
+}
+
+.catNameBlock {
+  width: 650px;
+}

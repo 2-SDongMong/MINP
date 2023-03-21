@@ -50,10 +50,10 @@ export class EjsRenderController {
     return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
   }
 
-  @Get('')
+  @Get('/admin')
   @Render('index')
   admin(@Req() req) {
-    return { components: 'admin' };
+    return { components: 'admin', userId: req.userId };
   }
 
   @Get('/login')
