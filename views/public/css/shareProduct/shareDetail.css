@@ -1,97 +1,76 @@
-body {
-  font-family: 'Roboto', sans-serif;
-  background-color: #fafafa;
-}
-
+/* sp_nav 스타일 */
 .sp_nav {
-  background-color: #b8b0a2;
-  padding: 10px 20px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
 }
 
 .sp_nav-link {
-  color: #fff;
-  font-size: 18px;
+  display: inline-block;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
   text-decoration: none;
-  margin-left: 20px;
-  transition: color 0.3s;
+  transition: all 0.2s ease-in-out;
 }
 
+.sp_nav-link:hover {
+  color: #f50057;
+}
+
+/* product-detail 스타일 */
 .product-detail {
-  padding: 50px 0;
-}
-
-.product-image {
-  position: relative;
-  padding-bottom: 100%; /* 이미지 비율에 따라 변경 가능 */
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  margin-bottom: 50px;
 }
 
 .product-image img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
 }
 
-.product-info {
-  padding: 20px;
+.product-category {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
 }
 
 .product-title {
+  margin-top: 0;
+  margin-bottom: 20px;
   font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 15px;
+  font-weight: 700;
   color: #333;
 }
 
 .product-description {
   font-size: 16px;
-  margin-bottom: 15px;
-  color: #777;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: #666;
 }
 
-.product-details {
-  display: flex;
-  gap: 10px;
+.sp_card-location {
+  margin-top: 10px;
   margin-bottom: 10px;
-}
-
-.product-category,
-.product-location {
   font-size: 16px;
-  font-weight: 500;
-  color: #777;
-  margin-top: 20px;
-  margin-left: 20px;
-  display: inline-block;
-}
-.product-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  padding: 20px;
+  color: #666;
 }
 
-.add-to-cart {
-  font-size: 16px;
-  background-color: #b8b0a2;
-  color: #fff;
-  text-decoration: none;
-  padding: 15px;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-  text-align: center;
-  margin-bottom: 25px;
+/* container 스타일 */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.add-to-cart:hover {
-  background-color: #a89a82;
+@media only screen and (min-width: 992px) {
+  .container {
+    padding: 0;
+  }
 }

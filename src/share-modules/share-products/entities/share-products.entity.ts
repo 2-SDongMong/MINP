@@ -7,9 +7,11 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductsTradeLocation } from 'src/share-modules/share-products-trade-location/entities/products-trade-location.entity';
+
 @Entity({ schema: 'mooin_cat', name: 'share_products' })
 export class Products {
   @PrimaryGeneratedColumn('uuid')
@@ -18,19 +20,27 @@ export class Products {
   title: string;
   @Column({ type: 'text' })
   description: string;
-  @Column({ default: false })
-  isTrade: boolean;
+
+  @Column({ default: '나눔중' })
+  tradeStatus: string;
 
   @Column({ nullable: true })
   imageUrl: string;
+
+  @Column() // New column to store the foreign key relationship
+  user_id: number;
 
   @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
   productsTradeLocation: ProductsTradeLocation;
 
   @ManyToOne(() => ProductsCategory, { eager: true })
   productsCategory: ProductsCategory;
-  @ManyToOne(() => User, (user) => user.products, { cascade: true })
-  @JoinColumn({ name: 'user_id' })
+
+  @ManyToOne(() => User, (user) => user.products, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinColumn({ name: 'user_id' }) // Changed the name to 'user_id'
   user: User;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp' })
