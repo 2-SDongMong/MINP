@@ -431,6 +431,7 @@
 
 #catCharacter2 {
   width: 500px;
+  outline: none;
 }
 
 /* cat page button */

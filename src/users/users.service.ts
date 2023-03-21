@@ -265,6 +265,7 @@ export class UsersService {
     if (user.status === '관리자') {
       const user = await this.userRepository.find({
         where: { status: '가입 대기' },
+        relations: {cats: true}
       });
       return user;
     } else {
