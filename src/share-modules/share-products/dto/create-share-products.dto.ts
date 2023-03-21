@@ -25,7 +25,7 @@ export class CreateProductsDto {
 
   @ApiProperty({
     type: ProductsTradeLocationDto,
-    example: { city: 'Seoul', cityDetail: 'mapo' },
+    example: { latitude: 37.3968925296743, longitude: 127.111925428711 },
     description: '판매 지역 정보',
   })
   @IsNotEmpty()

@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber } from 'class-validator';
 import { PrimaryGeneratedColumn } from 'typeorm';
 
 export class ProductsTradeLocationDto {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ApiProperty({ example: 'Seoul', description: '도시명' })
-  @IsString()
+  @ApiProperty({ example: 37.3968925296743, description: '위도' })
+  @IsNumber()
   @IsNotEmpty()
-  city: string;
+  latitude: number;
 
-  @ApiProperty({ example: 'mapogu', description: '지역명' })
-  @IsString()
+  @ApiProperty({ example: 127.111925428711, description: '경도' })
+  @IsNumber()
   @IsNotEmpty()
-  cityDetail: string;
+  longitude: number;
 }

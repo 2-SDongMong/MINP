@@ -15,7 +15,6 @@ function loadCategories() {
     },
   });
 }
-
 $(document).ready(function () {
   loadCategories();
 
@@ -24,27 +23,30 @@ $(document).ready(function () {
 
     let formData = new FormData(this);
     const categoryId = $('#categorySelect').val();
-    const city = formData.get('city');
-    const cityDetail = formData.get('cityDetail');
+    const latitude = formData.get('latitude');
+    const longitude = formData.get('longitude');
 
-    if (!city || !cityDetail || !categoryId) {
+    if (!latitude || !longitude || !categoryId) {
       alert('모든 필드를 채워주세요.');
       return;
     }
 
-    formData.delete('city');
-    formData.delete('cityDetail');
+    formData.delete('latitude');
+    formData.delete('longitude');
 
-    formData.append('city', city);
-    formData.append('cityDetail', cityDetail);
+    formData.append('latitude', latitude);
+    formData.append('longitude', longitude);
 
     if (categoryId) {
       formData.append('productsCategoryId', categoryId);
     }
 
+    // 로그인한 사용자의 ID를 추가합니다.
+    formData.append('userId', userId);
+    console.log(userId);
     const productsTradeLocation = {
-      city,
-      cityDetail,
+      latitude,
+      longitude,
     };
     formData.append(
       'productsTradeLocation',

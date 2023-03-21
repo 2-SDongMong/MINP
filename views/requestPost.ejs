@@ -21,14 +21,25 @@
   </div>
 
   <div class="d-flex">
-	<button onclick="createRequest()" type="button" class="btn btn-outline-dark">제출</button>
+	<button onclick="createRequest('<%= user %>')" type="button" class="btn btn-outline-dark">제출</button>
 	<button onclick="location.href='/request/list'" type="button" class="btn btn-outline-secondary">취소</button>
   </div>
 
 </section>
 
 <script>
-	async function createRequest() {
+
+
+	async function createRequest(user) {
+		if (!user) {
+			alert('로그인이 필요한 기능입니다')
+			return;
+		}
+		if (!user.address_certified) {
+			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
+			return;
+		}
+
 		const startDate = $('#start-date').val()
 		const endDate = $('#end-date').val()
 		const detail = $('#detail').val()

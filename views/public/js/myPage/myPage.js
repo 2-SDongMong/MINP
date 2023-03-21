@@ -67,8 +67,15 @@ function modifyMyPage(id) {
   const address_bname = $('#address_bname').val();
   const phone_number = $('#phoneNumber').val();
   let address_certified = $('#address_certified').val() == '인증됨';
-  console.log('현재 인증 상태: ', address_certified)
 
+  if (!nickname) {
+    alert('닉네임을 입력해주세요')
+    return;
+  }
+  if (!phone_number) {
+    alert('핸드폰 번호를 입력해주세요')
+    return;
+  }
   // 주소를 변경하겠다는 상태라면
   if (user.address_road !== address_road) {
     const yesChangeAddress = confirm('주소 변경시 동네 인증을 다시 해야 합니다. 주소를 변경하시겠습니까? ')
@@ -112,6 +119,40 @@ function deleteUser(id) {
   })
 }
 
+
+// 고양이 추가
+const addCatModal = document.querySelector('.addCatModal');
+const addCatModalBody = addCatModal.querySelector('.addCatModalBody')
+const catModalOn = document.querySelector('.addCatBtn');
+
+// 열기
+catModalOn.addEventListener('click', () => {
+  addCatModal.style.display = 'block';
+})
+
+// 닫기
+window.onclick = function(event) {
+  if (event.target == addCatModal) {
+    addCatModal.style.display = "none";
+  }
+}
+
+function addMyCat() {
+  const catName = $()
+  $.ajax({
+    type: 'POST',
+    url: '/cats',
+    dataType: 'json',
+    contentType: 'application/json; charset=utf-8',
+    async: false,
+    data: JSON.stringify({
+
+    })
+
+  })
+}
+
+
 // 고양이 정보 불러오기
 
 function showMyCat() {
@@ -126,7 +167,7 @@ function showMyCat() {
         let catAge = rows[i]['age'];
         let catGender = rows[i]['gender'];
         let catNeutered = rows[i]['neutered'];
-// FIXME: 이미지 업로드 완성되면 수정 let catImg = rows[i]['image'];
+        let catImg = rows[i]['image'];
         let catCharacter = rows[i]['character'];
         let catId = rows[i]['cat_id'];
 
@@ -149,7 +190,7 @@ function showMyCat() {
       <div class="lineContainer2">
         <li class="catPageCard">
           <div class="imgContainer3">
-            <img src="" alt="">
+            <img class="catPic" src="${catImg}" alt="">
           </div>
           <label for="catFile">
             <div class="uploaderBtn">사진 선택</div>
@@ -218,8 +259,7 @@ function showMyCat() {
 }
 
 function modifyMyCat(id) {
-
-  // const catImg = $('#catFile').val();
+  const catImg = $('#catFile').val();
   const catAge = $('#catAge2').val();
   let catNeutered = $('#catNeutered').val();
   const catCharacter = $('#catCharacter2').val();
@@ -230,9 +270,8 @@ function modifyMyCat(id) {
   if (catNeutered === 'false') {
     catNeutered = false
   }
-  console.log(catAge)
-  console.log(typeof(catNeutered))
-  console.log(catCharacter)
+
+
   $.ajax({
     type: 'PATCH',
     url: `/cats/${id}`,
@@ -240,7 +279,7 @@ function modifyMyCat(id) {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      image: '1',
+      image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter
@@ -276,9 +315,10 @@ function findAddress() {
   }).open();
 }
 
+
 // '내 위치로 동네 인증' 버튼 클릭시 사용자의 현재 위치를 얻어와 주소지와 비교,
 // 동네명이 같거나 기록된 주소<->현재위치 거리가 1km 이내라면 동네 인증 처리
-async function verifyLocation() {
+function verifyLocation() {
 
   //주소-좌표 변환 객체를 생성
   var geocoder = new daum.maps.services.Geocoder();
