@@ -22,9 +22,10 @@ import { UpdateAddressCertifiedDto } from './dto/update-address-certified.dto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>, 
+    @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Request) private requestsRepository: Repository<Request>,
-    @InjectRepository(Products) private productsRepository: Repository<Products>,
+    @InjectRepository(Products)
+    private productsRepository: Repository<Products>,
     @InjectRepository(Post) private postsRepository: Repository<Post>
   ) {}
 
@@ -116,22 +117,28 @@ export class UsersService {
   async updateUserById(id: number, userId: number, bodyData: UpdateMypageDto) {
     const user = await this.findUser(id);
     const nickname = await this.userRepository.find({
-      where: {nickname: bodyData.nickname}
-    }) 
+      where: { nickname: bodyData.nickname },
+    });
     if (user.user_id === Number(userId)) {
-        const { nickname, address_road, address_bname, address_certified, phone_number } = bodyData;
-        await this.userRepository.update(id, {
-          nickname,
-          address_road,
-          address_bname,
-          address_certified,
-          phone_number
-        })
+      const {
+        nickname,
+        address_road,
+        address_bname,
+        address_certified,
+        phone_number,
+      } = bodyData;
+      await this.userRepository.update(id, {
+        nickname,
+        address_road,
+        address_bname,
+        address_certified,
+        phone_number,
+      });
       return '회원정보 수정이 완료되었습니다.';
-    } 
+    }
     if (!nickname) {
       throw new BadRequestException('닉네임은 필수 입력 항목입니다.');
-    } 
+    }
     if (nickname.length > 0) {
       throw new BadRequestException('이미 존재하는 닉네임 입니다.');
     } else {
@@ -152,31 +159,31 @@ export class UsersService {
   // 내가 쓴 게시글 조회
   // 품앗이 요청
   async showMyRequest(id: number) {
-      const myRequest = await this.requestsRepository.find({
-        where: { user_id: id },
-        relations: {
-          user: true,
+    const myRequest = await this.requestsRepository.find({
+      where: { user_id: id },
+      relations: {
+        user: true,
+      },
+      select: {
+        user: {
+          nickname: true,
         },
-        select: {
-          user: {
-            nickname: true,
-          },
-          reserved_begin_date: true,
-          reserved_end_date: true,
-          created_at: true
-        },
-      });
-      return myRequest;
+        reserved_begin_date: true,
+        reserved_end_date: true,
+        created_at: true,
+      },
+    });
+    return myRequest;
   }
 
   // 내가 쓴 품앗이 삭제
   async deleteMyRequest(id: number, requestId: number) {
     const myRequest = await this.requestsRepository.findOne({
       where: {
-        user_id: id, 
-        request_id: requestId
-      }
-    })
+        user_id: id,
+        request_id: requestId,
+      },
+    });
     if (myRequest) {
       await this.requestsRepository.softDelete(requestId);
     } else {
@@ -220,7 +227,7 @@ export class UsersService {
   // 자유 게시판 조회
   async showMyPost(id: number) {
     const myPost = await this.postsRepository.find({
-      where: {user_id: id},
+      where: { user_id: id },
       relations: {
         user: true,
       },
@@ -230,7 +237,7 @@ export class UsersService {
         },
         title: true,
         category: true,
-        created_at: true
+        created_at: true,
       },
     });
     return myPost;
@@ -241,11 +248,11 @@ export class UsersService {
     const myPost = await this.postsRepository.findOne({
       where: {
         user_id: id,
-        post_id: postId
-      }
-    })
+        post_id: postId,
+      },
+    });
     if (myPost) {
-      await this.postsRepository.softDelete(postId)
+      await this.postsRepository.softDelete(postId);
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
@@ -268,15 +275,15 @@ export class UsersService {
   // 가입 신청 승인
   async accessMember(id: number, userId: number, data: UpdateMemberDto) {
     const user = await this.findUser(id);
-    console.log(user)
+    console.log(user);
     if (user.status === '관리자') {
-        const editStatus = await this.userRepository
+      const editStatus = await this.userRepository
         .createQueryBuilder()
         .update(User)
         .set(data)
         .where('user_id = :userId', { userId: Number(userId) })
         .execute();
-      return editStatus;   
+      return editStatus;
     } else {
       throw new UnauthorizedException('권한이 없습니다.');
     }
@@ -286,9 +293,12 @@ export class UsersService {
   async getAllMember(id: number) {
     const user = await this.findUser(id);
     if (user.status === '관리자') {
-      const member = await this.userRepository.createQueryBuilder('user')
-      .where('user.status IN (:...statuses)', { statuses: ['일반', '관리자'] })
-      .getMany();
+      const member = await this.userRepository
+        .createQueryBuilder('user')
+        .where('user.status IN (:...statuses)', {
+          statuses: ['일반', '관리자'],
+        })
+        .getMany();
       return member;
     } else {
       throw new UnauthorizedException('권한이 없습니다.');

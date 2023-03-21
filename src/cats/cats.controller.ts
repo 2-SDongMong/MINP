@@ -21,7 +21,7 @@ export class CatsController {
   constructor(
     private readonly catService: CatsService,
     private readonly awsService: AwsService
-    ) {}
+  ) {}
 
   // 유저 ID에 속성 된 고양이 전체 상세보기
   @Get('/')
@@ -29,15 +29,16 @@ export class CatsController {
     const data = await this.catService.getMyCat(req.userId);
     return data;
   }
-// FIXME: 이미지 업로더 수정
+  // FIXME: 이미지 업로더 수정
   @Post('/')
   @UseInterceptors(FileInterceptor('image'))
   async createCat(
     @Req() req,
     @UploadedFile() file: Express.Multer.File,
-    @Body() data: CreateCatDto) {
-    const folder = 'cat_images'
-    const image = await this.awsService.uploadFileToS3(folder, file)
+    @Body() data: CreateCatDto
+  ) {
+    const folder = 'cat_images';
+    const image = await this.awsService.uploadFileToS3(folder, file);
     data.image = image;
     return this.catService.createCat(req.userId, data);
   }
@@ -50,8 +51,8 @@ export class CatsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() data: UpdateCatDto
   ) {
-    const folder = 'cat_images'
-    const image = await this.awsService.uploadFileToS3(folder, file)
+    const folder = 'cat_images';
+    const image = await this.awsService.uploadFileToS3(folder, file);
     data.image = image;
     return await this.catService.updateCatById(req.userId, catId, data);
   }

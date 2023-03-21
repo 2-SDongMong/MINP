@@ -56,7 +56,7 @@ export class UsersController {
   }
 
   // 내가 쓴 게시글 조회
-  // 품앗이 요청 
+  // 품앗이 요청
   @Get('/requests')
   async showMyRequest(@Req() req) {
     const data = await this.usersService.showMyRequest(req.userId);
@@ -118,7 +118,6 @@ export class UsersController {
     return this.usersService.getAllMember(req.userId);
   }
 
-
   // 전체 회원 삭제 API
   @Delete('/admin/member/:id')
   deleteMember(@Req() req, @Param('id') userId: number) {
@@ -130,7 +129,6 @@ export class UsersController {
   async getUserId(@Body() email) {
     const a = await this.usersService.findOneByEmail(email.email);
     return a.user_id;
-
   }
 
   // 유저의 '위치(동네) 인증' 처리: address_certified을 false -> true로 변경
@@ -146,6 +144,5 @@ export class UsersController {
   @Post('/signup/check')
   async checkNickname(@Body() nickname) {
     return this.usersService.checkNickname(nickname.nickname);
-
   }
 }

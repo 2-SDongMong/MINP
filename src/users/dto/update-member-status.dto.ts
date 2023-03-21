@@ -3,5 +3,5 @@ import { UserStatusType } from '../user.entity';
 
 export class UpdateMemberDto {
   @IsString()
-  readonly  status: UserStatusType;
+  readonly status: UserStatusType;
 }

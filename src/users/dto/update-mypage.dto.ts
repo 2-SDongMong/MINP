@@ -1,4 +1,4 @@
-import { PartialType} from '@nestjs/mapped-types';
+import { PartialType } from '@nestjs/mapped-types';
 import { IsBoolean } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
