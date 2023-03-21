@@ -34,6 +34,13 @@ export class ProductsService {
     });
   }
 
+  async findProductsByUserId(userId: number) {
+    return await this.productsRepository.find({
+      where: { user: { user_id: userId } },
+      relations: ['user', 'productsTradeLocation', 'productsCategory'],
+    });
+  }
+
   // ProductsService
 
   async create(createProductsDto) {

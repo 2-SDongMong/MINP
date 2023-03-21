@@ -149,6 +149,20 @@ export class EjsRenderController {
       product,
     };
   }
+  @Get('/shareMy/:userId')
+  @Render('index')
+  async ShareMy(@Param('userId') userId: number, @Req() req) {
+    const sm = await this.productsService.findProductsByUserId(userId);
+    if (!sm) {
+      throw new NotFoundException(`Product with user id ${userId} not found`);
+    }
+    return {
+      components: 'shareMy',
+      userId: req.userId,
+      sm,
+      product: sm,
+    };
+  }
 
   @Get('/shareProduct')
   @Render('index')
