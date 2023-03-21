@@ -32,6 +32,7 @@ export class EjsRenderController {
     return {
       components: 'main',
       userId: req.userId,
+      user: req.user,
       requests: requests.slice(0, 6),
     };
   }
@@ -65,12 +66,22 @@ export class EjsRenderController {
   @Render('index')
   async requestList(@Req() req) {
     const requests = await this.requestsService.getRequests();
-    return { components: 'requestList', userId: req.userId, requests };
+    return {
+      components: 'requestList',
+      userId: req.userId,
+      user: req.user,
+      requests,
+    };
   }
 
   @Get('request/detail/:id')
   @Render('index')
-  async requestDetail(@Param('id') id: number, @Req() req) {
+  async requestDetail(@Param('id') id: number, @Req() req, @Res() res) {
+    if (!req.user) {
+      // FIXME: 로그인이 필요합니다 메세지를 보내며 redirect 하는 방법 찾기
+      // 혹인 일괄 핸들링 방법 찾기.
+      return res.status(401).redirect('/login');
+    }
     const request = await this.requestsService.getRequestById(id);
     return {
       components: 'requestDetail',
@@ -83,7 +94,7 @@ export class EjsRenderController {
   @Get('request/post')
   @Render('index')
   requestPost(@Req() req) {
-    return { components: 'requestPost', userId: req.userId };
+    return { components: 'requestPost', userId: req.userId, user: req.user };
   }
 
   @Get('request/modify/:id')
@@ -119,6 +130,20 @@ export class EjsRenderController {
       components: 'shareDetail',
       userId: req.userId,
       product,
+    };
+  }
+  @Get('/shareMy/:userId')
+  @Render('index')
+  async ShareMy(@Param('userId') userId: number, @Req() req) {
+    const sm = await this.productsService.findProductsByUserId(userId);
+    if (!sm) {
+      throw new NotFoundException(`Product with user id ${userId} not found`);
+    }
+    return {
+      components: 'shareMy',
+      userId: req.userId,
+      sm,
+      product: sm,
     };
   }
 

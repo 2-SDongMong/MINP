@@ -24,11 +24,74 @@
     <div class="subTitleContainer">
       <div class="subTitle" id="catTitle">
         고양이 정보
-        <button class="addBtn">추가</button>
+        <button class="addCatBtn">추가</button>
+        <div class="addCatModal">
+          <div class="addCatModalBody">
+            <div class="imgContainer4">
+              <img src="" alt="">
+            </div>
+            <label for="catFile2">
+              <div class="uploaderBtn">사진 선택</div>
+            </label>
+              <input class="uploader" type="file" id="catFile">
+            <div class="infoContainer2">
+              <div class="nameContainer2">
+                <div class="catInfo2" id="name2">
+                  이름
+                </div>
+                <div class="catName2">
+                  <input value="" type="text" class="catContent2" id="catName2">
+                </div>
+              </div>
+              <div class="ageContainer2">
+                <div class="catInfo2" id="age4">
+                  나이
+                </div>
+                <div class="catAge4">
+                  <input value="" type="text" class="catContent2" id="catAge4">                
+                </div>
+              </div>   
+            </div> 
+            <div class="infoContainer2">
+              <div class="nameContainer2">
+                <div class="catInfo2" id="name2">
+                  성별
+                </div>
+                <div class="genderSelect">
+                  <select class="genderSelect2" id="catGender" name="gender">
+                    <option value="male">남아</option>
+                    <option value="female">여아</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ageContainer3">
+                <div class="catInfo3">
+                  중성화 여부
+                </div>
+                <div class="neuteredSelect">
+                  <select class="neuteredSelect2" id="catNeutered" name="neutered">
+                    <option value="yes">유</option>
+                    <option value="no">무</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="characterContainer2">
+              <div class="catInfo2" id="character2">
+                성격
+              </div>
+              <div class="catCharacter2">
+                <input value="" class="catContent" id="catCharacter3">              
+              </div>
+            </div>
+            <div class="catModalBtn">
+              <button class="addBtn" onclick= "addMycat()">등록</button>
+              <button class="clsModalBtn" onclick= "clsModal()">닫기</button>
+            </div>
       </div>
-    <div class="catInfo1">
-
     </div>
+  </div>
+  <div class="catInfo1">
 
   </div>
 

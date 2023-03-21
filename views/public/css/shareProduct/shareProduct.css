@@ -1,32 +1,37 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f8f8;
 }
 
 #productForm {
   background-color: #fff;
-  max-width: 90vh;
+  max-width: 60vw;
   margin: 50px auto;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 100px;
 }
 
 .sp_nav {
-  background-color: #b8b0a2;
+  background-color: #5c6ac4;
   padding: 10px 20px;
   display: flex;
   justify-content: flex-end;
+  border-radius: 20px 20px 0 0;
 }
 
 .sp_nav-link {
   color: #fff;
-  font-size: 18px;
+  font-size: 16px;
   text-decoration: none;
   margin-left: 20px;
   transition: color 0.3s;
 }
+
+.sp_nav-link:hover {
+  color: #f0f0f0;
+}
+
 textarea,
 input,
 select {
@@ -34,13 +39,14 @@ select {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  border: none;
+  border-radius: 10px;
+  background-color: #f0f0f0;
 }
 
 textarea {
   resize: vertical;
-}
+} */
 
 input[type='file'] {
   margin-bottom: 15px;
@@ -53,9 +59,10 @@ button[type='submit'] {
   background-color: #e3ae5b;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   margin-bottom: 15px;
+  transition: background-color 0.3s;
 }
 
 button[type='submit']:hover {
@@ -66,6 +73,11 @@ input[name='city'],
 input[name='cityDetail'] {
   display: inline-block;
   width: calc(50% - 10px);
+  border: none;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
 }
 
 input[name='cityDetail'] {

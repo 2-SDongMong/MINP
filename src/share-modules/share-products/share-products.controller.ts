@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -6,6 +7,8 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -33,21 +36,30 @@ export class ProductsController {
     return await this.productsService.findOne(id);
   }
 
+  @Get('/user/:userId')
+  async getProductsByUserId(@Param('userId') userId: number) {
+    return await this.productsService.findProductsByUserId(userId);
+  }
+
+  // products.controller.ts
   @Post('create')
   @UseInterceptors(FileInterceptor('image'))
   async createProduct(
     @UploadedFile() file: Express.Multer.File,
     @Body() createProductDto: CreateProductsDto
   ) {
-    const folder = 'product_images';
-    const imageUrl = await this.awsService.uploadFileToS3(folder, file);
-    createProductDto.imageUrl = imageUrl;
+    if (file) {
+      const folder = 'product_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      createProductDto.imageUrl = imageUrl;
+    }
 
     // ProductsTradeLocation 객체를 생성하고 city와 cityDetail을 설정합니다.
     const productsTradeLocation = new ProductsTradeLocation();
-    productsTradeLocation.city = createProductDto.productsTradeLocation.city;
-    productsTradeLocation.cityDetail =
-      createProductDto.productsTradeLocation.cityDetail;
+    productsTradeLocation.latitude =
+      createProductDto.productsTradeLocation.latitude;
+    productsTradeLocation.longitude =
+      createProductDto.productsTradeLocation.longitude;
 
     createProductDto.productsTradeLocation = productsTradeLocation;
 
@@ -59,6 +71,11 @@ export class ProductsController {
     @Param('id') id: string,
     @Body() updateProductsDto: UpdateProductsDto
   ) {
+    const { tradeStatus } = updateProductsDto;
+    if (tradeStatus === '나눔주문중') {
+      // isTrade -> tradeStatus 로 변경된 부분
+      updateProductsDto.tradeStatus = '나눔주문중';
+    }
     await this.productsService.checkTrade(id);
     return await this.productsService.update(id, updateProductsDto);
   }

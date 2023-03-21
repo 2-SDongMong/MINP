@@ -27,7 +27,8 @@ import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
 import { AwsModule } from './s3-upload/aws.module';
-import * as redisCacheStore from 'cache-manager-ioredis';
+import { CacheConfigService } from './config/cache.config.service';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -41,13 +42,11 @@ import * as redisCacheStore from 'cache-manager-ioredis';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      store: redisCacheStore,
-      clusterConfig: {
-        nodes: [{ host: 'localhost', port: 6379 }],
-        options: { ttl: 10 },
-      },
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: CacheConfigService,
     }),
     
     UsersModule,
@@ -91,8 +90,15 @@ export class AppModule implements NestModule {
       { path: 'users/mypage', method: RequestMethod.ALL },
       { path: 'users/mypage/:id', method: RequestMethod.ALL },
       { path: 'users/admin', method: RequestMethod.ALL },
+      { path: 'users/admin/:id', method: RequestMethod.PATCH },
       { path: 'users/admin/member', method: RequestMethod.ALL },
       { path: 'users/admin/member/:id', method: RequestMethod.ALL },
+      { path: 'users/requests', method: RequestMethod.ALL },
+      { path: 'users/requests/:id', method: RequestMethod.DELETE },
+      { path: 'users/share', method: RequestMethod.ALL },
+      { path: 'users/share/:id', method: RequestMethod.DELETE },
+      { path: 'users/post', method: RequestMethod.ALL },
+      { path: 'users/post/:id', method: RequestMethod.DELETE },
       { path: 'users/address/certify', method: RequestMethod.PATCH },
       { path: 'cats', method: RequestMethod.ALL },
       { path: 'cats/:id', method: RequestMethod.PATCH },
@@ -109,6 +115,8 @@ export class AppModule implements NestModule {
       { path: 'posts', method: RequestMethod.POST },
       { path: 'posts/:id', method: RequestMethod.PATCH },
       { path: 'posts/:id', method: RequestMethod.DELETE },
+      { path: 'shareDetail/:id', method: RequestMethod.GET },
+      { path: 'shareProduct', method: RequestMethod.POST },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
       // { path: 'views/.', method: RequestMethod.GET }

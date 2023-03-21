@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/css/shareProduct/shareMy.css" />
+
+<div class="product-title">내가 등록한 상품</div>
+
+<% if (sm.length > 0) { %>
+<div class="product-container">
+  <% sm.forEach(function(product) { %>
+  <div class="product-card">
+    <img
+      class="product-image"
+      src="<%= product.imageUrl %>"
+      alt="<%= product.title %>"
+    />
+    <div class="product-info">
+      <div class="product-na">
+        <p class="product-category"><%= product.productsCategory.name %></p>
+      </div>
+      <h2 class="product-name"><%= product.title %></h2>
+      <p class="product-description"><%= product.description %></p>
+      <p class="product-created-at"><%= product.created_at %></p>
+    </div>
+    <div class="product-actions">
+      <button class="eedit">수정</button>
+      <button class="ddelete">삭제</button>
+    </div>
+  </div>
+  <% }); %>
+</div>
+<% } else { %>
+<p>내가 올린 상품이 없습니다.</p>
+<% } %>
