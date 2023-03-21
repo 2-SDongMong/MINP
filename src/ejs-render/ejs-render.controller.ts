@@ -28,12 +28,21 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    const requests = await this.requestsService.getRequests();
+    let requests;
+    if (req.user && req.user.address_certified) {
+      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+        req.user.address_bname,
+        1,
+        6
+      );
+    } else {
+      requests = await this.requestsService.getRequestsPagination(1, 6);
+    }
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
-      requests: requests.slice(0, 6),
+      requests,
     };
   }
 
@@ -62,10 +71,18 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId };
   }
 
-  @Get('/request/list')
+  @Get('/request/list/:page')
   @Render('index')
-  async requestList(@Req() req) {
-    const requests = await this.requestsService.getRequests();
+  async requestList(@Req() req, @Param('page') page: number) {
+    let requests;
+    if (req.user && req.user.address_certified) {
+      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+        req.user.address_bname,
+        page
+      );
+    } else {
+      requests = await this.requestsService.getRequestsPagination(page);
+    }
     return {
       components: 'requestList',
       userId: req.userId,

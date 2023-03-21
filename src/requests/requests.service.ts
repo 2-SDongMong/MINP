@@ -40,10 +40,61 @@ export class RequestsService {
         is_ongoing: true,
       },
       order: {
-        updated_at: 'DESC',
+        created_at: 'DESC',
       },
     });
     return request;
+  }
+
+  async getRequestsPagination(page = 1, take = 8) {
+    const requests = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .orderBy('r.created_at', 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getMany();
+    return requests;
+  }
+
+  async getRequestsByAddressBname(bname: string) {
+    const request = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select
+      //   [
+      //   // 'r.request_id',
+      //   // 'r.reserved_begin_date',
+      //   // 'r.reserved_end_date',
+      //   // 'r.updated_at',
+      //   // 'r.detail',
+      //   // 'r.is_ongoing',
+      // ]
+      ()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .where('user.address_bname = :bname', { bname })
+      .orderBy('r.created_at', 'DESC')
+      .getMany();
+    return request;
+  }
+
+  async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
+    const requests = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .where('user.address_bname = :bname', { bname })
+      .orderBy('r.created_at', 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getMany();
+    return requests;
   }
 
   async getRequestById(id: number) {
@@ -144,6 +195,16 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
+  }
+
+  async updateRequestIsOngoing(
+    userId: number,
+    id: number,
+    bodyData: UpdateRequestDto
+  ) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
+    this.requestsRepository.update(id, { is_ongoing: bodyData.is_ongoing });
   }
 
   async deleteRequestById(userId: number, id: number) {

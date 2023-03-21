@@ -5,7 +5,7 @@
 	</div>
 	<br/>
 	<div>
-		<button onclick="location.href='/request/list'" class="btn btn-outline-dark" type="button" style="border-radius: 20px;">목록으로</button>
+		<button onclick="location.href='/request/list/1'" class="btn btn-outline-dark" type="button" style="border-radius: 20px;">목록으로</button>
 	</div>
 
 	<div class="cat-cards-container" >
@@ -129,6 +129,7 @@
 				  </div>
 			<% } else { %>
 				<div class="d-flex">
+					<button onclick="updateRequestIsOngoing(<%= request.request_id %>)" class="btn btn-outline-success" type="button">마감하기</button>
 					<button onclick="location.href='/request/modify/<%= request.request_id %>'" class="btn btn-outline-primary" type="button">수정</button>
 					<button onclick="deleteRequest('<%= request.request_id %>')" class="btn btn-outline-secondary" type="button">삭제</button>
 				</div>
@@ -173,6 +174,29 @@
     document.getElementById("modal_close_btn").onclick = function() {
         document.getElementById("modal").style.display="none";
     } 
+
+	function updateRequestIsOngoing(id) {
+		const check = confirm('신청서를 마감하시겠습니까? 되돌릴 수 없습니다');
+		if (!check) {
+			return;
+		}
+		$.ajax({
+			type: 'PATCH', 
+			url: `/requests/ongoing/${id}`,
+			contentType: 'application/json; charset=UTF-8',
+			data: JSON.stringify({
+				is_ongoing: false,
+			}),
+			success: function(response) {
+				location.href = '/request/list/1';
+			},
+			error: function(response) {
+				console.log(response);
+				console.log(response.responseJSON.message);
+			}
+		})
+	}
+
 	function deleteRequest(id) {
 		const isReal = confirm('정말 삭제하시겠습니까? 되돌릴 수 없습니다');
 		if (!isReal) {
@@ -183,7 +207,7 @@
 			url: `/requests/${id}`,
 			success: function (response) {
 				alert('품앗이 게시글을 삭제하였습니다')
-				location.href = '/request/list';
+				location.href = '/request/list/1';
 			},
 			error: function (response) {
 				console.log(response);
@@ -191,6 +215,7 @@
 			}
 		})
 	}
+
 </script>
 
 <style>
