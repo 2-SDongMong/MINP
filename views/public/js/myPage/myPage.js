@@ -124,9 +124,11 @@ catModalOn.addEventListener('click', () => {
 })
 
 // 닫기
-addCatModal.addEventListener('click', (e) => {
-  if (e.target !== addCatModalBody) addCatModal.style.display = 'none';
-});
+window.onclick = function(event) {
+  if (event.target == addCatModal) {
+    addCatModal.style.display = "none";
+  }
+}
 
 function addMyCat() {
   const catName = $()

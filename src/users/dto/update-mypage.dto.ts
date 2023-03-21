@@ -1,11 +1,9 @@
 import { PartialType} from '@nestjs/mapped-types';
 import { IsBoolean } from 'class-validator';
-import { IsNotEmpty } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
 export class UpdateMypageDto extends PartialType(CreateUserDto) {
-  @IsNotEmpty()
-  nickname: string;
+  nickname?: string;
   address_road?: string;
 
   address_bname?: string;

@@ -115,30 +115,25 @@ export class UsersService {
   // 유저 정보 수정
   async updateUserById(id: number, userId: number, bodyData: UpdateMypageDto) {
     const user = await this.findUser(id);
-    const { nickname, address_road, address_bname, address_certified, phone_number } = bodyData;
+    const nickname = await this.userRepository.find({
+      where: {nickname: bodyData.nickname}
+    }) 
+    if (user.user_id === Number(userId)) {
+        const { nickname, address_road, address_bname, address_certified, phone_number } = bodyData;
+        await this.userRepository.update(id, {
+          nickname,
+          address_road,
+          address_bname,
+          address_certified,
+          phone_number
+        })
+      return '회원정보 수정이 완료되었습니다.';
+    } 
     if (!nickname) {
       throw new BadRequestException('닉네임은 필수 입력 항목입니다.');
-    }
-    const exists = await this.userRepository.findOne({where: {nickname}});
-    if (exists && exists.user_id !== userId) {
+    } 
+    if (nickname.length > 0) {
       throw new BadRequestException('이미 존재하는 닉네임 입니다.');
-    }
-    if (user.user_id === Number(userId)) {
-      const {
-        nickname,
-        address_road,
-        address_bname,
-        address_certified,
-        phone_number,
-      } = bodyData;
-      await this.userRepository.update(id, {
-        nickname,
-        address_road,
-        address_bname,
-        address_certified,
-        phone_number,
-      });
-      return '회원정보 수정이 완료되었습니다.';
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
@@ -270,7 +265,7 @@ export class UsersService {
     }
   }
 
-  // 가입 신청 승인 -> enum... 어떻게 함...
+  // 가입 신청 승인
   async accessMember(id: number, userId: number, data: UpdateMemberDto) {
     const user = await this.findUser(id);
     console.log(user)
