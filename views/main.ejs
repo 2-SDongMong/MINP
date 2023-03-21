@@ -8,10 +8,13 @@
       <div class="contentSub1">
         <div class="locationContainer" id="section1">
           <div class="location">
-            현재 위치:
-          </div>
-          <div class="locationDetail">
-            고양시
+            현재 위치: <span>
+              <% if (user && user.address_certified) { %>
+                <%= user.address_bname %>
+              <% } else { %>
+                로그인 및 동네 인증 필요
+              <% } %>
+            </span>
           </div>
           <p class="page">
             <span class="page1" id="prev">
@@ -42,7 +45,12 @@
               <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
                 <img src="" alt="">
                 <div class="status">
-                  <p>모집현황</p>
+                  <p><% if (request.is_ongoing) { %>
+                    모집중
+                    <% } else { %>
+                    마감됨
+                    <% } %>
+                  </p>
                 </div>
               </div>
               <div class="periodContainer">

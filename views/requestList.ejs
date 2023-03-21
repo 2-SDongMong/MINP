@@ -8,11 +8,19 @@
 		<div class="d-flex justify-content-between">
 			<div class="" id="">
 			  <div class="">
-				현재 위치: <span>고양시</span>
+				현재 위치: <span>
+					<% if (user && user.address_certified) { %>
+						<%= user.address_bname %>
+					  <% } else if (!user) { %>
+						로그인이 필요합니다
+					  <% } else { %>
+						<%= user.address_bname %> (동네 인증을 하시면 더 정확한 품앗이 정보를 얻을 수 있습니다)
+					  <% } %>
+				</span>
 			  </div>
 			</div>
 			<div>
-				<button onclick="location.href='/request/post'" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+				<button onclick="goToWrite('<%= user %>')" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
 			</div>
 		</div>
 
@@ -28,7 +36,7 @@
 				} else if (minutesAgo / 60 <= 48) {
 					updated += parseInt(minutesAgo / 60) + '시간'
 				} else {
-					updated += minutesAgo / 60 / 24 + '일'
+					updated += parseInt(minutesAgo / 60 / 24) + '일'
 				} 
 
 				let reserved_dates = ''
@@ -37,16 +45,23 @@
 				} else {
 					reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
 				}
+
+				let ongoing = ''
+				if (request.is_ongoing) {
+					ongoing = '모집중'
+				} else {
+					ongoing = '모집 완료'
+				}
 				%>
 
 				<div class="col">
-					<div class="card h-100" style="border-radius: 20px">
+					<div onclick="location.href='/request/detail/<%= request.request_id %>'" class="card h-100" style="border-radius: 20px; cursor: pointer;">
 
 						<div class="cat-card">
 							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
 							<img src="" alt="">
 							<div class="status">
-								<p onclick="location.href='/request/detail/<%= request.request_id %>'">모집중</p>
+								<p><%= ongoing %></p>
 							</div>
 							</div>
 							<div class="whole-column-container">
@@ -70,7 +85,11 @@
 									지역
 								</div>
 								<div class="cat-info-content">
-									<%= request.request_id %>
+									<% if (user && user.address_certified) { %>
+										<%= request.user.address_bname %>
+									<% } else { %>
+										🟤🟤🟤
+									<% } %>
 								</div>
 							</div>
 							
@@ -83,96 +102,20 @@
 				</div>
 			<% } %>
 		</div>
-		
-
-		<!-- <div class="request-cards-container" >
-			<% for (let i = 0; i < 8; i++) { 
-				const request = requests[i]; 
-				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
-					let updated = ''
-					if (minutesAgo < 60) {
-						updated += parseInt(minutesAgo) + '분'
-					} else if (minutesAgo / 60 <= 48) {
-						updated += parseInt(minutesAgo / 60) + '시간'
-					} else {
-						updated += minutesAgo / 60 / 24 + '일'
-					} %>
-				<div class="col">
-					<div class="card h-100" style="border-radius: 20px">
-						<img src= <%= request.user.cats[0].image %> class="card-img-top" alt="...">
-						<div class="card-body">
-						<h5 class="card-title">기간: <%= request.reserved_time %></h5>
-						<div class="d-flex justify-content-between">
-							<h5 class="card-title">이름: <%= request.user.nickname %></h5>
-							<button class="btn btn-outline-secondary" type="button">쪽지하기</button>
-						</div>
-						<h5 class="card-title">지역: <%= request.request_id %></h5>
-						</div>
-						<div class="card-footer">
-							<div class="d-flex justify-content-between">
-								<small class="text-muted align-center"><%= updated %> 전 업데이트</small>
-								<button onclick="location.href='/request/detail/<%= request.request_id %>'" class="btn btn-outline-dark btn-sm" type="button">자세히</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			<% } %>
-		</div> -->
 	</div>
 </section>
 
 <script>
-
-	$(document).ready(function () {
-		// viewRequests();
-	})
-
-	async function viewRequestCards() {
-		$.ajax({
-			type: 'GET',
-			url: '/requests',
-			success: function (response) {
-				let tempHtml
-				for (let i = 0; i < 3; i++) {
-					console.log(response);
-					console.log(`Treating ${i}th request card...`)
-
-					const request = response[i];
-					console.log(request.updated_at, new Date(request.updated_at))
-					const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
-					let updated = ''
-					if (minutesAgo < 60) {
-						updated += parseInt(minutesAgo) + '분'
-					} else if (minutesAgo / 60 <= 48) {
-						updated += parseInt(minutesAgo / 60) + '시간'
-					} else {
-						updated += minutesAgo / 60 / 24 + '일'
-					}
-					
-
-					tempHtml += `<div class="col">
-						<div class="card h-100" style="border-radius: 20px">
-							<img src=${request.user.cats[0].image} class="card-img-top" alt="...">
-							<div class="card-body">
-							<h5 class="card-title">기간: ${request.reserved_time}</h5>
-							<div class="d-flex justify-content-between">
-								<h5 class="card-title">이름: ${request.user.nickname}</h5>
-								<button class="btn btn-outline-secondary" type="button">쪽지하기</button>
-							</div>
-							<h5 class="card-title">지역: ${request.request_id}</h5>
-							</div>
-							<div class="card-footer">
-							<small class="text-muted">${updated} 전 업데이트</small>
-							</div>
-						</div>
-						</div>`
-				$('#request-cards-container').append(tempHtml);
-				console.log(response);
-				}
-			},
-			error: function (response) {
-				console.log(response.responseJSON.message);
-			}
-		})
+	function goToWrite(user) {
+		if (!user) {
+			alert('로그인이 필요한 기능입니다')
+			return;
+		}
+		if (!user.address_certified) {
+			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
+			return;
+		}
+		location.href='/request/post'
 	}
+	
 </script>
