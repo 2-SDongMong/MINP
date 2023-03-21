@@ -28,7 +28,7 @@ export class Request {
   reserved_end_date: Date;
 
   @Column('boolean', { default: true })
-  is_ongoing: Boolean;
+  is_ongoing: boolean;
 
   @CreateDateColumn()
   created_at: Date;
