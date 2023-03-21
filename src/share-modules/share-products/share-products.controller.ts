@@ -36,6 +36,11 @@ export class ProductsController {
     return await this.productsService.findOne(id);
   }
 
+  @Get('/user/:userId')
+  async getProductsByUserId(@Param('userId') userId: number) {
+    return await this.productsService.findProductsByUserId(userId);
+  }
+
   // products.controller.ts
   @Post('create')
   @UseInterceptors(FileInterceptor('image'))
