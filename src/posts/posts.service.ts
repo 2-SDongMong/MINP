@@ -7,6 +7,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { IsNull, Not, Repository } from 'typeorm';
+import { PageMetaDto } from './dto/page-meta.dto';
+import { PageOptionsDto } from './dto/page-options.dto';
+import { PageDto } from './dto/page.dto';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -20,25 +23,42 @@ export class PostsService {
   async getPosts(page: number = 1) {
     this.logger.debug(`getPosts()`);
 
-    // 페이지네이션
-    const take = 10;
+    // // 페이지네이션
+    // const take = 10;
 
-    const [posts, total] = await this.postsRepository.findAndCount({
-      take,
-      skip: (page - 1) * take,
+    // const [posts, total] = await this.postsRepository.findAndCount({
+    //   take,
+    //   skip: (page - 1) * take,
+    // });
+
+    // const last_Page = Math.ceil(total / take);
+
+    // if (last_Page >= page) {
+    //   return {
+    //     data: posts,
+    //     meta: {
+    //       total,
+    //       page: page <= 0 ? (page = 1) : page,
+    //       last_Page: last_Page,
+    //     },
+    //   };
+    // } else {
+    //   throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+    // }
+  }
+
+  async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
+
+    const [users, total] = await this.postsRepository.findAndCount({
+      take: pageOptionsDto.take,
+      skip: pageOptionsDto.skip, 
     });
 
-    const last_Page = Math.ceil(total / take);
+    const pageMetaDto = new PageMetaDto({pageOptionsDto, total});
+    const last_page = pageMetaDto.last_page;
 
-    if (last_Page >= page) {
-      return {
-        data: posts,
-        meta: {
-          total,
-          page: page <= 0 ? (page = 1) : page,
-          last_Page: last_Page,
-        },
-      };
+    if (last_page >= pageMetaDto.page) {
+      return new PageDto(users, pageMetaDto);
     } else {
       throw new NotFoundException('해당 페이지는 존재하지 않습니다');
     }

@@ -17,6 +17,8 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
+import { PageOptionsDto } from './dto/page-options.dto';
+import { PageDto } from './dto/page.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -27,16 +29,21 @@ export class PostsController {
 
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
-  // async getPosts() {
-  //   this.logger.debug(`getPosts()`);
-  //   return await this.postsService.getPosts();
-  // }
+  //async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>>{
+  //  return await this.postsService.paginate(pageOptionsDto);
+  //}
 
-  //페이지네이션
+  //페이지네이션 > 위에 코드가 에러나서 일단 이전 코드로
   async getPosts(@Param('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
     return await this.postsService.getPosts(page);
   }
+
+   // async getPosts() {
+  //   this.logger.debug(`getPosts()`);
+  //   return await this.postsService.getPosts();
+  // }
+
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
