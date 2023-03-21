@@ -1,5 +1,6 @@
+// if (window.location.pathname === '/mypage') {
 
-let user;
+
 
 $(document).ready(
   function() {
@@ -12,6 +13,7 @@ function showMyPage() {
   $.ajax({
     type: 'GET',
     url: 'users/mypage',
+    async: false,
     data: {},
     success: function (response) {
       user = response;
@@ -123,6 +125,7 @@ function deleteUser(id) {
 // 고양이 추가
 const addCatModal = document.querySelector('.addCatModal');
 const addCatModalBody = addCatModal.querySelector('.addCatModalBody')
+const clsModalBtn = document.querySelector('.clsModalBtn');
 const catModalOn = document.querySelector('.addCatBtn');
 
 // 열기
@@ -130,8 +133,14 @@ catModalOn.addEventListener('click', () => {
   addCatModal.style.display = 'block';
 })
 
-// 닫기
+// 버튼으로 창 닫기
+clsModalBtn.addEventListener('click', () => {
+  addCatModal.style.display = 'none';
+})
+
+// 외부 창 닫기
 window.onclick = function(event) {
+  event.preventDefault()
   if (event.target == addCatModal) {
     addCatModal.style.display = "none";
   }
@@ -425,3 +434,4 @@ function verifyLocation() {
 }
 
 
+// }

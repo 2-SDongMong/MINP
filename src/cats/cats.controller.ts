@@ -37,6 +37,8 @@ export class CatsController {
     @UploadedFile() file: Express.Multer.File,
     @Body() data: CreateCatDto
   ) {
+    console.log(data)
+    console.log(file)
     const folder = 'cat_images';
     const image = await this.awsService.uploadFileToS3(folder, file);
     data.image = image;
