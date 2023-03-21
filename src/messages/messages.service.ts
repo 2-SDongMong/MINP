@@ -3,9 +3,16 @@ import _ from 'lodash';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesRepository } from './messages.repository';
 
+
 @Injectable()
 export class MessagesService {
-  constructor(private readonly repository: MessagesRepository) {}
+  constructor(
+    private readonly repository: MessagesRepository,
+   ) {}
+
+
+
+
   async getMessageById(id: number, userId: number) {
     const message = await this.repository.getMessageById(id);
 
@@ -16,6 +23,7 @@ export class MessagesService {
     if (_.isNil(message)) {
       throw new NotFoundException(`Message not found. id: ${id}`);
     }
+   
     return message;
   }
 
@@ -42,7 +50,8 @@ export class MessagesService {
     return await this.repository.save(newMessage);
   }
 
-  deleteMessageById(id: number) {
+  async deleteMessageById(id: number) {
+
     return this.repository.softDelete(id);
   }
 
