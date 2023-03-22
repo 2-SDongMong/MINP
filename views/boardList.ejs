@@ -36,26 +36,49 @@
 
         </div>
     </div>
+    
 
     <div class="pgn">
         <nav aria-label="...">
             <ul class="pagination justify-content-center">
+              <% if(Number(posts.meta.page) == 1) { %>
               <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="Previous">
+                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
+              <% } else {%>
+              <li class="page-item"></li>
+                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) - 1 %>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <% } %>
+
+              <% for (let i = 0; i < posts.meta.last_Page ; i++) { 
+                if((i+1) == Number(posts.meta.page)) { %>
+
+                <li class="page-item active""><a class="page-link" href="/boardList?page=<%= i+1 %>" aria-current="page"><%= i+1 %></a></li>
+                <% } else {%>
+
+                <li class="page-item"><a class="page-link" href="/boardList?page=<%= i+1 %>"><%= i+1 %></a></li>
+                <% } %>
+              <% } %>
 
 
-              <li class="page-item"><a class="page-link" href="/boardList?page=1"><%= 1 %></a></li>
-              <li class="page-item"><a class="page-link" href="/boardList?page=2"><%= 2 %></a></li>
-
-
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+              <% if(Number(posts.meta.page) == posts.meta.last_Page) { %>
+              <li class="page-item disabled">
+                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Next">
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
+              <% } else {%>
+              <li class="page-item"></li>
+                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) + 1 %>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              <% } %>
             </ul>
         </nav>
     </div>

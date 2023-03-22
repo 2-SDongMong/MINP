@@ -1,19 +1,37 @@
 import { Type } from "class-transformer";
-import { IsInt, IsOptional } from "class-validator";
+import { IsEnum, IsOptional } from "class-validator";
+import { Order } from "./page-order.enum";
 
 export class PageOptionsDto {
-  
-  @Type(() => Number)
-  @IsInt()
+
+
+  @Type(() => String)
+  @IsEnum(Order)
   @IsOptional()
-  page?: number = 1;
+  readonly sort?: Order = Order.DESC;
 
   @Type(() => Number)
-  @IsInt()
+  //@IsInt()
   @IsOptional()
-  readonly take?: number = 3;
+  readonly take?: number = 7;
 
-  get skip(): number {
-    return this.page <=0 ? this.page = 0 : (this.page - 1) * this.take;
-  }
+  @Type(() => String)
+  @IsOptional()
+  readonly cursorId?: number = "" as any;
+
+  readonly hasNextPage: boolean;
+  readonly hasPreviousPage: boolean;
+
+
+    
+  // 오프셋
+  // @Type(() => Number)
+  // //@IsInt()
+  // @IsOptional()
+  // page?: number = 1;
+
+  //오프셋
+  // get skip(): number {
+  //   return this.page <=0 ? this.page = 0 : (this.page - 1) * this.take;
+  // }
 }

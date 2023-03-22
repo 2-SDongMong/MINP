@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, Repository } from 'typeorm';
-import { PageMetaDto } from './dto/page-meta.dto';
-import { PageOptionsDto } from './dto/page-options.dto';
-import { PageDto } from './dto/page.dto';
+import { IsNull, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+//import { PageMetaDto } from './dto/page-meta.dto';
+//import { PageOptionsDto } from './dto/page-options.dto';
+//import { PageDto } from './dto/page-info';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -21,14 +21,49 @@ export class PostsService {
   private logger = new Logger('PostsService');
 
   async getPosts(page: number = 1) {
-    this.logger.debug(`getPosts()`);
+    // const take = 7;
 
-    // 페이지네이션
-    const take = 10;
+    // const [posts, total] = await this.postsRepository.findAndCount({
+    //   take,
+    //   where: cursor ? {
+    //     post_id: MoreThanOrEqual(cursor),
+    //   }: null,
+    // });
 
-    const [posts, total] = await this.postsRepository.findAndCount({
-      take,
-      skip: (page - 1) * take,
+    // const isLastPage = total <= take; 
+
+    // let hasNextPage = true;
+    // let hasPreviousPage = false;
+    // let endCursor: number;
+    // let startCursor: number;
+
+    // if (isLastPage || posts.length <= 0) {
+    //   hasNextPage = false;
+    //   endCursor = null;
+    // } else {
+    //   endCursor = posts[posts.length - 1].post_id;
+    //   //hasPreviousPage = true;
+    // }
+
+    // return {
+    //   data: posts,
+    //   meta: {
+    //     total,
+    //     hasNextPage,
+    //     hasPreviousPage,
+    //     endCursor,
+    //     startCursor,
+    //   }
+    // }
+
+    
+    //오프
+    const take = 7;
+    
+    const total = await this.postsRepository.count();
+    const posts = await this.postsRepository.find({
+	    take,
+	    skip: (page - 1) * take,
     });
 
     const last_Page = Math.ceil(total / take);
@@ -47,22 +82,44 @@ export class PostsService {
     }
   }
 
-  async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
+  // public static async findByCursor(cursor: number) {
+  //   return await this.postsRepository.find({
+  //     where: { id: MoreThanOrEqual(cursor) },
+  //     order: { id: "ASC" },
+  //     take: 7,
+  //   });
+  // }
 
-    const [users, total] = await this.postsRepository.findAndCount({
-      take: pageOptionsDto.take,
-      skip: pageOptionsDto.skip, 
-    });
+  // async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
 
-    const pageMetaDto = new PageMetaDto({pageOptionsDto, total});
-    const last_page = pageMetaDto.last_page;
+  //   const [posts, total] = await this.postsRepository.findAndCount({
+  //     take: pageOptionsDto.take,
+  //     where: pageOptionsDto.cursorId ? {
+  //       id: LessThan(pageOptionsDto.cursorId),
+  //     }: null,
+  //     order: {
+  //       id: pageOptionsDto.sort.toUpperCase() as any,
+  //     },
+  //   });
 
-    if (last_page >= pageMetaDto.page) {
-      return new PageDto(users, pageMetaDto);
-    } else {
-      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-    }
-  }
+  //   const takePerPage = pageOptionsDto.take;
+  //   const isLastPage = total <= takePerPage;
+
+  //   let hasNextData = true;
+  //   let cursor: number;
+
+  //   if (isLastPage || posts.length <= 0) {
+  //     hasNextData = false;
+  //     cursor = null;
+  //   } else {
+  //     cursor = posts[posts.length - 1].id;
+  //   }
+
+  //   const pageMetaDto = new PageMetaDto({ pageOptionsDto, total, hasNextData, cursor });
+
+  //   return new PageDto(posts, pageMetaDto);
+  // }
+  
 
   async getPostByCategory(postsCategory: PostCategoryType) {
     return await this.postsRepository.find({

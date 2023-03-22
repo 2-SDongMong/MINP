@@ -17,7 +17,7 @@ export class PostCommentsController {
     }
 
     //댓글 쓰기
-    @Post('/:postId')
+    @Post('/:postId/comments')
     @UsePipes(ValidationPipe)
     createComment(@Req() req, @Param('postId') postId: number, @Body() CreatePostCommentDto: CreatePostCommentDto) {
         this.logger.debug(`createComment() : ${CreatePostCommentDto}`);

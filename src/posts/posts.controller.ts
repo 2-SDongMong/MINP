@@ -17,8 +17,6 @@ import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostCategoryType } from './post.entity';
-import { PageOptionsDto } from './dto/page-options.dto';
-import { PageDto } from './dto/page.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -27,13 +25,14 @@ export class PostsController {
 
   private logger = new Logger('PostsController');
 
-  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
-  @Get()
-  // async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>>{
+  // 게시물 목록을 조회 
+  // @Get()
+  // async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<typeof Post>>{ //
   //  return await this.postsService.paginate(pageOptionsDto);
   // }
 
-  //페이지네이션 > 위에 코드가 에러나서 일단 이전 코드로
+  //페이지네이션 
+  @Get()
   async getPosts(@Param('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
     return await this.postsService.getPosts(page);
