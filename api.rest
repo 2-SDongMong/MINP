@@ -33,6 +33,9 @@ Content-Type: application/json
 GET http://localhost:3000/requests
 
 ###
+GET http://localhost:3000/requests/address/'문화동'
+
+###
 
 GET http://localhost:3000/requests/26
 
@@ -40,7 +43,6 @@ GET http://localhost:3000/requests/26
 
 POST http://localhost:3000/requests
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 {
     "reserved_time": "2023-04-23",
@@ -175,7 +177,7 @@ Content-type: application/json
 }
 
 ###
-GET https://localhost:3000/posts/27
+GET https://localhost:3000/posts/40
 
 ###
 PATCH https://localhost:3000/posts/7
@@ -189,15 +191,27 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpb
 }
 
 ###
-DELETE https://localhost:3000/posts/5
+DELETE https://localhost:3000/posts/34
 
 ###
-GET https://localhost:3000/posts/20/comments
+GET https://localhost:3000/posts/40/comments
 
 ###
-POST https://localhost:3000/posts/20/comments
+POST https://localhost:3000/posts/40/comments
 Content-type: application/json
 
 {
-    "content" : "너무 이쁜 깜냥이~"
+    "content" : "큐트~"
 }
+
+###
+PATCH https://localhost:3000/posts/40/comments/20
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
+
+{
+    "content" : "너무너무 구ㅣ여워"
+}
+
+###
+DELETE https://localhost:3000/posts/40/comments/21

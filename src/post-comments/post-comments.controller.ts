@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post, Put, Req, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Patch, Post, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 import { PostCommentsService } from './post-comments.service';
@@ -12,7 +12,7 @@ export class PostCommentsController {
 
     @Get('/:postId/comments')
     async getComments(@Param('postId') postId: number) {
-        this.logger.debug(`getComments()`);
+        this.logger.debug(`getComments(postId)`);
         return await this.postCommentsService.getComments(postId);
     }
 
@@ -21,7 +21,6 @@ export class PostCommentsController {
     @UsePipes(ValidationPipe)
     createComment(@Req() req, @Param('postId') postId: number, @Body() CreatePostCommentDto: CreatePostCommentDto) {
         this.logger.debug(`createComment() : ${CreatePostCommentDto}`);
-        console.log(req);
         return this.postCommentsService.createComment(
             req.userId,
             postId,
@@ -29,14 +28,8 @@ export class PostCommentsController {
         );
     }
 
-    // 댓글 삭제
-    @Delete('/:postId/comments/:commentId')
-    async deleteComment(@Req() req, @Param('commentId', ParseIntPipe) post_comment_id: number) {
-        return await this.postCommentsService.deleteComment(req.userId, post_comment_id);
-    }
-
     // 댓글 수정
-    @Put('/:postId/comments/:commentId')
+    @Patch('/:postId/comments/:commentId')
     updateComment(
         @Req() req,
         @Param('commentId') post_comment_id: number,
@@ -45,6 +38,13 @@ export class PostCommentsController {
         this.logger.debug(`updateComment() : ${post_comment_id}`);
         return this.postCommentsService.updateComment(req.userId, post_comment_id, updateDateDto.content);
     }
+
+    // 댓글 삭제
+    @Delete('/:postId/comments/:commentId')
+    async deleteComment(@Req() req, @Param('commentId', ParseIntPipe) post_comment_id: number) {
+        return await this.postCommentsService.deleteComment(req.userId, post_comment_id);
+    }
+
 }
 
 

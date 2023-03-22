@@ -29,13 +29,23 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    const requests = await this.requestsService.getRequests();
+    let requests;
     const posts = await this.postsService.getPosts();
+    if (req.user && req.user.address_certified) {
+      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+        req.user.address_bname,
+        1,
+        6
+      );
+    } else {
+      requests = await this.requestsService.getRequestsPagination(1, 6);
+      
+    }
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
-      requests: requests.data.slice(0, 6),
+      requests,
       posts,
     };
   }
@@ -65,12 +75,18 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId };
   }
 
-  // 페이지 네이션 인수 추가
-  @Get('/request/list')
+  @Get('/request/list/:page')
   @Render('index')
-  async requestList(@Req() req, @Query('page') pageNum: number) {
-    const requests = await this.requestsService.getRequests(pageNum);
-    console.log(requests);
+  async requestList(@Req() req, @Param('page') page: number) {
+    let requests;
+    if (req.user && req.user.address_certified) {
+      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+        req.user.address_bname,
+        page
+      );
+    } else {
+      requests = await this.requestsService.getRequestsPagination(page);
+    }
     return {
       components: 'requestList',
       userId: req.userId,
@@ -178,7 +194,7 @@ export class EjsRenderController {
   @Render('index')
   async boardDetail(@Req() req, @Param('id') postId: number) {
     const post = await this.postsService.getPostById(postId);
-    return { components: 'boardDetail', userId: req.userId, post };
+    return { components: 'boardDetail', userId: req.userId, post: post[0] };
   }
 
   @Get('boardPost')

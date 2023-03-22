@@ -8,24 +8,21 @@ import { PostComment } from './post-comment.entity';
 export class PostCommentsService {
     constructor(
         @InjectRepository(PostComment)
-        private PostCommentRepository: Repository<PostComment>,
+        private postCommentRepository: Repository<PostComment>,
     ) { }
 
     private logger = new Logger('PostCommentsService');
 
     async getComments(post_id: number){
-        const comment = await this.PostCommentRepository.find({
+        const comment = await this.postCommentRepository.find({
             relations: {
-                user: true,
+                user: {},
               },
             where: { post_id, deleted_at: IsNull() },
             select: {
               user: {
                 nickname: true,
               },
-              post_comment_id: true,
-              updated_at: true,
-              content: true,
             },
             order: {
               updated_at: 'DESC',
@@ -41,21 +38,11 @@ export class PostCommentsService {
     ) {
         this.logger.debug(`createComment()`);
 
-        // 로그인이 되어있는지 확인, userId가 null이 아니어야함
-
-        this.PostCommentRepository.insert({
+        this.postCommentRepository.insert({
             user_id: userId,
             post_id: postId,
             content,            
         });
-    }
-
-    // 댓글 삭제
-    async deleteComment(userId: number, post_comment_id: number) {
-
-        const post = await this._existenceCheckById(post_comment_id);
-        this._authorCheckByUserId(post.user_id, userId);
-        this.PostCommentRepository.softDelete(post_comment_id);
     }
 
     //댓글 수정
@@ -67,12 +54,18 @@ export class PostCommentsService {
         const post = await this._existenceCheckById(post_comment_id);
         this._authorCheckByUserId(post.user_id, userId);
 
-        this.PostCommentRepository.update(post_comment_id, { content });
+        this.postCommentRepository.update(post_comment_id, { content });
     }
 
+    // 댓글 삭제
+    async deleteComment(userId: number, post_comment_id: number) {
+        const post_comment = await this._existenceCheckById(post_comment_id);
+        this._authorCheckByUserId(post_comment.user_id, userId);
+        this.postCommentRepository.softDelete(post_comment_id);
+    }    
 
     private async _existenceCheckById(id: number) {
-        const PostComment = await this.PostCommentRepository.findOne({
+        const PostComment = await this.postCommentRepository.findOne({
             where: { post_comment_id: id },
         });
         if (_.isNil(PostComment)) {

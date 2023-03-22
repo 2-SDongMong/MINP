@@ -19,57 +19,11 @@ export class RequestsService {
   ) {}
 
   // 오프셋 페이지네이션
-  async getRequests(page: number = 1) {
-    const take = 9;
+  // async getRequestsPagination(page: number = 1) {
+  //   const take = 8;
     
-    const total = await this.requestsRepository.count();
-    const requests = await this.requestsRepository.find({
-      relations: {
-        user: {
-          cats: true,
-        },
-      },
-      select: {
-        user: {
-          nickname: true,
-          cats: {
-            image: true,
-          },
-        },
-        request_id: true,
-        reserved_begin_date: true,
-        reserved_end_date: true,
-        updated_at: true,
-        detail: true,
-        is_ongoing: true,
-      },
-      order: {
-        updated_at: 'DESC',
-      },
-      take,
-	    skip: (page - 1) * take,
-    });
-
-    const last_Page = Math.ceil(total / take);
-
-    if (last_Page >= page) {
-      return {
-        data: requests,
-        meta: {
-          total,
-          page: page <= 0 ? (page = 1) : page,
-          last_Page: last_Page,
-        },
-      };
-    } else {
-      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-    }
-  }
-
-
-  // //기존 getRequests()
-  // async getRequests() {
-  //   const request = await this.requestsRepository.find({
+  //   const total = await this.requestsRepository.count();
+  //   const requests = await this.requestsRepository.find({
   //     relations: {
   //       user: {
   //         cats: true,
@@ -90,11 +44,130 @@ export class RequestsService {
   //       is_ongoing: true,
   //     },
   //     order: {
-  //       updated_at: 'DESC',
+  //       created_at: 'DESC',
   //     },
+  //     take,
+	//     skip: (page - 1) * take,
   //   });
-  //   return request;
+
+  //   const last_Page = Math.ceil(total / take);
+
+  //   if (last_Page >= page) {
+  //     return {
+  //       data: requests,
+  //       meta: {
+  //         total,
+  //         page: page <= 0 ? (page = 1) : page,
+  //         last_Page: last_Page,
+  //       },
+  //     };
+  //   } else {
+  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+  //   }
   // }
+
+  // async getRequestsByAddressBnamePagination(bname: string, page: number = 1) {
+  //   const take = 8;
+    
+  //   const total = await this.requestsRepository.count();
+  //   const requests = await this.requestsRepository.find({
+  //     relations: {
+  //       user: {
+  //         cats: true,
+  //       },
+  //     },
+
+  //     where: { 
+  //       user: {
+  //         address_bname: bname},
+  //       },
+  //     select: {
+  //       user: {
+  //         nickname: true,
+  //         cats: {
+  //           image: true,
+  //         },
+  //       },
+  //       request_id: true,
+  //       reserved_begin_date: true,
+  //       reserved_end_date: true,
+  //       updated_at: true,
+  //       detail: true,
+  //       is_ongoing: true,
+  //     },
+  //     order: {
+  //       created_at: 'DESC',
+  //     },
+  //     take,
+	//     skip: (page - 1) * take,
+  //   });
+
+  //   const last_Page = Math.ceil(total / take);
+
+  //   if (last_Page >= page) {
+  //     return {
+  //       data: requests,
+  //       meta: {
+  //         total,
+  //         page: page <= 0 ? (page = 1) : page,
+  //         last_Page: last_Page,
+  //       },
+  //     };
+  //   } else {
+  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+  //   }
+  // }
+
+  async getRequestsPagination(page = 1, take = 8) {
+    const requests = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .orderBy('r.created_at', 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getMany();
+    return requests;
+  }
+
+  async getRequestsByAddressBname(bname: string) {
+    const request = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select
+      //   [
+      //   // 'r.request_id',
+      //   // 'r.reserved_begin_date',
+      //   // 'r.reserved_end_date',
+      //   // 'r.updated_at',
+      //   // 'r.detail',
+      //   // 'r.is_ongoing',
+      // ]
+      ()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .where('user.address_bname = :bname', { bname })
+      .orderBy('r.created_at', 'DESC')
+      .getMany();
+    return request;
+  }
+
+  async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
+    const requests = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .where('user.address_bname = :bname', { bname })
+      .orderBy('r.created_at', 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getMany();
+    return requests;
+  }
 
   async getRequestById(id: number) {
     const request = await this.requestsRepository.find({
@@ -194,6 +267,16 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
+  }
+
+  async updateRequestIsOngoing(
+    userId: number,
+    id: number,
+    bodyData: UpdateRequestDto
+  ) {
+    const request = await this._existenceCheckById(id);
+    this._authorCheckByUserId(request.user_id, userId);
+    this.requestsRepository.update(id, { is_ongoing: bodyData.is_ongoing });
   }
 
   async deleteRequestById(userId: number, id: number) {

@@ -22,7 +22,7 @@
                     <th scope="col" class="th-title">제목</th>
                     <th scope="col" class="th-writer">작성자</th>
                     <th scope="col" class="th-date">등록일</th>
-               </tr>
+                </tr>
                 </thead>
             <tbody>
                 <% for (let i = 0; i < posts.data.length ; i++) {
@@ -42,7 +42,7 @@
 
         </div>
     </div>
-    
+    <a href='/boardPost' class="btn btn-success">글쓰기</a>
     <br><br>
     <div class="pgn">
         <nav aria-label="...">
@@ -88,19 +88,7 @@
             </ul>
         </nav>
     </div>
-    <a href='/boardPost' class="btn btn-success">글쓰기</a>
-
     
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand">검색</a>
-          <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
-        </div>
-    </nav>  
-  
 </section>
 
 <script>

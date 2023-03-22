@@ -20,15 +20,20 @@
 			  </div>
 			</div>
 			<div>
-				<button onclick="goToWrite('<%= user %>')" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+				<button onclick="goToWrite(<%= userId %>, <%= user.address_certified %>)" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
 			</div>
 		</div>
 
 		<br/>
 
+		<% if (requests.length === 0) { %>
+		<div class="">
+			지금은 우리 동네에 품앗이 요청이 없네요!
+		</div>
+		<% } %>
 		<div class="request-cards-container" >
-			<% for (let i = 0; i < 8; i++) { 
-				const request = requests.data[i]; 
+			<% for (let i = 0; i < requests.length; i++) { 
+				const request = requests[i]; 
 				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
 				let updated = ''
 				if (minutesAgo < 60) {
@@ -88,7 +93,7 @@
 									<% if (user && user.address_certified) { %>
 										<%= request.user.address_bname %>
 									<% } else { %>
-										🟤🟤🟤
+										동네를 인증해주세요!
 									<% } %>
 								</div>
 							</div>
@@ -104,62 +109,21 @@
 		</div>
 		
 		<br><br>
-		<div class="pgn">
-			<nav aria-label="...">
-				<ul class="pagination justify-content-center">
-				  <% if(Number(requests.meta.page) == 1) { %>
-				  <li class="page-item disabled">
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Previous">
-					  <span aria-hidden="true">&laquo;</span>
-					</a>
-				  </li>
-				  <% } else {%>
-				  <li class="page-item"></li>
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page)-1 %>" aria-label="Previous">
-					  <span aria-hidden="true">&laquo;</span>
-					</a>
-				  </li>
-				  <% } %>
-	
-				  <% for (let i = 0; i < requests.meta.last_Page ; i++) { 
-					if(i == Number(requests.meta.page)-1) { %>
-	
-					<li class="page-item active""><a class="page-link" href="/request/list?page=<%= i+1 %>" aria-current="page"><%= i+1 %></a></li>
-					<% } else {%>
-	
-					<li class="page-item"><a class="page-link" href="/request/list?page=<%= i+1 %>"><%= i+1 %></a></li>
-					<% } %>
-				  <% } %>
-	
-	
-				  <% if(Number(requests.meta.page) == requests.meta.last_Page) { %>
-				  <li class="page-item disabled">
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Next">
-					  <span aria-hidden="true">&raquo;</span>
-					</a>
-				  </li>
-				  <% } else {%>
-				  <li class="page-item"></li>
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page)+1 %>" aria-label="Next">
-					  <span aria-hidden="true">&raquo;</span>
-					</a>
-				  </li>
-				  <% } %>
-				</ul>
-			</nav>
-		</div>
+		
 
 
 	</div>
 </section>
 
 <script>
-	function goToWrite(user) {
-		if (!user) {
+	function goToWrite(userId, address_certified) {
+		if (!userId) {
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (!user.address_certified) {
+		console.log('user.address_certified: ', address_certified);
+		console.log('userId: ', userId);
+		if (!address_certified) {
 			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
 			return;
 		}

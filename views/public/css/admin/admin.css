@@ -1,3 +1,4 @@
+/* 승인 대기 테이블 */
 .statusTable {
   margin-top: 10px;
 }
@@ -8,6 +9,7 @@
   border-top: #a59373 2px solid;
   border-bottom: #a59373 1px solid;
   width: 1070px;
+  height: 60px;
 }
 
 .statusBlock {
@@ -15,5 +17,62 @@
 }
 
 .catNameBlock {
-  width: 650px;
+  width: 630px;
+}
+
+.nickBlock{
+  width: 140px;
+}
+
+
+.editStatusBtn {
+  border: 1px solid #a59373;
+  border-radius: 10px;
+  background-color: white;
+  margin-left: 39px;
+}
+
+/* 유저 목록 테이블 */
+.userTable {
+  margin-top: 10px;
+}
+
+.memberView{
+  font-family: Nanum Gothic;
+  margin: auto;
+  border-top: #a59373 2px solid;
+  border-bottom: #a59373 1px solid;
+  width: 1070px;
+  height: 60px;
+}
+
+.memberBlock {
+  width: 33px;
+}
+
+.memberInfo1 {
+  width: 140px;
+}
+
+.memberInfo2 {
+  width: 100px;
+}
+
+.memberInfo4 {
+  width: 80px;
+}
+
+.joinDate {
+  width: 100px;
+}
+
+.btnBlock {
+  width: 20px;
+}
+
+.deleteMemBtn {
+  border: 1px solid #a59373;
+  border-radius: 10px;
+  background-color: white;
+  margin-right: 3px;
 }
