@@ -349,7 +349,7 @@ function addMyCat() {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      // image: catImg,
+      image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter,
@@ -364,7 +364,6 @@ function addMyCat() {
     }
   })  
 
-}
 
 function deleteMyCat(id) {
   const check = confirm('정말 삭제하시겠습니까?')
