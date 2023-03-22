@@ -109,6 +109,7 @@ export class AppModule implements NestModule {
       { path: 'posts/:id', method: RequestMethod.DELETE },
       { path: 'shareDetail/:id', method: RequestMethod.GET },
       { path: 'shareProduct', method: RequestMethod.POST },
+      { path: 'shareMy', method: RequestMethod.GET },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
       // { path: 'views/.', method: RequestMethod.GET }

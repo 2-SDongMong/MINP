@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="/css/shareProduct/shareMy.css" />
 
+<br />
+<nav class="sp_nav">
+  <a class="sp_nav-link" href="/shareList">상품조회</a>
+  <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+  <a class="sp_nav-link" href="/shareMy">내 상품</a>
+</nav>
 <div class="product-title">내가 등록한 상품</div>
 
 <% if (sm.length > 0) { %>
@@ -7,22 +13,28 @@
   <% sm.forEach(function(product) { %>
 
   <div class="product-card">
-    <img
-      class="product-image"
-      src="<%= product.imageUrl %>"
-      alt="<%= product.title %>"
-    />
-    <div class="product-info">
-      <div class="product-na">
-        <p class="product-category"><%= product.productsCategory.name %></p>
+    <a
+      href="/shareDetail/<%= product.id %>"
+      style="text-decoration: none; color: inherit"
+    >
+      <img
+        class="product-image"
+        src="<%= product.imageUrl %>"
+        alt="<%= product.title %>"
+      />
+      <div class="product-info">
+        <div class="product-na">
+          <p class="product-category"><%= product.productsCategory.name %></p>
+        </div>
+        <h2 class="product-name"><%= product.title %></h2>
+        <p class="product-description"><%= product.description %></p>
+        <p class="product-created-at"><%= product.created_at %></p>
+      </a>
       </div>
-      <h2 class="product-name"><%= product.title %></h2>
-      <p class="product-description"><%= product.description %></p>
-      <p class="product-created-at"><%= product.created_at %></p>
-    </div>
+
     <div class="product-actions">
       <button class="eedit" data-id="<%= product.id %>">수정</button>
-      <button class="ddelete">삭제</button>
+      <button class="ddelete" data-id="<%= product.id %>">삭제</button>
     </div>
   </div>
 
@@ -124,6 +136,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+  const userId = '<%= userId %>';
+  if (!userId) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login'; // 로그인 페이지로 이동
+  }
   async function fetchCategories() {
     try {
       const response = await fetch('/productsCategory');
@@ -235,5 +252,40 @@
 
       console.log('Sending product ID:', productId);
     });
+  });
+  // 삭제 버튼 이벤트 리스너 추가
+  $('.ddelete').on('click', function () {
+    const productCard = $(this).closest('.product-card');
+    const productId = $(this).siblings('.eedit').data('id');
+
+    console.log('Clicked delete button for product ID:', productId);
+    if (!productId) {
+      alert('Product ID not found.');
+      return;
+    }
+
+    // 사용자에게 확인 요청
+    const confirmDelete = confirm('정말로 이 상품을 삭제하시겠습니까?');
+    if (!confirmDelete) {
+      return;
+    }
+
+    // 상품 삭제 요청
+    $.ajax({
+      url: '/products/' + productId,
+      type: 'DELETE',
+      success: function (response) {
+        alert('상품이 성공적으로 삭제되었습니다.');
+        location.reload();
+      },
+      error: function (error) {
+        console.error('Error deleting product:', error);
+        alert('상품 삭제 중 오류가 발생했습니다.');
+      },
+    });
+  });
+  $('.btn-secondary').on('click', function () {
+    const editModal = $(this).closest('.modal');
+    editModal.modal('hide');
   });
 </script>

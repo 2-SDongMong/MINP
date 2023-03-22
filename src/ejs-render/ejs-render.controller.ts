@@ -29,11 +29,13 @@ export class EjsRenderController {
   @Render('index')
   async main(@Req() req) {
     const requests = await this.requestsService.getRequests();
+    const products = await this.productsService.findAll();
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
       requests: requests.slice(0, 6),
+      products: products.slice(0, 6),
     };
   }
 
@@ -123,6 +125,7 @@ export class EjsRenderController {
   @Render('index')
   async ShareDetail(@Param('id') id: string, @Req() req) {
     const product = await this.productsService.findOne(id);
+    console.log(product);
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
