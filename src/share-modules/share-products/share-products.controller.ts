@@ -64,7 +64,21 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
-  // NestJS controller
+  @Post('imageUpload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: UpdateProductsDto
+  ) {
+    try {
+      const folder = 'cat_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      return { url: imageUrl };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   @Patch('/:id')
   @UseInterceptors(FileInterceptor('image'))
   async updateProduct(
@@ -72,7 +86,7 @@ export class ProductsController {
     @Body('') updateProductsDto: UpdateProductsDto,
     @UploadedFile() file: Express.Multer.File
   ) {
-    console.log('Updating product:', id, updateProductsDto); // Add log here
+    console.log('Updating product:', id, updateProductsDto);
 
     if (file) {
       const folder = 'product_images';
@@ -82,7 +96,7 @@ export class ProductsController {
 
     const { productsCategoryId, ...products } = updateProductsDto;
 
-    // Set productsCategoryId only if it is not null
+   
     const updateData = {
       ...products,
       productsCategory: productsCategoryId

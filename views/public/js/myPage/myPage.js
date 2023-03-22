@@ -1,13 +1,19 @@
-let user;
 
-$(document).ready(function () {
-  showMyPage(), showMyCat();
-});
+
+$(document).ready(function() {
+    showMyPage();
+    showMyCat();
+    catModalEventRegister();
+    showMyPost();
+  }
+)
+
 
 function showMyPage() {
   $.ajax({
     type: 'GET',
     url: 'users/mypage',
+    async: false,
     data: {},
     success: function (response) {
       user = response;
@@ -118,33 +124,24 @@ function deleteUser(id) {
   });
 }
 
-// 고양이 추가
-const addCatModal = document.querySelector('.addCatModal');
-const addCatModalBody = addCatModal.querySelector('.addCatModalBody');
-const catModalOn = document.querySelector('.addCatBtn');
 
-// 열기
-catModalOn.addEventListener('click', () => {
-  addCatModal.style.display = 'block';
-});
-
-// 닫기
-window.onclick = function (event) {
-  if (event.target == addCatModal) {
+function catModalEventRegister() {
+  // 고양이 추가
+  const addCatModal = document.querySelector('.addCatModal');
+  const clsModalBtn = document.querySelector('.clsModalBtn');
+  const catModalOn = document.querySelector('.addCatBtn');
+  
+  // 열기
+  catModalOn.addEventListener('click', () => {
+    addCatModal.style.display = 'block';
+  })
+  
+  // 버튼으로 창 닫기
+  clsModalBtn.addEventListener('click', () => {
     addCatModal.style.display = 'none';
-  }
-};
+  })
+  
 
-function addMyCat() {
-  const catName = $();
-  $.ajax({
-    type: 'POST',
-    url: '/cats',
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    async: false,
-    data: JSON.stringify({}),
-  });
 }
 
 // 고양이 정보 불러오기
@@ -183,13 +180,13 @@ function showMyCat() {
         let tempHtml = `      
       <div class="lineContainer2">
         <li class="catPageCard">
-          <div class="imgContainer3">
-            <img class="catPic" src="${catImg}" alt="">
+          <div class="imgContainer3" id="catPic${catId}" style="background-image: url(${catImg});">
+            <img class="catPic" alt="">
           </div>
-          <label for="catFile">
+          <label for="catFile-${catId}">
             <div class="uploaderBtn">사진 선택</div>
           </label>
-          <input class="uploader" type="file" id="catFile">
+          <input class="uploader" type="file" id="catFile-${catId}" onchange="upload_image(this, ${catId})">
           <div class="infoContainer2">
             <div class="nameContainer2">
               <div class="catInfo2" id="name2">
@@ -204,7 +201,7 @@ function showMyCat() {
                 나이
               </div>
               <div class="catAge2">
-                <input value="${catAge}" class="catContent" id="catAge2">                
+                <input value="${catAge}" class="catContent catAge2Input" id="catAge${catId}">                
               </div>
             </div>
           </div>
@@ -224,7 +221,7 @@ function showMyCat() {
                 중성화 여부
               </div>
               <div class="neuteredSelect">
-                <select class="neuteredSelect2" id="catNeutered" name="neutered">
+                <select class="neuteredSelect2" id="catNeutered${catId}" name="neutered">
                   <option value="${neutered3}">${neutered}</option>
                   <option value="${neutered4}">${neutered2}</option>
                 </select>
@@ -236,7 +233,7 @@ function showMyCat() {
               성격
             </div>
             <div class="catCharacter2">
-              <input value="${catCharacter}" class="catContent" id="catCharacter2">              
+              <input value="${catCharacter}" class="catContent catCharacter2Input" id="catCharacter${catId}">              
             </div>
             <div class="edit2">
               <button onclick="modifyMyCat(${catId})" class="editBtn2">수정</button>
@@ -251,11 +248,92 @@ function showMyCat() {
   });
 }
 
-function modifyMyCat(id) {
-  const catImg = $('#catFile').val();
-  const catAge = $('#catAge2').val();
-  let catNeutered = $('#catNeutered').val();
-  const catCharacter = $('#catCharacter2').val();
+function addCatUploadImage(input) {
+  if (input.files.length === 0) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('image', input.files[0]);
+
+  $.ajax({
+    type: 'POST',
+    url: '/products/imageUpload',
+    processData: false,
+    contentType: false,
+    data: formData,
+    success: function (response) {
+      console.log('upload success. received url: ', response.url)
+      $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
+  });
+  }
+
+function upload_image(input, catId) {
+  console.log('catId, before ajax: ', catId)
+  if (input.files.length === 0) {
+    alert('파일을 선택해주세요.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('image', input.files[0]);
+
+  $.ajax({
+    type: 'POST',
+    url: '/products/imageUpload',
+    processData: false,
+    contentType: false,
+    data: formData,
+    success: function (response) {
+      console.log('upload success. received url: ', response.url)
+      console.log('catId: ', catId)
+      $(`#catPic${catId}`).attr('style', `background-image: url(${response.url});`);
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
+  });
+}
+
+
+function addMyCat() {
+  const name = $('#catName2').val();
+  const age = +$('#catAge4').val();
+  const gender = $('#catGender').val();
+  const neutered = $('#catNeutered').val() === 'yes';
+  const character = $('#catCharacter3').val();
+  const image = $(`#addCatShowImage`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+
+  $.ajax({
+    type: 'POST',
+    url: '/cats',
+    contentType: 'application/json; charset=utf-8',
+    data: JSON.stringify({
+      name, age, gender, neutered, character, image
+    }), 
+    success: function (response) {
+      alert('고양이 프로필을 성공적으로 등록하였습니다')
+      window.location.reload();
+    },
+    error: function (response) {
+      console.log(response)
+    }
+  })
+}
+
+
+
+  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+  console.log('catImg url: ', catImg)
+  const catAge = $(`#catAge${id}`).val();
+  let catNeutered = $(`#catNeutered${id}`).val();
+  const catCharacter = $(`#catCharacter${id}`).val();
+  
 
   if (catNeutered === 'true') {
     catNeutered = true;
@@ -271,18 +349,28 @@ function modifyMyCat(id) {
     contentType: 'application/json; charset=utf-8',
     async: false,
     data: JSON.stringify({
-      image: catImg,
+      // image: catImg,
       age: Number(catAge),
       neutered: catNeutered,
       character: catCharacter,
     }),
     success: function (response) {
-      window.location.reload();
-    },
-  });
+
+      alert('수정이 완료되었습니다')
+      window.location.reload()
+    }, 
+    error: function (response) {
+      console.log('error: ', response);
+    }
+  })  
+
 }
 
 function deleteMyCat(id) {
+  const check = confirm('정말 삭제하시겠습니까?')
+  if (!check) {
+    return;
+  }
   $.ajax({
     type: 'DELETE',
     url: `/cats/${id}`,
@@ -413,4 +501,120 @@ function verifyLocation() {
     alert('위치 정보를 성공적으로 불러옵니다');
     return navigator.geolocation.getCurrentPosition(success, error);
   }
+}
+
+
+// 내가 쓴 글 조회
+function showMyPost() {
+  $.ajax({
+    type: 'GET',
+    url: 'users/mypost',
+    async: false,
+    data: {},
+    success: function(response) {
+
+      for (let i = 0; i < response.myRequest.length; i++) {
+        let nickname = response.myRequest[i].user.nickname;
+        let requestId = response.myRequest[i].request_id;
+        let periodStart = response.myRequest[i].reserved_begin_date;
+        let periodEnd = response.myRequest[i].reserved_end_date;
+        let requestCreate = response.myRequest[i].created_at.split('T')[0];
+                
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">품앗이</td>
+            <td class="longContent2"><a href='request/detail/${requestId}'>${periodStart}~${periodEnd}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${requestCreate}</td>
+            <td class="date2">
+            <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myRequestTable').append(tempHtml);
+      }
+      for (let i = 0; i < response.myShare.length; i++) {
+        let nickname = response.myShare[i].user.nickname;
+        let shareId = response.myShare[i].id;
+        let shareTitle = response.myShare[i].title;
+        let shareCreate = response.myShare[i].createdAt.split('T')[0];
+
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">냥품나눔</td>
+            <td class="longContent2"><a href='/shareDetail/${shareId}'>${shareTitle}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${shareCreate}</td>
+            <td class="date2">
+            <button class="delMyShareBtn" onclick="delMyShare(${shareId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myShareTable').append(tempHtml);
+      }
+      for (let i = 0; i < response.myPost.length; i++) {
+        let nickname = response.myPost[i].user.nickname;
+        let postId = response.myPost[i].post_id;
+        let postTitle = response.myPost[i].title;
+        let postCategory = response.myPost[i].category;
+        let postCreate = response.myPost[i].created_at.split('T')[0];
+
+
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">${postCategory}</td>
+            <td class="longContent2"><a href='boardDetail/${postId}'>${postTitle}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${postCreate}</td>
+            <td class="date2">
+            <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myPostTable').append(tempHtml);
+      }
+    }
+  })
+}
+
+function delMyRequest(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/requests/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    }
+  })
+}
+
+function delMyShare(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/share/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    },
+    error: function(response) {
+      console.error(response)
+    }
+  })
+}
+
+function delMyPost(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/post/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    }
+  })
 }

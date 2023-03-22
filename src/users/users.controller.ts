@@ -57,7 +57,7 @@ export class UsersController {
 
   // 내가 쓴 게시글 조회
   // 품앗이 요청
-  @Get('/requests')
+  @Get('/mypost')
   async showMyRequest(@Req() req) {
     const data = await this.usersService.showMyRequest(req.userId);
     return data;
@@ -69,24 +69,10 @@ export class UsersController {
     return this.usersService.deleteMyRequest(req.userId, requestId);
   }
 
-  // 나눔 게시글
-  // @Get('/share')
-  // async showMyShare(@Req() req) {
-  //   const data = await this.usersService.showMyShare(req.userId);
-  //   return data;
-  // }
-
   // 내가 쓴 나눔 게시글 삭제
-  // @Delete('share/id')
-  // async deleteMyShare(@Req() req, @Param('id') shareId: number) {
-  //   return this.usersService.deleteMyShare(req.userId, shareId);
-  // }
-
-  // 자유 게시판 조회
-  @Get('/post')
-  async showMyPost(@Req() req) {
-    const data = await this.usersService.showMyPost(req.userId);
-    return data;
+  @Delete('share/:id')
+  async deleteMyShare(@Req() req, @Param('id') shareId: number) {
+    return this.usersService.deleteMyShare(req.userId, shareId);
   }
 
   // 내가 쓴 자유 게시판 삭제

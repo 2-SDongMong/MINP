@@ -19,7 +19,7 @@ async function bootstrap() {
     httpsOptions,
   });
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalFilters(new HttpExceptionFilter());
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   app.useStaticAssets(join(__dirname, '../', 'views', 'public'));
   app.setBaseViewsDir(join(__dirname, '../', 'views'));

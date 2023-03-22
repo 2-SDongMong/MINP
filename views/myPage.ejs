@@ -22,18 +22,22 @@
 
   <div class="catContainer">
     <div class="subTitleContainer">
+      
       <div class="subTitle" id="catTitle">
         고양이 정보
         <button class="addCatBtn">추가</button>
+        
+        <!-- 추가 모달창 -->
         <div class="addCatModal">
           <div class="addCatModalBody">
-            <div class="imgContainer4">
+            <div class="imgContainer4" id="addCatShowImage">
               <img src="" alt="">
             </div>
             <label for="catFile2">
               <div class="uploaderBtn">사진 선택</div>
             </label>
-              <input class="uploader" type="file" id="catFile">
+            <input name="image" type="file" id="catFile2" onchange="addCatUploadImage(this)">
+
             <div class="infoContainer2">
               <div class="nameContainer2">
                 <div class="catInfo2" id="name2">
@@ -85,8 +89,8 @@
               </div>
             </div>
             <div class="catModalBtn">
-              <button class="addBtn" onclick= "addMycat()">등록</button>
-              <button class="clsModalBtn" onclick= "clsModal()">닫기</button>
+              <button class="addBtn" onclick= "addMyCat()">등록</button>
+              <button class="clsModalBtn">닫기</button>
             </div>
       </div>
     </div>
@@ -95,27 +99,34 @@
 
   </div>
 
-  <div class="myPostContainer">
+  <div class="myPostContainer" id="myPosts">
     <div class="subTitle" id="myPostTitle">
       내가 쓴 글
     </div>
+    <div class="myRequestTable">
+      <div class="myBoard1">
+        내 품앗이
+      </div>
+      <div id="myRequestTable">
+
+      </div>
+    </div>
+    <div class="myShareTable">
+      <div class="myBoard2">
+        내 냥품나눔
+      </div>
+      <div id="myShareTable">
+
+      </div>
+    </div>
     <div class="myPostTable">
-      <table class="boardView" id="table1">
-        <tr>
-          <th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-          <td class="shortContent">뭉치맘</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table2">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">집사 사담</td>
-          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-          <td class="shortContent">고양이만세</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
+      <div class="myBoard3">
+        자유게시판
+      </div>
+
+      <div id="myPostTable">
+
+      </div>      
     </div>
   </div>
-
+</div>

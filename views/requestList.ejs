@@ -20,14 +20,19 @@
 			  </div>
 			</div>
 			<div>
-				<button onclick="goToWrite('<%= user %>')" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+				<button onclick="goToWrite(<%= userId %>, <%= user.address_certified %>)" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
 			</div>
 		</div>
 
 		<br/>
 
+		<% if (requests.length === 0) { %>
+		<div class="">
+			지금은 우리 동네에 품앗이 요청이 없네요!
+		</div>
+		<% } %>
 		<div class="request-cards-container" >
-			<% for (let i = 0; i < 8; i++) { 
+			<% for (let i = 0; i < requests.length; i++) { 
 				const request = requests[i]; 
 				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
 				let updated = ''
@@ -88,7 +93,7 @@
 									<% if (user && user.address_certified) { %>
 										<%= request.user.address_bname %>
 									<% } else { %>
-										🟤🟤🟤
+										동네를 인증해주세요!
 									<% } %>
 								</div>
 							</div>
@@ -106,12 +111,14 @@
 </section>
 
 <script>
-	function goToWrite(user) {
-		if (!user) {
+	function goToWrite(userId, address_certified) {
+		if (!userId) {
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (!user.address_certified) {
+		console.log('user.address_certified: ', address_certified);
+		console.log('userId: ', userId);
+		if (!address_certified) {
 			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
 			return;
 		}

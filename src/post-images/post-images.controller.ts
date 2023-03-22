@@ -1,4 +1,4 @@
 import { Controller } from '@nestjs/common';
 
-@Controller('post-images')
+@Controller('posts-images')
 export class PostImagesController {}
