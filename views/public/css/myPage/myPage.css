@@ -19,11 +19,11 @@
   font-weight: 800;
   font-size: 18px;
   color: #222222;
-  margin-left:430px;
+  margin-left: 430px;
   padding-top: 150px;
 }
 
-.humanInfo{
+.humanInfo {
   margin: 0px 0px 0px 400px;
   text-align: left;
 }
@@ -45,7 +45,7 @@
   margin-right: 10px;
 }
 
-.infoContent{
+.infoContent {
   margin-right: 150px;
   border: none;
   border-bottom: 1px solid #a19278;
@@ -78,7 +78,7 @@
   margin-right: 30px;
 }
 
-.cancleBtn{
+.cancleBtn {
   width: 60px;
   height: 30px;
   background-color: white;
@@ -109,7 +109,7 @@
   margin-top: -100px;
 }
 
-.catInfo1{
+.catInfo1 {
   margin: 100px 0px 0px 170px;
   text-align: left;
   display: grid;
@@ -122,23 +122,23 @@
 /* 고양이 추가 모달창 */
 
 .addCatModal {
-  display: none; 
-  position: fixed; 
-  z-index: 1; 
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%; 
-  overflow: auto; 
-  background-color: rgba(0,0,0,0.4); 
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .addCatModalBody {
-  background-color: #FBF7EC;
-  margin: 15% auto; 
+  background-color: #fbf7ec;
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 650px; 
+  width: 650px;
   height: 830px;
 }
 
@@ -166,7 +166,7 @@
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border: none;
   border-bottom: 1px solid #a59373;
   width: 80px;
@@ -180,7 +180,7 @@
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border: none;
   border-bottom: 1px solid #a59373;
   width: 80px;
@@ -195,7 +195,7 @@
   font-size: 14px;
   color: #a59373;
   width: 500px;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border: none;
   border-bottom: 1px solid #a59373;
   margin-left: 5px;
@@ -203,12 +203,11 @@
   outline: none;
 }
 
-
 .genderSelect2 {
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border: none;
   border-radius: 10px;
   width: 75px;
@@ -249,7 +248,7 @@
   margin-left: 30px;
 }
 
-.editBtn2{
+.editBtn2 {
   width: 60px;
   height: 30px;
   background-color: white;
@@ -266,13 +265,12 @@
   margin-left: 30px;
 }
 
-
 /* cat page card */
 .catPageCard {
   margin-top: 10px;
   width: 610px;
   height: 800px;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border-radius: 20px 20px 0px 0px;
 }
 
@@ -293,7 +291,7 @@
   font-size: 14px;
   border: none;
   border-radius: 20px;
-  background-color: #F0DBAE;
+  background-color: #f0dbae;
   color: #a59373;
   width: 80px;
   height: 30px;
@@ -313,7 +311,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F0DBAE;
+  background-color: #f0dbae;
   color: #a59373;
   width: 60px;
   height: 30px;
@@ -327,7 +325,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #F0DBAE;
+  background-color: #f0dbae;
   color: #a59373;
   width: 90px;
   height: 30px;
@@ -360,14 +358,12 @@
   margin-right: 218px;
 }
 
-
 .ageContainer3 {
   display: flex;
   margin-right: 140px;
 }
 
-
-.genderSelect{
+.genderSelect {
   margin: 15px 0px 0px 10px;
   font-family: Nanum Gothic;
   font-size: 14px;
@@ -386,7 +382,7 @@
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
   border: none;
   border-radius: 10px;
   width: 60px;
@@ -409,7 +405,7 @@
   font-size: 14px;
   color: #a59373;
   border: none;
-  background-color: #FBF7EC;
+  background-color: #fbf7ec;
 }
 
 .catAge2Input {
@@ -419,7 +415,6 @@
 .characterContainer2 {
   display: flex;
 }
-
 
 .catCharacter2 {
   font-family: Nanum Gothic;

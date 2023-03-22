@@ -1,101 +1,102 @@
-  <div class="wholeContent">
+<div class="wholeContent">
 
-    <div class="bodyContent1">
-      <div class="contentTitle1">
-        품앗이 신청
-        <button class="showMoreBtn" id="shareBtn" onclick="location.href='/request/list/1'">more</button>
-      </div>
-      
-      <div class="contentSub1">
-        <div class="locationContainer" id="section1">
-          <div class="location">
-            현재 위치: <span>
-              <% if (user && user.address_certified) { %>
-                <%= user.address_bname %>
-              <% } else { %>
-                로그인 및 동네 인증 필요
-              <% } %>
-            </span>
-          </div>
-          <div class="">
-            <p class="page">
-              <span class="page1" id="prev">
-                ←
-              </span>
-              <span class="page1">
-                |
-              </span>
-              <span class="page1" id="next">
-                →
-              </span>
-            </p>
-          </div>
-        </div>
-
-        
-      </div>
-      <div class="slideWarpper1">
-        <ul class="slides1">
-          <% for (let i = 0; i < requests.length; i++) {
-            const request = requests[i]; 
-            let reserved_dates = ''
-            if (request.reserved_end_date == request.reserved_begin_date) {
-              reserved_dates = request.reserved_begin_date;
-            } else {
-              reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
-            }
-            %>
-            <li class="catCard">
-              <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
-                <img src="" alt="">
-                <div class="status">
-                  <p><% if (request.is_ongoing) { %>
-                    모집중
-                    <% } else { %>
-                    마감됨
-                    <% } %>
-                  </p>
-                </div>
-              </div>
-              <div class="periodContainer">
-                <div class="catInfo" id="period">
-                  기간
-                </div>
-                <div class="periodDetail">
-                  <%= reserved_dates %>
-                </div>
-              </div>
-              <div class="infoContainer">
-                <div class="nameContainer">
-                  <div class="catInfo" id="name">
-                    연락
-                  </div>
-                  <div class="catName">
-                    <%= request.user.nickname %>
-                  </div>
-                </div>
-                
-              </div>
-              <div class="characterContainer">
-                <div class="catInfo" id="character">
-                  지역
-                </div>
-                <div class="catCharacter">
-                  <% if (user && user.address_certified) { %>
-										<%= request.user.address_bname %>
-									<% } else { %>
-										동네를 인증해주세요!
-									<% } %>
-                </div>
-              </div>
-              <div class="more">
-                <button class="moreBtn" onclick="location.href='/request/detail/<%= request.request_id %>'">> 자세히 보기</button>
-              </div>
-            </li>
-          <% } %>
-        </ul>
-      </div>
+  <div class="bodyContent1">
+    <div class="contentTitle1">
+      품앗이 신청
+      <button class="showMoreBtn" id="shareBtn" onclick="location.href='/request/list/1'">more</button>
     </div>
+    
+    <div class="contentSub1">
+      <div class="locationContainer" id="section1">
+        <div class="location">
+          현재 위치: <span>
+            <% if (user && user.address_certified) { %>
+              <%= user.address_bname %>
+            <% } else { %>
+              로그인 및 동네 인증 필요
+            <% } %>
+          </span>
+        </div>
+        <div class="">
+          <p class="page">
+            <span class="page1" id="prev">
+              ←
+            </span>
+            <span class="page1">
+              |
+            </span>
+            <span class="page1" id="next">
+              →
+            </span>
+          </p>
+        </div>
+      </div>
+
+      
+    </div>
+    <div class="slideWarpper1">
+      <ul class="slides1">
+        <% for (let i = 0; i < requests.length; i++) {
+          const request = requests[i]; 
+          let reserved_dates = ''
+          if (request.reserved_end_date == request.reserved_begin_date) {
+            reserved_dates = request.reserved_begin_date;
+          } else {
+            reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+          }
+          %>
+          <li class="catCard">
+            <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
+              <img src="" alt="">
+              <div class="status">
+                <p><% if (request.is_ongoing) { %>
+                  모집중
+                  <% } else { %>
+                  마감됨
+                  <% } %>
+                </p>
+              </div>
+            </div>
+            <div class="periodContainer">
+              <div class="catInfo" id="period">
+                기간
+              </div>
+              <div class="periodDetail">
+                <%= reserved_dates %>
+              </div>
+            </div>
+            <div class="infoContainer">
+              <div class="nameContainer">
+                <div class="catInfo" id="name">
+                  연락
+                </div>
+                <div class="catName">
+                  <%= request.user.nickname %>
+                </div>
+              </div>
+              
+            </div>
+            <div class="characterContainer">
+              <div class="catInfo" id="character">
+                지역
+              </div>
+              <div class="catCharacter">
+                <% if (user && user.address_certified) { %>
+                  <%= request.user.address_bname %>
+                <% } else { %>
+                  동네를 인증해주세요!
+                <% } %>
+              </div>
+            </div>
+            <div class="more">
+              <button class="moreBtn" onclick="location.href='/request/detail/<%= request.request_id %>'">> 자세히 보기</button>
+            </div>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</div>
 
       <div class="bodyContent2">
         <div class="contentTitle2">
@@ -103,13 +104,8 @@
         </div>
         
         <div class="contentSub2">
-          <div class="locationContainer" id="section2">
-            <div class="location">
-              현재 위치:
-            </div>
-            <div class="locationDetail">
-              고양시
-            </div>
+          <div class="llocationContainer" id="section2">
+ 
             <p class="page">
               <span class="page1" id="prev2">
                 ←
@@ -124,319 +120,128 @@
           </div>
         </div>
 
+
         <div class="slideWarpper2">
           <ul class="slides2">
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
+            <% for (var i = 0; i < products.length; i++) { %>
+            
+              <li class="cardContiner">
+                <a
+                href="/shareDetail/<%= products[i].id %>"
+                style="text-decoration: none; color: inherit"
+               > 
+              <img src="<%= products[i].imageUrl %>" alt="<%= products[i].name %>" style="object-fit: cover; width: 370px; height: 300px;">
               <div class="shareCard">
                 <div class="detailContainer">
                   <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
+                    <div  class="shareCategory" id="item">
+                      <%= products[i].productsCategory.name %>
                     </div>
                   </div>
                 </div>
                 <div class="postContainer">
                   <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
+                    <%= products[i].title %>
                   </div>
                   <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
+                    <%= products[i].description %>
                   </div>
                 </div>
+              </div>
             </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>
-            <li class="cardContiner">
-              <div class="imgContainer2">
-                <img src="" alt="">
-                <div class="status2">
-                  <p>나눔현황</p>
-                </div>
-              </div>
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div class="shareInfo" id="locationInfo">
-                      고양동
-                    </div>
-                    <div  class="shareInfo" id="item">
-                      사료
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    길냥이 사료 나눔합니다.
-                  </div>
-                  <div class="shareContent">
-                    길냥이 돌보시는 분들께 사료 나눔드립니다. 기호성 좋고 유통기한 임박했어요! 쪽지 주세요!
-                  </div>
-                </div>
-            </li>              
+            </a>
+            <% } %>
           </ul>
         </div>
 
-        <div class="shareMore">
-          <button class="showMoreBtn" id="shareBtn" onclick="">more</button>
-        </div>
-      </div>
-    <div class="bodyContent3">
-      <div class="contentTitle2" id="boardTitle">
-        자유 게시판
-      </div>
-      <div class="shareMore">
-        <button class="showMoreBtn" id="boardBtn" onclick="">more</button>
-      </div>
 
-      <div class="boardTable">
-        <table class="boardView" id="table1">
-          <tr>
-            <th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-            <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-            <td class="shortContent">뭉치맘</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-        <table class="boardView" id="table2">
-          <tr>
-            <th th class="blank"></th><td class="shortContent">집사 사담</td>
-            <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-            <td class="shortContent">고.양이만세</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-        <table class="boardView" id="table3">
-          <tr>
-            <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-            <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-            <td class="shortContent">뭉치맘</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-        <table class="boardView" id="table4">
-          <tr>
-            <th th class="blank"></th><td class="shortContent">집사 사담</td>
-            <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-            <td class="shortContent">고양이만세</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-        <table class="boardView" id="table5">
-          <tr>
-            <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-            <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-            <td class="shortContent">뭉치맘</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-        <table class="boardView" id="table6">
-          <tr>
-            <th th class="blank"></th><td class="shortContent">집사 사담</td>
-            <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-            <td class="shortContent">고양이만세</td>
-            <td class="date">0000.00.00</td>
-          </tr>
-        </table>
-      </div>
-      
-        
-    </div> 
 
+
+
+
+      </div>
   </div>
+  <div class="bodyContent3">
+    <div class="contentTitle2" id="boardTitle">
+      자유 게시판
+    </div>
+    <div class="shareMore">
+      <button class="showMoreBtn" id="boardBtn" onclick="">more</button>
+    </div>
 
+    <div class="boardTable">
+      <table class="boardView" id="table1">
+        <tr>
+          <th class="blank"></th><td class="shortContent">동물 병원 후기</td>
+          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
+          <td class="shortContent">뭉치맘</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table2">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">집사 사담</td>
+          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
+          <td class="shortContent">고.양이만세</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table3">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
+          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
+          <td class="shortContent">뭉치맘</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table4">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">집사 사담</td>
+          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
+          <td class="shortContent">고양이만세</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table5">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
+          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
+          <td class="shortContent">뭉치맘</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+      <table class="boardView" id="table6">
+        <tr>
+          <th th class="blank"></th><td class="shortContent">집사 사담</td>
+          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
+          <td class="shortContent">고양이만세</td>
+          <td class="date">0000.00.00</td>
+        </tr>
+      </table>
+    </div>
+    
+      
+  </div> 
+
+</div>
+
+<script>
+  $(document).ready(function() {
+    // 페이지 로드 시 AJAX 실행
+    $.ajax({
+      url: "/products", // 가져올 데이터의 URL
+      type: "GET", // HTTP 요청 방식 (GET, POST 등)
+      dataType: "json", // 가져올 데이터의 타입 (json, xml 등)
+      success: function(product) { // 요청이 성공했을 때 실행될 콜백 함수
+        console.log(product); // 가져온 데이터를 콘솔에 출력
+        // 가져온 데이터를 HTML 요소에 삽입하는 등의 작업 수행
+      },
+      error: function(xhr, status, error) { // 요청이 실패했을 때 실행될 콜백 함수
+        console.log("Error: " + error); // 에러 메시지를 콘솔에 출력
+      }
+    });
+  });
+  
+  
+
+</script>
