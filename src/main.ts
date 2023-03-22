@@ -12,12 +12,15 @@ import * as fs from 'fs';
 
 async function bootstrap() {
   const httpsOptions = {
-    key: fs.readFileSync('src/config/cert.key'),
-    cert: fs.readFileSync('src/config/cert.crt'),
+    // key: fs.readFileSync('src/config/cert.key'),
+    // cert: fs.readFileSync('src/config/cert.crt'),
   };
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    httpsOptions,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule
+    //   {
+    //   httpsOptions,
+    // }
+  );
   app.useGlobalPipes(new ValidationPipe());
   // app.useGlobalFilters(new HttpExceptionFilter());
 
