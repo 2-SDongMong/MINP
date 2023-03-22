@@ -185,7 +185,7 @@ export class UsersService {
         },
         id: true,
         title: true,
-        createdAt: true
+        createdAt: true,
       },
     });
     const myPost = await this.postsRepository.find({
@@ -197,13 +197,13 @@ export class UsersService {
         user: {
           nickname: true,
         },
-        post_id:true,
+        post_id: true,
         title: true,
         category: true,
         created_at: true,
       },
     });
-    return {myRequest, myShare, myPost};
+    return { myRequest, myShare, myPost };
   }
 
   // 내가 쓴 품앗이 삭제
@@ -221,22 +221,20 @@ export class UsersService {
     }
   }
 
-
   // 내가 쓴 나눔 게시글 삭제
   async deleteMyShare(id: number, shareId: number) {
     const myShare = await this.productsRepository.findOne({
       where: {
         user_id: id,
-        id: shareId.toString()
-      }
-    })
+        id: shareId.toString(),
+      },
+    });
     if (myShare) {
-      await this.productsRepository.softDelete(shareId)
+      await this.productsRepository.softDelete(shareId);
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
   }
-
 
   // 내가 쓴 자유 게시판 삭제
   async deleteMyPost(id: number, postId: number) {

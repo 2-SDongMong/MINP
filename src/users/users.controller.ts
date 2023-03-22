@@ -69,7 +69,6 @@ export class UsersController {
     return this.usersService.deleteMyRequest(req.userId, requestId);
   }
 
-
   // 내가 쓴 나눔 게시글 삭제
   @Delete('share/:id')
   async deleteMyShare(@Req() req, @Param('id') shareId: number) {

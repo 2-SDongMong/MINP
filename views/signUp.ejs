@@ -32,7 +32,6 @@
                 <input type="password" name="signupPass" class="form-style" placeholder="비밀번호" id="signupPass" autocomplete="off">
             </div>
             <div class="form-group mt-2">
-                <input type="text" name="signupAddress" class="form-style" placeholder="Your Address" id="signupAddress" autocomplete="off">
                 <li class="miniTitle">주소</li>
                 <input class="form-style" type="text" value="" id="signupAddressRoad" placeholder="도로명" readonly>
                 <input class="form-style" type="text" value="" id="signupAddressBname" placeholder="동네명" readonly>
@@ -92,30 +91,33 @@
         const signupEmail = $('#signupEmail').val();
         if (!signupEmail) {
             alert('이메일을 입력해주세요.');
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: '/auth',
-                data: { email: signupEmail },
-                success: function (response) {
-                    window.sessionStorage.setItem(`${signupEmail}`, response)
-                    return response;
-                }
-            })
-        }
+            return;
+        } 
+        $.ajax({
+            type: 'POST',
+            url: '/auth',
+            data: { email: signupEmail },
+            success: function (response) {
+                alert('메일함에서 인증 메일을 확인해주세요.')
+                window.sessionStorage.setItem(`${signupEmail}`, response)
+                return response;
+            },
+            error: function (response) {
+                console.log('인증 메일 발송 시 문제 발생: ', response);
+            }
+        })
     }
     function check() {
         const checkNumber = $('#checkNumber').val();
         const signupEmail = $('#signupEmail').val();
 
-        if (checkNumber === window.sessionStorage.getItem(signupEmail)) {
-
-            const target = document.getElementById('target_btn')
-            target.disabled = false
-        } else {
+        if (checkNumber !== window.sessionStorage.getItem(signupEmail)) {
             alert("인증번호확인부탁드립니다.")
-        }
-
+            return;
+        } 
+        alert('인증 번호가 확인되었습니다')
+        const target = document.getElementById('target_btn')
+        target.disabled = false
     }
     
     // '주소 검색' 버튼 클릭시 다음 우편번호 찾기 api로 주소 검색
