@@ -1,83 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="short icon" href="#">
-  <link rel="short icon" href="#">
-  <title>무인냥품</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="short icon" href="#">
+    <link rel="short icon" href="#">
+    <title>무인냥품</title>
 
-  <!-- bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
-  <!-- styles -->
-  <link rel="stylesheet" href="/css/header/mainHeader.css">
-  <link rel="stylesheet" href="/css/header/basicHeader.css">
-  <link rel="stylesheet" href="/css/footer/footer.css">
-  <link rel="stylesheet" href="/css/index/index.css">
-  <link rel="stylesheet" href="/css/main/main.css">
-  <link rel="stylesheet" href="/css/myPage/myPage.css">
-  <link rel="stylesheet" href="/css/request/list.css">
-  <link rel="stylesheet" href="/css/request/detail.css">
-  <link rel="stylesheet" href="/css/request/post.css">
-  <link rel="stylesheet" href="/css/admin/admin.css">
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/header/mainHeader.css">
+    <link rel="stylesheet" href="/css/header/basicHeader.css">
+    <link rel="stylesheet" href="/css/footer/footer.css">
+    <link rel="stylesheet" href="/css/index/index.css">
+    <link rel="stylesheet" href="/css/main/main.css">
+    <link rel="stylesheet" href="/css/myPage/myPage.css">
+    <link rel="stylesheet" href="/css/request/list.css">
+    <link rel="stylesheet" href="/css/request/detail.css">
+    <link rel="stylesheet" href="/css/request/post.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
 
-  <!-- JS -->
-  <script defer type="text/javascript" src="/js/main/main.js"></script>
+    <!-- JS -->
+    <script defer type="text/javascript" src="/js/main/main.js"></script>
 
 
-  <!-- jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  
-</head>
-<body>
-  
-  <% if (components === 'main') { %>
-    <div class="mainHeader">
-      <div class="headerNavi">
-        <%- include('mainHeader.ejs') %>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
+  </head>
+  <body>
+    
+    <% if (components === 'main') { %>
+      <div class="mainHeader">
+        <div class="headerNavi">
+          <%- include('mainHeader.ejs') %>
+        </div>
       </div>
+    <%} else { %>
+          <%- include('basicHeader.ejs') %>
+      </div>
+    <% } %>
+    
+    <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %>
+
+    <% if (components === 'signUp') { %> <%- include('signUp.ejs') %> <% } %>
+    <% if (components === 'login') { %> <%- include('login.ejs') %> <% } %>
+
+    <% if (components === 'myPage') { %> <%- include('myPage.ejs') %> <% } %>
+    <% if (components === 'admin') { %> <%- include('admin.ejs') %> <% } %>
+
+    <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
+    <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
+    <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
+    <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
+
+    <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
+    <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
+    <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
+    <% if (components === 'shareMy') { %> <%- include('shareMy.ejs') %> <% } %>
+
+
+    <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
+    <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>
+    <% if (components === 'boardPost') { %> <%- include('boardPost.ejs') %> <% } %>
+
+    <% if (components === 'message') { %> <%- include('message.ejs') %> <% } %>
+
+
+    <div class="Footer">
+      <div class="footerContent">
+        <%- include('footer.ejs')%> 
+      </div>    
     </div>
-  <%} else { %>
-        <%- include('basicHeader.ejs') %>
-    </div>
-  <% } %>
-  
-  <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %>
+    
+    <!-- bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
-  <% if (components === 'signUp') { %> <%- include('signUp.ejs') %> <% } %>
-  <% if (components === 'login') { %> <%- include('login.ejs') %> <% } %>
-
-  <% if (components === 'myPage') { %> <%- include('myPage.ejs') %> <% } %>
-  <% if (components === 'admin') { %> <%- include('admin.ejs') %> <% } %>
-
-  <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
-  <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
-  <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
-  <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
-
-  <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
-  <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
-  <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
-  <% if (components === 'shareMy') { %> <%- include('shareMy.ejs') %> <% } %>
-
-
-  <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
-  <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>
-  <% if (components === 'boardPost') { %> <%- include('boardPost.ejs') %> <% } %>
-
-  <% if (components === 'message') { %> <%- include('message.ejs') %> <% } %>
-
-
-  <div class="Footer">
-    <div class="footerContent">
-      <%- include('footer.ejs')%> 
-    </div>    
-  </div>
-  
-  <!-- bootstrap -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-
-</body>
+  </body>
 </html>
