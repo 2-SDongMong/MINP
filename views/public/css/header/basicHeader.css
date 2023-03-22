@@ -1,9 +1,7 @@
-/* General styling */
 body {
   font-family: 'Arial', sans-serif;
 }
 
-/* Navbar styling */
 .navbar2 {
   display: flex;
   justify-content: space-between;
@@ -36,7 +34,8 @@ body {
 .navbarMenu2 a {
   text-decoration: none;
   color: #333;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: bold;
 }
 
 .navbarMenu2 a:hover {
@@ -52,9 +51,10 @@ body {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
   margin-left: 1rem;
   color: #333;
+  font-weight: bold;
 }
 
 .navbarButton2 button:hover {
