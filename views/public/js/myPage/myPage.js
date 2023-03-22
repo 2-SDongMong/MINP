@@ -1,6 +1,3 @@
-// if (window.location.pathname === '/mypage') {
-
-
 
 $(document).ready(function() {
     showMyPage();
@@ -180,10 +177,10 @@ function showMyCat() {
           <div class="imgContainer3" id="catPic${catId}" style="background-image: url(${catImg});">
             <img class="catPic" alt="">
           </div>
-          <label for="catFile">
+          <label for="catFile-${catId}">
             <div class="uploaderBtn">사진 선택</div>
           </label>
-          <input class="uploader" type="file" id="catFile" onchange="upload_image(this, ${catId})">
+          <input class="uploader" type="file" id="catFile-${catId}" onchange="upload_image(this, ${catId})">
           <div class="infoContainer2">
             <div class="nameContainer2">
               <div class="catInfo2" id="name2">
@@ -587,6 +584,7 @@ function delMyRequest(id) {
     type: 'DELETE',
     url: `users/requests/${id}`,
     success: function(response) {
+      alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
     }
   })
@@ -597,6 +595,7 @@ function delMyShare(id) {
     type: 'DELETE',
     url: `users/share/${id}`,
     success: function(response) {
+      alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
     },
     error: function(response) {
@@ -610,6 +609,7 @@ function delMyPost(id) {
     type: 'DELETE',
     url: `users/post/${id}`,
     success: function(response) {
+      alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
     }
   })

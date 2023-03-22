@@ -128,7 +128,7 @@ p {
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  margin: 10px 0px 0px 0px;
+  margin: 10px 0px 0px -24px;
   width: 238px;
   height: 30px;
   display: flex;
@@ -149,8 +149,8 @@ p {
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  margin: 10px 0px 0px 0px;
-  width: 50px;
+  margin: 10px 0px 0px -10px;
+  width: 100px;
   height: 30px;
   display: flex;
   justify-content: center;
@@ -182,9 +182,9 @@ p {
   font-family: Nanum Gothic;
   font-size: 14px;
   color: #a59373;
-  margin: 10px 0px 0px 0px;
-  width: 423px;
-  height: 30px;
+  margin: 10px 0px 0px -130px;
+  width: 1200px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
