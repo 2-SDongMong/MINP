@@ -1,14 +1,12 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
-  Query,
-  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -37,7 +35,7 @@ export class ProductsController {
   }
 
   @Get('/user/:userId')
-  async getProductsByUserId(@Param('userId') userId: number) {
+  async getProductsByUserId(@Param('userId', ParseIntPipe) userId: number) {
     return await this.productsService.findProductsByUserId(userId);
   }
 
@@ -66,18 +64,51 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
-  @Patch(':id')
+  @Post('imageUpload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: UpdateProductsDto
+  ) {
+    try {
+      const folder = 'cat_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      return { url: imageUrl };
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  @Patch('/:id')
+  @UseInterceptors(FileInterceptor('image'))
   async updateProduct(
     @Param('id') id: string,
-    @Body() updateProductsDto: UpdateProductsDto
+    @Body('') updateProductsDto: UpdateProductsDto,
+    @UploadedFile() file: Express.Multer.File
   ) {
-    const { tradeStatus } = updateProductsDto;
-    if (tradeStatus === '나눔주문중') {
-      // isTrade -> tradeStatus 로 변경된 부분
-      updateProductsDto.tradeStatus = '나눔주문중';
+    console.log('Updating product:', id, updateProductsDto);
+
+    if (file) {
+      const folder = 'product_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      updateProductsDto.imageUrl = imageUrl;
     }
-    await this.productsService.checkTrade(id);
-    return await this.productsService.update(id, updateProductsDto);
+
+    const { productsCategoryId, ...products } = updateProductsDto;
+
+   
+    const updateData = {
+      ...products,
+      productsCategory: productsCategoryId
+        ? { id: productsCategoryId }
+        : undefined,
+    };
+
+    const result = await this.productsService.update(id, updateData);
+
+    console.log('Product updated:', result); // Add log here
+
+    return result;
   }
 
   @Delete(':id')

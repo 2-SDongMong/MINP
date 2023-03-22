@@ -1,8 +1,9 @@
 <link rel="stylesheet" href="/css/shareProduct/shareProduct.css" />
 
-
 <nav class="sp_nav">
   <a class="sp_nav-link" href="/shareList">상품조회</a>
+  <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+  <a class="sp_nav-link" href="/shareMy">내 상품</a>
 </nav>
 
 <form id="productForm" action="/shareList" enctype="multipart/form-data">
@@ -26,6 +27,7 @@
     style="display: none; width: 100%; max-height: 300px; object-fit: contain"
   />
   <input type="file" id="imageInput" name="image" required />
+  
   <select id="categorySelect" name="categorySelect" required>
     <option value="">상품의 카테고리를 골라주세요!</option>
   </select>

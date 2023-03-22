@@ -59,31 +59,40 @@ export class PostsService {
   }
 
   async getPostById(post_id: number) {
-    return await this.postsRepository.findOne({
+    return await this.postsRepository.find({
       where: { post_id, deleted_at: IsNull() },
-      select: [
-        'user_id',
-        'title',
-        'category',
-        'content',
-        'created_at',
-        'updated_at',
-      ],
+      relations: {
+        post_images: true,
+      },
+      select: {
+        post_images: {
+          post_image_id: true,
+          post_image: true,
+        },
+        post_id: true,
+        user_id: true,
+        title: true,
+        category: true,
+        content: true,
+        created_at: true,
+        updated_at: true,
+      },
     });
   }
 
-  createPost(
+  async createPost(
     userId: number,
     title: string,
     category: PostCategoryType,
     content: string
   ) {
-    this.postsRepository.insert({
+    const newPost = this.postsRepository.create({
       user_id: userId,
       title,
       category,
       content,
     });
+    return await this.postsRepository.save(newPost);
   }
 
   async updatePost(

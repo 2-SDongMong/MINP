@@ -19,41 +19,100 @@
             <label for="content">Content:</label>
             <textarea class="form-control" rows="5" id="postContent"></textarea>
         </div>
-        
+		<div class="form-group">
+			<div class="show-img-group">
+				<img id="show-image", src="">
+			</div>
+			<input class="" type="file" onchange="uploadImage(this)">
+        </div>
         <button onclick="postSave()" id="btn-save" class="btn btn-primary" type="button">작성완료</button>
     </form>
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
 </div>
 
 <script>
-	function postSave() {
+	function uploadImage(input) {
+		if (input.files.length === 0) {
+			alert('파일을 선택해주세요.');
+			return;
+		}
+		const formData = new FormData();
+		formData.append('image', input.files[0]);
+
+		$.ajax({
+			type: 'POST',
+			url: '/products/imageUpload',
+			processData: false,
+			contentType: false,
+			data: formData,
+			success: function (response) {
+				$(`#show-image`).attr('src', response.url);
+			},
+			error: function (err) {
+				console.log(err);
+				alert('오류 ')
+			},
+		});
+  	}
+
+	function postSave(postId) {
 		const postTitle = $('#postTitle').val();
 		const postCategory = $('#postCategory').val();
         const postContent = $('#postContent').val();
+		const image = $('#show-image').attr('src');
+		console.log('image', image)
 
 		if (!postTitle) {
 			alert('제목을 입력해주세요.');
 			return;
-		} else if (!postContent) {
+		} 
+		if (!postContent) {
 			alert('내용을 입력해주세요.');
 			return;
-		} else {
-			$.ajax({
-				type: 'POST',
-				url: '/posts',
-				data: {
-					title: postTitle,
-					category: postCategory,
-          content: postContent,
-				},
-				success: function (response) {
-					alert('게시글이 작성되었습니다.');
-					window.location.href = '/boardList?page=1';
-				},
-				error: function (response) {
-					console.log(response.responseJSON.message);
-				},
-			});
 		}
+		
+		$.ajax({
+			type: 'POST',
+			url: '/posts',
+			data: {
+				title: postTitle,
+				category: postCategory,
+				content: postContent,
+			},
+			success: function (response) {
+				const postId = response.post_id;
+				console.log('postId: ', postId);
+
+				if (image !== '') {
+					console.log('이미지를 등록합니다');
+					$.ajax({
+						type: 'POST',
+						url: `/posts/${postId}/images`,
+						contentType: 'application/json; charset=utf-8',
+						data: JSON.stringify({
+							post_images: [image],
+						}), 
+						success: function (response) {
+							console.log('이미지까지 등록 후 ', response)
+						},
+						error: function (response) {
+							alert('사진 등록 중 문제가 발생하였습니다. 다시 시도해주세요')
+							console.log(response);
+							return;
+						},
+					})
+				}
+
+				alert('게시글이 작성되었습니다.');
+				window.location.href = '/boardList?page=1';
+			},
+
+			error: function (response) {
+				console.log('게시글 등록 중 문제 발생 ', response);
+			},
+		});
+
+		
+		
 	}
 </script>

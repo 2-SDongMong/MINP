@@ -3,6 +3,7 @@
     <div class="bodyContent1">
       <div class="contentTitle1">
         품앗이 신청
+        <button class="showMoreBtn" id="shareBtn" onclick="location.href='/request/list/1'">more</button>
       </div>
       
       <div class="contentSub1">
@@ -16,18 +17,21 @@
               <% } %>
             </span>
           </div>
-          <p class="page">
-            <span class="page1" id="prev">
-              ←
-            </span>
-            <span class="page1">
-              |
-            </span>
-            <span class="page1" id="next">
-              →
-            </span>
-          </p>
+          <div class="">
+            <p class="page">
+              <span class="page1" id="prev">
+                ←
+              </span>
+              <span class="page1">
+                |
+              </span>
+              <span class="page1" id="next">
+                →
+              </span>
+            </p>
+          </div>
         </div>
+
         
       </div>
       <div class="slideWarpper1">
@@ -64,28 +68,24 @@
               <div class="infoContainer">
                 <div class="nameContainer">
                   <div class="catInfo" id="name">
-                    이름
+                    연락
                   </div>
                   <div class="catName">
-                    <%= request.user.cats[0].name %>
+                    <%= request.user.nickname %>
                   </div>
                 </div>
-                <div class="ageContainer">
-                  <div  class="catInfo" id="age">
-                    나이
-                  </div>
-                  <div  class="catAge">
-                    <%= request.user.cats[0].age %>
-                  </div>
-                </div>
+                
               </div>
               <div class="characterContainer">
                 <div class="catInfo" id="character">
-                  성격
+                  지역
                 </div>
                 <div class="catCharacter">
-                  <%= request.user.cats[0].character %>
-                  사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
+                  <% if (user && user.address_certified) { %>
+										<%= request.user.address_bname %>
+									<% } else { %>
+										동네를 인증해주세요!
+									<% } %>
                 </div>
               </div>
               <div class="more">
@@ -93,235 +93,8 @@
               </div>
             </li>
           <% } %>
-          
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
-                </div>
-              </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
-                </div>
-                <div  class="catAge">
-                  8
-                </div>
-              </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
-              </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
-              </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
-                </div>
-              </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
-                </div>
-                <div  class="catAge">
-                  8
-                </div>
-              </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
-              </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
-              </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
-                </div>
-              </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
-                </div>
-                <div  class="catAge">
-                  8
-                </div>
-              </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
-              </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
-              </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
-                </div>
-              </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
-                </div>
-                <div  class="catAge">
-                  8
-                </div>
-              </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
-              </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
-              </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
-          <li class="catCard">
-            <div class="imgContainer">
-              <img src="" alt="">
-              <div class="status">
-                <p>모집현황</p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                0000년00월00일 ~ 0000년00월00일
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  이름
-                </div>
-                <div class="catName">
-                  치봉이
-                </div>
-              </div>
-              <div class="ageContainer">
-                <div  class="catInfo" id="age">
-                  나이
-                </div>
-                <div  class="catAge">
-                  8
-                </div>
-              </div>
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                성격
-              </div>
-              <div class="catCharacter">
-                사람을 좋아하고 장난을 좋아합니다. 궁디팡팡과 간식을 좋아해요.
-              </div>
-            </div>
-            <div class="more">
-              <button class="moreBtn" onclick="">> 자세히 보기</button>
-            </div>
-          </li>
         </ul>
       </div>
-
     </div>
 
       <div class="bodyContent2">
@@ -624,7 +397,7 @@
           <tr>
             <th th class="blank"></th><td class="shortContent">집사 사담</td>
             <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-            <td class="shortContent">고양이만세</td>
+            <td class="shortContent">고.양이만세</td>
             <td class="date">0000.00.00</td>
           </tr>
         </table>

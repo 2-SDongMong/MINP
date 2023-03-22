@@ -35,10 +35,17 @@ export class ProductsService {
   }
 
   async findProductsByUserId(userId: number) {
-    return await this.productsRepository.find({
-      where: { user: { user_id: userId } },
-      relations: ['user', 'productsTradeLocation', 'productsCategory'],
-    });
+    console.log('Searching for products by userId:', userId);
+
+    return await this.productsRepository
+      .createQueryBuilder('products')
+      .innerJoin('products.user', 'user', 'user.user_id = :userId', { userId })
+      .leftJoinAndSelect(
+        'products.productsTradeLocation',
+        'productsTradeLocation'
+      )
+      .leftJoinAndSelect('products.productsCategory', 'productsCategory')
+      .getMany();
   }
 
   // ProductsService
@@ -101,11 +108,29 @@ export class ProductsService {
   }
 
   async update(id, updateProductsDto) {
-    const { productsTradeLocation, ...products } = updateProductsDto;
-    const result = await this.productsRepository.update(id, {
-      ...products,
-      productsTradeLocation: { ...productsTradeLocation },
+    // Check if the product exists in the database
+    const existingProduct = await this.productsRepository.findOne({
+      where: { id },
     });
+    console.log('Existing product:', existingProduct); // Add log here
+
+    if (!existingProduct) {
+      throw new NotFoundException(`Product with ID ${id} not found`);
+    }
+
+    const { productsCategoryId, ...products } = updateProductsDto;
+
+    // Set productsCategoryId only if it is not null
+    const updateData = {
+      ...products,
+      productsCategory: productsCategoryId
+        ? { id: productsCategoryId }
+        : undefined,
+    };
+
+    const result = await this.productsRepository.update(id, updateData);
+
+    console.log('Update result:', result); // Add log here
 
     return result.affected > 0;
   }

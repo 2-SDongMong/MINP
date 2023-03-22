@@ -34,6 +34,9 @@ Content-Type: application/json
 GET http://localhost:3000/requests
 
 ###
+GET http://localhost:3000/requests/address/'문화동'
+
+###
 
 GET http://localhost:3000/requests/52
 
@@ -41,7 +44,6 @@ GET http://localhost:3000/requests/52
 
 POST http://localhost:3000/requests
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 {
     "reserved_begin_date": "2023-04-27",

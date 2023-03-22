@@ -61,8 +61,8 @@ export class AuthService {
         to: email,
         subject: '무인냥품 인증메시지입니다.',
         html: `
-        <b>Hello</b>
-        <b>check number</b>
+        <p>안녕하세요</p>
+        <p>다음의 인증 번호를 입력해주세요</p>
         <span style="background-color: rgb(179, 178, 178);"><b>${authNumber}</b></span>
       `,
       };
