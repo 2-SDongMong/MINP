@@ -115,14 +115,14 @@
 				  </li>
 				  <% } else {%>
 				  <li class="page-item"></li>
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page) - 1 %>" aria-label="Previous">
+					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page)-1 %>" aria-label="Previous">
 					  <span aria-hidden="true">&laquo;</span>
 					</a>
 				  </li>
 				  <% } %>
 	
 				  <% for (let i = 0; i < requests.meta.last_Page ; i++) { 
-					if((i+1) == Number(requests.meta.page)) { %>
+					if(i == Number(requests.meta.page)-1) { %>
 	
 					<li class="page-item active""><a class="page-link" href="/request/list?page=<%= i+1 %>" aria-current="page"><%= i+1 %></a></li>
 					<% } else {%>
@@ -140,7 +140,7 @@
 				  </li>
 				  <% } else {%>
 				  <li class="page-item"></li>
-					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page) + 1 %>" aria-label="Next">
+					<a class="page-link" href="/request/list?page=<%= Number(requests.meta.page)+1 %>" aria-label="Next">
 					  <span aria-hidden="true">&raquo;</span>
 					</a>
 				  </li>
