@@ -22,18 +22,22 @@
 
   <div class="catContainer">
     <div class="subTitleContainer">
+      
       <div class="subTitle" id="catTitle">
         고양이 정보
         <button class="addCatBtn">추가</button>
+        
+        <!-- 추가 모달창 -->
         <div class="addCatModal">
           <div class="addCatModalBody">
-            <div class="imgContainer4">
+            <div class="imgContainer4" id="addCatShowImage">
               <img src="" alt="">
             </div>
             <label for="catFile2">
               <div class="uploaderBtn">사진 선택</div>
             </label>
-              <input class="uploader" type="file" id="catFile">
+            <input name="image" type="file" id="catFile2" onchange="addCatUploadImage(this)">
+
             <div class="infoContainer2">
               <div class="nameContainer2">
                 <div class="catInfo2" id="name2">
@@ -85,8 +89,8 @@
               </div>
             </div>
             <div class="catModalBtn">
-              <button class="addBtn" onclick= "addMycat()">등록</button>
-              <button class="clsModalBtn" onclick= "clsModal()">닫기</button>
+              <button class="addBtn" onclick= "addMyCat()">등록</button>
+              <button class="clsModalBtn">닫기</button>
             </div>
       </div>
     </div>
@@ -118,4 +122,3 @@
       </table>
     </div>
   </div>
-

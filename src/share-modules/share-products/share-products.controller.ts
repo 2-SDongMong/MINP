@@ -36,6 +36,11 @@ export class ProductsController {
     return await this.productsService.findOne(id);
   }
 
+  @Get('/user/:userId')
+  async getProductsByUserId(@Param('userId') userId: number) {
+    return await this.productsService.findProductsByUserId(userId);
+  }
+
   // products.controller.ts
   @Post('create')
   @UseInterceptors(FileInterceptor('image'))
@@ -59,6 +64,21 @@ export class ProductsController {
     createProductDto.productsTradeLocation = productsTradeLocation;
 
     return await this.productsService.create(createProductDto);
+  }
+
+  @Post('imageUpload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() data: UpdateProductsDto
+  ) {
+    try {
+      const folder = 'cat_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      return { url: imageUrl };
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   @Patch(':id')

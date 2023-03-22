@@ -52,10 +52,10 @@ export class EjsRenderController {
     return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
   }
 
-  @Get('')
+  @Get('/admin')
   @Render('index')
   admin(@Req() req) {
-    return { components: 'admin' };
+    return { components: 'admin', userId: req.userId };
   }
 
   @Get('/login')
@@ -132,6 +132,20 @@ export class EjsRenderController {
       components: 'shareDetail',
       userId: req.userId,
       product,
+    };
+  }
+  @Get('/shareMy/:userId')
+  @Render('index')
+  async ShareMy(@Param('userId') userId: number, @Req() req) {
+    const sm = await this.productsService.findProductsByUserId(userId);
+    if (!sm) {
+      throw new NotFoundException(`Product with user id ${userId} not found`);
+    }
+    return {
+      components: 'shareMy',
+      userId: req.userId,
+      sm,
+      product: sm,
     };
   }
 

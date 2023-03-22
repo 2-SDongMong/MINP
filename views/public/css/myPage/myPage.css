@@ -408,7 +408,7 @@
   background-color: #FBF7EC;
 }
 
-#catAge2 {
+.catAge2Input {
   margin-left: 155px;
 }
 
@@ -429,8 +429,9 @@
   align-items: center;
 }
 
-#catCharacter2 {
+.catCharacter2Input {
   width: 500px;
+  outline: none;
 }
 
 /* cat page button */
