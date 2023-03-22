@@ -306,9 +306,6 @@ function addMyCat() {
   const character = $('#catCharacter3').val();
   const image = $(`#addCatShowImage`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
 
-  console.log('age: ', age)
-  console.log('image: ', image)
-  console.log('neutered: ', neutered)
   $.ajax({
     type: 'POST',
     url: '/cats',
@@ -340,6 +337,7 @@ function modifyMyCat(id) {
   if (catNeutered === 'false') {
     catNeutered = false
   }
+
 
   $.ajax({
     type: 'PATCH',

@@ -182,7 +182,7 @@ export class EjsRenderController {
   @Render('index')
   async boardDetail(@Req() req, @Param('id') postId: number) {
     const post = await this.postsService.getPostById(postId);
-    return { components: 'boardDetail', userId: req.userId, post };
+    return { components: 'boardDetail', userId: req.userId, post: post[0] };
   }
 
   @Get('boardPost')
