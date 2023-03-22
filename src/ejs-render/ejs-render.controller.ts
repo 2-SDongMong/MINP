@@ -28,6 +28,7 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
+
     let requests;
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
@@ -38,11 +39,14 @@ export class EjsRenderController {
     } else {
       requests = await this.requestsService.getRequestsPagination(1, 6);
     }
+
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
+
       requests,
+
     };
   }
 
@@ -140,6 +144,7 @@ export class EjsRenderController {
   @Render('index')
   async ShareDetail(@Param('id') id: string, @Req() req) {
     const product = await this.productsService.findOne(id);
+    console.log(product);
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
@@ -149,16 +154,19 @@ export class EjsRenderController {
       product,
     };
   }
-  @Get('/shareMy/:userId')
+
+  @Get('/shareMy')
   @Render('index')
-  async ShareMy(@Param('userId') userId: number, @Req() req) {
+  async ShareMy(@Req() req) {
+    const userId = req.userId;
     const sm = await this.productsService.findProductsByUserId(userId);
+    console.log('Products:', sm); // Add log here
     if (!sm) {
       throw new NotFoundException(`Product with user id ${userId} not found`);
     }
     return {
       components: 'shareMy',
-      userId: req.userId,
+      userId: userId,
       sm,
       product: sm,
     };
