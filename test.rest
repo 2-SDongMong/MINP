@@ -3,20 +3,20 @@ POST https://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email":"minp-admin2@gmail.com",
+  "email":"0003@gmail.com",
   "password":"0000"
 }
 ### 로그아웃
 POST http://localhost:3000/auth/logout
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjU0LCJlbWFpbCI6Im1pbnAtYWRtaW4yQGdtYWlsLmNvbSIsImlhdCI6MTY3OTI5MTAxMiwiZXhwIjoxNjc5Mzc3NDEyfQ.ZHmduE9N_kd1wOMxM8viSnaN4GGslURRnIm23BKzVrA
 ### 회원가입
-POST http://localhost:3000/users/signup
+POST https://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email":"minp-admin2@gmail.com",
-  "name": "김관리",
-  "nickname":"관리자",
+  "email":"0005@gmail.com",
+  "name": "김봄",
+  "nickname":"봄날",
   "address":"경기도 고양시 고양구 고양동",
   "password":"0000",
   "phone_number":"010-0000-0003",
@@ -115,7 +115,15 @@ DELETE    http://localhost:3000/users/requests/55
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5MjAyNzcyLCJleHAiOjE2NzkyODkxNzJ9.MIsRLgPr9uYFXT3JgubTMkjvVFXumO3GGmZADr9zV-o
 
+### admin  내가 쓴 나눔 조회
+GET   https://localhost:3000/users/share
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5NDI3MDE2LCJleHAiOjE2Nzk1MTM0MTZ9.QNrV-JOoc64jEhR62kXY9hvK7jHBstvnYmftq5NsXGQ
 
+### admin  내가 쓴 나눔 삭제
+DELETE    https://localhost:3000/users/share/e2c5f4c5-db6b-4e61-8b69-be17d78b0533
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjUwLCJlbWFpbCI6IjAwMDNAZ21haWwuY29tIiwiaWF0IjoxNjc5NDI3MjI5LCJleHAiOjE2Nzk1MTM2Mjl9.x4yOuL7sAoLP0PTKKxdxU2QNgtv90Gm4oa2JIlJ0Jq0
 ### admin  내가 쓴 자유게시판 조회
 GET   http://localhost:3000/users/post
 Content-Type: application/json
