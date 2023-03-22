@@ -29,15 +29,16 @@ export class PostsController {
 
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
-  //async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>>{
+  // async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>>{
   //  return await this.postsService.paginate(pageOptionsDto);
-  //}
+  // }
 
   //페이지네이션 > 위에 코드가 에러나서 일단 이전 코드로
   async getPosts(@Param('page') page: number = 1) {
     this.logger.debug(`getPosts()`);
     return await this.postsService.getPosts(page);
   }
+
 
    // async getPosts() {
   //   this.logger.debug(`getPosts()`);
@@ -54,8 +55,10 @@ export class PostsController {
   // 게시물 상세 조회 -> 게시물 ID로 확인
   @Get('/:id')
   @UsePipes(ValidationPipe)
-  async getPostById(@Param('post_id') postId: number) {
+  async getPostById(@Param('id') postId: number) {
+    
     this.logger.debug(`getPostById() : ${postId}`);
+    console.log(postId);
     return await this.postsService.getPostById(postId);
   }
 
@@ -63,6 +66,7 @@ export class PostsController {
   @Post()
   @UsePipes(ValidationPipe)
   createPost(@Req() req, @Body() data: CreatePostDto) {
+    console.log(req);
     return this.postsService.createPost(
       req.userId,
       data.title,

@@ -1,55 +1,66 @@
 <div class="container">
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
-    <% if (post.user_id == userId) { %>
+    <% if (post.user_id==userId) { %>
         <button id="btn-update" class="btn btn-warning" onclick="" type="button">수정</button>
         <button id="btn-delete" class="btn btn-danger" onclick="postDelete(post.post_id)" type="button">삭제</button>
-    <% } %>
-    <br><br>
+        <% } %>
+            <br><br>
 
-    <div>
-        <h3><%= post.title %></h3>
-        <h5><%= post.category %></h5>
-    </div>
-    <hr />
-    <div>
-        <div>작성자: <%= post.user_id %></div>
-        <div><%= post.created_at.toLocaleString() %></div>
-    </div>
-    <hr />
-    <div>
-        <div><%= post.content %></div>
-    </div>
-    <br><br>
-    <hr />
-    <div>
-        <div>[댓글]</div>
-        <br>
-        <div>닉네임 : </div>
-        <div>댓글내용은 이러쿵 저러쿵 그렇습니다</div>
-    </div>
-    <hr />
-    <div class="form-group">
-        <label for="comment">댓글 입력</label>
-        <textarea class="form-control" rows="3" id="commentContent"></textarea>
-        <button id="comment-save" class="btn btn-primary" onclick="" type="button">입력</button>
-    </div>
+            <div>
+                <h3>
+                    <%= post.title %>
+                </h3>
+                <h5>
+                    <%= post.category %>
+                </h5>
+            </div>
+            <hr />
+            <div>
+                <div>작성자: <%= post.user_id %>
+                </div>
+                <div>
+                    <%= post.created_at.toLocaleString() %>
+                </div>
+            </div>
+            <hr />
+            <div>
+                <div>
+                    <%= post.content %>
+                </div>
+            </div>
+            <br><br>
+            <hr />
+            <div>
+                <div>[댓글]</div>
+                <br>
+                <div>닉네임 : </div>
+                <div>댓글내용은 이러쿵 저러쿵 그렇습니다</div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <label for="comment">댓글 입력</label>
+                <textarea class="form-control" rows="3" id="commentContent"></textarea>
+                <button id="comment-save" class="btn btn-primary" onclick="" type="button">입력</button>
+            </div>
+
+            
 </div>
 
 <script>
-    
-     function postDelete(postId) {
+
+    function postDelete(postId) {
 
         if (!postId) {
-			alert('아이디값 없음')
-			return;
-		}
+            alert('아이디값 없음')
+            return;
+        }
 
         $.ajax({
             type: "DELETE",
             url: '/posts/:id',
             data: {
-				postId: postId,
-			},
+                postId: postId,
+            },
             success: function (response) {
                 alert('삭제되었습니다.');
                 window.location.href = '/';

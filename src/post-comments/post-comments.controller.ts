@@ -1,46 +1,49 @@
-import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, ParseIntPipe, Post, Put, Req, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreatePostCommentDto } from './dto/create-post-comment.dto';
 import { UpdatePostCommentDto } from './dto/update-post-comment.dto';
 import { PostCommentsService } from './post-comments.service';
-import { PostsService } from 'src/posts/posts.service';
 
-@Controller('post-comments')
+@Controller('posts')
 export class PostCommentsController {
     constructor(
-        private PostCommentsService: PostCommentsService,
-        private readonly PostsService: PostsService,
-        //private readonly userService: UserService,
+        private readonly postCommentsService: PostCommentsService,
     ) { }
-    private logger = new Logger('ContentController');
+    private logger = new Logger('PostCommentsController');
 
-    @Get()
-    test() { }
+    @Get('/:postId/comments')
+    async getComments(@Param('postId') postId: number) {
+        this.logger.debug(`getComments()`);
+        return await this.postCommentsService.getComments(postId);
+    }
 
     //댓글 쓰기
-    @Post()
-    writeComment(@Body() CreatePostCommentDto: CreatePostCommentDto): Promise<object> {
+    @Post('/:postId')
+    @UsePipes(ValidationPipe)
+    createComment(@Req() req, @Param('postId') postId: number, @Body() CreatePostCommentDto: CreatePostCommentDto) {
         this.logger.debug(`createComment() : ${CreatePostCommentDto}`);
-        return this.PostCommentsService.createComment(
-            CreatePostCommentDto,
-            //this.userService,
-            this.PostsService,
+        console.log(req);
+        return this.postCommentsService.createComment(
+            req.userId,
+            postId,
+            CreatePostCommentDto.content,
         );
     }
 
     // 댓글 삭제
-    @Delete('/:id')
-    deleteComment(@Param('id', ParseIntPipe) id): Promise<object> {
-        return this.PostCommentsService.deleteComment(id);
+    @Delete('/:postId/comments/:commentId')
+    async deleteComment(@Req() req, @Param('commentId', ParseIntPipe) post_comment_id: number) {
+        return await this.postCommentsService.deleteComment(req.userId, post_comment_id);
     }
 
     // 댓글 수정
-    @Put('/:id')
+    @Put('/:postId/comments/:commentId')
     updateComment(
-        @Param('id') id: number,
+        @Req() req,
+        @Param('commentId') post_comment_id: number,
         @Body() updateDateDto: UpdatePostCommentDto,
-    ): Promise<object> {
-        this.logger.debug(`updateComment() : ${id}`);
-        return this.PostCommentsService.updateComment(id, updateDateDto);
+    ) {
+        this.logger.debug(`updateComment() : ${post_comment_id}`);
+        return this.postCommentsService.updateComment(req.userId, post_comment_id, updateDateDto.content);
     }
 }
 

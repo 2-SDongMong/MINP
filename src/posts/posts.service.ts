@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, Not, Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { PageMetaDto } from './dto/page-meta.dto';
 import { PageOptionsDto } from './dto/page-options.dto';
 import { PageDto } from './dto/page.dto';
@@ -23,28 +23,28 @@ export class PostsService {
   async getPosts(page: number = 1) {
     this.logger.debug(`getPosts()`);
 
-    // // 페이지네이션
-    // const take = 10;
+    // 페이지네이션
+    const take = 10;
 
-    // const [posts, total] = await this.postsRepository.findAndCount({
-    //   take,
-    //   skip: (page - 1) * take,
-    // });
+    const [posts, total] = await this.postsRepository.findAndCount({
+      take,
+      skip: (page - 1) * take,
+    });
 
-    // const last_Page = Math.ceil(total / take);
+    const last_Page = Math.ceil(total / take);
 
-    // if (last_Page >= page) {
-    //   return {
-    //     data: posts,
-    //     meta: {
-    //       total,
-    //       page: page <= 0 ? (page = 1) : page,
-    //       last_Page: last_Page,
-    //     },
-    //   };
-    // } else {
-    //   throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-    // }
+    if (last_Page >= page) {
+      return {
+        data: posts,
+        meta: {
+          total,
+          page: page <= 0 ? (page = 1) : page,
+          last_Page: last_Page,
+        },
+      };
+    } else {
+      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+    }
   }
 
   async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
