@@ -4,6 +4,12 @@
             <h3>자유게시판</h3>
         </div>
     </div>
+    <nav class="sp_nav">
+        <a class="sp_nav-link" href="/boardList/병원">병원</a>
+        <a class="sp_nav-link" href="/boardList/자랑">자랑</a>
+        <a class="sp_nav-link" href="/boardList/기타">기타</a>
+        <a class="sp_nav-link" href="/boardList?page=1" >전체보기</a>
+    </nav>
   
     <!-- board list area -->
     <div id="board-list">
@@ -25,9 +31,9 @@
                 
                 <tr>
                     <td scope="row"><%= post.post_id %></td>
-                    <td><a href="#!"><%= post.category %></a></td> 
+                    <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
                     <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
-                    <td><%= post.user_id %></td>
+                    <td><%= post.user.nickname %></td>
                     <td><%= created_at %></td>
                 </tr>
                 <% } %>

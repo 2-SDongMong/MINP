@@ -47,8 +47,8 @@ export class PostsController {
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
-  async getPostByCategory(@Param('category') postCategory: PostCategoryType) {
-    return await this.postsService.getPostByCategory(postCategory);
+  async getPostByCategory(@Param('page') page: number = 1, @Param('category') postCategory: PostCategoryType) {
+    return await this.postsService.getPostByCategory(page, postCategory);
   }
 
   // 게시물 상세 조회 -> 게시물 ID로 확인

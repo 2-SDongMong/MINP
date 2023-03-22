@@ -62,6 +62,17 @@ export class PostsService {
     
     const total = await this.postsRepository.count();
     const posts = await this.postsRepository.find({
+      relations: {
+        user: {},
+      },
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        updated_at: 'DESC',
+      },
 	    take,
 	    skip: (page - 1) * take,
     });
@@ -121,18 +132,43 @@ export class PostsService {
   // }
   
 
-  async getPostByCategory(postsCategory: PostCategoryType) {
-    return await this.postsRepository.find({
+  async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
+    const take = 7;
+    
+    const total = await this.postsRepository.count({
+      where: { category: postsCategory, deleted_at: null },}
+    );
+    const posts = await this.postsRepository.find({
+      relations: {
+        user: {},
+      },
       where: { category: postsCategory, deleted_at: null },
-      select: [
-        'user_id',
-        'title',
-        'category',
-        'content',
-        'created_at',
-        'updated_at',
-      ],
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        updated_at: 'DESC',
+      },
+	    take,
+	    skip: (page - 1) * take,
     });
+
+    const last_Page = Math.ceil(total / take);
+
+    if (last_Page >= page) {
+      return {
+        data: posts,
+        meta: {
+          total,
+          page: page <= 0 ? (page = 1) : page,
+          last_Page: last_Page,
+        },
+      };
+    } else {
+      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+    }
   }
 
   async getPostById(post_id: number) {
