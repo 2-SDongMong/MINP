@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -7,8 +6,6 @@ import {
   Param,
   Patch,
   Post,
-  Query,
-  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -66,18 +63,37 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
-  @Patch(':id')
+  // NestJS controller
+  @Patch('/:id')
+  @UseInterceptors(FileInterceptor('image'))
   async updateProduct(
     @Param('id') id: string,
-    @Body() updateProductsDto: UpdateProductsDto
+    @Body('') updateProductsDto: UpdateProductsDto,
+    @UploadedFile() file: Express.Multer.File
   ) {
-    const { tradeStatus } = updateProductsDto;
-    if (tradeStatus === '나눔주문중') {
-      // isTrade -> tradeStatus 로 변경된 부분
-      updateProductsDto.tradeStatus = '나눔주문중';
+    console.log('Updating product:', id, updateProductsDto); // Add log here
+
+    if (file) {
+      const folder = 'product_images';
+      const imageUrl = await this.awsService.uploadFileToS3(folder, file);
+      updateProductsDto.imageUrl = imageUrl;
     }
-    await this.productsService.checkTrade(id);
-    return await this.productsService.update(id, updateProductsDto);
+
+    const { productsCategoryId, ...products } = updateProductsDto;
+
+    // Set productsCategoryId only if it is not null
+    const updateData = {
+      ...products,
+      productsCategory: productsCategoryId
+        ? { id: productsCategoryId }
+        : undefined,
+    };
+
+    const result = await this.productsService.update(id, updateData);
+
+    console.log('Product updated:', result); // Add log here
+
+    return result;
   }
 
   @Delete(':id')
