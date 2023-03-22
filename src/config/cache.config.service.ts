@@ -16,8 +16,9 @@ import {
         host: this.configService.get<string>('REDIS_HOST'),
         port: this.configService.get<number>('REDIS_PORT'),
         password: this.configService.get<string>('REDIS_PASSWORD'),
+        username:this.configService.get<string>('REDIS_USERNAME'),
         ttl: this.configService.get<number>('REDIS_TTL'),
-        isGlobal: true,
+        //isGlobal: true,
       };
     }
   }

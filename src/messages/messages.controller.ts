@@ -14,7 +14,6 @@ import { MessagesService } from './messages.service';
 
 
 @Controller('messages')
-@UseInterceptors(CacheInterceptor)
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
