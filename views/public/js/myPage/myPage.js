@@ -1,11 +1,9 @@
-// if (window.location.pathname === '/mypage') {
-
-
 
 $(document).ready(function() {
     showMyPage();
     showMyCat();
     catModalEventRegister();
+    showMyPost();
   }
 )
 
@@ -179,10 +177,10 @@ function showMyCat() {
           <div class="imgContainer3" id="catPic${catId}" style="background-image: url(${catImg});">
             <img class="catPic" alt="">
           </div>
-          <label for="catFile">
+          <label for="catFile-${catId}">
             <div class="uploaderBtn">사진 선택</div>
           </label>
-          <input class="uploader" type="file" id="catFile" onchange="upload_image(this, ${catId})">
+          <input class="uploader" type="file" id="catFile-${catId}" onchange="upload_image(this, ${catId})">
           <div class="infoContainer2">
             <div class="nameContainer2">
               <div class="catInfo2" id="name2">
@@ -329,7 +327,7 @@ function modifyMyCat(id) {
   console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
-  const catCharacter = $(`#catCharacter2${id}`).val();
+  const catCharacter = $(`#catCharacter${id}`).val();
   
   if (catNeutered === 'true') {
     catNeutered = true
@@ -499,3 +497,118 @@ function verifyLocation() {
   }
 }
 
+
+// 내가 쓴 글 조회
+function showMyPost() {
+  $.ajax({
+    type: 'GET',
+    url: 'users/mypost',
+    async: false,
+    data: {},
+    success: function(response) {
+
+      for (let i = 0; i < response.myRequest.length; i++) {
+        let nickname = response.myRequest[i].user.nickname;
+        let requestId = response.myRequest[i].request_id;
+        let periodStart = response.myRequest[i].reserved_begin_date;
+        let periodEnd = response.myRequest[i].reserved_end_date;
+        let requestCreate = response.myRequest[i].created_at.split('T')[0];
+                
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">품앗이</td>
+            <td class="longContent2"><a href='request/detail/${requestId}'>${periodStart}~${periodEnd}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${requestCreate}</td>
+            <td class="date2">
+            <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myRequestTable').append(tempHtml);
+      }
+      for (let i = 0; i < response.myShare.length; i++) {
+        let nickname = response.myShare[i].user.nickname;
+        let shareId = response.myShare[i].id;
+        let shareTitle = response.myShare[i].title;
+        let shareCreate = response.myShare[i].createdAt.split('T')[0];
+
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">냥품나눔</td>
+            <td class="longContent2"><a href='/shareDetail/${shareId}'>${shareTitle}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${shareCreate}</td>
+            <td class="date2">
+            <button class="delMyShareBtn" onclick="delMyShare(${shareId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myShareTable').append(tempHtml);
+      }
+      for (let i = 0; i < response.myPost.length; i++) {
+        let nickname = response.myPost[i].user.nickname;
+        let postId = response.myPost[i].post_id;
+        let postTitle = response.myPost[i].title;
+        let postCategory = response.myPost[i].category;
+        let postCreate = response.myPost[i].created_at.split('T')[0];
+
+
+        let tempHtml = `
+
+        <table class="boardView2" id="table1">
+          <tr>
+            <th class="blank"></th><td class="shortContent2">${postCategory}</td>
+            <td class="longContent2"><a href='boardDetail/${postId}'>${postTitle}</a></td>         
+            <td class="shortContent2">${nickname}</td>
+            <td class="date2">${postCreate}</td>
+            <td class="date2">
+            <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
+            </td>
+          </tr>
+        </table>`
+        $('#myPostTable').append(tempHtml);
+      }
+    }
+  })
+}
+
+function delMyRequest(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/requests/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    }
+  })
+}
+
+function delMyShare(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/share/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    },
+    error: function(response) {
+      console.error(response)
+    }
+  })
+}
+
+function delMyPost(id) {
+  $.ajax({
+    type: 'DELETE',
+    url: `users/post/${id}`,
+    success: function(response) {
+      alert('삭제가 완료되었습니다.')
+      window.location.replace('/mypage')
+    }
+  })
+}

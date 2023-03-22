@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
   }
     if(nextBtn) {
       nextBtn.addEventListener('click', function () {
-        if (currentIdx < slideCount - 3) {
+        if (currentIdx < slideCount - 4) {
           moveSlide(currentIdx + 1);
         } else {
           moveSlide(0);

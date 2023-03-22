@@ -106,7 +106,7 @@
 }
 
 #catTitle {
-  margin-top: -230px;
+  margin-top: -100px;
 }
 
 .catInfo1{
@@ -156,6 +156,10 @@
   width: 610px;
   height: 550px;
   border-radius: 20px 20px 0px 0px;
+}
+
+#catFile2 {
+  display: none;
 }
 
 #catName2 {
@@ -441,8 +445,76 @@
 }
 
 /* my posts */
-
-
 .myPostTable {
   margin-top: 50px;
+}
+
+.boardView2 {
+  font-family: Nanum Gothic;
+  margin: auto;
+  border-top: #a59373 2px solid;
+  border-bottom: #a59373 1px solid;
+  width: 1330px;
+}
+
+.shortContent2 {
+  height: 60px;
+  text-align: left;
+  width: 150px;
+  font-weight: bold;
+}
+
+.longContent2 {
+  width: 820px;
+}
+
+.myBoard1 {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 30px 0px 10px 200px;
+}
+
+.myBoard2 {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 60px 0px 10px 200px;
+}
+
+.myBoard3 {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0px 10px 200px;
+}
+
+.delMyRequestBtn {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  width: 60px;
+  height: 30px;
+  background-color: white;
+  border: 2px solid #e8e8e5;
+  border-radius: 20px;
+}
+
+.delMyShareBtn {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  width: 60px;
+  height: 30px;
+  background-color: white;
+  border: 2px solid #e8e8e5;
+  border-radius: 20px;
+}
+
+.delMyPostBtn {
+  font-family: Nanum Gothic;
+  font-size: 14px;
+  width: 60px;
+  height: 30px;
+  background-color: white;
+  border: 2px solid #e8e8e5;
+  border-radius: 20px;
 }
