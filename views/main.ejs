@@ -3,6 +3,7 @@
     <div class="bodyContent1">
       <div class="contentTitle1">
         품앗이 신청
+        <button class="showMoreBtn" id="shareBtn" onclick="location.href='/request/list/1'">more</button>
       </div>
       
       <div class="contentSub1">
@@ -16,18 +17,21 @@
               <% } %>
             </span>
           </div>
-          <p class="page">
-            <span class="page1" id="prev">
-              ←
-            </span>
-            <span class="page1">
-              |
-            </span>
-            <span class="page1" id="next">
-              →
-            </span>
-          </p>
+          <div class="">
+            <p class="page">
+              <span class="page1" id="prev">
+                ←
+              </span>
+              <span class="page1">
+                |
+              </span>
+              <span class="page1" id="next">
+                →
+              </span>
+            </p>
+          </div>
         </div>
+
         
       </div>
       <div class="slideWarpper1">
@@ -80,7 +84,7 @@
                   <% if (user && user.address_certified) { %>
 										<%= request.user.address_bname %>
 									<% } else { %>
-										🟤🟤🟤
+										동네를 인증해주세요!
 									<% } %>
                 </div>
               </div>
@@ -91,7 +95,6 @@
           <% } %>
         </ul>
       </div>
-
     </div>
 
       <div class="bodyContent2">
