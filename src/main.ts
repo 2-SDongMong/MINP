@@ -50,8 +50,9 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(3000, () => {
-    console.log('3000번 포트로 서버가 열렸습니다. https://localhost:3000');
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT, () => {
+    console.log(`${3000}번 포트로 서버가 열렸습니다. https://localhost:3000`);
   });
 }
 
