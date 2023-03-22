@@ -5,6 +5,7 @@
 <% if (sm.length > 0) { %>
 <div class="product-container">
   <% sm.forEach(function(product) { %>
+
   <div class="product-card">
     <img
       class="product-image"
@@ -120,6 +121,8 @@
 <p>내가 올린 상품이 없습니다.</p>
 <% } %>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
   async function fetchCategories() {
     try {
@@ -151,8 +154,12 @@
 
     $('.eedit').on('click', function () {
       // Get the product data
+
       const productCard = $(this).closest('.product-card');
       const productId = $(this).data('id');
+
+      // 현재 로그인한 사용자의 정보를 가져오기
+
       console.log('Clicked edit button for product ID:', productId);
       if (!productId) {
         alert('Product ID not found.');

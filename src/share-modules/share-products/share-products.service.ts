@@ -35,10 +35,17 @@ export class ProductsService {
   }
 
   async findProductsByUserId(userId: number) {
-    return await this.productsRepository.find({
-      where: { user: { user_id: userId } },
-      relations: ['user', 'productsTradeLocation', 'productsCategory'],
-    });
+    console.log('Searching for products by userId:', userId);
+
+    return await this.productsRepository
+      .createQueryBuilder('products')
+      .innerJoin('products.user', 'user', 'user.user_id = :userId', { userId })
+      .leftJoinAndSelect(
+        'products.productsTradeLocation',
+        'productsTradeLocation'
+      )
+      .leftJoinAndSelect('products.productsCategory', 'productsCategory')
+      .getMany();
   }
 
   // ProductsService

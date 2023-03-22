@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UploadedFile,
@@ -34,7 +35,7 @@ export class ProductsController {
   }
 
   @Get('/user/:userId')
-  async getProductsByUserId(@Param('userId') userId: number) {
+  async getProductsByUserId(@Param('userId', ParseIntPipe) userId: number) {
     return await this.productsService.findProductsByUserId(userId);
   }
 
