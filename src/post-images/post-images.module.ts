@@ -8,5 +8,6 @@ import { PostImagesService } from './post-images.service';
   imports: [TypeOrmModule.forFeature([PostImage])],
   controllers: [PostImagesController],
   providers: [PostImagesService],
+  exports: [PostImagesService],
 })
 export class PostImagesModule {}
