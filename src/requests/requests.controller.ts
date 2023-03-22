@@ -17,10 +17,17 @@ import { RequestsService } from './requests.service';
 export class RequestsController {
   constructor(private readonly requestService: RequestsService) {}
 
+  // 오프셋 페이지네이션 
   @Get()
-  async getRequests() {
-    return await this.requestService.getRequests();
+  async getRequests(@Param('page') page: number = 1) {
+    return await this.requestService.getRequests(page);
   }
+
+  // // 기존 목록 조회
+  // @Get()
+  // async getRequests() {
+  //   return await this.requestService.getRequests();
+  // }
 
   @Get('/:id')
   async getRequestById(@Param('id') requestId: number) {

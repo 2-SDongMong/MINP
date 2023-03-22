@@ -34,7 +34,7 @@ export class PostsController {
   //페이지네이션 
   @Get()
   async getPosts(@Param('page') page: number = 1) {
-    this.logger.debug(`getPosts()`);
+    this.logger.debug(`getPosts(page)`);
     return await this.postsService.getPosts(page);
   }
 

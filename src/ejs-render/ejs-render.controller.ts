@@ -34,7 +34,7 @@ export class EjsRenderController {
       components: 'main',
       userId: req.userId,
       user: req.user,
-      requests: requests.slice(0, 6),
+      requests: requests.data.slice(0, 6),
       posts,
     };
   }
@@ -64,10 +64,11 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId };
   }
 
+  // 페이지 네이션 인수 추가
   @Get('/request/list')
   @Render('index')
-  async requestList(@Req() req) {
-    const requests = await this.requestsService.getRequests();
+  async requestList(@Req() req, @Query('page') pageNum: number) {
+    const requests = await this.requestsService.getRequests(pageNum);
     return {
       components: 'requestList',
       userId: req.userId,
@@ -159,8 +160,8 @@ export class EjsRenderController {
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {
     const posts = await this.postsService.getPosts(pageNum);
-    console.log(posts);
-    return { components: 'boardList', userId: req.userId, posts };
+    //console.log(posts);
+    return { components: 'boardList', userId: req.userId, user: req.user, posts };
   }
 
   @Get('boardDetail/:id')

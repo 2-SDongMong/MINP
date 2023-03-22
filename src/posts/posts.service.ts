@@ -57,7 +57,7 @@ export class PostsService {
     // }
 
     
-    //오프
+    //오프셋
     const take = 7;
     
     const total = await this.postsRepository.count();
