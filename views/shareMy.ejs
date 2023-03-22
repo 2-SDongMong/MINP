@@ -1,31 +1,291 @@
 <link rel="stylesheet" href="/css/shareProduct/shareMy.css" />
 
+<br />
+<nav class="sp_nav">
+  <a class="sp_nav-link" href="/shareList">상품조회</a>
+  <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+  <a class="sp_nav-link" href="/shareMy">내 상품</a>
+</nav>
 <div class="product-title">내가 등록한 상품</div>
 
 <% if (sm.length > 0) { %>
 <div class="product-container">
   <% sm.forEach(function(product) { %>
+
   <div class="product-card">
-    <img
-      class="product-image"
-      src="<%= product.imageUrl %>"
-      alt="<%= product.title %>"
-    />
-    <div class="product-info">
-      <div class="product-na">
-        <p class="product-category"><%= product.productsCategory.name %></p>
+    <a
+      href="/shareDetail/<%= product.id %>"
+      style="text-decoration: none; color: inherit"
+    >
+      <img
+        class="product-image"
+        src="<%= product.imageUrl %>"
+        alt="<%= product.title %>"
+      />
+      <div class="product-info">
+        <div class="product-na">
+          <p class="product-category"><%= product.productsCategory.name %></p>
+        </div>
+        <h2 class="product-name"><%= product.title %></h2>
+        <p class="product-description"><%= product.description %></p>
+        <p class="product-created-at"><%= product.created_at %></p>
+      </a>
       </div>
-      <h2 class="product-name"><%= product.title %></h2>
-      <p class="product-description"><%= product.description %></p>
-      <p class="product-created-at"><%= product.created_at %></p>
-    </div>
+
     <div class="product-actions">
-      <button class="eedit">수정</button>
-      <button class="ddelete">삭제</button>
+      <button class="eedit" data-id="<%= product.id %>">수정</button>
+      <button class="ddelete" data-id="<%= product.id %>">삭제</button>
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="editModal-<%= product.id %>"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editModalLabel-<%= product.id %>"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel-<%= product.id %>">
+            상품 수정
+          </h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <!-- 이미지 입력 필드 추가 -->
+            <div class="form-group">
+              <label for="product-image-input-<%= product.id %>"
+                >상품 이미지</label
+              >
+              <input
+                type="file"
+                class="form-control-file"
+                id="product-image-input-<%= product.id %>"
+              />
+              <img
+                src="<%= product.imageUrl %>"
+                id="product-image-<%= product.id %>"
+                class="img-thumbnail"
+                style="width: 100px; height: auto; margin-top: 5px"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="product-category-<%= product.id %>"
+                >상품 카테고리</label
+              >
+              <select
+                class="form-control"
+                id="product-category-<%= product.id %>"
+              >
+                <option value="" selected disabled>
+                  <%= product.productsCategory.name %>
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="product-title-<%= product.id %>">상품 이름</label>
+              <input
+                type="text"
+                class="form-control"
+                id="product-title-<%= product.id %>"
+                value="<%= product.title %>"
+              />
+            </div>
+            <div class="form-group">
+              <label for="product-description-<%= product.id %>"
+                >상품 설명</label
+              >
+              <textarea
+                class="form-control"
+                id="product-description-<%= product.id %>"
+                rows="3"
+              >
+  <%= product.description %></textarea
+              >
+            </div>
+            <!-- 추가 필드가 필요한 경우 이곳에 추가하세요 -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary save-edit"
+            data-id="<%= product.id %>"
+          >
+            저장
+          </button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            취소
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <% }); %>
 </div>
 <% } else { %>
 <p>내가 올린 상품이 없습니다.</p>
 <% } %>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  const userId = '<%= userId %>';
+  if (!userId) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login'; // 로그인 페이지로 이동
+  }
+  async function fetchCategories() {
+    try {
+      const response = await fetch('/productsCategory');
+      const categories = await response.json();
+      console.log('Fetched categories:', categories); // Add log here
+      return categories;
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+      return [];
+    }
+  }
+
+  async function populateCategoryDropdowns() {
+    const categories = await fetchCategories();
+    const dropdowns = $('[id^="product-category-"]');
+    dropdowns.each(function () {
+      const dropdown = $(this);
+      categories.forEach((category) => {
+        const option = $('<option></option>')
+          .attr('value', category.id)
+          .text(category.name);
+        dropdown.append(option);
+      });
+    });
+  }
+  $(document).ready(function () {
+    populateCategoryDropdowns();
+
+    $('.eedit').on('click', function () {
+      // Get the product data
+
+      const productCard = $(this).closest('.product-card');
+      const productId = $(this).data('id');
+
+      // 현재 로그인한 사용자의 정보를 가져오기
+
+      console.log('Clicked edit button for product ID:', productId);
+      if (!productId) {
+        alert('Product ID not found.');
+        return;
+      }
+      const product = {
+        id: productId,
+        title: productCard.find('.product-name').text(),
+        description: productCard.find('.product-description').text(),
+        imageUrl: productCard.find('.product-image').attr('src'),
+        productsCategoryId: productCard.find('.product-category').data('id'),
+        createdAt: productCard.find('.product-created-at').text(),
+      };
+
+      // Populate the modal with the product data
+      $(`#editModal-${productId} #product-title-${productId}`).val(
+        product.title
+      );
+      $(`#editModal-${productId} #product-description-${productId}`).val(
+        product.description
+      );
+      $(`#editModal-${productId} #product-image-${productId}`).attr(
+        'src',
+        product.imageUrl
+      );
+      $(`#editModal-${productId} #product-category-${productId}`).val(
+        product.productsCategoryId
+      );
+
+      // Show the modal
+      $(`#editModal-${productId}`).modal('show');
+    });
+
+    $('.save-edit').on('click', function () {
+      const productId = $(this).data('id');
+
+      // Get the product data
+      const productCard = $(this).closest('.product-card');
+
+      // 폼 데이터 수집
+      const newImageFile = $('#product-image-input-' + productId)[0].files[0];
+      const formData = new FormData();
+
+      if (newImageFile) {
+        formData.append('image', newImageFile);
+      }
+
+      formData.append(
+        'productsCategoryId',
+        $('#product-category-' + productId).val()
+      );
+      formData.append('title', $('#product-title-' + productId).val());
+      formData.append(
+        'description',
+        $('#product-description-' + productId).val()
+      );
+
+      $.ajax({
+        url: '/products/' + productId,
+        type: 'PATCH',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          alert('상품이 성공적으로 수정되었습니다.');
+          location.reload();
+        },
+        error: function (error) {
+          console.error('Error updating product:', error);
+          alert('상품 수정 중 오류가 발생했습니다.');
+        },
+      });
+
+      console.log('Sending product ID:', productId);
+    });
+  });
+  // 삭제 버튼 이벤트 리스너 추가
+  $('.ddelete').on('click', function () {
+    const productCard = $(this).closest('.product-card');
+    const productId = $(this).siblings('.eedit').data('id');
+
+    console.log('Clicked delete button for product ID:', productId);
+    if (!productId) {
+      alert('Product ID not found.');
+      return;
+    }
+
+    // 사용자에게 확인 요청
+    const confirmDelete = confirm('정말로 이 상품을 삭제하시겠습니까?');
+    if (!confirmDelete) {
+      return;
+    }
+
+    // 상품 삭제 요청
+    $.ajax({
+      url: '/products/' + productId,
+      type: 'DELETE',
+      success: function (response) {
+        alert('상품이 성공적으로 삭제되었습니다.');
+        location.reload();
+      },
+      error: function (error) {
+        console.error('Error deleting product:', error);
+        alert('상품 삭제 중 오류가 발생했습니다.');
+      },
+    });
+  });
+  $('.btn-secondary').on('click', function () {
+    const editModal = $(this).closest('.modal');
+    editModal.modal('hide');
+  });
+</script>

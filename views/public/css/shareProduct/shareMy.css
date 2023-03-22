@@ -1,7 +1,27 @@
+.sp_nav {
+  background-color: #5c6ac4;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 20px 20px 0 0;
+}
+
+.sp_nav-link {
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  margin-left: 20px;
+  transition: color 0.3s;
+}
+
+.sp_nav-link:hover {
+  color: #f0f0f0;
+}
+
 .product-title {
   text-align: center;
   margin: 20px;
-  font-size: 30px;
+  font-size: 32px;
   font-weight: bold;
 }
 
