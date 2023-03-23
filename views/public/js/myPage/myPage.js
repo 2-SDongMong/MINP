@@ -547,7 +547,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${shareCreate}</td>
             <td class="date2">
-              <button class="delMyShareBtn" onclick="delMyShare(${shareId})">삭제</button>
+              <button class="delMyShareBtn" onclick="delMyShare('${shareId}')">삭제</button>
             </td>
           </tr>
         </table>`
