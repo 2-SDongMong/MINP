@@ -1,4 +1,9 @@
-import { CACHE_MANAGER, Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import _ from 'lodash';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesRepository } from './messages.repository';
@@ -9,16 +14,13 @@ export class MessagesService {
   constructor(
     private readonly repository: MessagesRepository,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
-   ) {}
-
-
-
+  ) {}
 
   async getMessageById(id: number, userId: number) {
     const value = await this.cacheManager.get(`${id}`);
-    if(!value){ 
+    if (!value) {
       const message = await this.repository.getMessageById(id);
-      await this.cacheManager.set(`${id}`, message);  
+      await this.cacheManager.set(`${id}`, message);
       if (message.sender_id !== userId && message.read_at === null) {
         const time = new Date();
         this.repository.updateReadAt(message.message_id, time);
@@ -34,7 +36,7 @@ export class MessagesService {
   async getUnreadMessages(userId: number) {
     const value = await this.cacheManager.get(`unread${userId}`);
 
-    if(!value){
+    if (!value) {
       const message = await this.repository.getUnreadMessages(userId);
       await this.cacheManager.set(`unread${userId}`, message);
 
@@ -50,7 +52,7 @@ export class MessagesService {
   async getReceivedMessages(recipientId: number) {
     const value = await this.cacheManager.get(`recipient${recipientId}`);
 
-    if(!value){
+    if (!value) {
       const message = await this.repository.getReceivedMessages(recipientId);
       await this.cacheManager.set(`recipient${recipientId}`, message);
 
@@ -61,8 +63,8 @@ export class MessagesService {
 
   async getSentMessages(senderId: number) {
     const value = await this.cacheManager.get(`sender${senderId}`);
-    
-    if(!value){
+
+    if (!value) {
       const message = await this.repository.getSentMessages(senderId);
       await this.cacheManager.set(`sender${senderId}`, message);
 
