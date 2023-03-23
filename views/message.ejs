@@ -1,8 +1,11 @@
 <div id="user-table">
   <thead class="table-dark">
-    <a href="/message/received">받은편지함</a> |
-    <a href="/message/sent">보낸편지함</a> |
-    <a href="/message/unread">안읽은편지함</a> |
+    <div class="msgTitle">
+      <a href="/message/received">받은편지함</a> |
+      <a href="/message/sent">보낸편지함</a> |
+      <a href="/message/unread">안읽은편지함</a> |
+    </div>
+    
     <div id="root">
     <button type="button" id="modal_opne_btn">편지쓰기</button></div>
     <div id="modal">
@@ -210,6 +213,14 @@
 </script>
 
 <style>
+  .msgTitle {
+    margin-left: 30px;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   #inmessage{
     text-align: center;
     background-color: gainsboro;
@@ -250,6 +261,7 @@ text-align: left;
         cursor: pointer;
     }
 }
+
 
 #modal {
   position:relative;

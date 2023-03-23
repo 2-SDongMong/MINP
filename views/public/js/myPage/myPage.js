@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 7da72bfa57f85ab34cb7c938a4b79ee22ca6371d
 $(document).ready(function() {
     showMyPage();
     showMyCat();
     catModalEventRegister();
     showMyPost();
-    showUserStatus();
+    // showUserStatus();
   }
 )
 
@@ -85,13 +80,9 @@ function modifyMyPage(id) {
   }
   // 주소를 변경하겠다는 상태라면
   if (user.address_road !== address_road) {
-<<<<<<< HEAD
-    const yesChangeAddress = confirm('주소 변경시 동네 인증을 다시 해야 합니다. 주소를 변경하시겠습니까?')
-=======
     const yesChangeAddress = confirm(
       '주소 변경시 동네 인증을 다시 해야 합니다. 주소를 변경하시겠습니까? '
     );
->>>>>>> 7da72bfa57f85ab34cb7c938a4b79ee22ca6371d
     if (yesChangeAddress) {
       address_certified = false;
     } else {
@@ -273,11 +264,7 @@ function addCatUploadImage(input) {
     success: function (response) {
       console.log('upload success. received url: ', response.url)
       $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
-    },
-    error: function (err) {
-      console.log(err);
-      alert('오류')
-    },
+    }
   });
   }
 

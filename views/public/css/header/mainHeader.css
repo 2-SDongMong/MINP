@@ -1,67 +1,40 @@
-body {
-  font-family: 'Arial', sans-serif;
+/* Navbar */
+.navbarLogo {
+  margin-top: 40px;
+  margin-left: 100px;
 }
 
-.navbar2 {
+.navbar {
+  font-family: Nanum Gothic;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f8f8;
-  padding: 1rem 2rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1px 220px;
 }
 
-.navbarLogo2 {
+.navbarMenu {
+  margin-top: 55px;
   display: flex;
-  align-items: center;
+  list-style: none;
+  font-size: 18px;
+  color: white;
+  font-family: 'Nanum Gothic', sans-serif;
+  margin-right: 250px;
 }
 
-.navbarLogo2 img {
-  height: 40px;
+.navbarMenu li {
+  padding: 8px 20px;
 }
 
-.navbarMenu2 {
-  display: flex;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.navbarButton {
+  margin-top: 38px;
+  margin-right: 115px;
 }
 
-.navbarMenu2 li {
-  margin-left: 1.5rem;
-}
-
-.navbarMenu2 a {
-  text-decoration: none;
-  color: #333;
-  font-size: 15px;
-  font-weight: bold;
-}
-
-.navbarMenu2 a:hover {
-  color: #777;
-}
-
-.navbarButton2 {
-  display: flex;
-  align-items: center;
-}
-
-.navbarButton2 button {
-  background-color: transparent;
+.navbarButton button {
+  font-family: Nanum Gothic;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0);
+  color: white;
   border: none;
-  cursor: pointer;
-  font-size: 15px;
-  margin-left: 1rem;
-  color: #333;
-  font-weight: bold;
-}
-
-.navbarButton2 button:hover {
-  color: #777;
-}
-
-.navbarButton2 img {
-  height: 20px;
-  width: 20px;
 }

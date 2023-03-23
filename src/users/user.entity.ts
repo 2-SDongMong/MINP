@@ -51,7 +51,7 @@ export class User {
 
   @Column('enum', {
     enum: ['가입 대기', '일반', '관리자'],
-    default: '가입 대기',
+    default: '일반',
   })
   status: UserStatusType;
 
