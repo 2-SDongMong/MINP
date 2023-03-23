@@ -1,13 +1,18 @@
 <body>
-    <section>
+    <section class="login">
+			<div class="loginLogo">
+				<img src="/img/로그인 logo.png" alt="">
+			</div>
         <div class="loginCard">
           <form>
-            <input type="text" id="loginEmail" placeholder="이메일을 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
-            <input type="password" id="loginPassword" placeholder="비밀번호를 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
-			<div>
-				<button onclick="login()" class="btn btn-outline-primary" type="button">로그인</button>
-				<button onclick="location.href='/signUp'" class="btn btn-outline-secondary" type="button">회원가입</button>
-			</div>
+						<div class="loginInputContainer">
+							<input type="text" id="loginEmail" placeholder="이메일을 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
+							<input type="password" id="loginPassword" placeholder="비밀번호를 입력해 주세요." onkeyup="if(window.event.keyCode==13){login()}" />
+						</div>
+						<div class="loginBtnContainer">
+							<button onclick="login()" class="btn btn-outline-primary" type="button">로그인</button>
+							<button onclick="location.href='/signUp'" class="btn btn-outline-secondary" type="button">회원가입</button>
+						</div>
           </form>
         </div>
     </section>
@@ -40,3 +45,25 @@
 		}
 	}
 </script>
+
+<style>
+
+	.loginLogo {
+		margin-top: 100px;
+		margin-left: 750px;
+	}
+	.loginCard {
+		margin-top: 30px;
+		display: flex;
+		text-align: center;
+		margin-left: 650px;
+	}
+
+
+
+	.loginBtnContainer {
+		margin-top: 30px;
+		display: flex;
+		justify-content: space-evenly;
+	}
+</style>

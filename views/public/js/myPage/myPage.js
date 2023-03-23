@@ -1,10 +1,9 @@
-
-
 $(document).ready(function() {
     showMyPage();
     showMyCat();
     catModalEventRegister();
     showMyPost();
+    // showUserStatus();
   }
 )
 
@@ -265,11 +264,7 @@ function addCatUploadImage(input) {
     success: function (response) {
       console.log('upload success. received url: ', response.url)
       $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
-    },
-    error: function (err) {
-      console.log(err);
-      alert('오류 ')
-    },
+    }
   });
   }
 
@@ -295,7 +290,7 @@ function upload_image(input, catId) {
     },
     error: function (err) {
       console.log(err);
-      alert('오류 ')
+      alert('오류')
     },
   });
 }
@@ -326,9 +321,8 @@ function addMyCat() {
   })
 }
 
-
-
-  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+function modifyMyCat(id) {
+    const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
   console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
@@ -363,6 +357,10 @@ function addMyCat() {
       console.log('error: ', response);
     }
   })  
+
+}
+
+  
 
 
 function deleteMyCat(id) {
@@ -528,7 +526,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${requestCreate}</td>
             <td class="date2">
-            <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
+              <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -549,7 +547,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${shareCreate}</td>
             <td class="date2">
-            <button class="delMyShareBtn" onclick="delMyShare(${shareId})">삭제</button>
+              <button class="delMyShareBtn" onclick="delMyShare(${shareId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -572,7 +570,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${postCreate}</td>
             <td class="date2">
-            <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
+              <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -594,6 +592,7 @@ function delMyRequest(id) {
 }
 
 function delMyShare(id) {
+  console.log('야')
   $.ajax({
     type: 'DELETE',
     url: `users/share/${id}`,

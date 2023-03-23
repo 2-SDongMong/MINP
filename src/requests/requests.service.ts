@@ -82,16 +82,7 @@ export class RequestsService {
   async getRequestsByAddressBname(bname: string) {
     const request = await this.requestsRepository
       .createQueryBuilder('r')
-      .select
-      //   [
-      //   // 'r.request_id',
-      //   // 'r.reserved_begin_date',
-      //   // 'r.reserved_end_date',
-      //   // 'r.updated_at',
-      //   // 'r.detail',
-      //   // 'r.is_ongoing',
-      // ]
-      ()
+      .select()
       .leftJoin('r.user', 'user')
       .leftJoin('user.cats', 'cats')
       .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
