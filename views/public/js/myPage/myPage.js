@@ -321,9 +321,8 @@ function addMyCat() {
   })
 }
 
-
-
-  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+function modifyMyCat(id) {
+    const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
   console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
@@ -358,6 +357,10 @@ function addMyCat() {
       console.log('error: ', response);
     }
   })  
+
+}
+
+  
 
 
 function deleteMyCat(id) {
