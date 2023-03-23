@@ -22,6 +22,108 @@ export class RequestsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
+
+  // 오프셋 페이지네이션
+  // async getRequestsPagination(page: number = 1) {
+  //   const take = 8;
+    
+  //   const total = await this.requestsRepository.count();
+  //   const requests = await this.requestsRepository.find({
+  //     relations: {
+  //       user: {
+  //         cats: true,
+  //       },
+  //     },
+  //     select: {
+  //       user: {
+  //         nickname: true,
+  //         cats: {
+  //           image: true,
+  //         },
+  //       },
+  //       request_id: true,
+  //       reserved_begin_date: true,
+  //       reserved_end_date: true,
+  //       updated_at: true,
+  //       detail: true,
+  //       is_ongoing: true,
+  //     },
+  //     order: {
+  //       created_at: 'DESC',
+  //     },
+  //     take,
+	//     skip: (page - 1) * take,
+  //   });
+
+  //   const last_Page = Math.ceil(total / take);
+
+  //   if (last_Page >= page) {
+  //     return {
+  //       data: requests,
+  //       meta: {
+  //         total,
+  //         page: page <= 0 ? (page = 1) : page,
+  //         last_Page: last_Page,
+  //       },
+  //     };
+  //   } else {
+  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+  //   }
+  // }
+
+  // async getRequestsByAddressBnamePagination(bname: string, page: number = 1) {
+  //   const take = 8;
+    
+  //   const total = await this.requestsRepository.count();
+  //   const requests = await this.requestsRepository.find({
+  //     relations: {
+  //       user: {
+  //         cats: true,
+  //       },
+  //     },
+
+  //     where: { 
+  //       user: {
+  //         address_bname: bname},
+  //       },
+  //     select: {
+  //       user: {
+  //         nickname: true,
+  //         cats: {
+  //           image: true,
+  //         },
+  //       },
+  //       request_id: true,
+  //       reserved_begin_date: true,
+  //       reserved_end_date: true,
+  //       updated_at: true,
+  //       detail: true,
+  //       is_ongoing: true,
+  //     },
+  //     order: {
+  //       created_at: 'DESC',
+  //     },
+  //     take,
+	//     skip: (page - 1) * take,
+  //   });
+
+  //   const last_Page = Math.ceil(total / take);
+
+  //   if (last_Page >= page) {
+  //     return {
+  //       data: requests,
+  //       meta: {
+  //         total,
+  //         page: page <= 0 ? (page = 1) : page,
+  //         last_Page: last_Page,
+  //       },
+  //     };
+  //   } else {
+  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+  //   }
+  // }
+
+
   async getRequests() {
     const value = await this.cacheManager.get(`all-requests`);
     
@@ -57,6 +159,7 @@ export class RequestsService {
     return value;
     
   }
+
 
   async getRequestsPagination(page = 1, take = 8) {
     const value = await this.cacheManager.get(`RequestsPagination`);
@@ -162,6 +265,7 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
+    await this.cacheManager.del('/requests');
     return await this.requestsRepository.save(newRequest);
   }
 
@@ -209,13 +313,13 @@ export class RequestsService {
     if (!detail) {
       throw new BadRequestException(`상세 요청 형식이 유효하지 않습니다`);
     }
-
     // reserved_time과 detail 항목을 모두 업데이트
     await this.requestsRepository.update(id, {
       reserved_begin_date,
       reserved_end_date,
       detail,
     });
+    await this.cacheManager.del('/requests');
   }
 
   async updateRequestIsOngoing(
@@ -226,11 +330,13 @@ export class RequestsService {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.update(id, { is_ongoing: bodyData.is_ongoing });
+    await this.cacheManager.del('/requests');
   }
 
   async deleteRequestById(userId: number, id: number) {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.softDelete(id);
+    await this.cacheManager.del('/requests');
   }
 }
