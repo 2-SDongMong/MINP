@@ -59,7 +59,7 @@
       submit
     </button>
 
-    <button type="button" id="modal_close_btn">모달 창 닫기</button>
+    <button type="button" id="modal_close_btn">close</button>
   </div>
 
   <div class="modal_layer"></div>
@@ -84,6 +84,10 @@
     const modal = document.getElementById('modal');
     modal.style.display = 'block';
   }
+
+  document.getElementById('modal_close_btn').onclick = function () {
+    document.getElementById('modal').style.display = 'none';
+  };
 
   document.addEventListener('DOMContentLoaded', async function () {
     const product = JSON.parse(
