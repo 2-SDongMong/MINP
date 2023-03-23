@@ -98,7 +98,13 @@
 				<div class="card-body">
 					<p class="card-title">돌봄이 필요한 기간: <%= reserved_dates %></p>
 					<p class="card-title">닉네임: <%= request.user.nickname %></p>
-					<p class="card-title">동네: <%= request.user.address_bname %></p>
+					<p class="card-title">동네: 
+						<% if (user && user.address_certified) { %>
+							<%= request.user.address_bname %>
+						<% } else { %>
+							동네를 인증해주세요!
+						<% } %>
+					</p>
 				</div>
 				</br>
 

@@ -26,7 +26,7 @@ export class AwsService {
         'File upload failed: Missing or incomplete file data'
       );
     }
-    console.log('Received file:', file);
+
     try {
       const key = `${folder}/${Date.now()}_${path.basename(
         file.originalname
