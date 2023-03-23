@@ -8,125 +8,127 @@
 
 <div class="title">
     마이 페이지
-  </div>
+</div>
 
-  <div class="userContainer">
-    <div class="subTitle" id="humanTitle">
-      집사 정보
-    </div>
-    <div class="humanInfo">
-      
-    </div>
+<div class="userContainer">
+  <div class="subTitle" id="humanTitle">
+    집사 정보
+  </div>
+  <div class="humanInfo">
     
   </div>
+    
+</div>
 
-  <div class="catContainer">
-    <div class="subTitleContainer">
+<div class="catContainer">
+  <div class="subTitleContainer">
       
-      <div class="subTitle" id="catTitle">
-        고양이 정보
-        <button class="addCatBtn">추가</button>
+    <div class="subTitle" id="catTitle">
+      고양이 정보
+      <button class="addCatBtn">추가</button>
         
-        <!-- 추가 모달창 -->
-        <div class="addCatModal">
-          <div class="addCatModalBody">
-            <div class="imgContainer4" id="addCatShowImage">
-              <img src="" alt="">
-            </div>
-            <label for="catFile2">
-              <div class="uploaderBtn">사진 선택</div>
-            </label>
-            <input name="image" type="file" id="catFile2" onchange="addCatUploadImage(this)">
+      <!-- 추가 모달창 -->
+      <div class="addCatModal">
+        <div class="addCatModalBody">
+          <div class="imgContainer4" id="addCatShowImage">
+            <img src="" alt="">
+          </div>
+          <label for="catFile2">
+            <div class="uploaderBtn">사진 선택</div>
+          </label>
+          <input name="image" type="file" id="catFile2" onchange="addCatUploadImage(this)">
 
-            <div class="infoContainer2">
-              <div class="nameContainer2">
-                <div class="catInfo2" id="name2">
-                  이름
-                </div>
-                <div class="catName2">
-                  <input value="" type="text" class="catContent2" id="catName2">
-                </div>
+          <div class="infoContainer2">
+            <div class="nameContainer2">
+              <div class="catInfo2" id="name2">
+                이름
               </div>
-              <div class="ageContainer2">
-                <div class="catInfo2" id="age4">
-                  나이
-                </div>
-                <div class="catAge4">
-                  <input value="" type="text" class="catContent2" id="catAge4">                
-                </div>
-              </div>   
-            </div> 
-            <div class="infoContainer2">
-              <div class="nameContainer2">
-                <div class="catInfo2" id="name2">
-                  성별
-                </div>
-                <div class="genderSelect">
-                  <select class="genderSelect2" id="catGender" name="gender">
-                    <option value="male">남아</option>
-                    <option value="female">여아</option>
-                  </select>
-                </div>
-              </div>
-              <div class="ageContainer3">
-                <div class="catInfo3">
-                  중성화 여부
-                </div>
-                <div class="neuteredSelect">
-                  <select class="neuteredSelect2" id="catNeutered" name="neutered">
-                    <option value="yes">유</option>
-                    <option value="no">무</option>
-                  </select>
-                </div>
+              <div class="catName2">
+                <input value="" type="text" class="catContent2" id="catName2">
               </div>
             </div>
-            <div class="characterContainer2">
-              <div class="catInfo2" id="character2">
-                성격
+            <div class="ageContainer2">
+              <div class="catInfo2" id="age4">
+                나이
               </div>
-              <div class="catCharacter2">
-                <input value="" class="catContent" id="catCharacter3">              
+              <div class="catAge4">
+                <input value="" type="text" class="catContent2" id="catAge4">                
+              </div>
+            </div>   
+          </div> 
+          <div class="infoContainer2">
+            <div class="nameContainer2">
+              <div class="catInfo2" id="name2">
+                성별
+              </div>
+              <div class="genderSelect">
+                <select class="genderSelect2" id="catGender" name="gender">
+                  <option value="male">남아</option>
+                  <option value="female">여아</option>
+                </select>
               </div>
             </div>
-            <div class="catModalBtn">
-              <button class="addBtn" onclick= "addMyCat()">등록</button>
-              <button class="clsModalBtn">닫기</button>
+            <div class="ageContainer3">
+              <div class="catInfo3">
+                중성화 여부
+              </div>
+              <div class="neuteredSelect">
+                <select class="neuteredSelect2" id="catNeutered" name="neutered">
+                  <option value="yes">유</option>
+                  <option value="no">무</option>
+                </select>
+              </div>
             </div>
+          </div>
+          <div class="characterContainer2">
+            <div class="catInfo2" id="character2">
+              성격
+            </div>
+            <div class="catCharacter2">
+              <input value="" class="catContent" id="catCharacter3">              
+            </div>
+          </div>
+          <div class="catModalBtn">
+            <button class="addBtn" onclick= "addMyCat()">등록</button>
+            <button class="clsModalBtn">닫기</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="catInfo1">
+    <div class="catInfo1">
 
-  </div>
-
-  <div class="myPostContainer" id="myPosts">
-    <div class="subTitle" id="myPostTitle">
-      내가 쓴 글
     </div>
-    <div class="myRequestTable">
-      <div class="myBoard1">
-        내 품앗이
-      </div>
-      <div id="myRequestTable">
 
+    <div class="myPostContainer" id="myPosts">
+      <div class="subTitle" id="myPostTitle">
+        내가 쓴 글
       </div>
-    </div>
-    <div class="myShareTable">
-      <div class="myBoard2">
-        내 냥품나눔
-      </div>
-      <div id="myShareTable">
+      <div class="myRequestTable">
+        <div class="myBoard1">
+          내 품앗이
+        </div>
+        <div id="myRequestTable">
 
+        </div>
       </div>
-    </div>
-    <div class="myPostTable">
-      <div class="myBoard3">
-        자유게시판
+      <div class="myShareTable">
+        <div class="myBoard2">
+          내 냥품나눔
+        </div>
+        <div id="myShareTable">
+
+        </div>
       </div>
+      <div class="myPostTable">
+        <div class="myBoard3">
+          자유게시판
+        </div>
 
-      <div id="myPostTable">
+        <div id="myPostTable">
 
-      </div>      
+        </div>      
+      </div>
     </div>
   </div>
 </div>
+

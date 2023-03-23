@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -25,8 +26,8 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
-import { EmailService } from './email/email.service';
 import { AwsModule } from './s3-upload/aws.module';
+import { CacheConfigService } from './config/cache.config.service';
 
 @Module({
   imports: [
@@ -41,6 +42,13 @@ import { AwsModule } from './s3-upload/aws.module';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: CacheConfigService,
+    }),
+
     UsersModule,
 
     RequestsModule,
@@ -78,8 +86,8 @@ export class AppModule implements NestModule {
       { path: 'auth/logout', method: RequestMethod.ALL },
       { path: 'requests', method: RequestMethod.POST },
       { path: 'requests/:id', method: RequestMethod.PATCH },
-      { path: 'requests/ongoing/:id', method: RequestMethod.PATCH },
       { path: 'requests/:id', method: RequestMethod.DELETE },
+      { path: 'requests/ongoing/:id', method: RequestMethod.PATCH },
       { path: 'users/mypage', method: RequestMethod.ALL },
       { path: 'users/mypage/:id', method: RequestMethod.ALL },
       { path: 'users/admin', method: RequestMethod.ALL },

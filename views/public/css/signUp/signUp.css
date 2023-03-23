@@ -4,9 +4,32 @@ a {
   transition: all 200ms linear;
 }
 
+.signUpTitle {
+  align-items: center;
+  text-align: center;
+  margin: auto;
+  margin-top: 100px;
+}
+
+.signUpContainer {
+  margin-left: 700px;
+  margin-top: 50px;
+}
+
+.signUpBtnContainer {
+  margin-top: 50px;
+}
+
+.margin {
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
 .form-group{ 
+  align-items: center;
+    text-align: left;
     position: relative;
-    display: block;
+    /* display: block; */
       margin: 0;
       padding: 0;
   }

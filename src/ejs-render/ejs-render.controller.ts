@@ -150,7 +150,7 @@ export class EjsRenderController {
   @Render('index')
   async ShareDetail(@Param('id') id: string, @Req() req) {
     const product = await this.productsService.findOne(id);
-    console.log(product);
+
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }

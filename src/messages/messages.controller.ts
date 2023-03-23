@@ -1,13 +1,13 @@
 import {
   Body,
+  CacheInterceptor,
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Param,
   Post,
   Req,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesService } from './messages.service';
@@ -35,6 +35,7 @@ export class MessagesController {
   async getSentMessages(@Req() req) {
     return await this.messagesService.getSentMessages(req.userId);
   }
+
   @Get('/:id')
   async getMessageById(@Param('id') messageId, @Req() req) {
     messageId = Number(messageId.replace(':', ''));
