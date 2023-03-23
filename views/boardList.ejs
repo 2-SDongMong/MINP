@@ -1,15 +1,18 @@
 <section class="notice">
     <div class="page-title">
         <div class="container">
-            <h3>자유게시판</h3>
+          <br><br>
+          <h3>자유게시판</h3>
         </div>
     </div>
-    <nav class="sp_nav">
+    <div class="container">
+      <nav class="sp_nav">
         <a class="sp_nav-link" href="/boardList/병원">병원</a>
         <a class="sp_nav-link" href="/boardList/자랑">자랑</a>
         <a class="sp_nav-link" href="/boardList/기타">기타</a>
         <a class="sp_nav-link" href="/boardList?page=1" >전체보기</a>
-    </nav>
+      </nav>
+    </div>
   
     <!-- board list area -->
     <div id="board-list">
@@ -42,7 +45,9 @@
 
         </div>
     </div>
-    <a href='/boardPost' class="btn btn-success">글쓰기</a>
+    <div class="container">
+      <a href='/boardPost' class="btn btn-success">글쓰기</a>
+    </div>
     <br><br>
     <div class="pgn">
         <nav aria-label="...">
@@ -71,7 +76,6 @@
                 <% } %>
               <% } %>
 
-
               <% if(Number(posts.meta.page) == posts.meta.last_Page) { %>
               <li class="page-item disabled">
                 <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Next">
@@ -87,26 +91,22 @@
               <% } %>
             </ul>
         </nav>
-    </div>
-    
+    </div>  
 </section>
 
 <script>
-    $(document).ready(function() {
-        viewBoardLists();
+  $(document).ready(function () {
+    viewBoardLists();
+  });
+
+  async function viewBoardLists() {
+    $.ajax({
+      type: 'GET',
+      url: '/posts',
+      success: function (response) {},
+      error: function (err) {
+        console.log(response.responseJSON.message);
+      },
     });
-
-    async function viewBoardLists() {
-        $.ajax({
-            type: "GET",
-            url: '/posts',
-            success: function (response) {
-                
-            },
-            error: function (err) {
-                console.log(response.responseJSON.message);
-            }
-        });
-    }
-
+  }
 </script>

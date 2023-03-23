@@ -1,3 +1,5 @@
+console.log(user);
+console.log(user.id);
 function loadCategories() {
   $.ajax({
     url: '/productsCategory',

@@ -31,6 +31,8 @@ export class EjsRenderController {
   async main(@Req() req) {
     let requests;
     const posts = await this.postsService.getPosts();
+    let products;
+
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
@@ -41,12 +43,16 @@ export class EjsRenderController {
       requests = await this.requestsService.getRequestsPagination(1, 6);
       
     }
+
+    products = await this.productsService.findAll();
+
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
       requests,
       posts,
+      products,
     };
   }
 
@@ -144,6 +150,7 @@ export class EjsRenderController {
   @Render('index')
   async ShareDetail(@Param('id') id: string, @Req() req) {
     const product = await this.productsService.findOne(id);
+    console.log(product);
     if (!product) {
       throw new NotFoundException(`Product with id ${id} not found`);
     }
@@ -153,16 +160,19 @@ export class EjsRenderController {
       product,
     };
   }
-  @Get('/shareMy/:userId')
+
+  @Get('/shareMy')
   @Render('index')
-  async ShareMy(@Param('userId') userId: number, @Req() req) {
+  async ShareMy(@Req() req) {
+    const userId = req.userId;
     const sm = await this.productsService.findProductsByUserId(userId);
+    console.log('Products:', sm); // Add log here
     if (!sm) {
       throw new NotFoundException(`Product with user id ${userId} not found`);
     }
     return {
       components: 'shareMy',
-      userId: req.userId,
+      userId: userId,
       sm,
       product: sm,
     };
@@ -178,7 +188,6 @@ export class EjsRenderController {
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {
     const posts = await this.postsService.getPosts(pageNum);
-    //console.log(posts);
     return { components: 'boardList', userId: req.userId, user: req.user, posts };
   }
 
@@ -186,7 +195,6 @@ export class EjsRenderController {
   @Render('index')
   async boardListCtg(@Req() req, @Param('id') postId: number, @Param('category') postCategory: PostCategoryType) {
     const posts = await this.postsService.getPostByCategory(postId, postCategory);
-    console.log(posts);
     return { components: 'boardListCtg', userId: req.userId, posts };
   }
 

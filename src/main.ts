@@ -12,14 +12,17 @@ import * as fs from 'fs';
 
 async function bootstrap() {
   const httpsOptions = {
-    key: fs.readFileSync('src/config/cert.key'),
-    cert: fs.readFileSync('src/config/cert.crt'),
+    // key: fs.readFileSync('src/config/cert.key'),
+    // cert: fs.readFileSync('src/config/cert.crt'),
   };
-  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
-    httpsOptions,
-  });
+  const app = await NestFactory.create<NestExpressApplication>(
+    AppModule
+    //   {
+    //   httpsOptions,
+    // }
+  );
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.useStaticAssets(join(__dirname, '../', 'views', 'public'));
   app.setBaseViewsDir(join(__dirname, '../', 'views'));
@@ -47,8 +50,9 @@ async function bootstrap() {
     credentials: true,
   });
 
-  await app.listen(3000, () => {
-    console.log('3000번 포트로 서버가 열렸습니다. https://localhost:3000');
+  const PORT = process.env.PORT || 3000;
+  await app.listen(PORT, () => {
+    console.log(`${3000}번 포트로 서버가 열렸습니다. https://localhost:3000`);
   });
 }
 

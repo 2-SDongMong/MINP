@@ -4,11 +4,13 @@
 <nav class="sp_nav">
   <a class="sp_nav-link" href="/shareList">상품조회</a>
   <a class="sp_nav-link" href="/shareProduct">상품등록</a>
+  <a class="sp_nav-link" href="/shareMy">내 상품</a>
 </nav>
-<h5 class="product-title"><%= product.user.nickname %></h5>
+
 <div class="container">
   <div class="row product-detail">
     <div class="col-md-6">
+      <p class="product-nickname">닉네임 : <%= product.user.nickname %></p>
       <div class="product-image">
         <img src="<%= product.imageUrl %>" alt="<%= product.title %>" />
       </div>
@@ -18,13 +20,71 @@
       <p class="product-category"><%= product.productsCategory.name %></p>
       <div class="product-info">
         <h2 class="product-title"><%= product.title %></h2>
-        <p class="product-description"><%= product.description %></p>
+        <p class="product-desption"><%= product.descriptioncri %></p>
       </div>
     </div>
   </div>
 </div>
 
+<% if (product.user.user_id != userId) { %>
+<div class="send">
+  <button
+    class="btn btn-outline-secondary btn-lg"
+    type="button"
+    id="modal_opne_btn"
+    style="border-radius: 10px"
+    text-align="center"
+    onclick="openModal()"
+  >
+    쪽지 보내기
+  </button>
+</div>
+
+<div id="modal">
+  <div class="modal_content">
+    to <%= product.user.nickname %>
+    <div class="form-group">
+      <label for="message">Message</label>
+      <textarea
+        class="form-control"
+        id="inputContent"
+        name="inputContent"
+      ></textarea>
+    </div>
+    <button
+      onclick="sendMessage`<%= product.user.user_id %>`"
+      class="btn btn-outline-primary"
+      type="button"
+    >
+      submit
+    </button>
+
+    <button type="button" id="modal_close_btn">모달 창 닫기</button>
+  </div>
+
+  <div class="modal_layer"></div>
+</div>
+<% } else { %>
+<div class="myproduct">
+  <button class="myproduct-link" onclick="location.href='/shareMy'">
+    내 상품으로 바로가기
+  </button>
+</div>
+
+<% } %>
+
 <script>
+  const userId = '<%= userId %>';
+  if (!userId) {
+    alert('로그인이 필요합니다.');
+    window.location.href = '/login'; // 로그인 페이지로 이동
+  }
+
+  function openModal() {
+    const modal = document.getElementById('modal');
+    modal.style.display = 'block';
+  }
+
   document.addEventListener('DOMContentLoaded', async function () {
     const product = JSON.parse(
       '<%- JSON.stringify(product).replace(/</g, "\\\\u003c") %>'
@@ -37,25 +97,62 @@
   });
 
   async function getAddressFromLocation(location) {
-    const apiKey = '5be4ec4a35f01b4330b109be70e6fcc3'; // 발급받은 인증키를 입력합니다
+    const apiKey = '5be4ec4a35f01b4330b109be70e6fcc3';
     const apiUrl = `https://dapi.kakao.com/v2/local/geo/coord2address.json?x=${location.longitude}&y=${location.latitude}&input_coord=WGS84`;
 
-    const response = await fetch(apiUrl, {
-      headers: {
-        Authorization: `KakaoAK ${apiKey}`,
-      },
-    });
+    try {
+      const response = await fetch(apiUrl, {
+        headers: {
+          Authorization: `KakaoAK ${apiKey}`,
+        },
+      });
 
-    const json = await response.json();
-    const documents = json.documents;
-    if (documents.length > 0) {
-      const region1depthName = documents[0].address.region_1depth_name;
-      const region2depthName = documents[0].address.region_2depth_name;
-      const address = `${region1depthName} ${region2depthName}`;
+      if (!response.ok) {
+        console.error('API 요청 실패:', response.statusText);
+        return '주소를 찾을 수 없습니다';
+      }
 
-      return address;
-    } else {
+      const json = await response.json();
+      const documents = json.documents;
+      if (documents.length > 0) {
+        const region1depthName = documents[0].address.region_1depth_name;
+        const region2depthName = documents[0].address.region_2depth_name;
+        const address = `${region1depthName} ${region2depthName}`;
+
+        return address;
+      } else {
+        return '주소를 찾을 수 없습니다';
+      }
+    } catch (error) {
+      console.error('API 호출 중 에러 발생:', error);
       return '주소를 찾을 수 없습니다';
     }
+  }
+
+  function sendMessage(sender_id) {
+    const inputContent = $('#inputContent').val();
+    if (!inputContent) {
+      alert('내용을 입력해주세요.');
+    } else {
+      $.ajax({
+        type: 'POST',
+        url: '/messages',
+        data: JSON.stringify({
+          content: inputContent,
+          recipient_id: Number(sender_id),
+        }),
+        success: function (response) {
+          document.location.href = document.location.href;
+          alert('전송이 완료되었습니다.');
+        },
+        beforeSend: function (xhrObj) {
+          xhrObj.setRequestHeader('Content-Type', 'application/json');
+          xhrObj.setRequestHeader('Accept', 'application/json');
+        },
+      });
+    }
+  }
+  function check(a, b) {
+    console.log(a, b);
   }
 </script>
