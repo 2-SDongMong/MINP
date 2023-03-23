@@ -48,7 +48,7 @@ import { CacheConfigService } from './config/cache.config.service';
       inject: [ConfigService],
       useClass: CacheConfigService,
     }),
-    
+
     UsersModule,
 
     RequestsModule,
