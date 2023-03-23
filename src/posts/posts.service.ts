@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { IsNull, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { PageOptionsDto } from './dto/page-options.dto';
 //import { PageMetaDto } from './dto/page-meta.dto';
 //import { PageOptionsDto } from './dto/page-options.dto';
 //import { PageDto } from './dto/page-info';
@@ -20,44 +21,67 @@ export class PostsService {
 
   private logger = new Logger('PostsService');
 
-  async getPosts(page: number = 1) {
-    // const take = 7;
-
-    // const [posts, total] = await this.postsRepository.findAndCount({
-    //   take,
-    //   where: cursor ? {
-    //     post_id: MoreThanOrEqual(cursor),
+  // 커서 페이지네이션
+  async getPostsByCursor(pageOptionsDto: PageOptionsDto) {
+    
+    // const [posts,total] = await this.postsRepository.findAndCount({
+    //   take: 7,
+    //   where: pageOptionsDto.endCursor ? {
+    //     post_id: MoreThan(pageOptionsDto.endCursor),
     //   }: null,
     // });
 
-    // const isLastPage = total <= take; 
+    const posts = await this.postsRepository.find({
+      //take: 7,
+      where: pageOptionsDto.endCursor ? {
+        post_id: MoreThan(pageOptionsDto.endCursor),
+      }: null,
+    });
 
-    // let hasNextPage = true;
-    // let hasPreviousPage = false;
-    // let endCursor: number;
-    // let startCursor: number;
-
-    // if (isLastPage || posts.length <= 0) {
-    //   hasNextPage = false;
-    //   endCursor = null;
-    // } else {
-    //   endCursor = posts[posts.length - 1].post_id;
-    //   //hasPreviousPage = true;
-    // }
-
-    // return {
-    //   data: posts,
-    //   meta: {
-    //     total,
-    //     hasNextPage,
-    //     hasPreviousPage,
-    //     endCursor,
-    //     startCursor,
-    //   }
-    // }
-
+    const total = posts.length;
+    const take = 7;
     
-    //오프셋
+    const isLastPage = total <= take; 
+
+    let endCursor: number;
+    let startCursor: number;
+    let hasNextPage = true;
+    let hasPreviousPage = false;
+
+    if (isLastPage || posts.length <= 0) {
+      endCursor = null;
+      startCursor = posts[posts.length - take].post_id;
+      hasNextPage = false;
+      hasPreviousPage = true;
+    } else if (startCursor == posts[0].post_id) {
+      endCursor = posts[posts.length - 1].post_id;
+      startCursor = null ;
+      hasNextPage = true;
+      hasPreviousPage = false;
+    } else{
+      endCursor = posts[posts.length - 1].post_id;
+      startCursor = posts[posts.length - take].post_id;
+      hasNextPage = true;
+      hasPreviousPage = true;
+    }
+
+    return {
+      data: posts,
+      pageOpt: {
+        endCursor,
+        startCursor,
+        hasNextPage,
+        hasPreviousPage,
+      }
+    }
+  }
+
+
+
+  
+  // 오프셋 페이지네이션
+  async getPosts(page: number = 1) {
+    
     const take = 7;
     
     const total = await this.postsRepository.count();
@@ -92,45 +116,6 @@ export class PostsService {
       throw new NotFoundException('해당 페이지는 존재하지 않습니다');
     }
   }
-
-  // public static async findByCursor(cursor: number) {
-  //   return await this.postsRepository.find({
-  //     where: { id: MoreThanOrEqual(cursor) },
-  //     order: { id: "ASC" },
-  //     take: 7,
-  //   });
-  // }
-
-  // async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
-
-  //   const [posts, total] = await this.postsRepository.findAndCount({
-  //     take: pageOptionsDto.take,
-  //     where: pageOptionsDto.cursorId ? {
-  //       id: LessThan(pageOptionsDto.cursorId),
-  //     }: null,
-  //     order: {
-  //       id: pageOptionsDto.sort.toUpperCase() as any,
-  //     },
-  //   });
-
-  //   const takePerPage = pageOptionsDto.take;
-  //   const isLastPage = total <= takePerPage;
-
-  //   let hasNextData = true;
-  //   let cursor: number;
-
-  //   if (isLastPage || posts.length <= 0) {
-  //     hasNextData = false;
-  //     cursor = null;
-  //   } else {
-  //     cursor = posts[posts.length - 1].id;
-  //   }
-
-  //   const pageMetaDto = new PageMetaDto({ pageOptionsDto, total, hasNextData, cursor });
-
-  //   return new PageDto(posts, pageMetaDto);
-  // }
-  
 
   async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
     const take = 7;

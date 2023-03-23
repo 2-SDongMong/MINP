@@ -3,11 +3,17 @@
     <form>
 		<div class="container">
 			<br><br>
-			<h3 class="text-center">글 작성하기</h3>
-		  </div>
-        <div class="form-group">
+			<h3 class="text-center">글 수정하기</h3>
+		</div>
+		<div class="form-group">
             <label for="title">Title:</label>
-            <input type="text" class="form-control" placeholder="title" id="postTitle">
+            <input
+				type="text"
+				class="form-control"
+				placeholder="title"
+				id="postTitle"
+				value="<%= post.title %>"
+				>
         </div>
 
         <div class="form-group">
@@ -21,7 +27,12 @@
 
         <div class="form-group">
             <label for="content">Content:</label>
-            <textarea class="form-control" rows="5" id="postContent"></textarea>
+            <textarea
+				class="form-control"
+				rows="5"
+				id="postContent">
+				<%= post.content %>
+			</textarea>
         </div>
 		<div class="form-group">
 			<div class="show-img-group">
@@ -32,7 +43,7 @@
     </form>
 	<br>
 	<div style='display:inline'>
-		<button onclick="postSave()" id="btn-save" class="btn btn-primary" type="button" style="display: inline-block">작성완료</button>
+		<button onclick="postModify('<%= post.post_id %>')" id="btn-save" class="btn btn-primary" type="button" style="display: inline-block">수정완료</button>
     	<button class="btn btn-secondary" onclick="history.back()" >글목록</button>
 	</div>
 </div>
@@ -62,7 +73,7 @@
 		});
   	}
 
-	function postSave(postId) {
+	function postModify(postId) {
 		const postTitle = $('#postTitle').val();
 		const postCategory = $('#postCategory').val();
         const postContent = $('#postContent').val();
@@ -79,8 +90,8 @@
 		}
 		
 		$.ajax({
-			type: 'POST',
-			url: '/posts',
+			type: 'PATCH',
+			url: `/posts/${id}`,
 			data: {
 				title: postTitle,
 				category: postCategory,
@@ -109,13 +120,12 @@
 						},
 					})
 				}
-
-				alert('게시글이 작성되었습니다.');
+				alert('게시글이 수정되었습니다.');
 				window.location.href = '/boardList?page=1';
 			},
 
 			error: function (response) {
-				console.log('게시글 등록 중 문제 발생 ', response);
+				console.log('게시글 수정 중 문제 발생 ', response);
 			},
 		});
 

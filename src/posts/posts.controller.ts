@@ -20,6 +20,7 @@ import { PostCategoryType } from './post.entity';
 import { CreatePostImageDto } from '../post-images/dto/create-post-image.dto';
 import { PostImagesService } from '../post-images/post-images.service';
 import { CreatePostImagesDto } from '../post-images/dto/create-post-images.dto';
+import { PageOptionsDto } from './dto/page-options.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -31,13 +32,6 @@ export class PostsController {
 
   private logger = new Logger('PostsController');
 
-  // 게시물 목록을 조회 
-  // @Get()
-  // async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<typeof Post>>{ //
-  //  return await this.postsService.paginate(pageOptionsDto);
-  // }
-
-  
   // 이미지 한 장/ 여러 장 등록
   @Post('/:postId/images')
   async createImage(
@@ -52,20 +46,18 @@ export class PostsController {
     return await this.postImagesService.getImagesByPostId(postId);
   }
 
-
-  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
+  // 게시물 목록을 조회 / 커서 페이지네이션
   @Get()
-  async getPosts(@Param('page') page: number = 1) {
-    this.logger.debug(`getPosts(page)`);
-    return await this.postsService.getPosts(page);
+  async getPostsByCursor(@Query() pageOptionsDto: PageOptionsDto) { //
+   return await this.postsService.getPostsByCursor(pageOptionsDto);
   }
 
-
-   // async getPosts() {
-  //   this.logger.debug(`getPosts()`);
-  //   return await this.postsService.getPosts();
+  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
+  // @Get()
+  // async getPosts(@Param('page') page: number = 1) {
+  //   this.logger.debug(`getPosts(page)`);
+  //   return await this.postsService.getPosts(page);
   // }
-
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')

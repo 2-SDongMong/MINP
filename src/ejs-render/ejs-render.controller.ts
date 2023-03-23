@@ -205,10 +205,17 @@ export class EjsRenderController {
     return { components: 'boardDetail', userId: req.userId, post: post[0] };
   }
 
-  @Get('boardPost')
+  @Get('board/post')
   @Render('index')
   async boardPost(@Req() req) {
     return { components: 'boardPost', userId: req.userId };
+  }
+
+  @Get('board/modify/:id')
+  @Render('index')
+  async boardModify(@Param('id') id: number, @Req() req) {
+    const post = await this.postsService.getPostById(id);
+    return { components: 'boardModify', userId: req.userId, post: post[0] };
   }
 
   @Get('/message/:type')
