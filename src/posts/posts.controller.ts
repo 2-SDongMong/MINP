@@ -31,14 +31,7 @@ export class PostsController {
 
   private logger = new Logger('PostsController');
 
-  // 게시물 목록을 조회 
-  // @Get()
-  // async all(@Query() pageOptionsDto: PageOptionsDto): Promise<PageDto<typeof Post>>{ //
-  //  return await this.postsService.paginate(pageOptionsDto);
-  // }
-
-  
-  // 이미지 한 장/ 여러 장 등록
+  // 이미지 여러 장 등록
   @Post('/:postId/images')
   async createImage(
     @Param('postId') postId: number,
