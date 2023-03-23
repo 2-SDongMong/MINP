@@ -36,7 +36,7 @@ function showMyPage() {
             <input value="${response.address_bname}" class="infoContent1" type="text" id="address_bname" placeholder="동" readonly>
             <input type="button" onclick="findAddress()" class="btn btn-outline-secondary" value="주소 검색"><br>
           </div>
-          <div class="">
+          <div class="subLine">
             <li class="miniTitle">동네 인증 상태</li>
             <input value="${addressCertified}" class="infoContent1" type="text" id="address_certified" placeholder"위치 인증 여부" readonly>
             <button onclick="verifyLocation()" type="button" class="btn btn-outline-success">내 위치로 동네 인증하기</button>
@@ -592,16 +592,12 @@ function delMyRequest(id) {
 }
 
 function delMyShare(id) {
-  console.log('야')
   $.ajax({
     type: 'DELETE',
     url: `users/share/${id}`,
     success: function(response) {
       alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
-    },
-    error: function(response) {
-      console.error(response)
     }
   })
 }

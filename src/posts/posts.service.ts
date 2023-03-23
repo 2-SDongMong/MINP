@@ -177,12 +177,16 @@ export class PostsService {
       relations: {
         post_images: true,
         post_comments: true,
+        user: true,
 
       },
       select: {
         post_images: {
           post_image_id: true,
           post_image: true,
+        },
+        user: {
+          nickname: true,
         },
         post_id: true,
         user_id: true,
