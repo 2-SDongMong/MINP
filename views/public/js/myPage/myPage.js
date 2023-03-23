@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
     showMyPage();
     showMyCat();
@@ -264,7 +266,11 @@ function addCatUploadImage(input) {
     success: function (response) {
       console.log('upload success. received url: ', response.url)
       $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
-    }
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
   });
   }
 
@@ -322,7 +328,7 @@ function addMyCat() {
 }
 
 function modifyMyCat(id) {
-    const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
   console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
@@ -430,7 +436,7 @@ function verifyLocation() {
         console.log('두 좌표 사이의 거리: ', line.getLength());
 
         const isInRadius = line.getLength() <= 1000;
-        alert(`위치 인증을 마쳤습니다. 결과는 ${isInRadius}입니다`);
+        // alert(`위치 인증을 마쳤습니다. 결과는 ${isInRadius}입니다`);
 
         // kakao map api를 이용하여 두 좌표의 동네명 비교하기
         geocoder.coord2Address(longitude, latitude, function (results, status) {
@@ -443,13 +449,13 @@ function verifyLocation() {
             console.log('현재 동네명: ', userCurrentBname);
 
             const isSameBname = userCurrentBname == userAddressBname;
-            alert(`동네 인증을 마쳤습니다. ${isSameBname}입니다`);
+            // alert(`동네 인증을 마쳤습니다. ${isSameBname}입니다`);
 
             // 동네명이 같거나 기록된 주소<->현재위치 거리가 1km 이내라면
             // 사용자의 address_certified 컬럼을 true로 변환시키는 ajax 콜 호출
             console.log('isSameBname, isInRadius: ', isSameBname, isInRadius);
             if (isSameBname || isInRadius) {
-              alert('사용자 정보를 변경합니다');
+              alert('동네 인증을 성공적으로 마쳤습니다.');
               $.ajax({
                 type: 'PATCH',
                 url: `users/address/certify`,
@@ -526,7 +532,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${requestCreate}</td>
             <td class="date2">
-              <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
+            <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -570,7 +576,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${postCreate}</td>
             <td class="date2">
-              <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
+            <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -598,6 +604,9 @@ function delMyShare(id) {
     success: function(response) {
       alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
+    },
+    error: function(response) {
+      console.error(response)
     }
   })
 }
