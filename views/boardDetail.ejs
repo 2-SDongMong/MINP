@@ -1,51 +1,105 @@
 <div class="container">
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
     <% if (post.user_id == userId) { %>
-        <button id="btn-update" class="btn btn-warning" onclick="" type="button">수정</button>
-        <button id="btn-delete" class="btn btn-danger" onclick="postDelete(post.post_id)" type="button">삭제</button>
-    <% } %>
-    <br><br>
+        <button id="btn-update" class="btn btn-warning" onclick="updateWrite('<%= post.post_id %>')" type="button">수정</button>
+        <button id="btn-delete" class="btn btn-danger" onclick="postDelete('<%= post.post_id %>')" type="button">삭제</button>
+        <% } %>
+            <br><br>
 
-    <div>
-        <h3><%= post.title %></h3>
-        <h5><%= post.category %></h5>
-    </div>
-    <hr />
-    <div>
-        <div>작성자: <%= post.user_id %></div>
-        <div><%= post.created_at.toLocaleString() %></div>
-    </div>
-    <hr />
-    <div>
-        <div><%= post.content %></div>
-        <dib><img src="<%= post.post_images[0].post_image %>" style="max-width: 600px"></dib>
-    </div>
-    <br><br>
+            <div>
+                <h3><%= post.title %></h3>
+                <h5><%= post.category %></h5>
+            </div>
+            <hr />
+            <div>
+                <div>작성자: <%= post.user_id %></div>
+                <div><%= post.created_at.toLocaleString() %></div>
+            </div>
+            <hr />
+            
+            <div>
+                <div><%= post.content %></div>
+                <% if (post.post_images[0] != null) { %>
+                    <dib><img src="<%= post.post_images[0].post_image %>" style="max-width: 600px"></dib>
+                <% } %>
+            </div>
+            
+            <br><br>
+            <hr />
+            <div>
+                <div>[댓글]</div>
+                <hr />
+                <% for (let i = 0; i < post.post_comments.length ; i++) { 
+                    const comment = post.post_comments[i]; %>
+                    <div>유저 아이디: <%= comment.user_id %></div>
+                    <div><%= comment.content %></div>
+                    <hr />
+                <% } %>
+            </div>
+            <br><br>
+            <form>
+                <div class="form-group">
+                    <label for="comment">댓글 입력</label>
+                    <textarea class="form-control" rows="3" id="commentContent"></textarea>
+                    <button id="comment-save" class="btn btn-primary" onclick="commentSave('<%= post.post_id %>')" type="button">입력</button>
+                </div>
+            </form>
 </div>
 
 <script>
-    
-     function postDelete(postId) {
 
-        if (!postId) {
-			alert('아이디값 없음')
-			return;
-		}
+    function updateWrite(id) {
+		const check = confirm('수정하기');
+
+	}
+
+    function postDelete(id) {
+        const isReal = confirm('정말 삭제하시겠습니까? 되돌릴 수 없습니다');
+        if (!isReal) {
+            alert('삭제 취소')
+            return;
+        }
 
         $.ajax({
             type: "DELETE",
-            url: '/posts/:id',
-            data: {
-				postId: postId,
-			},
+            url: `/posts/${id}`,
             success: function (response) {
                 alert('삭제되었습니다.');
-                window.location.href = '/';
+                window.location.href = '../boardList?page=1';
             },
             error: function (response) {
-                console.log(response.responseJSON.message);
+                console.log(response);
+                console.log(response.responseJSON.message);s
             }
         });
     }
 
+    function commentSave(postId) {
+        const commentContent = $('#commentContent').val();
+        console.log(postId);
+
+		if (!commentContent) {
+			alert('댓글을 입력해주세요.');
+			return;
+		} 
+		
+		$.ajax({
+			type: 'POST',
+			url: `/posts/${postId}/comments`,
+			data: {
+				content: commentContent,
+			},
+			success: function (response) {
+				const id = response.post_comment_id;
+				console.log('post_comment_id: ', id);
+
+				alert('댓글이 작성되었습니다.');
+				window.location.href = `../boardDetail/${postId}`;
+			},
+
+			error: function (response) {
+				console.log('댓글 등록 중 문제 발생 ', response);
+			},
+		});
+    }
 </script>
