@@ -31,7 +31,7 @@ export class PostsController {
 
   private logger = new Logger('PostsController');
 
-  // 이미지 한 장/ 여러 장 등록
+  // 이미지 여러 장 등록
   @Post('/:postId/images')
   async createImage(
     @Param('postId') postId: number,
