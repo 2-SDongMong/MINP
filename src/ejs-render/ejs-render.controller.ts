@@ -28,8 +28,9 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-
     let requests;
+    let products;
+
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
@@ -40,13 +41,14 @@ export class EjsRenderController {
       requests = await this.requestsService.getRequestsPagination(1, 6);
     }
 
+    products = await this.productsService.findAll();
+
     return {
       components: 'main',
       userId: req.userId,
       user: req.user,
-
       requests,
-
+      products,
     };
   }
 
