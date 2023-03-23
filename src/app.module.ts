@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -25,8 +26,8 @@ import { AuthModule } from './auth/auth.module';
 import { PassportModule } from '@nestjs/passport';
 import { EjsRenderController } from './ejs-render/ejs-render.controller';
 import { EjsRenderModule } from './ejs-render/ejs-render.module';
-import { EmailService } from './email/email.service';
 import { AwsModule } from './s3-upload/aws.module';
+import { CacheConfigService } from './config/cache.config.service';
 
 @Module({
   imports: [
@@ -41,6 +42,13 @@ import { AwsModule } from './s3-upload/aws.module';
       useClass: JwtConfigService,
       inject: [ConfigService],
     }),
+    CacheModule.registerAsync({
+      isGlobal: true,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: CacheConfigService,
+    }),
+    
     UsersModule,
 
     RequestsModule,

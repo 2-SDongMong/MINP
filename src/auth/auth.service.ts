@@ -91,8 +91,8 @@ export class AuthService {
     res.redirect('리다이렝트할 url주소');
   }
 
-  async logout(userId: number) {
-    await this.userService.update(userId, { hashdRt: null });
+  async logout(user) {
+    await this.userService.update(user.user_id, { hashdRt: null });
   }
 
   async getTokens(userId: number, email: string) {

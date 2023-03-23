@@ -133,8 +133,8 @@
   function getId(email){
     var aa;
     $.ajax({
-      type: 'POST',
-      url:'/users/a',
+      type: 'Get',
+      url:`/users/${email}`,
       data:{email : email},
       dataType: "text",
       async:false,
@@ -194,11 +194,11 @@
   }
 
   document.getElementById("modal_opne_btn").onclick = function() {
-        document.getElementById("moda").style.display="block";
+        document.getElementById("modal").style.display="block";
     }
    
     document.getElementById("modal_close_btn").onclick = function() {
-        document.getElementById("moda").style.display="none";
+        document.getElementById("modal").style.display="none";
     }   
     document.getElementById("modal_opne_btn1").onclick = function() {
         document.getElementById("modal1").style.display="block";
