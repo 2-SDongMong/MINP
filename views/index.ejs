@@ -47,33 +47,31 @@
       </div>
     <% } %>
     
-    <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %>
-
-    <% if (components === 'signUp') { %> <%- include('signUp.ejs') %> <% } %>
-    <% if (components === 'login') { %> <%- include('login.ejs') %> <% } %>
-
-    <% if (components === 'myPage') { %> <%- include('myPage.ejs') %> <% } %>
-    <% if (components === 'admin') { %> <%- include('admin.ejs') %> <% } %>
-
-    <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
-    <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
-    <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
-    <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
-
-    <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
-    <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
-    <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
-    <% if (components === 'shareMy') { %> <%- include('shareMy.ejs') %> <% } %>
-
-
-
-    <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
-    <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>
-    <% if (components === 'boardPost') { %> <%- include('boardPost.ejs') %> <% } %>
-
-
-    <% if (components === 'message') { %> <%- include('message.ejs') %> <% } %>
-
+    <div style="min-height: calc(100vh - 272px)">
+      <% if (components === 'main') { %> <%- include('main.ejs') %> <% } %>
+  
+      <% if (components === 'signUp') { %> <%- include('signUp.ejs') %> <% } %>
+      <% if (components === 'login') { %> <%- include('login.ejs') %> <% } %>
+  
+      <% if (components === 'myPage') { %> <%- include('myPage.ejs') %> <% } %>
+      <% if (components === 'admin') { %> <%- include('admin.ejs') %> <% } %>
+  
+      <% if (components === 'requestList') { %> <%- include('requestList.ejs') %> <% } %>
+      <% if (components === 'requestDetail') { %> <%- include('requestDetail.ejs') %> <% } %>
+      <% if (components === 'requestPost') { %> <%- include('requestPost.ejs') %> <% } %>
+      <% if (components === 'requestModify') { %> <%- include('requestModify.ejs') %> <% } %>
+  
+      <% if (components === 'shareList') { %> <%- include('shareList.ejs') %> <% } %>
+      <% if (components === 'shareDetail') { %> <%- include('shareDetail.ejs') %> <% } %>
+      <% if (components === 'shareProduct') { %> <%- include('shareProduct.ejs') %> <% } %>
+      <% if (components === 'shareMy') { %> <%- include('shareMy.ejs') %> <% } %>
+  
+      <% if (components === 'boardList') { %> <%- include('boardList.ejs') %> <% } %>
+      <% if (components === 'boardDetail') { %> <%- include('boardDetail.ejs') %> <% } %>
+      <% if (components === 'boardPost') { %> <%- include('boardPost.ejs') %> <% } %>
+  
+      <% if (components === 'message') { %> <%- include('message.ejs') %> <% } %>
+    </div>
 
     <div class="Footer">
       <div class="footerContent">
