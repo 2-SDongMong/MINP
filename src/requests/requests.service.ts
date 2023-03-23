@@ -22,11 +22,10 @@ export class RequestsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
-
   // 오프셋 페이지네이션
   // async getRequestsPagination(page: number = 1) {
   //   const take = 8;
-    
+
   //   const total = await this.requestsRepository.count();
   //   const requests = await this.requestsRepository.find({
   //     relations: {
@@ -52,7 +51,7 @@ export class RequestsService {
   //       created_at: 'DESC',
   //     },
   //     take,
-	//     skip: (page - 1) * take,
+  //     skip: (page - 1) * take,
   //   });
 
   //   const last_Page = Math.ceil(total / take);
@@ -73,7 +72,7 @@ export class RequestsService {
 
   // async getRequestsByAddressBnamePagination(bname: string, page: number = 1) {
   //   const take = 8;
-    
+
   //   const total = await this.requestsRepository.count();
   //   const requests = await this.requestsRepository.find({
   //     relations: {
@@ -82,7 +81,7 @@ export class RequestsService {
   //       },
   //     },
 
-  //     where: { 
+  //     where: {
   //       user: {
   //         address_bname: bname},
   //       },
@@ -104,7 +103,7 @@ export class RequestsService {
   //       created_at: 'DESC',
   //     },
   //     take,
-	//     skip: (page - 1) * take,
+  //     skip: (page - 1) * take,
   //   });
 
   //   const last_Page = Math.ceil(total / take);
@@ -123,11 +122,10 @@ export class RequestsService {
   //   }
   // }
 
-
   async getRequests() {
     const value = await this.cacheManager.get(`all-requests`);
-    
-    if(!value){
+
+    if (!value) {
       const request = await this.requestsRepository.find({
         relations: {
           user: {
@@ -157,29 +155,26 @@ export class RequestsService {
       return request;
     }
     return value;
-    
   }
-
 
   async getRequestsPagination(page = 1, take = 8) {
     const value = await this.cacheManager.get(`RequestsPagination`);
-    if(!value){ 
+    if (!value) {
       const requests = await this.requestsRepository
-      .createQueryBuilder('r')
-      .select()
-      .leftJoin('r.user', 'user')
-      .leftJoin('user.cats', 'cats')
-      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-      .orderBy('r.created_at', 'DESC')
-      .skip((page - 1) * take)
-      .take(take)
-      .getMany();
-      await this.cacheManager.set(`RequestsPagination`, requests);  
-      
+        .createQueryBuilder('r')
+        .select()
+        .leftJoin('r.user', 'user')
+        .leftJoin('user.cats', 'cats')
+        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+        .orderBy('r.created_at', 'DESC')
+        .skip((page - 1) * take)
+        .take(take)
+        .getMany();
+      await this.cacheManager.set(`RequestsPagination`, requests);
+
       return requests;
     }
     return value;
-    
   }
 
   async getRequestsByAddressBname(bname: string) {
@@ -197,29 +192,28 @@ export class RequestsService {
 
   async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
     const value = await this.cacheManager.get(`AddressBname${bname}`);
-    if(!value){ 
+    if (!value) {
       const requests = await this.requestsRepository
-      .createQueryBuilder('r')
-      .select()
-      .leftJoin('r.user', 'user')
-      .leftJoin('user.cats', 'cats')
-      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-      .where('user.address_bname = :bname', { bname })
-      .orderBy('r.created_at', 'DESC')
-      .skip((page - 1) * take)
-      .take(take)
-      .getMany();
-      await this.cacheManager.set(`AddressBname${bname}`, requests);  
-      
+        .createQueryBuilder('r')
+        .select()
+        .leftJoin('r.user', 'user')
+        .leftJoin('user.cats', 'cats')
+        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+        .where('user.address_bname = :bname', { bname })
+        .orderBy('r.created_at', 'DESC')
+        .skip((page - 1) * take)
+        .take(take)
+        .getMany();
+      await this.cacheManager.set(`AddressBname${bname}`, requests);
+
       return requests;
     }
     return value;
-    
   }
 
   async getRequestById(id: number) {
     const value = await this.cacheManager.get(`request${id}`);
-    if(!value){ 
+    if (!value) {
       const request = await this.requestsRepository.find({
         where: { request_id: id },
         relations: {
@@ -248,7 +242,7 @@ export class RequestsService {
           is_ongoing: true,
         },
       });
-      await this.cacheManager.set(`request${id}`, request);  
+      await this.cacheManager.set(`request${id}`, request);
       if (_.isNil(request)) {
         throw new NotFoundException(`Request article not found. id: ${id}`);
       }

@@ -1,13 +1,17 @@
-import { PageMetaDtoParameters } from "./meta-dto-parameter.interface";
+import { PageMetaDtoParameters } from './meta-dto-parameter.interface';
 
 export class PageMetaDto {
-
   readonly total: number;
   readonly take: number;
   readonly hasNextData: boolean;
   readonly cursor: number;
 
-  constructor({pageOptionsDto, total, hasNextData, cursor}: PageMetaDtoParameters) {
+  constructor({
+    pageOptionsDto,
+    total,
+    hasNextData,
+    cursor,
+  }: PageMetaDtoParameters) {
     this.take = pageOptionsDto.take;
     this.total = total;
     this.hasNextData = hasNextData;

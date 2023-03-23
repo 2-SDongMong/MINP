@@ -45,7 +45,6 @@ export class PostsController {
     return await this.postImagesService.getImagesByPostId(postId);
   }
 
-
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
   async getPosts(@Param('page') page: number = 1) {
@@ -53,16 +52,17 @@ export class PostsController {
     return await this.postsService.getPosts(page);
   }
 
-
-   // async getPosts() {
+  // async getPosts() {
   //   this.logger.debug(`getPosts()`);
   //   return await this.postsService.getPosts();
   // }
 
-
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
-  async getPostByCategory(@Param('page') page: number = 1, @Param('category') postCategory: PostCategoryType) {
+  async getPostByCategory(
+    @Param('page') page: number = 1,
+    @Param('category') postCategory: PostCategoryType
+  ) {
     return await this.postsService.getPostByCategory(page, postCategory);
   }
 

@@ -18,7 +18,7 @@ import { RequestsService } from './requests.service';
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 
-  // 오프셋 페이지네이션 
+  // 오프셋 페이지네이션
   // @Get()
   // async getRequests() {
   //   return await this.requestsService.getRequests();
