@@ -109,6 +109,7 @@ export class RequestsService {
         user: {
           user_id: true,
           nickname: true,
+          address_bname: true,
           cats: {
             name: true,
             age: true,
