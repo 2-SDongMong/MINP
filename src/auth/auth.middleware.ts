@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NestMiddleware,
-} from '@nestjs/common';
+import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 
@@ -13,17 +10,9 @@ export class AuthMiddleware implements NestMiddleware {
   ) {}
 
   async use(req: any, res: any, next: Function) {
-    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
-    // const authHeader = req.headers.authorization;
-
-    // console.log('authMiddleware: ', authHeader);
-    // const accessToken = authHeader && authHeader?.split(' ')[1];
-
     const { accessToken } = req.cookies;
 
     if (!accessToken) {
-      // throw new UnauthorizedException('AccessToken not found');
-
       // FIXME: UnauthorizedException이 잘 던져지는 것을 확인하면 삭제하기 => 잘 안됨.
       // => accessToken이 없으면 일단 다음 미들웨어로 건낸다.
       return next();
@@ -41,7 +30,6 @@ export class AuthMiddleware implements NestMiddleware {
     } catch (err) {
       // FIXME: 여기서 바로 에러를 던지는 대신 넘겨주는 이점을 생각해보기.
       // throw new UnauthorizedException(`Invalid JWT: ${accessToken}`);
-
       res.clearCookie('accessToken');
       next(err);
     }

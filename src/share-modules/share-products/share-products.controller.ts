@@ -86,8 +86,6 @@ export class ProductsController {
     @Body('') updateProductsDto: UpdateProductsDto,
     @UploadedFile() file: Express.Multer.File
   ) {
-    console.log('Updating product:', id, updateProductsDto);
-
     if (file) {
       const folder = 'product_images';
       const imageUrl = await this.awsService.uploadFileToS3(folder, file);
@@ -96,7 +94,6 @@ export class ProductsController {
 
     const { productsCategoryId, ...products } = updateProductsDto;
 
-   
     const updateData = {
       ...products,
       productsCategory: productsCategoryId
@@ -105,8 +102,6 @@ export class ProductsController {
     };
 
     const result = await this.productsService.update(id, updateData);
-
-    console.log('Product updated:', result); // Add log here
 
     return result;
   }

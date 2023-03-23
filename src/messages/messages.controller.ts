@@ -12,18 +12,15 @@ import {
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesService } from './messages.service';
 
-
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
-  
   @Get()
   async getMessages() {
     return await this.messagesService.getMessages();
   }
 
- 
   @Get('/received')
   async getReceivedMessages(@Req() req) {
     return await this.messagesService.getReceivedMessages(req.userId);
