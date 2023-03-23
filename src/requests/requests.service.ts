@@ -265,6 +265,7 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
+    await this.cacheManager.del('/requests');
     return await this.requestsRepository.save(newRequest);
   }
 
@@ -312,13 +313,13 @@ export class RequestsService {
     if (!detail) {
       throw new BadRequestException(`상세 요청 형식이 유효하지 않습니다`);
     }
-
     // reserved_time과 detail 항목을 모두 업데이트
     await this.requestsRepository.update(id, {
       reserved_begin_date,
       reserved_end_date,
       detail,
     });
+    await this.cacheManager.del('/requests');
   }
 
   async updateRequestIsOngoing(
@@ -329,11 +330,13 @@ export class RequestsService {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.update(id, { is_ongoing: bodyData.is_ongoing });
+    await this.cacheManager.del('/requests');
   }
 
   async deleteRequestById(userId: number, id: number) {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.softDelete(id);
+    await this.cacheManager.del('/requests');
   }
 }
