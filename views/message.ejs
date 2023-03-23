@@ -133,8 +133,8 @@
   function getId(email){
     var aa;
     $.ajax({
-      type: 'POST',
-      url:'/users/a',
+      type: 'Get',
+      url:`/users/${email}`,
       data:{email : email},
       dataType: "text",
       async:false,
