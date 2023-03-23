@@ -114,6 +114,11 @@
 				</div>
 			<% } %>
 		</div>
+		
+		<br><br>
+		
+
+
 	</div>
 </section>
 
@@ -123,7 +128,7 @@
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (address_certified != true) {
+		if (address_certified != 'true') {
 			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
 			return;
 		}

@@ -1,3 +1,4 @@
+require('newrelic');
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -22,7 +23,7 @@ async function bootstrap() {
     // }
   );
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.useStaticAssets(join(__dirname, '../', 'views', 'public'));
   app.setBaseViewsDir(join(__dirname, '../', 'views'));

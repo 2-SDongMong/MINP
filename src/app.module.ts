@@ -86,8 +86,8 @@ export class AppModule implements NestModule {
       { path: 'auth/logout', method: RequestMethod.ALL },
       { path: 'requests', method: RequestMethod.POST },
       { path: 'requests/:id', method: RequestMethod.PATCH },
-      { path: 'requests/ongoing/:id', method: RequestMethod.PATCH },
       { path: 'requests/:id', method: RequestMethod.DELETE },
+      { path: 'requests/ongoing/:id', method: RequestMethod.PATCH },
       { path: 'users/mypage', method: RequestMethod.ALL },
       { path: 'users/mypage/:id', method: RequestMethod.ALL },
       { path: 'users/admin', method: RequestMethod.ALL },
@@ -114,6 +114,9 @@ export class AppModule implements NestModule {
       { path: 'posts/:id', method: RequestMethod.DELETE },
       { path: 'shareDetail/:id', method: RequestMethod.GET },
       { path: 'shareProduct', method: RequestMethod.POST },
+      { path: 'posts/:postId/comments', method: RequestMethod.POST },
+      { path: 'posts/:postId/comments/:commentId', method: RequestMethod.PATCH },
+      { path: 'posts/:postId/comments/:commentId', method: RequestMethod.DELETE },
       { path: 'shareMy', method: RequestMethod.GET },
 
       // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기

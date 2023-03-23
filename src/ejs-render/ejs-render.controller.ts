@@ -15,6 +15,7 @@ import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service';
 import { ProductsService } from 'src/share-modules/share-products/share-products.service';
 import { ConfigService } from '@nestjs/config';
+import { PostCategoryType } from 'src/posts/post.entity';
 @Controller()
 export class EjsRenderController {
   constructor(
@@ -29,6 +30,7 @@ export class EjsRenderController {
   @Render('index')
   async main(@Req() req) {
     let requests;
+    const posts = await this.postsService.getPosts();
     let products;
 
     if (req.user && req.user.address_certified) {
@@ -39,6 +41,7 @@ export class EjsRenderController {
       );
     } else {
       requests = await this.requestsService.getRequestsPagination(1, 6);
+      
     }
 
     products = await this.productsService.findAll();
@@ -48,6 +51,7 @@ export class EjsRenderController {
       userId: req.userId,
       user: req.user,
       requests,
+      posts,
       products,
     };
   }
@@ -184,8 +188,14 @@ export class EjsRenderController {
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {
     const posts = await this.postsService.getPosts(pageNum);
+    return { components: 'boardList', userId: req.userId, user: req.user, posts };
+  }
 
-    return { components: 'boardList', userId: req.userId, posts };
+  @Get('boardList/:category')
+  @Render('index')
+  async boardListCtg(@Req() req, @Param('id') postId: number, @Param('category') postCategory: PostCategoryType) {
+    const posts = await this.postsService.getPostByCategory(postId, postCategory);
+    return { components: 'boardListCtg', userId: req.userId, posts };
   }
 
   @Get('boardDetail/:id')

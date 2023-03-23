@@ -31,7 +31,7 @@ export class PostsController {
 
   private logger = new Logger('PostsController');
 
-  // 이미지 한 장/ 여러 장 등록
+  // 이미지 여러 장 등록
   @Post('/:postId/images')
   async createImage(
     @Param('postId') postId: number,
@@ -45,23 +45,25 @@ export class PostsController {
     return await this.postImagesService.getImagesByPostId(postId);
   }
 
+
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
   @Get()
-  // async getPosts() {
+  async getPosts(@Param('page') page: number = 1) {
+    this.logger.debug(`getPosts(page)`);
+    return await this.postsService.getPosts(page);
+  }
+
+
+   // async getPosts() {
   //   this.logger.debug(`getPosts()`);
   //   return await this.postsService.getPosts();
   // }
 
-  //페이지네이션
-  async getPosts(@Param('page') page: number = 1) {
-    this.logger.debug(`getPosts()`);
-    return await this.postsService.getPosts(page);
-  }
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
-  async getPostByCategory(@Param('category') postCategory: PostCategoryType) {
-    return await this.postsService.getPostByCategory(postCategory);
+  async getPostByCategory(@Param('page') page: number = 1, @Param('category') postCategory: PostCategoryType) {
+    return await this.postsService.getPostByCategory(page, postCategory);
   }
 
   // 게시물 상세 조회 -> 게시물 ID로 확인
@@ -69,6 +71,7 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   async getPostById(@Param('id') postId: number) {
     this.logger.debug(`getPostById() : ${postId}`);
+    console.log(postId);
     return await this.postsService.getPostById(postId);
   }
 
