@@ -27,8 +27,8 @@ export class ProductsService {
 
   async findAll() {
     const value = await this.cacheManager.get(`all-share-products`);
-    
-    if(!value){
+
+    if (!value) {
       const allProducts = await this.productsRepository.find({
         relations: ['productsTradeLocation', 'productsCategory'],
       });
@@ -37,7 +37,6 @@ export class ProductsService {
       return allProducts;
     }
     return value;
-
   }
 
   async findOne(id) {

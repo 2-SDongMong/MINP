@@ -1,10 +1,8 @@
-import { Type } from "class-transformer";
-import { IsEnum, IsOptional } from "class-validator";
-import { Order } from "./page-order.enum";
+import { Type } from 'class-transformer';
+import { IsEnum, IsOptional } from 'class-validator';
+import { Order } from './page-order.enum';
 
 export class PageOptionsDto {
-
-
   @Type(() => String)
   @IsEnum(Order)
   @IsOptional()
@@ -17,13 +15,11 @@ export class PageOptionsDto {
 
   @Type(() => String)
   @IsOptional()
-  readonly cursorId?: number = "" as any;
+  readonly cursorId?: number = '' as any;
 
   readonly hasNextPage: boolean;
   readonly hasPreviousPage: boolean;
 
-
-    
   // 오프셋
   // @Type(() => Number)
   // //@IsInt()

@@ -30,7 +30,7 @@ export class PostsService {
     //   }: null,
     // });
 
-    // const isLastPage = total <= take; 
+    // const isLastPage = total <= take;
 
     // let hasNextPage = true;
     // let hasPreviousPage = false;
@@ -56,10 +56,9 @@ export class PostsService {
     //   }
     // }
 
-    
     //오프셋
     const take = 7;
-    
+
     const total = await this.postsRepository.count();
     const posts = await this.postsRepository.find({
       relations: {
@@ -73,8 +72,8 @@ export class PostsService {
       order: {
         updated_at: 'DESC',
       },
-	    take,
-	    skip: (page - 1) * take,
+      take,
+      skip: (page - 1) * take,
     });
 
     const last_Page = Math.ceil(total / take);
@@ -130,14 +129,13 @@ export class PostsService {
 
   //   return new PageDto(posts, pageMetaDto);
   // }
-  
 
   async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
     const take = 7;
-    
+
     const total = await this.postsRepository.count({
-      where: { category: postsCategory, deleted_at: null },}
-    );
+      where: { category: postsCategory, deleted_at: null },
+    });
     const posts = await this.postsRepository.find({
       relations: {
         user: {},
@@ -151,8 +149,8 @@ export class PostsService {
       order: {
         updated_at: 'DESC',
       },
-	    take,
-	    skip: (page - 1) * take,
+      take,
+      skip: (page - 1) * take,
     });
 
     const last_Page = Math.ceil(total / take);
@@ -177,12 +175,15 @@ export class PostsService {
       relations: {
         post_images: true,
         post_comments: true,
-
+        user: true,
       },
       select: {
         post_images: {
           post_image_id: true,
           post_image: true,
+        },
+        user: {
+          nickname: true,
         },
         post_id: true,
         user_id: true,
@@ -227,7 +228,6 @@ export class PostsService {
 
     this.postsRepository.update(id, { title, category, content });
   }
-
 
   async deletePost(userId: number, postId: number) {
     const post = await this._existenceCheckById(postId);

@@ -41,7 +41,6 @@ export class EjsRenderController {
       );
     } else {
       requests = await this.requestsService.getRequestsPagination(1, 6);
-      
     }
 
     products = await this.productsService.findAll();
@@ -188,13 +187,25 @@ export class EjsRenderController {
   @Render('index')
   async boardList(@Req() req, @Query('page') pageNum: number) {
     const posts = await this.postsService.getPosts(pageNum);
-    return { components: 'boardList', userId: req.userId, user: req.user, posts };
+    return {
+      components: 'boardList',
+      userId: req.userId,
+      user: req.user,
+      posts,
+    };
   }
 
   @Get('boardList/:category')
   @Render('index')
-  async boardListCtg(@Req() req, @Param('id') postId: number, @Param('category') postCategory: PostCategoryType) {
-    const posts = await this.postsService.getPostByCategory(postId, postCategory);
+  async boardListCtg(
+    @Req() req,
+    @Param('id') postId: number,
+    @Param('category') postCategory: PostCategoryType
+  ) {
+    const posts = await this.postsService.getPostByCategory(
+      postId,
+      postCategory
+    );
     return { components: 'boardListCtg', userId: req.userId, posts };
   }
 
