@@ -1,30 +1,31 @@
 <div id="user-table">
   <thead class="table-dark">
-    <a href="/message/received">받은편지함</a> |
-    <a href="/message/sent">보낸편지함</a> |
-    <a href="/message/unread">안읽은편지함</a> |
+      <div class="msgTitle">
+        <a href="/message/received">받은편지함</a> |
+        <a href="/message/sent">보낸편지함</a> |
+        <a href="/message/unread">안읽은편지함</a> |
+      </div>
     <div id="root">
-    <button type="button" id="modal_opne_btn">편지쓰기</button></div>
-    <div id="modal">
-   
+      <button type="button" id="modal_opne_btn">편지쓰기</button></div>
+      <div id="modal">
       <div class="modal_content">
         <input type="email" name="receive_email" class="form-style" placeholder="받는사람" id="receive_email" autocomplete="off">
-         
+          
         <div class="form-group">
           <label for="message">Message</label>
           <textarea class="form-control"id="emailInputContent" name="emailInputContent" ></textarea>
         </div>
         <button onclick="emailSendMessage()" class="btn btn-outline-primary"
           type="button">submit</button>  
-         
+          
           <button type="button" id="modal_close_btn">모달 창 닫기</button>
-         
+          
       </div>
-     
+    
       <div class="modal_layer"></div>
     </div>
   </thead>
-  <div>
+  <div class="msgContentContainer">
     <div class="box1">
       내용
     </div>
@@ -60,7 +61,7 @@
           
         </summary>
         <div id="inmessage">
-          <div><%= message.content %></div>
+          <div class="msgContent"><%= message.content %></div>
           <button onclick="deleteMessage(<%= message.message_id %>)" id="target_btn" type="button">삭제</button>
 
 
@@ -92,7 +93,6 @@
         </div>
 
 
-         
             
           <% } %>
           
@@ -133,8 +133,8 @@
   function getId(email){
     var aa;
     $.ajax({
-      type: 'POST',
-      url:'/users/a',
+      type: 'Get',
+      url:`/users/${email}`,
       data:{email : email},
       dataType: "text",
       async:false,
@@ -194,26 +194,69 @@
   }
 
   document.getElementById("modal_opne_btn").onclick = function() {
-        document.getElementById("moda").style.display="block";
+        document.getElementById("modal").style.display="block";
     }
-   
+
     document.getElementById("modal_close_btn").onclick = function() {
-        document.getElementById("moda").style.display="none";
+        document.getElementById("modal").style.display="none";
     }   
     document.getElementById("modal_opne_btn1").onclick = function() {
         document.getElementById("modal1").style.display="block";
     }
-   
+
     document.getElementById("modal_close_btn1").onclick = function() {
         document.getElementById("modal1").style.display="none";
     } 
 </script>
 
 <style>
+
+  .msgCreateContainer{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #root {
+    margin-top: 30px;
+    margin-left: 30px;
+  }
+
+  .msgTitle {
+    margin-top: 50px;
+    margin-left: 30px;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
   #inmessage{
     text-align: center;
-    background-color: gainsboro;
+    background-color: #fbf7ec;
   }
+
+  #target_btn {
+    margin-top: 20px;
+    background-color: white;
+    border: 2px solid e8e8e5;
+    border-radius: 20px;
+  }
+
+  #modal_opne_btn{
+    background-color: white;
+    border: 2px solid e8e8e5;
+    border-radius: 20px;
+  }
+
+  #modal_opne_btn1{
+    background-color: white;
+    border: 2px solid e8e8e5;
+    border-radius: 20px;
+  }
+
+
   .box1{
     float: left;
     margin-left: 10px;
@@ -232,7 +275,6 @@
     background-color: rgba(0,0,0,0.7);
     width: 100%;
     height: 100%;
- 
 }
 #popup-wrapper{
 text-align: left;
@@ -250,6 +292,7 @@ text-align: left;
         cursor: pointer;
     }
 }
+
 
 #modal {
   position:relative;
@@ -307,4 +350,15 @@ text-align: left;
   background:rgba(0, 0, 0, 0.5);
   z-index:-1;
 }  
+
+.msgContentContainer {
+  margin-top: 30px;
+  margin-left: 30px;
+  margin-bottom: 50px;
+}
+
+
+.msgContent {
+  margin-top: 20px;
+}
 </style>

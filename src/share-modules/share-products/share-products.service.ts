@@ -1,4 +1,6 @@
 import {
+  CACHE_MANAGER,
+  Inject,
   Injectable,
   NotFoundException,
   UnprocessableEntityException,
@@ -9,6 +11,7 @@ import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { ProductsTradeLocation } from '../share-products-trade-location/entities/products-trade-location.entity';
 import { Products } from './entities/share-products.entity';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ProductsService {
@@ -18,13 +21,23 @@ export class ProductsService {
     @InjectRepository(ProductsTradeLocation)
     private readonly productsTradeLocationRepository: Repository<ProductsTradeLocation>,
     @InjectRepository(User)
-    private readonly usersRepository: Repository<User>
+    private readonly usersRepository: Repository<User>,
+    @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
   async findAll() {
-    return await this.productsRepository.find({
-      relations: ['productsTradeLocation', 'productsCategory'],
-    });
+    const value = await this.cacheManager.get(`all-share-products`);
+    
+    if(!value){
+      const allProducts = await this.productsRepository.find({
+        relations: ['productsTradeLocation', 'productsCategory'],
+      });
+      await this.cacheManager.set(`all-share-products`, allProducts);
+
+      return allProducts;
+    }
+    return value;
+
   }
 
   async findOne(id) {
@@ -104,6 +117,7 @@ export class ProductsService {
       user, // user 객체로 수정
     });
     console.log('result:', result);
+    await this.cacheManager.del('/products');
     return result;
   }
 
@@ -131,7 +145,7 @@ export class ProductsService {
     const result = await this.productsRepository.update(id, updateData);
 
     console.log('Update result:', result); // Add log here
-
+    await this.cacheManager.del('/products');
     return result.affected > 0;
   }
 
@@ -148,6 +162,7 @@ export class ProductsService {
 
   async delete(id) {
     const result = await this.productsRepository.delete(id);
+    await this.cacheManager.del('/products');
     return result.affected > 0;
   }
 }

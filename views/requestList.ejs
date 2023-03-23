@@ -20,7 +20,14 @@
 			  </div>
 			</div>
 			<div>
-				<button onclick="goToWrite(<%= userId %>, <%= user.address_certified %>)" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+				<% 
+				let address_certified = false;
+				if (!user) {
+					address_certified = null
+				} else {
+					address_certified = user.address_certified;
+				} %>
+				<button onclick="goToWrite('<%= userId %>', '<%= address_certified %>')" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
 			</div>
 		</div>
 
@@ -121,9 +128,7 @@
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		console.log('user.address_certified: ', address_certified);
-		console.log('userId: ', userId);
-		if (!address_certified) {
+		if (address_certified != 'true') {
 			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
 			return;
 		}

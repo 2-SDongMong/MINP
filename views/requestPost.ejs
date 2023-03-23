@@ -21,7 +21,14 @@
   </div>
 
   <div class="d-flex">
-	<button onclick="createRequest(<%= userId %>, <%= user.address_certified %>)" type="button" class="btn btn-outline-dark">제출</button>
+	<% 
+	let address_certified = false;
+	if (!user) {
+		address_certified = null
+	} else {
+		address_certified = user.address_certified;
+	} %>
+	<button onclick="createRequest('<%= userId %>', '<%= user.address_certified %>')" type="button" class="btn btn-outline-dark">제출</button>
 	<button onclick="location.href='/request/list/1'" type="button" class="btn btn-outline-secondary">취소</button>
   </div>
 </section>
@@ -32,7 +39,7 @@
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (!address_certified) {
+		if (address_certified != 'true') {
 			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
 			return;
 		}
