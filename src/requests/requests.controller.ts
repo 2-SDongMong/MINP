@@ -18,10 +18,11 @@ import { RequestsService } from './requests.service';
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 
-  @Get()
-  async getRequests() {
-    return await this.requestsService.getRequests();
-  }
+  // 오프셋 페이지네이션
+  // @Get()
+  // async getRequests() {
+  //   return await this.requestsService.getRequests();
+  // }
 
   @Get('/page/:page')
   async getRequestsPagination(@Param('page') page: number) {
@@ -45,6 +46,12 @@ export class RequestsController {
       2
     );
   }
+
+  // // 기존 목록 조회
+  // @Get()
+  // async getRequests() {
+  //   return await this.requestService.getRequests();
+  // }
 
   @Get('/:id')
   async getRequestById(@Param('id') requestId: number) {

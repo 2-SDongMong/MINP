@@ -153,74 +153,45 @@
             <% } %>
           </ul>
         </div>
-
-
-
-
-
-
       </div>
-  </div>
-  <div class="bodyContent3">
-    <div class="contentTitle2" id="boardTitle">
-      자유 게시판
-    </div>
-    <div class="shareMore">
-      <button class="showMoreBtn" id="boardBtn" onclick="">more</button>
-    </div>
+    <div class="bodyContent3">
+      <div class="contentTitle2" id="boardTitle">
+        자유 게시판
+      </div>
+      <div class="shareMore"> 
+        <button class="showMoreBtn" id="boardBtn" onclick="location.href='/boardList?page=1'">more</button>
+      </div>
 
-    <div class="boardTable">
-      <table class="boardView" id="table1">
-        <tr>
-          <th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-          <td class="shortContent">뭉치맘</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table2">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">집사 사담</td>
-          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-          <td class="shortContent">고.양이만세</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table3">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-          <td class="shortContent">뭉치맘</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table4">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">집사 사담</td>
-          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-          <td class="shortContent">고양이만세</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table5">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">동물 병원 후기</td>
-          <td class="longContent">염창 고양이 사랑 병원 후기입니다.</td>         
-          <td class="shortContent">뭉치맘</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-      <table class="boardView" id="table6">
-        <tr>
-          <th th class="blank"></th><td class="shortContent">집사 사담</td>
-          <td class="longContent">고양이 오버 그루밍 질문이요!</td>         
-          <td class="shortContent">고양이만세</td>
-          <td class="date">0000.00.00</td>
-        </tr>
-      </table>
-    </div>
-    
-      
+      <div id="board-list">
+        <div class="container">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="th-num">번호</th>
+                <th scope="col" class="th-ctg">카테고리</th>
+                <th scope="col" class="th-title">제목</th>
+                <th scope="col" class="th-writer">작성자</th>
+                <th scope="col" class="th-date">등록일</th>
+              </tr>
+            </thead>
+          <tbody>
+            <% for (let i = 0; i < 7 ; i++) {
+                const post = posts.data[i];
+                const created_at = post.created_at.toLocaleString(); %>
+            
+              <tr>
+                <td scope="row"><%= post.post_id %></td>
+                <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
+                <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
+                <td><%= post.user_id %></td>
+                <td><%= created_at %></td>
+              </tr>
+              <% } %>
+              </tbody>
+          </table>
+      </div>
+    </div> 
+  </div>
   </div> 
 
 </div>

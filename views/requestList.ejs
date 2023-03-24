@@ -114,6 +114,11 @@
 				</div>
 			<% } %>
 		</div>
+		
+		<br><br>
+		
+
+
 	</div>
 </section>
 
@@ -123,8 +128,20 @@
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (address_certified != true) {
-			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
+		let myCat = [];
+		$.ajax({
+			type: 'GET',
+			url: '/cats',
+			success: function (response) {
+				myCat = response;
+			},
+			error: function (response) {
+				console.log(response);
+			}
+		})
+
+		if (address_certified != 'true' || myCat.length <= 0) {
+			alert('마이페이지에서 내 동네 인증하기와 고양이 등록을 마치면 글쓰기가 가능합니다')
 			return;
 		}
 		location.href='/request/post'

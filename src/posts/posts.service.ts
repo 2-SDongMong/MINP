@@ -6,7 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, Not, Repository } from 'typeorm';
+import { IsNull, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
+//import { PageMetaDto } from './dto/page-meta.dto';
+//import { PageOptionsDto } from './dto/page-options.dto';
+//import { PageDto } from './dto/page-info';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -18,12 +21,57 @@ export class PostsService {
   private logger = new Logger('PostsService');
 
   async getPosts(page: number = 1) {
-    this.logger.debug(`getPosts()`);
+    // const take = 7;
 
-    // 페이지네이션
-    const take = 10;
+    // const [posts, total] = await this.postsRepository.findAndCount({
+    //   take,
+    //   where: cursor ? {
+    //     post_id: MoreThanOrEqual(cursor),
+    //   }: null,
+    // });
 
-    const [posts, total] = await this.postsRepository.findAndCount({
+    // const isLastPage = total <= take;
+
+    // let hasNextPage = true;
+    // let hasPreviousPage = false;
+    // let endCursor: number;
+    // let startCursor: number;
+
+    // if (isLastPage || posts.length <= 0) {
+    //   hasNextPage = false;
+    //   endCursor = null;
+    // } else {
+    //   endCursor = posts[posts.length - 1].post_id;
+    //   //hasPreviousPage = true;
+    // }
+
+    // return {
+    //   data: posts,
+    //   meta: {
+    //     total,
+    //     hasNextPage,
+    //     hasPreviousPage,
+    //     endCursor,
+    //     startCursor,
+    //   }
+    // }
+
+    //오프셋
+    const take = 7;
+
+    const total = await this.postsRepository.count();
+    const posts = await this.postsRepository.find({
+      relations: {
+        user: {},
+      },
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        updated_at: 'DESC',
+      },
       take,
       skip: (page - 1) * take,
     });
@@ -44,18 +92,81 @@ export class PostsService {
     }
   }
 
-  async getPostByCategory(postsCategory: PostCategoryType) {
-    return await this.postsRepository.find({
+  // public static async findByCursor(cursor: number) {
+  //   return await this.postsRepository.find({
+  //     where: { id: MoreThanOrEqual(cursor) },
+  //     order: { id: "ASC" },
+  //     take: 7,
+  //   });
+  // }
+
+  // async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
+
+  //   const [posts, total] = await this.postsRepository.findAndCount({
+  //     take: pageOptionsDto.take,
+  //     where: pageOptionsDto.cursorId ? {
+  //       id: LessThan(pageOptionsDto.cursorId),
+  //     }: null,
+  //     order: {
+  //       id: pageOptionsDto.sort.toUpperCase() as any,
+  //     },
+  //   });
+
+  //   const takePerPage = pageOptionsDto.take;
+  //   const isLastPage = total <= takePerPage;
+
+  //   let hasNextData = true;
+  //   let cursor: number;
+
+  //   if (isLastPage || posts.length <= 0) {
+  //     hasNextData = false;
+  //     cursor = null;
+  //   } else {
+  //     cursor = posts[posts.length - 1].id;
+  //   }
+
+  //   const pageMetaDto = new PageMetaDto({ pageOptionsDto, total, hasNextData, cursor });
+
+  //   return new PageDto(posts, pageMetaDto);
+  // }
+
+  async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
+    const take = 7;
+
+    const total = await this.postsRepository.count({
       where: { category: postsCategory, deleted_at: null },
-      select: [
-        'user_id',
-        'title',
-        'category',
-        'content',
-        'created_at',
-        'updated_at',
-      ],
     });
+    const posts = await this.postsRepository.find({
+      relations: {
+        user: {},
+      },
+      where: { category: postsCategory, deleted_at: null },
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        updated_at: 'DESC',
+      },
+      take,
+      skip: (page - 1) * take,
+    });
+
+    const last_Page = Math.ceil(total / take);
+
+    if (last_Page >= page) {
+      return {
+        data: posts,
+        meta: {
+          total,
+          page: page <= 0 ? (page = 1) : page,
+          last_Page: last_Page,
+        },
+      };
+    } else {
+      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+    }
   }
 
   async getPostById(post_id: number) {
@@ -63,17 +174,27 @@ export class PostsService {
       where: { post_id, deleted_at: IsNull() },
       relations: {
         post_images: true,
+        post_comments: true,
+        user: true,
       },
       select: {
         post_images: {
           post_image_id: true,
           post_image: true,
         },
+        user: {
+          nickname: true,
+        },
         post_id: true,
         user_id: true,
         title: true,
         category: true,
         content: true,
+        post_comments: {
+          post_comment_id: true,
+          content: true,
+          user_id: true,
+        },
         created_at: true,
         updated_at: true,
       },
