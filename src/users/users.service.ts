@@ -256,11 +256,19 @@ export class UsersService {
   async getUserByStatus(id: number) {
     const user = await this.findUser(id);
     if (user.status === '관리자') {
-      const user = await this.userRepository.find({
+      const users = await this.userRepository.find({
         where: { status: '가입 대기' },
         relations: { cats: true },
+        select: {
+          cats: {
+            name: true,
+          },
+          user_id: true,
+          nickname: true,
+          status: true,
+        },
       });
-      return user;
+      return users;
     } else {
       throw new UnauthorizedException('권한이 없습니다.');
     }

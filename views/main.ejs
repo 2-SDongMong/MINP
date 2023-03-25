@@ -5,7 +5,6 @@
       품앗이 신청
       <button class="showMoreBtn" id="shareBtn" onclick="location.href='/request/list/1'">more</button>
     </div>
-    
     <div class="contentSub1">
       <div class="locationContainer" id="section1">
         <div class="location">
@@ -31,168 +30,161 @@
           </p>
         </div>
       </div>
-
-      
-    </div>
-    <div class="slideWarpper1">
-      <ul class="slides1">
-        <% for (let i = 0; i < requests.length; i++) {
-          const request = requests[i]; 
-          let reserved_dates = ''
-          if (request.reserved_end_date == request.reserved_begin_date) {
-            reserved_dates = request.reserved_begin_date;
-          } else {
-            reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
-          }
-          %>
-          <li class="catCard">
-            <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
-              <img src="" alt="">
-              <div class="status">
-                <p><% if (request.is_ongoing) { %>
-                  모집중
+      <div class="slideWarpper1">
+        <ul class="slides1">
+          <% for (let i = 0; i < requests.length; i++) {
+            const request = requests[i]; 
+            let reserved_dates = ''
+            if (request.reserved_end_date == request.reserved_begin_date) {
+              reserved_dates = request.reserved_begin_date;
+            } else {
+              reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+            }
+            %>
+            <li class="catCard">
+              <div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
+                <img src="" alt="">
+                <div class="status">
+                  <p><% if (request.is_ongoing) { %>
+                    모집중
+                    <% } else { %>
+                    마감됨
+                    <% } %>
+                  </p>
+                </div>
+              </div>
+              <div class="periodContainer">
+                <div class="catInfo" id="period">
+                  기간
+                </div>
+                <div class="periodDetail">
+                  <%= reserved_dates %>
+                </div>
+              </div>
+              <div class="infoContainer">
+                <div class="nameContainer">
+                  <div class="catInfo" id="name">
+                    연락
+                  </div>
+                  <div class="catName">
+                    <%= request.user.nickname %>
+                  </div>
+                </div>               
+              </div>
+              <div class="characterContainer">
+                <div class="catInfo" id="character">
+                  지역
+                </div>
+                <div class="catCharacter">
+                  <% if (user && user.address_certified) { %>
+                    <%= request.user.address_bname %>
                   <% } else { %>
-                  마감됨
+                    동네를 인증해주세요!
                   <% } %>
-                </p>
-              </div>
-            </div>
-            <div class="periodContainer">
-              <div class="catInfo" id="period">
-                기간
-              </div>
-              <div class="periodDetail">
-                <%= reserved_dates %>
-              </div>
-            </div>
-            <div class="infoContainer">
-              <div class="nameContainer">
-                <div class="catInfo" id="name">
-                  연락
-                </div>
-                <div class="catName">
-                  <%= request.user.nickname %>
                 </div>
               </div>
-              
-            </div>
-            <div class="characterContainer">
-              <div class="catInfo" id="character">
-                지역
+              <div class="more">
+                <button class="moreBtn" onclick="location.href='/request/detail/<%= request.request_id %>'">> 자세히 보기</button>
               </div>
-              <div class="catCharacter">
-                <% if (user && user.address_certified) { %>
-                  <%= request.user.address_bname %>
-                <% } else { %>
-                  동네를 인증해주세요!
-                <% } %>
+            </li>
+          <% } %>
+        </ul>
+      </div>  
+    </div>   
+  </div>
+
+
+  <div class="bodyContent2">
+    <div class="contentTitle2">
+      냥품 나눔
+    </div>    
+    <div class="contentSub2">
+      <div class="llocationContainer" id="section2">
+
+        <p class="page">
+          <span class="page1" id="prev2">
+            ←
+          </span>
+          <span class="page1">
+            |
+          </span>
+          <span class="page1" id="next2">
+            →
+          </span>
+        </p>
+      </div>
+    </div>
+    <div class="slideWarpper2">
+      <ul class="slides2">
+        <% for (var i = 0; i < products.length; i++) { %>
+        
+          <li class="cardContiner">
+            <a
+            href="/shareDetail/<%= products[i].id %>"
+            style="text-decoration: none; color: inherit"
+            > 
+          <img src="<%= products[i].imageUrl %>" alt="<%= products[i].name %>" style="object-fit: cover; width: 370px; height: 300px;">
+          <div class="shareCard">
+            <div class="detailContainer">
+              <div class="shareContainer">
+                <div  class="shareCategory" id="item">
+                  <%= products[i].productsCategory.name %>
+                </div>
               </div>
             </div>
-            <div class="more">
-              <button class="moreBtn" onclick="location.href='/request/detail/<%= request.request_id %>'">> 자세히 보기</button>
+            <div class="postContainer">
+              <div class="shareTitle">
+                <%= products[i].title %>
+              </div>
+              <div class="shareContent">
+                <%= products[i].description %>
+              </div>
             </div>
-          </li>
+          </div>
+        </li>
+        </a>
         <% } %>
       </ul>
     </div>
   </div>
-</div>
 
-      <div class="bodyContent2">
-        <div class="contentTitle2">
-          냥품 나눔
-        </div>
-        
-        <div class="contentSub2">
-          <div class="llocationContainer" id="section2">
- 
-            <p class="page">
-              <span class="page1" id="prev2">
-                ←
-              </span>
-              <span class="page1">
-                |
-              </span>
-              <span class="page1" id="next2">
-                →
-              </span>
-            </p>
-          </div>
-        </div>
-
-
-        <div class="slideWarpper2">
-          <ul class="slides2">
-            <% for (var i = 0; i < products.length; i++) { %>
-            
-              <li class="cardContiner">
-                <a
-                href="/shareDetail/<%= products[i].id %>"
-                style="text-decoration: none; color: inherit"
-               > 
-              <img src="<%= products[i].imageUrl %>" alt="<%= products[i].name %>" style="object-fit: cover; width: 370px; height: 300px;">
-              <div class="shareCard">
-                <div class="detailContainer">
-                  <div class="shareContainer">
-                    <div  class="shareCategory" id="item">
-                      <%= products[i].productsCategory.name %>
-                    </div>
-                  </div>
-                </div>
-                <div class="postContainer">
-                  <div class="shareTitle">
-                    <%= products[i].title %>
-                  </div>
-                  <div class="shareContent">
-                    <%= products[i].description %>
-                  </div>
-                </div>
-              </div>
-            </li>
-            </a>
-            <% } %>
-          </ul>
-        </div>
-      </div>
-    <div class="bodyContent3">
-      <div class="contentTitle2" id="boardTitle">
-        자유 게시판
-      </div>
-      <div class="shareMore"> 
-        <button class="showMoreBtn" id="boardBtn" onclick="location.href='/boardList?page=1'">more</button>
-      </div>
-
-      <div id="board-list">
+  <div class="bodyContent3">
+    <div class="contentTitle2" id="boardTitle">
+      자유 게시판
+    </div>
+    <div class="shareMore"> 
+      <button class="showMoreBtn" id="boardBtn" onclick="location.href='/boardList?page=1'">more</button>
+    </div>
+    <div id="board-list">
         <div class="container">
           <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="th-num">번호</th>
-                <th scope="col" class="th-ctg">카테고리</th>
-                <th scope="col" class="th-title">제목</th>
-                <th scope="col" class="th-writer">작성자</th>
-                <th scope="col" class="th-date">등록일</th>
-              </tr>
-            </thead>
-          <tbody>
-            <% for (let i = 0; i < 7 ; i++) {
-                const post = posts.data[i];
-                const created_at = post.created_at.toLocaleString(); %>
-            
-              <tr>
-                <td scope="row"><%= post.post_id %></td>
-                <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
-                <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
-                <td><%= post.user_id %></td>
-                <td><%= created_at %></td>
-              </tr>
-              <% } %>
+              <thead>
+                <tr>
+                  <th scope="col" class="th-num">번호</th>
+                  <th scope="col" class="th-ctg">카테고리</th>
+                  <th scope="col" class="th-title">제목</th>
+                  <th scope="col" class="th-writer">작성자</th>
+                  <th scope="col" class="th-date">등록일</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% for (let i = 0; i < 7 ; i++) {
+                    const post = posts.data[i];
+                    const created_at = post.created_at.toLocaleString(); %>
+                
+                  <tr>
+                    <td scope="row"><%= post.post_id %></td>
+                    <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
+                    <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
+                    <td><%= post.user.nickname %></td>
+                    <td><%= created_at %></td>
+                  </tr>
+                  <% } %>
               </tbody>
-          </table>
-      </div>
-    </div> 
+            </table>
+      </div> 
+    </div>
   </div>
-  </div> 
 
 </div>
 

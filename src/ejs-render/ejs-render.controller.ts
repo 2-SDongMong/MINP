@@ -58,26 +58,31 @@ export class EjsRenderController {
   @Get('/signUp')
   @Render('index')
   signUp(@Req() req) {
-    return { components: 'signUp', userId: req.userId };
+    return { components: 'signUp', userId: req.userId, user: req.user };
   }
 
   @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
     const KAKAO_APP_KEY = this.configService.get<string>('KAKAO_APP_KEY');
-    return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
+    return {
+      components: 'myPage',
+      userId: req.userId,
+      KAKAO_APP_KEY,
+      user: req.user,
+    };
   }
 
   @Get('/admin')
   @Render('index')
   admin(@Req() req) {
-    return { components: 'admin', userId: req.userId };
+    return { components: 'admin', userId: req.userId, user: req.user };
   }
 
   @Get('/login')
   @Render('index')
   login(@Req() req) {
-    return { components: 'login', userId: req.userId };
+    return { components: 'login', userId: req.userId, user: req.user };
   }
 
   @Get('/request/list/:page')
@@ -131,6 +136,7 @@ export class EjsRenderController {
       components: 'requestModify',
       userId: req.userId,
       request: request[0],
+      user: req.user,
     };
   }
 
@@ -142,6 +148,7 @@ export class EjsRenderController {
       components: 'shareList',
       userId: req.userId,
       products,
+      user: req.user,
     };
   }
 
@@ -157,6 +164,7 @@ export class EjsRenderController {
       components: 'shareDetail',
       userId: req.userId,
       product,
+      user: req.user,
     };
   }
 
@@ -174,13 +182,14 @@ export class EjsRenderController {
       userId: userId,
       sm,
       product: sm,
+      user: req.user,
     };
   }
 
   @Get('/shareProduct')
   @Render('index')
   ShareProduct(@Req() req) {
-    return { components: 'shareProduct', userId: req.userId };
+    return { components: 'shareProduct', userId: req.userId, user: req.user };
   }
 
   @Get('boardList')
@@ -206,20 +215,30 @@ export class EjsRenderController {
       postId,
       postCategory
     );
-    return { components: 'boardListCtg', userId: req.userId, posts };
+    return {
+      components: 'boardListCtg',
+      userId: req.userId,
+      posts,
+      user: req.user,
+    };
   }
 
   @Get('boardDetail/:id')
   @Render('index')
   async boardDetail(@Req() req, @Param('id') postId: number) {
     const post = await this.postsService.getPostById(postId);
-    return { components: 'boardDetail', userId: req.userId, post: post[0] };
+    return {
+      components: 'boardDetail',
+      userId: req.userId,
+      post: post[0],
+      user: req.user,
+    };
   }
 
   @Get('boardPost')
   @Render('index')
   async boardPost(@Req() req) {
-    return { components: 'boardPost', userId: req.userId };
+    return { components: 'boardPost', userId: req.userId, user: req.user };
   }
 
   @Get('/message/:type')
@@ -234,6 +253,11 @@ export class EjsRenderController {
       messages = await this.messagesService.getUnreadMessages(req.userId);
     }
 
-    return { components: 'message', userId: req.userId, messages };
+    return {
+      components: 'message',
+      userId: req.userId,
+      messages,
+      user: req.user,
+    };
   }
 }

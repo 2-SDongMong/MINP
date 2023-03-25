@@ -41,7 +41,9 @@
                 <div class="form-group">
                     <label for="comment">댓글 입력</label>
                     <textarea class="form-control" rows="3" id="commentContent"></textarea>
+                    <% if (userId) { %>
                     <button id="comment-save" class="btn btn-primary" onclick="commentSave('<%= post.post_id %>')" type="button">입력</button>
+                    <% } %>
                 </div>
             </form>
 </div>
