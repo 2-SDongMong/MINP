@@ -52,13 +52,13 @@
 
             <div class="addCatModalBody">
                 고양이 창
-                <div class="imgContainer4" id="addCatShowImage">
+                <div class="imgContainer4" id="registerCatShowImage">
                     <img src="" alt="">
                 </div>
                 <label for="catFile2">
                     <div class="uploaderBtn">사진 선택</div>
                 </label>
-                <input name="image" type="file" id="catFile2" onchange="addCatUploadImage(this)">
+                <input name="image" type="file" id="catFile2" onchange="registerCatUploadImage(this)">
 
                 <div class="infoContainer2">
                     <div class="nameContainer2">
@@ -74,7 +74,7 @@
                             나이
                         </div>
                         <div class="catAge4">
-                            <input value="" type="text" class="catContent2" id="catAge4">
+                            <input value="" type="text" class="catContent2" id="catAge4" placeholder="(선택)">
                         </div>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         성격
                     </div>
                     <div class="catCharacter2">
-                        <input value="" class="catContent" id="catCharacter3">
+                        <input value="" class="catContent" id="catCharacter3" placeholder="(선택)">
                     </div>
                 </div>
 
@@ -125,6 +125,7 @@
                 </div>
     </section>
 </body>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <script>
@@ -139,9 +140,11 @@
             }).open();
         });
     }
+    
+    let isNickDuplicated = true;
     function checkNick() {
         const signupNickname = $('#signupNickname').val();
-        console.log(signupNickname)
+
         $.ajax({
             type: 'POST',
             url: '/users/signup/check',
@@ -150,11 +153,12 @@
             async: false,
             success: function (data) {
                 aa = data
-                console.log("data", aa, typeof (aa))
+
             }
         });
         if (aa === 'true') {
             alert("사용가능한 닉네임입니다")
+            isNickDuplicated = false;
             const target = document.getElementById('target_btn_nickname')
             target.disabled = false
         } else {
@@ -182,6 +186,7 @@
             }
         })
     }
+
     function check() {
         const checkNumber = $('#checkNumber').val();
         const signupEmail = $('#signupEmail').val();
@@ -201,7 +206,6 @@
             oncomplete: function (data) {
                 var address_road = data.address; // 최종 도로명 주소
                 var address_bname = data.bname ? data.bname : ''; // 동 (지번주소)
-                console.log("check", address_road, address_bname)
 
                 // 주소 정보를 해당 필드에 넣는다.
                 document.getElementById("signupAddressRoad").value = address_road;
@@ -210,7 +214,32 @@
         }).open();
     }
 
+    function registerCatUploadImage(input) {
+        if (input.files.length === 0) {
+            alert('파일을 선택해주세요.');
+            return;
+        }
+        const formData = new FormData();
+        formData.append('image', input.files[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '/products/imageUpload',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                $(`#registerCatShowImage`).attr('style', `background-image: url(${response.url});`);
+            },
+            error: function (err) {
+                console.log(err);
+                alert('오류 ')
+            },
+        });
+    }
+
     function signUp() {
+        // 회원 정보 입력
         const signupNickname = $('#signupNickname').val();
         const signupName = $('#signupName').val();
         const signupEmail = $('#signupEmail').val();
@@ -220,9 +249,20 @@
         const signupPhonenumber = $('#signupPhonenumber').val();
         const signupReferralNickname = $('#signupReferralNickname').val();
 
-
+        // 고양이 프로필 입력
+        const name = $('#catName2').val();
+        const age = +$('#catAge4').val();
+        const gender = $('#catGender').val();
+        const neutered = $('#catNeutered').val();
+        const character = $('#catCharacter3').val();
+        let image = $(`#registerCatShowImage`).css('background-image')
+        image = image == "none" ? '' : image.replace(/^url\(['"](.+)['"]\)/, '$1');
+    
+        // 회원 정보 입력값 체크
         if (!signupNickname) {
             alert('닉네임을 입력해주세요.');
+        } else if (isNickDuplicated) {
+            alert('닉네임이 중복되지 않았는지 확인해주세요.');
         } else if (!signupName) {
             alert('이름을 입력해주세요.');
         } else if (!signupEmail) {
@@ -233,6 +273,16 @@
             alert('주소를 입력해주세요.');
         } else if (!signupPhonenumber) {
             alert('연락처를 입력해주세요.');
+        } 
+        // 고양이 프로필 입력값 체크 (나이와 성격은 선택, 나머지는 필수)
+        else if (!name) {
+            alert('내 고양이 이름을 입력해주세요.');
+        } else if (!gender) {
+            alert('내 고양이의 성별을 선택해주세요.');
+        } else if (!neutered) {
+            alert('내 고양이의 중성화 여부를 선택해주세요.');
+        } else if (image == '') {
+            alert('고양이 프로필 사진을 등록해주세요.');
         } else {
             $.ajax({
                 type: 'POST',
@@ -261,6 +311,7 @@
             })
         }
     }
+
     function checkNickname(){
         const signupReferralNickname = $('#signupReferralNickname').val();
         $.ajax({
@@ -273,9 +324,10 @@
                 aa = data
             }
         });
-        console.log("id 받아옴?", aa)
+
         return aa;
     }
+
     function getUserId(email) {
         var aa;
         $.ajax({
@@ -288,18 +340,19 @@
                 aa = data
             }
         });
-        console.log("id 받아옴?", aa)
-        return aa;
 
+        return aa;
     }
+
     function addMyCat2(userId) {
         const name = $('#catName2').val();
         const age = +$('#catAge4').val();
         const gender = $('#catGender').val();
-        const neutered = $('#catNeutered').val() === 'yes';
+        const neutered = $('#catNeutered').val();
         const character = $('#catCharacter3').val();
-        const image = $(`#addCatShowImage`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-        console.log("------------cpzm", userId)
+        let image = $(`#registerCatShowImage`).css('background-image')
+        image = image == "none" ? '' : image.replace(/^url\(['"](.+)['"]\)/, '$1');
+    
         $.ajax({
             type: 'POST',
             url: '/cats/signup',
