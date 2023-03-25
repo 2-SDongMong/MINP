@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   NotFoundException,
@@ -9,7 +8,6 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { CreatePostDto } from '../posts/dto/create-post.dto';
 import { PostsService } from '../posts/posts.service';
 import { RequestsService } from '../requests/requests.service';
 import { MessagesService } from '../messages/messages.service';
