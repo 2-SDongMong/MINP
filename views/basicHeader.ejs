@@ -15,7 +15,20 @@
       <button id="loginBtn" onclick="location.href='/login'">로그인</button>
       <button id="signupBtn" onclick="location.href='/signUp'">회원가입</button>
     </div>
-    <%} else { %>
+    <%} else { 
+      if (user.status === '관리자'){%>
+        <ul class="navbarMenu2">
+      <li><a href="/request/list/1">품앗이 신청</a></li>
+      <li><a href="/shareList">냥품나눔</a></li>
+      <li><a href="/boardList?page=1">자유게시판</a></li>
+    </ul>
+
+        <div class="navbarButton2">
+          <button id="messageBtn" onclick="location.href='/message/received'"><img src="/img/message.png"></button>
+          <button id="adminBtn" onclick="location.href='/admin'">유저관리</button>
+          <button id="logoutBtn" onclick="logout()">로그아웃</button>
+        </div>
+        <% } else{ %>
     <ul class="navbarMenu2">
       <li><a href="/request/list/1">품앗이 신청</a></li>
       <li><a href="/shareList">냥품나눔</a></li>
@@ -28,7 +41,7 @@
           <button id="logoutBtn" onclick="logout()">로그아웃</button>
         </div>
       <% } %>
-
+    <% } %> 
   </nav>
 </header>
 

@@ -17,13 +17,16 @@
 }
 
 .catNameBlock {
-  width: 630px;
+  width: 500px;
 }
 
 .nickBlock{
   width: 140px;
 }
 
+.editStatusBlock {
+  width: 180px;
+}
 
 .editStatusBtn {
   border: 1px solid #a59373;
@@ -47,32 +50,32 @@
 }
 
 .memberBlock {
-  width: 33px;
+  width: 60px;
 }
 
 .memberInfo1 {
-  width: 140px;
+  width: 280px;
 }
 
 .memberInfo2 {
-  width: 100px;
+  width: 150px;
 }
 
 .memberInfo4 {
-  width: 80px;
+  width: 150px;
 }
 
 .joinDate {
-  width: 100px;
+  width: 260px;
 }
 
 .btnBlock {
-  width: 20px;
+  width: 70px;
 }
 
 .deleteMemBtn {
   border: 1px solid #a59373;
   border-radius: 10px;
   background-color: white;
-  margin-right: 3px;
 }
+

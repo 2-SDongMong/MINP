@@ -5,7 +5,7 @@ $(document).ready(function() {
     showMyCat();
     catModalEventRegister();
     showMyPost();
-    // showUserStatus();
+    showUserStatus();
   }
 )
 
@@ -110,8 +110,12 @@ function modifyMyPage(id) {
       window.location.reload();
     },
     error: function (response) {
-      console.log(response);
-    },
+      if (response.responseJSON && response.responseJSON.message) {
+        alert('이미 존재하는 닉네임 입니다.');
+      } else {
+        console.log(response);
+      }
+    }
   });
 }
 

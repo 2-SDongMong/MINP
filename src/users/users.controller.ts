@@ -84,8 +84,9 @@ export class UsersController {
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
-  getAllUser(@Req() req) {
-    return this.usersService.getUserByStatus(req.userId);
+  async getAllUser(@Req() req) {
+    const data = await this.usersService.getUserByStatus(req.userId);
+    return data;
   }
 
   // 가입 신청 승인 API
