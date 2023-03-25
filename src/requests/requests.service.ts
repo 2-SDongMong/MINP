@@ -177,6 +177,7 @@ export class RequestsService {
     return value;
   }
 
+  // 동네명으로 품앗이 목록 조회
   async getRequestsByAddressBname(bname: string) {
     const request = await this.requestsRepository
       .createQueryBuilder('r')
@@ -190,6 +191,7 @@ export class RequestsService {
     return request;
   }
 
+  // 동네명으로 품앗이 목록 조회 및 페이지네이션
   async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
     // const value = await this.cacheManager.get(`AddressBname${bname}`);
     // if(!value){

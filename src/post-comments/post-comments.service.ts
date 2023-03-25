@@ -18,7 +18,8 @@ export class PostCommentsService {
 
   private logger = new Logger('PostCommentsService');
 
-  async getComments(post_id: number) {
+  // 게시글 ID로 댓글 전체 조회
+  async getCommentsByPostId(post_id: number) {
     const comment = await this.postCommentRepository.find({
       relations: {
         user: {},
@@ -36,6 +37,7 @@ export class PostCommentsService {
     return comment;
   }
 
+  // 댓글 생성
   async createComment(userId: number, postId: number, content: string) {
     this.logger.debug(`createComment()`);
 

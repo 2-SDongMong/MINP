@@ -9,13 +9,15 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { CreatePostDto } from 'src/posts/dto/create-post.dto';
-import { PostsService } from 'src/posts/posts.service';
-import { RequestsService } from 'src/requests/requests.service';
-import { MessagesService } from 'src/messages/messages.service';
-import { ProductsService } from 'src/share-modules/share-products/share-products.service';
+import { CreatePostDto } from '../posts/dto/create-post.dto';
+import { PostsService } from '../posts/posts.service';
+import { RequestsService } from '../requests/requests.service';
+import { MessagesService } from '../messages/messages.service';
+import { ProductsService } from '../share-modules/share-products/share-products.service';
 import { ConfigService } from '@nestjs/config';
-import { PostCategoryType } from 'src/posts/post.entity';
+import { PostCategoryType } from '../posts/post.entity';
+import { performance } from 'perf_hooks';
+
 @Controller()
 export class EjsRenderController {
   constructor(
@@ -29,10 +31,13 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    let requests;
+    const start = performance.now();
     const posts = await this.postsService.getPosts();
-    let products;
 
+    let requests;
+
+    // 로그인 한 사용자이고 위치인증까지 마쳤다면
+    // '사용자의 동네명 기반' 품앗이 최신 6개를 가져옴 (캐러셀용)
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
@@ -43,7 +48,11 @@ export class EjsRenderController {
       requests = await this.requestsService.getRequestsPagination(1, 6);
     }
 
+    let products;
     products = await this.productsService.findAll();
+
+    const end = performance.now();
+    console.log('메인 페이지 로딩 시간: ', end - start);
 
     return {
       components: 'main',
