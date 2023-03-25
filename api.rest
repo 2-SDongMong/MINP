@@ -33,11 +33,17 @@ Content-Type: application/json
 GET http://localhost:3000/requests
 
 ###
-GET http://localhost:3000/requests/address/'문화동'
+GET http://localhost:3000/requests/page/1
+
+###
+GET http://localhost:3000/requests/address/산림동
+
+###
+GET https://localhost:3000/requests/address/삼평동/2
 
 ###
 
-GET http://localhost:3000/requests/26
+GET http://localhost:3000/requests/52
 
 ###
 
@@ -45,8 +51,9 @@ POST http://localhost:3000/requests
 Content-type: application/json
 
 {
-    "reserved_time": "2023-04-23",
-    "detail": "순한 고양이 품앗이 부탁드려요"
+    "reserved_begin_date": "2023-04-27",
+    "reserved_end_date": "2023-04-27",
+    "detail": "reserved_time => reserved_begin/end_date으로 변경했습니다. 잘 되는지 우선 Rest Client 테스트 중. "
 }
 
 ###
@@ -54,7 +61,8 @@ PATCH http://localhost:3000/requests/23
 Content-Type: application/json
 
 {
-    "reserved_time": "2023-04-01",
+    "reserved_begin_date": "2023-04-01",
+    "reserved_end_date": "2023-04-01",
     "detail": "냥품 요청합니다~ new3!!"
 }
 
@@ -78,7 +86,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/auth/login
+POST https://localhost:3000/auth/login
 Content-Type: application/json
 
 {
@@ -88,33 +96,27 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 ###
 POST http://localhost:3000/auth/refresh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
 
 
 ### messages ##############################
 ###
-GET http://localhost:3000/messages
+GET https://localhost:3000/messages
 
 ###
-GET http://localhost:3000/messages/received
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+GET https://localhost:3000/messages/received
 
 ###
-GET http://localhost:3000/messages/sent
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
+GET https://localhost:3000/messages/sent
 
 ###
 GET http://localhost:3000/messages/11
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
 
 ###
 POST http://localhost:3000/messages
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMzUzOCwiZXhwIjoxNjc4NzA5OTM4fQ.OUv45BPuY8I_12Wwv1nq2nyJPKsSqKjcom7Rc2s8zDg
 
 {
     "recipient_id": 30,
@@ -123,66 +125,29 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpb
 
 ###
 DELETE http://localhost:3000/messages/2
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYyMDY5NCwiZXhwIjoxNjc4NzA3MDk0fQ.jAdOkDp4csBydOLi3f-AD70LUKhsKBMJ0DWXHsM8Vgc
 
 
-###
-POST http://localhost:3000/users/signup
-Content-Type: application/json
 
-{
-    "email": "post2@gmail.com",
-    "name": "post_name",
-    "nickname": "Nick Post2",
-    "address": "경남 통영시",
-    "phone_number": "010-0000-1111",
-    "referral_code": "3btest",
-    "password": "1234"
-}
-
-###
-POST https://localhost:3000/auth/login
-Content-Type: application/json
-
-{
-    "email": "post2@gmail.com",
-    "password": "1234"
-}
-
-###
-POST https://localhost:3000/auth/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM0ODYyLCJleHAiOjE2Nzg0MjEyNjJ9.X_N2YVGP5GbKEpWjQYOOyMDq6EUIJrJMllp_ldBwr9E
-
-
-###
-POST https://localhost:3000/auth/refresh
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpbCI6InRlc3Q0QGdtYWlsLmNvbSIsImlhdCI6MTY3ODYzNzIyNCwiZXhwIjoxNjc4NzIzNjI0fQ.-bmWharYBe6bLHJIpWkyd20owP2jng7KZdZC0bE9Ce8
-
-
-=======
 ### posts #################################
+###
+GET http://localhost:3000/posts
 
 ###
-GET https://localhost:3000/posts
-
-###
-POST https://localhost:3000/posts
+POST http://localhost:3000/posts
 Content-type: application/json
-//Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
 
 {
-    "title": "고양이 특기",
-    "category": "기타",
-    "content" : "얘기해보기"
+    "title": "삭제용1",
+    "category": "자랑",
+    "content" : "삭제용으로 만든 글"
 }
 
 ###
-GET https://localhost:3000/posts/40
+GET https://localhost:3000/posts/36
 
 ###
-PATCH https://localhost:3000/posts/7
+PATCH http://localhost:3000/posts/7
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
 
 {
     "title": "제목2",
@@ -191,27 +156,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpb
 }
 
 ###
-DELETE https://localhost:3000/posts/34
+DELETE http://localhost:3000/posts/4
 
-###
-GET https://localhost:3000/posts/40/comments
-
-###
-POST https://localhost:3000/posts/40/comments
-Content-type: application/json
-
-{
-    "content" : "큐트~"
-}
-
-###
-PATCH https://localhost:3000/posts/40/comments/20
-Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6InRlc3QzQGdtYWlsLmNvbSIsImlhdCI6MTY3ODI1NzczNiwiZXhwIjoxNjc4MzQ0MTM2fQ.WvOIkWuRSyhYA6EOwjH11NOa1K1LCupPO21UKSysVYY
-
-{
-    "content" : "너무너무 구ㅣ여워"
-}
-
-###
-DELETE https://localhost:3000/posts/40/comments/21

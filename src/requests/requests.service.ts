@@ -177,6 +177,7 @@ export class RequestsService {
     return value;
   }
 
+  // 동네명으로 품앗이 목록 조회
   async getRequestsByAddressBname(bname: string) {
     const request = await this.requestsRepository
       .createQueryBuilder('r')
@@ -190,25 +191,26 @@ export class RequestsService {
     return request;
   }
 
+  // 동네명으로 품앗이 목록 조회 및 페이지네이션
   async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
-    const value = await this.cacheManager.get(`AddressBname${bname}`);
-    if (!value) {
-      const requests = await this.requestsRepository
-        .createQueryBuilder('r')
-        .select()
-        .leftJoin('r.user', 'user')
-        .leftJoin('user.cats', 'cats')
-        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-        .where('user.address_bname = :bname', { bname })
-        .orderBy('r.created_at', 'DESC')
-        .skip((page - 1) * take)
-        .take(take)
-        .getMany();
-      await this.cacheManager.set(`AddressBname${bname}`, requests);
+    // const value = await this.cacheManager.get(`AddressBname${bname}`);
+    // if(!value){
+    const requests = await this.requestsRepository
+      .createQueryBuilder('r')
+      .select()
+      .leftJoin('r.user', 'user')
+      .leftJoin('user.cats', 'cats')
+      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+      .where('user.address_bname = :bname', { bname })
+      .orderBy('r.created_at', 'DESC')
+      .skip((page - 1) * take)
+      .take(take)
+      .getMany();
+    await this.cacheManager.set(`AddressBname${bname}`, requests);
 
-      return requests;
-    }
-    return value;
+    return requests;
+    // }
+    // return value;
   }
 
   async getRequestById(id: number) {

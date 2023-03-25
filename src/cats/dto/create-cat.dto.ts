@@ -14,7 +14,7 @@ export class CreateCatDto {
   readonly neutered: boolean;
 
   @IsString()
-  image?: string;
+  image: string;
 
   @IsString()
   readonly character?: string;
