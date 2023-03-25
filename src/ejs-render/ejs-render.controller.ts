@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   NotFoundException,
@@ -9,7 +8,6 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service';
@@ -32,7 +30,6 @@ export class EjsRenderController {
     let requests;
     const posts = await this.postsService.getPosts();
     let products;
-
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
