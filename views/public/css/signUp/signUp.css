@@ -4,6 +4,10 @@ a {
   transition: all 200ms linear;
 }
 
+#angg{
+  align-items: center;
+  text-align: center;
+}
 .signUpTitle {
   align-items: center;
   text-align: center;
@@ -12,11 +16,14 @@ a {
 }
 
 .signUpContainer {
-  margin-left: 700px;
-  margin-top: 50px;
+  display: table; 
+  margin-left: auto; 
+  margin-right: auto;
 }
 
 .signUpBtnContainer {
+  align-items: center;
+  text-align: center;
   margin-top: 50px;
 }
 
@@ -26,7 +33,7 @@ a {
 }
 
 .form-group{ 
-  align-items: center;
+    align-items: center;
     text-align: left;
     position: relative;
     /* display: block; */
@@ -45,5 +52,6 @@ a {
     text-align: center;
 }
 .section.text-center {
+    align-items: center;
     text-align: center;
 }
