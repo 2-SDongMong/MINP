@@ -141,7 +141,6 @@
     }
     function checkNick() {
         const signupNickname = $('#signupNickname').val();
-        console.log(signupNickname)
         $.ajax({
             type: 'POST',
             url: '/users/signup/check',
@@ -150,7 +149,6 @@
             async: false,
             success: function (data) {
                 aa = data
-                console.log("data", aa, typeof (aa))
             }
         });
         if (aa === 'true') {
@@ -201,7 +199,6 @@
             oncomplete: function (data) {
                 var address_road = data.address; // 최종 도로명 주소
                 var address_bname = data.bname ? data.bname : ''; // 동 (지번주소)
-                console.log("check", address_road, address_bname)
 
                 // 주소 정보를 해당 필드에 넣는다.
                 document.getElementById("signupAddressRoad").value = address_road;
@@ -273,7 +270,6 @@
                 aa = data
             }
         });
-        console.log("id 받아옴?", aa)
         return aa;
     }
     function getUserId(email) {
@@ -288,7 +284,6 @@
                 aa = data
             }
         });
-        console.log("id 받아옴?", aa)
         return aa;
 
     }
@@ -299,7 +294,7 @@
         const neutered = $('#catNeutered').val() === 'yes';
         const character = $('#catCharacter3').val();
         const image = $(`#addCatShowImage`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-        console.log("------------cpzm", userId)
+     
         $.ajax({
             type: 'POST',
             url: '/cats/signup',
