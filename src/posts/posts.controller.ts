@@ -48,8 +48,9 @@ export class PostsController {
 
   // 게시물 목록을 조회 / 커서 페이지네이션
   @Get()
-  async getPostsByCursor(@Query() pageOptionsDto: PageOptionsDto) { //
-   return await this.postsService.getPostsByCursor(pageOptionsDto);
+  async getPostsByCursor(@Body() pageOptionsDto: PageOptionsDto) { //
+   console.log(pageOptionsDto);
+    return await this.postsService.getPostsByCursor(pageOptionsDto);
   }
 
   // 게시물 목록을 조회 / 오프셋 페이지네이션 구현

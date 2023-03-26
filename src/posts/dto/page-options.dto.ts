@@ -5,7 +5,7 @@ export class PageOptionsDto {
 
   @Type(() => Number)
   @IsOptional()
-  readonly take?: number = 7;
+  readonly take?: number;
 
   @Type(() => String)
   @IsOptional()

@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { IsNull, LessThan, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { PageOptionsDto } from './dto/page-options.dto';
 //import { PageMetaDto } from './dto/page-meta.dto';
 //import { PageOptionsDto } from './dto/page-options.dto';
@@ -23,51 +23,36 @@ export class PostsService {
 
   // 커서 페이지네이션
   async getPostsByCursor(pageOptionsDto: PageOptionsDto) {
-    
-    // const [posts,total] = await this.postsRepository.findAndCount({
-    //   take: 7,
-    //   where: pageOptionsDto.endCursor ? {
-    //     post_id: MoreThan(pageOptionsDto.endCursor),
-    //   }: null,
-    // });
-
-    const posts = await this.postsRepository.find({
-      //take: 7,
+    const [posts, total] = await this.postsRepository.findAndCount({
+      take: 5+1,
       where: pageOptionsDto.endCursor ? {
         post_id: MoreThan(pageOptionsDto.endCursor),
-      }: null,
+      }: {post_id: LessThan(pageOptionsDto.startCursor)}
     });
 
-    const total = posts.length;
-    const take = 7;
+    console.log(pageOptionsDto);
+    console.log(posts);
+
+    const take = 5;
     
     const isLastPage = total <= take; 
 
-    let endCursor: number;
-    let startCursor: number;
-    let hasNextPage = true;
-    let hasPreviousPage = false;
+    let endCursor = posts[posts.length - 1]?.post_id ?? false;
+    let startCursor = posts[0]?.post_id ?? false;
+    let hasPreviousPage = total >= take;
+    let hasNextPage = hasPreviousPage ? posts.length > take : true;
 
-    if (isLastPage || posts.length <= 0) {
-      endCursor = null;
-      startCursor = posts[posts.length - take].post_id;
+    if (!pageOptionsDto.endCursor && !pageOptionsDto.startCursor) {
       hasNextPage = false;
-      hasPreviousPage = true;
-    } else if (startCursor == posts[0].post_id) {
-      endCursor = posts[posts.length - 1].post_id;
-      startCursor = null ;
-      hasNextPage = true;
-      hasPreviousPage = false;
-    } else{
-      endCursor = posts[posts.length - 1].post_id;
-      startCursor = posts[posts.length - take].post_id;
-      hasNextPage = true;
-      hasPreviousPage = true;
     }
 
+    const takePosts = posts.slice(0,5);
+
     return {
-      data: posts,
+      data: takePosts,
       pageOpt: {
+        total,
+        take,
         endCursor,
         startCursor,
         hasNextPage,
@@ -77,8 +62,6 @@ export class PostsService {
   }
 
 
-
-  
   // 오프셋 페이지네이션
   async getPosts(page: number = 1) {
     
@@ -162,7 +145,7 @@ export class PostsService {
       relations: {
         post_images: true,
         post_comments: true,
-
+        user: true,
       },
       select: {
         post_images: {
@@ -178,6 +161,9 @@ export class PostsService {
           post_comment_id: true,
           content: true,
           user_id: true,
+        },
+        user: {
+          nickname: true,
         },
         created_at: true,
         updated_at: true,

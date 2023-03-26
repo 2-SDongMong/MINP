@@ -163,9 +163,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMwLCJlbWFpb
 ### posts #################################
 
 ###
-GET http://localhost:3000/posts
-
-###
 POST https://localhost:3000/posts
 Content-type: application/json
 //Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjMxLCJlbWFpbCI6InBvc3RAZ21haWwuY29tIiwiaWF0IjoxNjc4MzM1MTM4LCJleHAiOjE2Nzg0MjE1Mzh9.Sf9XuEy7eUbHy3_2_uidmxs6ff77DtG_1hk7Ge8ocS4
@@ -215,3 +212,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpb
 
 ###
 DELETE https://localhost:3000/posts/40/comments/21
+
+###
+GET http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "endCursor" : 23
+}
