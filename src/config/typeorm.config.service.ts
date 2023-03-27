@@ -42,7 +42,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       logging: ['error'],
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
-      timezone: 'UTC',
+      timezone: 'Z',
     };
   }
 }

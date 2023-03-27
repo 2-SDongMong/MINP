@@ -194,24 +194,24 @@ export class RequestsService {
 
   // 동네명 bname과 페이지 번호 page, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
   async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
-    // const value = await this.cacheManager.get(`AddressBname${bname}`);
-    // if(!value){
-    const requests = await this.requestsRepository
-      .createQueryBuilder('r')
-      .select()
-      .leftJoin('r.user', 'user')
-      .leftJoin('user.cats', 'cats')
-      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-      .where('user.address_bname = :bname', { bname })
-      .orderBy('r.created_at', 'DESC')
-      .skip((page - 1) * take)
-      .take(take)
-      .getMany();
-    await this.cacheManager.set(`AddressBname${bname}`, requests);
+    const value = await this.cacheManager.get(`AddressBname${bname}`);
+    if (!value) {
+      const requests = await this.requestsRepository
+        .createQueryBuilder('r')
+        .select()
+        .leftJoin('r.user', 'user')
+        .leftJoin('user.cats', 'cats')
+        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+        .where('user.address_bname = :bname', { bname })
+        .orderBy('r.created_at', 'DESC')
+        .skip((page - 1) * take)
+        .take(take)
+        .getMany();
+      await this.cacheManager.set(`AddressBname${bname}`, requests);
 
-    return requests;
-    // }
-    // return value;
+      return requests;
+    }
+    return value;
   }
 
   // 품앗이 ID로 게시글 하나 조회
