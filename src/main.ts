@@ -1,4 +1,3 @@
-require('newrelic');
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -53,7 +52,7 @@ async function bootstrap() {
 
   const PORT = process.env.PORT || 3000;
   await app.listen(PORT, () => {
-    console.log(`${3000}번 포트로 서버가 열렸습니다. https://localhost:3000`);
+    console.log(`${PORT}번 포트로 서버가 열렸습니다. http://localhost:3000`);
   });
 }
 

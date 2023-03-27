@@ -1,4 +1,3 @@
-import { CatLike } from '../cat-likes/cat-like.entity';
 import { Cat } from '../cats/cat.entity';
 import { Request } from '../requests/request.entity';
 import {
@@ -15,7 +14,7 @@ import { UserLike } from '../user-likes/user-like.entity';
 import { Message } from '../messages/message.entity';
 import { PostComment } from '../post-comments/post-comment.entity';
 import { Post } from '../posts/post.entity';
-import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
+import { Products } from '../share-modules/share-products/entities/share-products.entity';
 
 export type UserStatusType = '가입 대기' | '일반' | '관리자';
 
@@ -76,11 +75,11 @@ export class User {
   })
   cats: Cat[];
 
-  @OneToMany(() => CatLike, (catLike) => catLike.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  cat_likes: CatLike[];
+  // @OneToMany(() => CatLike, (catLike) => catLike.user, {
+  //   onUpdate: 'CASCADE',
+  //   onDelete: 'CASCADE',
+  // })
+  // cat_likes: CatLike[];
 
   @OneToMany(() => Products, (Products) => Products.user, {
     onUpdate: 'CASCADE',

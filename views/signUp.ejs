@@ -1,26 +1,26 @@
-
 <!-- 다음 우편번호 찾기 API -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script defer type="text/javascript" src="/js/myPage/myPage.js"></script>
 
 <body>
     <section>
         <link rel="stylesheet" href="/css/signUp/signUp.css">
         <div class="signUpTitle">
-            <h4 class="mb-4 pb-3">Sign Up</h4>
+            <h4 class="mb-4 pb-3">회원가입</h4>
         </div>
         <div class="section text-center">
             <div class="signUpContainer">
                 <div class="form-group">
-                    <input type="text" name="signupNickname" class="form-style" placeholder="Your Full Nickname"
+                    <input type="text" name="signupNickname" class="form-style" placeholder="닉네임(필수)"
                         id="signupNickname" autocomplete="off">
                     <button onclick="checkNick()" class="btn btn-outline-primary" type="button">중복 확인</button>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="signupName" class="form-style" placeholder="Your Full Name" id="signupName"
+                    <input type="text" name="signupName" class="form-style" placeholder="이름(필수)" id="signupName"
                         autocomplete="off">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="email" name="signupEmail" class="form-style" placeholder="Your Email" id="signupEmail"
+                    <input type="email" name="signupEmail" class="form-style" placeholder="이메일(필수)" id="signupEmail"
                         autocomplete="off">
                     <button onclick="sendmail()" id="target_btn_nickname" class="btn btn-outline-primary"
                         disabled="disabled" type="button">인증번호 발송</button>
@@ -30,31 +30,104 @@
                     <button onclick="check()" class="btn btn-outline-primary" type="button">인증</button>
                 </div>
                 <div class="form-group mt-2">
-                    <input type="password" name="signupPass" class="form-style" placeholder="비밀번호" id="signupPass" autocomplete="off">
+                    <input type="password" name="signupPass" class="form-style" placeholder="비밀번호" id="signupPass"
+                        autocomplete="off">
                 </div>
                 <div class="form-group mt-2">
-                    <li class="miniTitle">주소</li>
+                    <li class="miniTitle">주소(필수)</li>
                     <input class="form-style" type="text" value="" id="signupAddressRoad" placeholder="도로명" readonly>
                     <input class="form-style" type="text" value="" id="signupAddressBname" placeholder="동네명" readonly>
-                    <input type="button" onclick="findAddress()" class="btn btn-outline-secondary" value="주소 검색"><br>
+                    <input type="button" onclick="findAddress1()" class="btn btn-outline-secondary" value="주소 검색"><br>
                 </div>
                 <div class="form-group mt-2">
-                    <input type="tel" name="signupPhonenumber" class="form-style" placeholder="핸드폰 번호" id="signupPhonenumber" autocomplete="off">
+                    <input type="tel" name="signupPhonenumber" class="form-style" placeholder="핸드폰 번호(필수)"
+                        id="signupPhonenumber" autocomplete="off">
                 </div>
                 <div class="form-group mt-2">
-                    <input type="text" name="signupReferralcode" class="form-style" placeholder="추천인 코드" id="signupReferralcode" autocomplete="off">
+                    <input type="text" name="signupReferralNickname" class="form-style" placeholder="추천인 닉네임(선택)"
+                        id="signupReferralNickname" autocomplete="off">
                 </div>
-            </div>
-            <div class="signUpBtnContainer">
-                <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary"
-                    type="button">signup</button>
-                <p class="margin">이미 계정을 갖고 계신가요? <a href="./login" style="font-weight: bold;">지금 로그인하기</a></p>
             </div>
 
-        </div>
+
+            <div class="addCatModalBody">
+                고양이 창
+                <div class="imgContainer4" id="registerCatShowImage">
+                    <img src="" alt="">
+                </div>
+                <label for="catFile2">
+                    <div class="uploaderBtn">사진 선택</div>
+                </label>
+                <input name="image" type="file" id="catFile2" onchange="registerCatUploadImage(this)">
+
+                <div class="infoContainer2">
+                    <div class="nameContainer2">
+                        <div class="catInfo2" id="name2">
+                            이름
+                        </div>
+                        <div class="catName2">
+                            <input value="" type="text" class="catContent2" id="catName2">
+                        </div>
+                    </div>
+                    <div class="ageContainer2">
+                        <div class="catInfo2" id="age4">
+                            나이
+                        </div>
+                        <div class="catAge4">
+                            <input value="" type="text" class="catContent2" id="catAge4" placeholder="(선택)">
+                        </div>
+                    </div>
+                </div>
+                <div class="infoContainer2">
+                    <div class="nameContainer2">
+                        <div class="catInfo2" id="name2">
+                            성별
+                        </div>
+                        <div class="genderSelect">
+                            <select class="genderSelect2" id="catGender" name="gender">
+                                <option value="male">남아</option>
+                                <option value="female">여아</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="ageContainer3">
+                        <div class="catInfo3">
+                            중성화 여부
+                        </div>
+                        <div class="neuteredSelect">
+                            <select class="neuteredSelect2" id="catNeutered" name="neutered">
+                                <option value="yes">유</option>
+                                <option value="no">무</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="characterContainer2">
+                    <div class="catInfo2" id="character2">
+                        성격
+                    </div>
+                    <div class="catCharacter2">
+                        <input value="" class="catContent" id="catCharacter3" placeholder="(선택)">
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div id="angg">
+                <div class="signUpBtnContainer">
+                    <button onclick="signUp()" id="target_btn" disabled="disabled" class="btn btn-outline-primary"
+                        type="button">회원가입</button>
+                    <p class="margin">이미 계정을 갖고 계신가요? <a href="./login" style="font-weight: bold;">지금 로그인하기</a></p>
+                </div>
+                <div>
+                </div>
     </section>
 </body>
+
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 <script>
     window.onload = function () {
         document.getElementById("address_kakao").addEventListener("click", function () { //주소입력칸을 클릭하면
@@ -67,9 +140,11 @@
             }).open();
         });
     }
+    
+    let isNickDuplicated = true;
     function checkNick() {
         const signupNickname = $('#signupNickname').val();
-        console.log(signupNickname)
+
         $.ajax({
             type: 'POST',
             url: '/users/signup/check',
@@ -78,11 +153,12 @@
             async: false,
             success: function (data) {
                 aa = data
-                console.log("data", aa, typeof (aa))
+
             }
         });
         if (aa === 'true') {
             alert("사용가능한 닉네임입니다")
+            isNickDuplicated = false;
             const target = document.getElementById('target_btn_nickname')
             target.disabled = false
         } else {
@@ -90,12 +166,13 @@
         }
     }
 
+
     function sendmail() {
         const signupEmail = $('#signupEmail').val();
         if (!signupEmail) {
             alert('이메일을 입력해주세요.');
             return;
-        } 
+        }
         $.ajax({
             type: 'POST',
             url: '/auth',
@@ -110,6 +187,7 @@
             }
         })
     }
+
     function check() {
         const checkNumber = $('#checkNumber').val();
         const signupEmail = $('#signupEmail').val();
@@ -117,18 +195,18 @@
         if (checkNumber !== window.sessionStorage.getItem(signupEmail)) {
             alert("인증번호확인부탁드립니다.")
             return;
-        } 
+        }
         alert('인증 번호가 확인되었습니다')
         const target = document.getElementById('target_btn')
         target.disabled = false
     }
-    
+
     // '주소 검색' 버튼 클릭시 다음 우편번호 찾기 api로 주소 검색
-    function findAddress() {
+    function findAddress1() {
         new daum.Postcode({
-            oncomplete: function(data) {
+            oncomplete: function (data) {
                 var address_road = data.address; // 최종 도로명 주소
-                var address_bname = data.bname? data.bname : ''; // 동 (지번주소)
+                var address_bname = data.bname ? data.bname : ''; // 동 (지번주소)
 
                 // 주소 정보를 해당 필드에 넣는다.
                 document.getElementById("signupAddressRoad").value = address_road;
@@ -137,7 +215,33 @@
         }).open();
     }
 
-    function signUp(){
+    function registerCatUploadImage(input) {
+        if (input.files.length === 0) {
+            alert('파일을 선택해주세요.');
+            return;
+        }
+        const formData = new FormData();
+        formData.append('image', input.files[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '/products/imageUpload',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                $(`#registerCatShowImage`).attr('style', `background-image: url(${response.url});`);
+            },
+            error: function (err) {
+                console.log(err);
+                alert('오류 ')
+            },
+        });
+    }
+
+    function signUp() {
+        
+        // 회원 정보 입력
         const signupNickname = $('#signupNickname').val();
         const signupName = $('#signupName').val();
         const signupEmail = $('#signupEmail').val();
@@ -145,20 +249,43 @@
         const signupAddressRoad = $('#signupAddressRoad').val();
         const signupAddressBname = $('#signupAddressBname').val();
         const signupPhonenumber = $('#signupPhonenumber').val();
-        const signupReferralcode = $('#signupReferralcode').val();
+        const signupReferralNickname = $('#signupReferralNickname').val();
+
+        // 고양이 프로필 입력
+        const name = $('#catName2').val();
+        const age = +$('#catAge4').val();
+        const gender = $('#catGender').val();
+        const neutered = $('#catNeutered').val();
+        const character = $('#catCharacter3').val();
+        let image = $(`#registerCatShowImage`).css('background-image')
+        image = image == "none" ? '' : image.replace(/^url\(['"](.+)['"]\)/, '$1');
+    
+        // 회원 정보 입력값 체크
         if (!signupNickname) {
             alert('닉네임을 입력해주세요.');
+        } else if (isNickDuplicated) {
+            alert('닉네임이 중복되지 않았는지 확인해주세요.');
         } else if (!signupName) {
             alert('이름을 입력해주세요.');
         } else if (!signupEmail) {
             alert('이메일을 입력해주세요.');
         } else if (!signupPass) {
-		alert('비밀번호를 입력해주세요.');
+            alert('비밀번호를 입력해주세요.');
         } else if (!signupAddressRoad) {
-		alert('주소를 입력해주세요.');
+            alert('주소를 입력해주세요.');
         } else if (!signupPhonenumber) {
-		alert('연락처를 입력해주세요.');
-        } else{
+            alert('연락처를 입력해주세요.');
+        } 
+        // 고양이 프로필 입력값 체크 (나이와 성격은 선택, 나머지는 필수)
+        else if (!name) {
+            alert('내 고양이 이름을 입력해주세요.');
+        } else if (!gender) {
+            alert('내 고양이의 성별을 선택해주세요.');
+        } else if (!neutered) {
+            alert('내 고양이의 중성화 여부를 선택해주세요.');
+        } else if (image == '') {
+            alert('고양이 프로필 사진을 등록해주세요.');
+        } else {
             $.ajax({
                 type: 'POST',
                 url: '/users/signup',
@@ -170,18 +297,73 @@
                     address_road: signupAddressRoad,
                     address_bname: signupAddressBname,
                     phone_number: signupPhonenumber,
-                    referral_code: signupReferralcode
+                    referral_code: signupReferralNickname
                 },
                 success: function (response) {
+                    const userId = getUserId(signupEmail)
+                    addMyCat2(userId)
                     alert('회원가입이 완료되었습니다.');
 
-                    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
-                    // localStorage.setItem('accessToken', response.access_token);
-                    //   document.getElementById('loginpagebutton').style.display = 'none';
-                    //   document.getElementById('logoutbutton').style.display = 'block';
                     window.location.href = './login';
                 }
             })
         }
+    }
+
+    function checkNickname(){
+        const signupReferralNickname = $('#signupReferralNickname').val();
+        $.ajax({
+            type: 'Get',
+            url: `/users/${signupReferralNickname}`,
+            data: { email: email },
+            dataType: "text",
+            async: false,
+            success: function (data) {
+                aa = data
+            }
+        });
+        return aa;
+    }
+
+    function getUserId(email) {
+        var aa;
+        $.ajax({
+            type: 'Get',
+            url: `/users/${email}`,
+            data: { email: email },
+            dataType: "text",
+            async: false,
+            success: function (data) {
+                aa = data
+            }
+        });
+        return aa;
+    }
+
+    function addMyCat2(userId) {
+        const name = $('#catName2').val();
+        const age = +$('#catAge4').val();
+        const gender = $('#catGender').val();
+        const neutered = $('#catNeutered').val();
+        const character = $('#catCharacter3').val();
+        let image = $(`#registerCatShowImage`).css('background-image')
+        image = image == "none" ? '' : image.replace(/^url\(['"](.+)['"]\)/, '$1');
+    
+        $.ajax({
+            type: 'POST',
+            url: '/cats/signup',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({
+                userId,
+                name, age, gender, neutered, character, image
+            }),
+            success: function (response) {
+                alert('고양이 프로필을 성공적으로 등록하였습니다')
+                window.location.reload();
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        })
     }
 </script>

@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Get,
   NotFoundException,
@@ -9,13 +8,14 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { PostsService } from 'src/posts/posts.service';
-import { RequestsService } from 'src/requests/requests.service';
-import { MessagesService } from 'src/messages/messages.service';
-import { ProductsService } from 'src/share-modules/share-products/share-products.service';
+import { PostsService } from '../posts/posts.service';
+import { RequestsService } from '../requests/requests.service';
+import { MessagesService } from '../messages/messages.service';
+import { ProductsService } from '../share-modules/share-products/share-products.service';
 import { ConfigService } from '@nestjs/config';
-import { PostCategoryType } from 'src/posts/post.entity';
-import { PageOptionsDto } from 'src/posts/dto/page-options.dto';
+import { PostCategoryType } from '../posts/post.entity';
+import { performance } from 'perf_hooks';
+
 @Controller()
 export class EjsRenderController {
   constructor(
@@ -29,10 +29,13 @@ export class EjsRenderController {
   @Get('/')
   @Render('index')
   async main(@Req() req) {
-    let requests;
+    const start = performance.now();
     const posts = await this.postsService.getPosts();
-    let products;
 
+    let requests;
+
+    // 로그인 한 사용자이고 위치인증까지 마쳤다면
+    // '사용자의 동네명 기반' 품앗이 최신 6개를 가져옴 (캐러셀용)
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
@@ -41,10 +44,13 @@ export class EjsRenderController {
       );
     } else {
       requests = await this.requestsService.getRequestsPagination(1, 6);
-      
     }
 
+    let products;
     products = await this.productsService.findAll();
+
+    const end = performance.now();
+    console.log('메인 페이지 로딩 시간: ', end - start);
 
     return {
       components: 'main',
@@ -59,26 +65,31 @@ export class EjsRenderController {
   @Get('/signUp')
   @Render('index')
   signUp(@Req() req) {
-    return { components: 'signUp', userId: req.userId };
+    return { components: 'signUp', userId: req.userId, user: req.user };
   }
 
   @Get('/mypage')
   @Render('index')
   myPage(@Req() req) {
     const KAKAO_APP_KEY = this.configService.get<string>('KAKAO_APP_KEY');
-    return { components: 'myPage', userId: req.userId, KAKAO_APP_KEY };
+    return {
+      components: 'myPage',
+      userId: req.userId,
+      KAKAO_APP_KEY,
+      user: req.user,
+    };
   }
 
   @Get('/admin')
   @Render('index')
   admin(@Req() req) {
-    return { components: 'admin', userId: req.userId };
+    return { components: 'admin', userId: req.userId, user: req.user };
   }
 
   @Get('/login')
   @Render('index')
   login(@Req() req) {
-    return { components: 'login', userId: req.userId };
+    return { components: 'login', userId: req.userId, user: req.user };
   }
 
   @Get('/request/list/:page')
@@ -132,6 +143,7 @@ export class EjsRenderController {
       components: 'requestModify',
       userId: req.userId,
       request: request[0],
+      user: req.user,
     };
   }
 
@@ -143,6 +155,7 @@ export class EjsRenderController {
       components: 'shareList',
       userId: req.userId,
       products,
+      user: req.user,
     };
   }
 
@@ -158,6 +171,7 @@ export class EjsRenderController {
       components: 'shareDetail',
       userId: req.userId,
       product,
+      user: req.user,
     };
   }
 
@@ -175,22 +189,21 @@ export class EjsRenderController {
       userId: userId,
       sm,
       product: sm,
+      user: req.user,
     };
   }
 
   @Get('/shareProduct')
   @Render('index')
   ShareProduct(@Req() req) {
-    return { components: 'shareProduct', userId: req.userId };
+    return { components: 'shareProduct', userId: req.userId, user: req.user };
   }
 
   //커서
   @Get('boardList')
   @Render('index')
-  async boardList(@Req() req, @Query('endCursor') endCursor: number) {
-    console.log('ejs render controller ===>', 'endCursor',endCursor)
-    const posts = await this.postsService.getPostsByCursor(endCursor);
-    
+  async boardList(@Req() req, @Query('page') pageNum: number) {
+    const posts = await this.postsService.getPosts(pageNum);
     return { components: 'boardList', userId: req.userId, user: req.user, posts };
   }
 
@@ -204,22 +217,39 @@ export class EjsRenderController {
 
   @Get('boardList/:category')
   @Render('index')
-  async boardListCtg(@Req() req, @Param('id') postId: number, @Param('category') postCategory: PostCategoryType) {
-    const posts = await this.postsService.getPostByCategory(postId, postCategory);
-    return { components: 'boardListCtg', userId: req.userId, posts };
+  async boardListCtg(
+    @Req() req,
+    @Param('id') postId: number,
+    @Param('category') postCategory: PostCategoryType
+  ) {
+    const posts = await this.postsService.getPostByCategory(
+      postId,
+      postCategory
+    );
+    return {
+      components: 'boardListCtg',
+      userId: req.userId,
+      posts,
+      user: req.user,
+    };
   }
 
   @Get('boardDetail/:id')
   @Render('index')
   async boardDetail(@Req() req, @Param('id') postId: number) {
     const post = await this.postsService.getPostById(postId);
-    return { components: 'boardDetail', userId: req.userId, post: post[0] };
+    return {
+      components: 'boardDetail',
+      userId: req.userId,
+      post: post[0],
+      user: req.user,
+    };
   }
 
   @Get('board/post')
   @Render('index')
   async boardPost(@Req() req) {
-    return { components: 'boardPost', userId: req.userId };
+    return { components: 'boardPost', userId: req.userId, user: req.user };
   }
 
   @Get('board/modify/:id')
@@ -241,6 +271,11 @@ export class EjsRenderController {
       messages = await this.messagesService.getUnreadMessages(req.userId);
     }
 
-    return { components: 'message', userId: req.userId, messages };
+    return {
+      components: 'message',
+      userId: req.userId,
+      messages,
+      user: req.user,
+    };
   }
 }

@@ -83,8 +83,4 @@ export class MessagesService {
     await this.cacheManager.del('/messages');
     return this.repository.softDelete(id);
   }
-
-  //자기가 자기쪽지 읽음 표시
-
-  //
 }

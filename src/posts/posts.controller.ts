@@ -20,7 +20,6 @@ import { PostCategoryType } from './post.entity';
 import { CreatePostImageDto } from '../post-images/dto/create-post-image.dto';
 import { PostImagesService } from '../post-images/post-images.service';
 import { CreatePostImagesDto } from '../post-images/dto/create-post-images.dto';
-import { PageOptionsDto } from './dto/page-options.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -62,7 +61,10 @@ export class PostsController {
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
   @Get('category/:category')
-  async getPostByCategory(@Param('page') page: number = 1, @Param('category') postCategory: PostCategoryType) {
+  async getPostByCategory(
+    @Param('page') page: number = 1,
+    @Param('category') postCategory: PostCategoryType
+  ) {
     return await this.postsService.getPostByCategory(page, postCategory);
   }
 

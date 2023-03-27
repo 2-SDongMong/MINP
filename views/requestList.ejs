@@ -20,14 +20,7 @@
 			  </div>
 			</div>
 			<div>
-				<% 
-				let address_certified = false;
-				if (!user) {
-					address_certified = null
-				} else {
-					address_certified = user.address_certified;
-				} %>
-				<button onclick="goToWrite('<%= userId %>', '<%= address_certified %>')" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
+				<button onclick="goToWrite(<%= userId ?? 0 %>, <%= user?.address_certified ?? false %>)" type="button" class="btn btn-outline-dark">품앗이 신청하러 가기</button>
 			</div>
 		</div>
 
@@ -41,7 +34,7 @@
 		<div class="request-cards-container" >
 			<% for (let i = 0; i < requests.length; i++) { 
 				const request = requests[i]; 
-				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
+				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
 				let updated = ''
 				if (minutesAgo < 60) {
 					updated += parseInt(minutesAgo) + '분'
@@ -116,23 +109,35 @@
 		</div>
 		
 		<br><br>
-		
-
-
 	</div>
 </section>
 
 <script>
 	function goToWrite(userId, address_certified) {
+
+		// 로그인 검사
 		if (!userId) {
 			alert('로그인이 필요한 기능입니다')
 			return;
 		}
-		if (address_certified != 'true') {
-			alert('내 동네 인증하기를 마치면 글쓰기가 가능합니다')
-			return;
-		}
-		location.href='/request/post'
+
+		// 사용자의 고양이 프로필 정보를 받아와 
+		// 동네 인증과 1개 이상의 고양이 프로필 등록을 마쳤는지 검사
+		$.ajax({
+			type: 'GET',
+			url: '/cats',
+			success: function (response) {
+				if (address_certified != true || response.length <= 0) {
+					alert('마이페이지에서 내 동네 인증하기와 고양이 등록을 마치면 글쓰기가 가능합니다')
+					return;
+				}
+				location.href='/request/post'
+			},
+			error: function (response) {
+				alert('요청 처리중 문제가 발생하였습니다. 관리자에게 문의 바랍니다')
+				console.log(response);
+			}
+		})
 	}
 	
 </script>

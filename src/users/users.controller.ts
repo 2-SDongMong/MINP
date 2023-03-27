@@ -25,11 +25,6 @@ export class UsersController {
     return await this.usersService.create(dto);
   }
 
-  @Put('/update')
-  updateUser() {
-    this.usersService.updateUser('email', 'new_name', 'new_password');
-  }
-
   // My page API
   // 유저 정보 조회
   @Get('/mypage')
@@ -84,8 +79,9 @@ export class UsersController {
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
-  getAllUser(@Req() req) {
-    return this.usersService.getUserByStatus(req.userId);
+  async getAllUser(@Req() req) {
+    const data = await this.usersService.getUserByStatus(req.userId);
+    return data;
   }
 
   // 가입 신청 승인 API

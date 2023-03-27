@@ -72,7 +72,7 @@ export class PostsService {
   async getPosts(page: number = 1) {
     
     const take = 7;
-    
+
     const total = await this.postsRepository.count();
     const posts = await this.postsRepository.find({
       relations: {
@@ -86,8 +86,8 @@ export class PostsService {
       order: {
         updated_at: 'DESC',
       },
-	    take,
-	    skip: (page - 1) * take,
+      take,
+      skip: (page - 1) * take,
     });
 
     const last_Page = Math.ceil(total / take);
@@ -108,10 +108,10 @@ export class PostsService {
 
   async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
     const take = 7;
-    
+
     const total = await this.postsRepository.count({
-      where: { category: postsCategory, deleted_at: null },}
-    );
+      where: { category: postsCategory, deleted_at: null },
+    });
     const posts = await this.postsRepository.find({
       relations: {
         user: {},
@@ -125,8 +125,8 @@ export class PostsService {
       order: {
         updated_at: 'DESC',
       },
-	    take,
-	    skip: (page - 1) * take,
+      take,
+      skip: (page - 1) * take,
     });
 
     const last_Page = Math.ceil(total / take);
@@ -150,13 +150,18 @@ export class PostsService {
       where: { post_id, deleted_at: IsNull() },
       relations: {
         post_images: true,
-        post_comments: true,
+        post_comments: {
+          user: true,
+        },
         user: true,
       },
       select: {
         post_images: {
           post_image_id: true,
           post_image: true,
+        },
+        user: {
+          nickname: true,
         },
         post_id: true,
         user_id: true,
@@ -166,10 +171,11 @@ export class PostsService {
         post_comments: {
           post_comment_id: true,
           content: true,
+          user: {
+            nickname: true,
+          },
           user_id: true,
-        },
-        user: {
-          nickname: true,
+          created_at: true,
         },
         created_at: true,
         updated_at: true,
@@ -204,7 +210,6 @@ export class PostsService {
 
     this.postsRepository.update(id, { title, category, content });
   }
-
 
   async deletePost(userId: number, postId: number) {
     const post = await this._existenceCheckById(postId);
