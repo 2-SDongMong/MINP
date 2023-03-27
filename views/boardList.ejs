@@ -30,7 +30,7 @@
             <tbody>
                 <% for (let i = 0; i < posts.data.length ; i++) {
                     const post = posts.data[i];
-                    const created_at = post.created_at.toLocaleString(); %>
+                    const created_at = post.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }); %>
                 
                 <tr>
                     <td scope="row"><%= post.post_id %></td>
