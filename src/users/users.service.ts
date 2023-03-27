@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Body,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -47,14 +46,6 @@ export class UsersService {
     await this.userRepository.save(newUser);
 
     return newUser;
-  }
-
-  //google에서 아이디 패스워드만 받아와서 나머지 입력받아서 넣어
-  async googleCreate() {}
-
-  //이건 아직 xx
-  updateUser(email: string, nickname: string, password: string) {
-    this.userRepository.update({ email }, { nickname, password });
   }
 
   async getByEmail(email: string) {

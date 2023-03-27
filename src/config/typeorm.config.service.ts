@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config/dist';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
-import { CatLike } from '../cat-likes/cat-like.entity';
 import { Cat } from '../cats/cat.entity';
 import { Message } from '../messages/message.entity';
 import { PostComment } from '../post-comments/post-comment.entity';
@@ -34,7 +33,6 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         Post,
         PostComment,
         PostImage,
-        CatLike,
         UserLike,
         ProductsCategory,
         Products,

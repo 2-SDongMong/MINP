@@ -25,11 +25,6 @@ export class UsersController {
     return await this.usersService.create(dto);
   }
 
-  @Put('/update')
-  updateUser() {
-    this.usersService.updateUser('email', 'new_name', 'new_password');
-  }
-
   // My page API
   // 유저 정보 조회
   @Get('/mypage')
