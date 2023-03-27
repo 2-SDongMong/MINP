@@ -1,5 +1,4 @@
-console.log(user);
-console.log(user.id);
+
 function loadCategories() {
   $.ajax({
     url: '/productsCategory',
@@ -17,6 +16,7 @@ function loadCategories() {
     },
   });
 }
+
 $(document).ready(function () {
   loadCategories();
 
