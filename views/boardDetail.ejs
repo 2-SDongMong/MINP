@@ -65,7 +65,7 @@
             url: `/posts/${id}`,
             success: function (response) {
                 alert('삭제되었습니다.');
-                window.location.href = '../boardList?page=1';
+                window.location.href = '../boardList';
             },
             error: function (response) {
                 console.log(response);

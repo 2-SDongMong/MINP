@@ -22,38 +22,44 @@ export class PostsService {
   private logger = new Logger('PostsService');
 
   // 커서 페이지네이션
-  async getPostsByCursor(pageOptionsDto: PageOptionsDto) {
+  async getPostsByCursor(endCursor?: number) {
+    console.log('endCursor', endCursor)
+    const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
-      take: 5+1,
-      where: pageOptionsDto.endCursor ? {
-        post_id: MoreThan(pageOptionsDto.endCursor),
-      }: {post_id: LessThan(pageOptionsDto.startCursor)}
+      take: 8,
+      where: !isFirstPage ? {post_id: LessThan(endCursor)} : null,
+      relations: {
+        user: {},
+      },
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        post_id: 'DESC',
+      },
     });
 
-    console.log(pageOptionsDto);
-    console.log(posts);
+    // console.log(pageOptionsDto);
+    console.log('new posts',posts);
 
-    const take = 5;
-    
-    const isLastPage = total <= take; 
-
-    let endCursor = posts[posts.length - 1]?.post_id ?? false;
+    const take = 7;
+  
+    let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
+  
     let startCursor = posts[0]?.post_id ?? false;
     let hasPreviousPage = total >= take;
     let hasNextPage = hasPreviousPage ? posts.length > take : true;
 
-    if (!pageOptionsDto.endCursor && !pageOptionsDto.startCursor) {
-      hasNextPage = false;
-    }
-
-    const takePosts = posts.slice(0,5);
+    const takePosts = posts.slice(0,7);
 
     return {
       data: takePosts,
       pageOpt: {
         total,
         take,
-        endCursor,
+        endCursor: newEndCursor,
         startCursor,
         hasNextPage,
         hasPreviousPage,

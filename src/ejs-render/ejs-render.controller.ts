@@ -9,13 +9,13 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
-import { CreatePostDto } from 'src/posts/dto/create-post.dto';
 import { PostsService } from 'src/posts/posts.service';
 import { RequestsService } from 'src/requests/requests.service';
 import { MessagesService } from 'src/messages/messages.service';
 import { ProductsService } from 'src/share-modules/share-products/share-products.service';
 import { ConfigService } from '@nestjs/config';
 import { PostCategoryType } from 'src/posts/post.entity';
+import { PageOptionsDto } from 'src/posts/dto/page-options.dto';
 @Controller()
 export class EjsRenderController {
   constructor(
@@ -184,12 +184,23 @@ export class EjsRenderController {
     return { components: 'shareProduct', userId: req.userId };
   }
 
+  //커서
   @Get('boardList')
   @Render('index')
-  async boardList(@Req() req, @Query('page') pageNum: number) {
-    const posts = await this.postsService.getPosts(pageNum);
+  async boardList(@Req() req, @Query('endCursor') endCursor: number) {
+    console.log('ejs render controller ===>', 'endCursor',endCursor)
+    const posts = await this.postsService.getPostsByCursor(endCursor);
+    
     return { components: 'boardList', userId: req.userId, user: req.user, posts };
   }
+
+  // //오프셋
+  // @Get('boardList')
+  // @Render('index')
+  // async boardList(@Req() req, @Query('page') pageNum: number) {
+  //   const posts = await this.postsService.getPosts(pageNum);
+  //   return { components: 'boardList', userId: req.userId, user: req.user, posts };
+  // }
 
   @Get('boardList/:category')
   @Render('index')
