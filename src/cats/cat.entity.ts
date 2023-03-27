@@ -1,4 +1,3 @@
-import { CatLike } from '../cat-likes/cat-like.entity';
 import { User } from '../users/user.entity';
 import {
   Column,
@@ -52,9 +51,5 @@ export class Cat {
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @OneToMany(() => CatLike, (catLike) => catLike.cat, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  cat_likes: CatLike[];
+  
 }

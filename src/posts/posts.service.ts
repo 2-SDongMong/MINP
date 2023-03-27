@@ -174,7 +174,9 @@ export class PostsService {
       where: { post_id, deleted_at: IsNull() },
       relations: {
         post_images: true,
-        post_comments: true,
+        post_comments: {
+          user: true,
+        },
         user: true,
       },
       select: {
@@ -193,7 +195,11 @@ export class PostsService {
         post_comments: {
           post_comment_id: true,
           content: true,
+          user: {
+            nickname: true,
+          },
           user_id: true,
+          created_at: true,
         },
         created_at: true,
         updated_at: true,

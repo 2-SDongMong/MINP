@@ -1,9 +1,11 @@
+
+
 $(document).ready(function() {
     showMyPage();
     showMyCat();
     catModalEventRegister();
     showMyPost();
-    // showUserStatus();
+    showUserStatus();
   }
 )
 
@@ -108,8 +110,12 @@ function modifyMyPage(id) {
       window.location.reload();
     },
     error: function (response) {
-      console.log(response);
-    },
+      if (response.responseJSON && response.responseJSON.message) {
+        alert('이미 존재하는 닉네임 입니다.');
+      } else {
+        console.log(response);
+      }
+    }
   });
 }
 
@@ -264,7 +270,11 @@ function addCatUploadImage(input) {
     success: function (response) {
       console.log('upload success. received url: ', response.url)
       $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
-    }
+    },
+    error: function (err) {
+      console.log(err);
+      alert('오류 ')
+    },
   });
   }
 
@@ -322,7 +332,7 @@ function addMyCat() {
 }
 
 function modifyMyCat(id) {
-    const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+  const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
   console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
@@ -427,29 +437,23 @@ function verifyLocation() {
         var path = [userAddressCoords, userCurrentCoords];
         line.setPath(path);
 
-        console.log('두 좌표 사이의 거리: ', line.getLength());
-
-        const isInRadius = line.getLength() <= 1000;
-        alert(`위치 인증을 마쳤습니다. 결과는 ${isInRadius}입니다`);
+        const isInRadius = line.getLength() <= 5000;
 
         // kakao map api를 이용하여 두 좌표의 동네명 비교하기
         geocoder.coord2Address(longitude, latitude, function (results, status) {
           if (status === daum.maps.services.Status.OK) {
             let result = results[0];
-            console.log('현재 좌표 기반 주소찾기 결과: ', result);
 
             // 현재 좌표로 동네명 얻기
             var userCurrentBname = result.address.region_3depth_name;
-            console.log('현재 동네명: ', userCurrentBname);
 
             const isSameBname = userCurrentBname == userAddressBname;
-            alert(`동네 인증을 마쳤습니다. ${isSameBname}입니다`);
 
-            // 동네명이 같거나 기록된 주소<->현재위치 거리가 1km 이내라면
+            // 동네명이 같거나 기록된 주소<->현재위치 거리가 5km 이내라면
             // 사용자의 address_certified 컬럼을 true로 변환시키는 ajax 콜 호출
             console.log('isSameBname, isInRadius: ', isSameBname, isInRadius);
             if (isSameBname || isInRadius) {
-              alert('사용자 정보를 변경합니다');
+              alert('동네 인증을 성공적으로 마쳤습니다! 회원 정보를 수정합니다.');
               $.ajax({
                 type: 'PATCH',
                 url: `users/address/certify`,
@@ -458,13 +462,15 @@ function verifyLocation() {
                   address_certified: true,
                 }),
                 success: function (response) {
-                  alert('회원 정보 수정이 완료되었습니다');
                   window.location.reload();
                 },
                 error: function (response) {
+                  alert('수정 도중 문제가 발생하였습니다. 관리자에게 문의해주세요')
                   console.log(response);
                 },
               });
+            } else {
+              alert('현재 위치가 입력된 주소와 다릅니다. 주소를 확인하여 다시 시도하거나 관리자에게 문의 바랍니다')
             }
           } else {
             console.log(
@@ -495,7 +501,6 @@ function verifyLocation() {
       '현재 브라우저로는 위치 서비스를 이용하실 수 없습니다. 다른 브라우저로 접속하거나 운영자에게 문의해주세요.'
     );
   } else {
-    alert('위치 정보를 성공적으로 불러옵니다');
     return navigator.geolocation.getCurrentPosition(success, error);
   }
 }
@@ -526,7 +531,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${requestCreate}</td>
             <td class="date2">
-              <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
+            <button class="delMyRequestBtn" onclick="delMyRequest(${requestId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -570,7 +575,7 @@ function showMyPost() {
             <td class="shortContent2">${nickname}</td>
             <td class="date2">${postCreate}</td>
             <td class="date2">
-              <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
+            <button class="delMyPostBtn" onclick="delMyPost(${postId})">삭제</button>
             </td>
           </tr>
         </table>`
@@ -598,6 +603,9 @@ function delMyShare(id) {
     success: function(response) {
       alert('삭제가 완료되었습니다.')
       window.location.replace('/mypage')
+    },
+    error: function(response) {
+      console.error(response)
     }
   })
 }

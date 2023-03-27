@@ -21,10 +21,11 @@ export class PostCommentsController {
   constructor(private readonly postCommentsService: PostCommentsService) {}
   private logger = new Logger('PostCommentsController');
 
+  // 게시글 ID로 댓글 목록 조회
   @Get('/:postId/comments')
   async getComments(@Param('postId') postId: number) {
     this.logger.debug(`getComments(postId)`);
-    return await this.postCommentsService.getComments(postId);
+    return await this.postCommentsService.getCommentsByPostId(postId);
   }
 
   //댓글 쓰기

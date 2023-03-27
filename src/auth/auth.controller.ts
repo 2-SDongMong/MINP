@@ -44,15 +44,6 @@ export class AuthController {
     return await this.authService.sendMail(body.email);
   }
 
-  //구글 login
-  // @Get('/login/google')
-  // @UseGuards(AuthGuard('google'))
-  // async loginGoogle(
-  //   @Req() req: Request & IOAuthUser,
-  //   @Res() res: Response
-  //   ){
-  //   this.authService.OAuthLogin({req,res})
-  // }
 
   @Post('/logout')
   @HttpCode(HttpStatus.OK)

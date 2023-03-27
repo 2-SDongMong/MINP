@@ -19,7 +19,6 @@ import { PostsModule } from './posts/posts.module';
 import { PostCommentsModule } from './post-comments/post-comments.module';
 import { UserLikesModule } from './user-likes/user-likes.module';
 import { PostImagesModule } from './post-images/post-images.module';
-import { CatLikesModule } from './cat-likes/cat-likes.module';
 import { ShareProductsModule } from './share-modules/share-products/share-products.module';
 import { ShareProductsCategoryModule } from './share-modules/share-products-category/products-category.module';
 import { AuthModule } from './auth/auth.module';
@@ -64,8 +63,6 @@ import { CacheConfigService } from './config/cache.config.service';
     PostsModule,
 
     PostCommentsModule,
-
-    CatLikesModule,
 
     PostImagesModule,
 
