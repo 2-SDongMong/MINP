@@ -1,4 +1,3 @@
-import { CatLike } from '../cat-likes/cat-like.entity';
 import { User } from '../users/user.entity';
 import {
   Column,
@@ -51,10 +50,4 @@ export class Cat {
   @ManyToOne(() => User, (user) => user.cats, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  @OneToMany(() => CatLike, (catLike) => catLike.cat, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  cat_likes: CatLike[];
 }

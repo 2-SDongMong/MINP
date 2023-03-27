@@ -9,8 +9,6 @@ import * as bcrypt from 'bcrypt';
 import _ from 'lodash';
 import { JwtService } from '@nestjs/jwt';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
-// import { MailerService } from '@nestjs-modules/mailer';
-// import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 
 @Injectable()
@@ -42,10 +40,7 @@ export class AuthService {
 
     return tokens;
   }
-  //인증번호를 백에서 db에 테이블을 만들어서 비교를
-  //받아와서 비교하는 함수
 
-  //
   async sendMail(email) {
     try {
       const authNumber = Math.random().toString(36).slice(2);
@@ -78,17 +73,6 @@ export class AuthService {
         HttpStatus.FORBIDDEN
       );
     }
-  }
-
-  async OAuthLogin({ req, res }) {
-    const googleEmail = req.userId.email;
-    const user = await this.userService.findOneByEmail(googleEmail);
-    if (!user) {
-      throw new HttpException('없는 회원정보 입니다.', HttpStatus.FORBIDDEN);
-    }
-
-    this.getTokens(user.user_id, user.email);
-    res.redirect('리다이렝트할 url주소');
   }
 
   async logout(user) {

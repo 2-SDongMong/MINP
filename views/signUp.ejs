@@ -166,6 +166,7 @@
         }
     }
 
+
     function sendmail() {
         const signupEmail = $('#signupEmail').val();
         if (!signupEmail) {
@@ -239,6 +240,7 @@
     }
 
     function signUp() {
+        
         // 회원 정보 입력
         const signupNickname = $('#signupNickname').val();
         const signupName = $('#signupName').val();
@@ -320,7 +322,6 @@
                 aa = data
             }
         });
-
         return aa;
     }
 
@@ -336,7 +337,6 @@
                 aa = data
             }
         });
-
         return aa;
     }
 

@@ -1,13 +1,11 @@
 import {
   Body,
-  CacheInterceptor,
   Controller,
   Delete,
   Get,
   Param,
   Post,
   Req,
-  UseInterceptors,
 } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { MessagesService } from './messages.service';

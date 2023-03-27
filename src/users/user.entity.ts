@@ -1,4 +1,3 @@
-import { CatLike } from '../cat-likes/cat-like.entity';
 import { Cat } from '../cats/cat.entity';
 import { Request } from '../requests/request.entity';
 import {
@@ -76,11 +75,11 @@ export class User {
   })
   cats: Cat[];
 
-  @OneToMany(() => CatLike, (catLike) => catLike.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
-  })
-  cat_likes: CatLike[];
+  // @OneToMany(() => CatLike, (catLike) => catLike.user, {
+  //   onUpdate: 'CASCADE',
+  //   onDelete: 'CASCADE',
+  // })
+  // cat_likes: CatLike[];
 
   @OneToMany(() => Products, (Products) => Products.user, {
     onUpdate: 'CASCADE',
