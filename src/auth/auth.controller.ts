@@ -34,12 +34,9 @@ export class AuthController {
     res.cookie('accessToken', accessToken);
 
     return res.json({ accessToken });
-
-    // FIXME: 쿠키 방식이 모두에게 잘 적용됨을 확인하면 삭제하기
-    // return await this.authService.login(dto);
   }
 
-  @Post('')
+  @Post()
   async sendMail(@Body() body) {
     return await this.authService.sendMail(body.email);
   }
