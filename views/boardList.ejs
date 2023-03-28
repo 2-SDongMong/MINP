@@ -43,19 +43,20 @@
                 <% } %>
               </tbody>
             </table>
-            <!-- <button onclick="viewBoardLists(document.querySelectorAll('tr')[document.querySelectorAll('tr').length - 1].getElementsByTagName('td')[0].textContent)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button> -->
-            <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button>
-    
+            
+            <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-dark">더보기</button>
+
         </div>
     </div>
-    
-    <div>
-      </div>
 
     <div class="container">
       <a href='/board/post' class="btn btn-success">글쓰기</a>
     </div>
     <br><br>
+
+    <div class="topBtnBox">
+      <button id="topBtn" type="button" class="btn btn-info">TOP</button>
+    </div>
 
 </section>
 
@@ -107,9 +108,14 @@
           newRow.innerHTML = html;
         })
 
-        // 버튼 업데이트
-        const moreButton = document.getElementById('moreBtn')
-        moreButton.setAttribute('onClick', `viewBoardLists(${response.pageOpt.endCursor})`)
+        
+        const moreButton = document.getElementById('moreBtn');
+        if(response.pageOpt.hasNextPage) { 
+          moreButton.setAttribute('onClick', `viewBoardLists(${response.pageOpt.endCursor})`);
+
+        } else {
+          moreButton.setAttribute('disabled', true);
+        }
 
       },
       error: function (err) {
@@ -117,6 +123,19 @@
       },
     });
   }
-
-
+  
+  $(function() { // 보이기 | 숨기기
+	  $(window).scroll(function() {
+      if ($(this).scrollTop() > 250) { //250 넘으면 버튼이 보여짐니다. 
+        $('#topBtn').fadeIn();
+      } else {
+       $('#topBtn').fadeOut();
+      }
+    }); // 버튼 클릭시 
+    $("#topBtn").click(function() { 
+  	  $('html, body').animate({ scrollTop : 0 // 0 까지 animation 이동합니다. 
+  	  }, 400); // 속도 400 
+  	  return false; 
+    }); 
+  });
 </script>

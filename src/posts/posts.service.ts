@@ -6,18 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import {
-  IsNull,
-  LessThan,
-  LessThanOrEqual,
-  MoreThan,
-  MoreThanOrEqual,
-  Repository,
-} from 'typeorm';
-import { PageOptionsDto } from './dto/page-options.dto';
-//import { PageMetaDto } from './dto/page-meta.dto';
-//import { PageOptionsDto } from './dto/page-options.dto';
-//import { PageDto } from './dto/page-info';
+import { IsNull, LessThan, Repository } from 'typeorm';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -58,7 +47,7 @@ export class PostsService {
 
     let startCursor = posts[0]?.post_id ?? false;
     let hasPreviousPage = total >= take;
-    let hasNextPage = hasPreviousPage ? posts.length > take : true;
+    let hasNextPage = hasPreviousPage ? posts.length > take : false;
 
     // FIXME: 앞뒤 페이지 호출 시 이용할 것.
     const takePosts = posts.slice(0, 7);
