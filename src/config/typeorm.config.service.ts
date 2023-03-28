@@ -19,6 +19,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   createTypeOrmOptions(): TypeOrmModuleOptions {
     return {
       type: 'mysql',
+      // FIXME: host, port, username, password, database는 로컬 환경일 때
       // host: this.conigService.get<string>('DATABASE_HOST'),
       // port: this.conigService.get<number>('DATABASE_PORT'),
       // username: this.conigService.get<string>('DATABASE_USERNAME'),
@@ -42,7 +43,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
       logging: ['error'],
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),
-      timezone: 'UTC',
+      timezone: 'Z',
     };
   }
 }

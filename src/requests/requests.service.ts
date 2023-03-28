@@ -110,6 +110,8 @@ export class RequestsService {
     };
   }
 
+  // FIXME: 커서 기반에 문제가 생겼을 시, 오프셋 기반으로 전환할 것.
+
   // // 페이지 번호와 페이지당 게시글 수를 받아 목록 조회
   // async getRequestsPagination(page = 1, take = 8) {
   //   const value = await this.cacheManager.get(`RequestsPagination`);

@@ -47,8 +47,7 @@ export class PostsController {
 
   // 게시물 목록을 조회 / 커서 페이지네이션
   @Get()
-  async getPostsByCursor(@Query('endCursor') endCursor: number) { //
-   //console.log('posts controller === >',endCursor);
+  async getPostsByCursor(@Query('endCursor') endCursor: number) {
     return await this.postsService.getPostsByCursor(endCursor);
   }
 
@@ -73,7 +72,6 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   async getPostById(@Param('id') postId: number) {
     this.logger.debug(`getPostById() : ${postId}`);
-    console.log(postId);
     return await this.postsService.getPostById(postId);
   }
 
