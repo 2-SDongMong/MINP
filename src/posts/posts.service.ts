@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, LessThan, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import { IsNull, LessThan, LessThanOrEqual, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
 import { PageOptionsDto } from './dto/page-options.dto';
 //import { PageMetaDto } from './dto/page-meta.dto';
 //import { PageOptionsDto } from './dto/page-options.dto';
@@ -27,7 +27,7 @@ export class PostsService {
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
       take: 7+1,
-      where: !isFirstPage ? {post_id: LessThan(endCursor)} : null,
+      where: !isFirstPage ? {post_id: LessThanOrEqual(endCursor)} : null,
       relations: {
         user: {},
       },
@@ -44,12 +44,12 @@ export class PostsService {
     console.log('new posts',posts);
 
     const take = 7;
-  
+
     let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
   
     let startCursor = posts[0]?.post_id ?? false;
     let hasPreviousPage = total >= take;
-    let hasNextPage = hasPreviousPage ? posts.length > take : true;
+    let hasNextPage = hasPreviousPage ? posts.length > take : false;
 
     const takePosts = posts.slice(0,7);
 
