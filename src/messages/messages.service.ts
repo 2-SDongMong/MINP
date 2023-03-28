@@ -63,7 +63,6 @@ export class MessagesService {
 
   async getSentMessages(senderId: number) {
     const value = await this.cacheManager.get(`sender${senderId}`);
-
     if (!value) {
       const message = await this.repository.getSentMessages(senderId);
       await this.cacheManager.set(`sender${senderId}`, message);
