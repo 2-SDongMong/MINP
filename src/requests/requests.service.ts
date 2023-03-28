@@ -26,57 +26,56 @@ export class RequestsService {
   async getRequestsByCursor(endCursor?: number, take: number = 9) {
     const isFirstPage = !endCursor;
     const value = await this.cacheManager.get(`requestCursor${endCursor}`);
-    if (!value){
-    const [requests, total] = await this.requestsRepository.findAndCount({
-      take,
-      where: !isFirstPage ? { request_id: LessThan(endCursor) } : null,
-      relations: {
-        user: {
-          cats: true,
-        },
-      },
-      select: {
-        user: {
-          nickname: true,
-          address_bname: true,
-          cats: {
-            image: true,
+    if (!value) {
+      const [requests, total] = await this.requestsRepository.findAndCount({
+        take,
+        where: !isFirstPage ? { request_id: LessThan(endCursor) } : null,
+        relations: {
+          user: {
+            cats: true,
           },
         },
-        request_id: true,
-        reserved_begin_date: true,
-        reserved_end_date: true,
-        updated_at: true,
-        detail: true,
-        is_ongoing: true,
-      },
-      order: {
-        request_id: 'DESC',
-      },
-    });
+        select: {
+          user: {
+            nickname: true,
+            address_bname: true,
+            cats: {
+              image: true,
+            },
+          },
+          request_id: true,
+          reserved_begin_date: true,
+          reserved_end_date: true,
+          updated_at: true,
+          detail: true,
+          is_ongoing: true,
+        },
+        order: {
+          request_id: 'DESC',
+        },
+      });
 
-    let newEndCursor = requests[requests.length - 1]?.request_id ?? false;
-    let startCursor = requests[0]?.request_id ?? false;
-    let hasPreviousPage = total >= take;
-    let hasNextPage = hasPreviousPage ? requests.length > take : true;
+      let newEndCursor = requests[requests.length - 1]?.request_id ?? false;
+      let startCursor = requests[0]?.request_id ?? false;
+      let hasPreviousPage = total >= take;
+      let hasNextPage = hasPreviousPage ? requests.length > take : true;
 
-    const request = {
-      data: requests,
-      pageOpt: {
-        total,
-        take,
-        endCursor: newEndCursor,
-        startCursor,
-        hasNextPage,
-        hasPreviousPage,
-      },
-    };
-    await this.cacheManager.set(`requestCursor${endCursor}`, request);
+      const request = {
+        data: requests,
+        pageOpt: {
+          total,
+          take,
+          endCursor: newEndCursor,
+          startCursor,
+          hasNextPage,
+          hasPreviousPage,
+        },
+      };
+      await this.cacheManager.set(`requestCursor${endCursor}`, request);
 
-    return request
+      return request;
     }
     return value;
-    
   }
 
   // 동네명 bname과 직전 페이지의 마지막 인덱스 endCursor, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
