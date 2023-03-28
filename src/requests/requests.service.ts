@@ -25,7 +25,8 @@ export class RequestsService {
   // 직전 페이지의 마지막 인덱스 endCursor와 페이지 당 게시글 수 take를 받아 품앗이 목록 조회
   async getRequestsByCursor(endCursor?: number, take: number = 9) {
     const isFirstPage = !endCursor;
-
+    const value = await this.cacheManager.get(`requestCursor${endCursor}`);
+    if (!value){
     const [requests, total] = await this.requestsRepository.findAndCount({
       take,
       where: !isFirstPage ? { request_id: LessThan(endCursor) } : null,
@@ -59,7 +60,7 @@ export class RequestsService {
     let hasPreviousPage = total >= take;
     let hasNextPage = hasPreviousPage ? requests.length > take : true;
 
-    return {
+    const request = {
       data: requests,
       pageOpt: {
         total,
@@ -70,6 +71,12 @@ export class RequestsService {
         hasPreviousPage,
       },
     };
+    await this.cacheManager.set(`requestCursor${endCursor}`, request);
+
+    return request
+    }
+    return value;
+    
   }
 
   // 동네명 bname과 직전 페이지의 마지막 인덱스 endCursor, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
