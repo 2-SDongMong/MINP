@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, LessThan, Repository } from 'typeorm';
+import { IsNull, LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -22,8 +22,8 @@ export class PostsService {
     console.log('endCursor', endCursor);
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
-      take: 7,
-      where: !isFirstPage ? { post_id: LessThan(endCursor) } : null,
+      take: 7+1,
+      where: !isFirstPage ? { post_id: LessThanOrEqual(endCursor) } : null,
       relations: {
         user: {},
       },
@@ -40,17 +40,25 @@ export class PostsService {
     // FIXME: 앞뒤 페이지 호출 시 이용할 것.
     const take = 7;
 
+    console.log('POST, ', posts);
+
     // 호출한 7개 중 마지막 인덱스를 newEndCursor로 삼는다. 다음 페이지를
     // 불러올 떄 이 newEndCursor보다 작은 인덱스 7개를 호출하게 된다.
     // 7개를 채우지 못하고 반환된 경우 newEndCursor는 false가 된다.
     let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
 
     let startCursor = posts[0]?.post_id ?? false;
-    let hasPreviousPage = total >= take;
-    let hasNextPage = hasPreviousPage ? posts.length > take : false;
+    let hasPreviousPage = isFirstPage ? false : total >= take;
+    let hasNextPage = hasPreviousPage ? posts.length > take : true;
 
     // FIXME: 앞뒤 페이지 호출 시 이용할 것.
     const takePosts = posts.slice(0, 7);
+
+    console.log('takePosts, ', takePosts);
+
+    console.log('total, ', total);
+    console.log('hasPreviousPage, ', hasPreviousPage);
+    console.log('hasNextPage, ', hasNextPage);
 
     return {
       data: takePosts,

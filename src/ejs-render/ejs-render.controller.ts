@@ -204,7 +204,6 @@ export class EjsRenderController {
   @Get('boardList')
   @Render('index')
   async boardList(@Req() req, @Query('endCursor') endCursor: number) {
-    console.log('ejs render controller ===>', 'endCursor', endCursor);
     const posts = await this.postsService.getPostsByCursor(endCursor);
     return {
       components: 'boardList',
