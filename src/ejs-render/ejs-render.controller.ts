@@ -37,13 +37,13 @@ export class EjsRenderController {
     // 로그인 한 사용자이고 위치인증까지 마쳤다면
     // '사용자의 동네명 기반' 품앗이 최신 6개를 가져옴 (캐러셀용)
     if (req.user && req.user.address_certified) {
-      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+      requests = await this.requestsService.getRequestsByBnameAndCursor(
         req.user.address_bname,
-        1,
+        null,
         6
       );
     } else {
-      requests = await this.requestsService.getRequestsPagination(1, 6);
+      requests = await this.requestsService.getRequestsByCursor(null, 6);
     }
 
     let products;
@@ -56,7 +56,7 @@ export class EjsRenderController {
       components: 'main',
       userId: req.userId,
       user: req.user,
-      requests,
+      requests: requests.data,
       posts,
       products,
     };
@@ -92,18 +92,19 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId, user: req.user };
   }
 
-  @Get('/request/list/:page')
+  @Get('/request')
   @Render('index')
-  async requestList(@Req() req, @Param('page') page: number) {
+  async requestList(@Req() req, @Query('endCursor') endCursor: number) {
     let requests;
     if (req.user && req.user.address_certified) {
-      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+      requests = await this.requestsService.getRequestsByBnameAndCursor(
         req.user.address_bname,
-        page
+        endCursor
       );
     } else {
-      requests = await this.requestsService.getRequestsPagination(page);
+      requests = await this.requestsService.getRequestsByCursor(endCursor);
     }
+
     return {
       components: 'requestList',
       userId: req.userId,
@@ -199,10 +200,12 @@ export class EjsRenderController {
     return { components: 'shareProduct', userId: req.userId, user: req.user };
   }
 
+  //커서
   @Get('boardList')
   @Render('index')
-  async boardList(@Req() req, @Query('page') pageNum: number) {
-    const posts = await this.postsService.getPosts(pageNum);
+  async boardList(@Req() req, @Query('endCursor') endCursor: number) {
+    console.log('ejs render controller ===>', 'endCursor', endCursor);
+    const posts = await this.postsService.getPostsByCursor(endCursor);
     return {
       components: 'boardList',
       userId: req.userId,
@@ -210,6 +213,14 @@ export class EjsRenderController {
       posts,
     };
   }
+
+  // //오프셋
+  // @Get('boardList')
+  // @Render('index')
+  // async boardList(@Req() req, @Query('page') pageNum: number) {
+  //   const posts = await this.postsService.getPosts(pageNum);
+  //   return { components: 'boardList', userId: req.userId, user: req.user, posts };
+  // }
 
   @Get('boardList/:category')
   @Render('index')
@@ -242,10 +253,17 @@ export class EjsRenderController {
     };
   }
 
-  @Get('boardPost')
+  @Get('board/post')
   @Render('index')
   async boardPost(@Req() req) {
     return { components: 'boardPost', userId: req.userId, user: req.user };
+  }
+
+  @Get('board/modify/:id')
+  @Render('index')
+  async boardModify(@Param('id') id: number, @Req() req) {
+    const post = await this.postsService.getPostById(id);
+    return { components: 'boardModify', userId: req.userId, post: post[0] };
   }
 
   @Get('/message/:type')

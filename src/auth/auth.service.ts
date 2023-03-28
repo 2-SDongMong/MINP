@@ -40,8 +40,7 @@ export class AuthService {
 
     return tokens;
   }
-  
-  
+
   async sendMail(email) {
     try {
       const authNumber = Math.random().toString(36).slice(2);

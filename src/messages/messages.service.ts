@@ -82,5 +82,4 @@ export class MessagesService {
     await this.cacheManager.del('/messages');
     return this.repository.softDelete(id);
   }
-
 }

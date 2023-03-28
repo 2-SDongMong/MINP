@@ -253,6 +253,7 @@
       console.log('Sending product ID:', productId);
     });
   });
+  
   // 삭제 버튼 이벤트 리스너 추가
   $('.ddelete').on('click', function () {
     const productCard = $(this).closest('.product-card');
@@ -284,6 +285,7 @@
       },
     });
   });
+
   $('.btn-secondary').on('click', function () {
     const editModal = $(this).closest('.modal');
     editModal.modal('hide');

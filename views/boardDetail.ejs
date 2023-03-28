@@ -1,7 +1,7 @@
 <div class="container">
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
     <% if (post.user_id == userId) { %>
-        <button id="btn-update" class="btn btn-warning" onclick="updateWrite('<%= post.post_id %>')" type="button">수정</button>
+        <button id="btn-update" class="btn btn-warning" onclick="location.href='/board/modify/<%= post.post_id %>'" type="button">수정</button>
         <button id="btn-delete" class="btn btn-danger" onclick="postDelete('<%= post.post_id %>')" type="button">삭제</button>
         <% } %>
             <br><br>
@@ -67,7 +67,7 @@
             url: `/posts/${id}`,
             success: function (response) {
                 alert('삭제되었습니다.');
-                window.location.href = '../boardList?page=1';
+                window.location.href = '../boardList';
             },
             error: function (response) {
                 console.log(response);

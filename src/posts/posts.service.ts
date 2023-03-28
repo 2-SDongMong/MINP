@@ -6,10 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, LessThan, MoreThanOrEqual, Repository } from 'typeorm';
-//import { PageMetaDto } from './dto/page-meta.dto';
-//import { PageOptionsDto } from './dto/page-options.dto';
-//import { PageDto } from './dto/page-info';
+import { IsNull, LessThan, Repository } from 'typeorm';
 import { Post, PostCategoryType } from './post.entity';
 
 @Injectable()
@@ -20,43 +17,56 @@ export class PostsService {
 
   private logger = new Logger('PostsService');
 
+  // 커서 페이지네이션
+  async getPostsByCursor(endCursor?: number) {
+    console.log('endCursor', endCursor);
+    const isFirstPage = !endCursor;
+    const [posts, total] = await this.postsRepository.findAndCount({
+      take: 7,
+      where: !isFirstPage ? { post_id: LessThan(endCursor) } : null,
+      relations: {
+        user: {},
+      },
+      select: {
+        user: {
+          nickname: true,
+        },
+      },
+      order: {
+        post_id: 'DESC',
+      },
+    });
+
+    // FIXME: 앞뒤 페이지 호출 시 이용할 것.
+    const take = 7;
+
+    // 호출한 7개 중 마지막 인덱스를 newEndCursor로 삼는다. 다음 페이지를
+    // 불러올 떄 이 newEndCursor보다 작은 인덱스 7개를 호출하게 된다.
+    // 7개를 채우지 못하고 반환된 경우 newEndCursor는 false가 된다.
+    let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
+
+    let startCursor = posts[0]?.post_id ?? false;
+    let hasPreviousPage = total >= take;
+    let hasNextPage = hasPreviousPage ? posts.length > take : false;
+
+    // FIXME: 앞뒤 페이지 호출 시 이용할 것.
+    const takePosts = posts.slice(0, 7);
+
+    return {
+      data: takePosts,
+      pageOpt: {
+        total,
+        take,
+        endCursor: newEndCursor,
+        startCursor,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
+  }
+
+  // 오프셋 페이지네이션
   async getPosts(page: number = 1) {
-    // const take = 7;
-
-    // const [posts, total] = await this.postsRepository.findAndCount({
-    //   take,
-    //   where: cursor ? {
-    //     post_id: MoreThanOrEqual(cursor),
-    //   }: null,
-    // });
-
-    // const isLastPage = total <= take;
-
-    // let hasNextPage = true;
-    // let hasPreviousPage = false;
-    // let endCursor: number;
-    // let startCursor: number;
-
-    // if (isLastPage || posts.length <= 0) {
-    //   hasNextPage = false;
-    //   endCursor = null;
-    // } else {
-    //   endCursor = posts[posts.length - 1].post_id;
-    //   //hasPreviousPage = true;
-    // }
-
-    // return {
-    //   data: posts,
-    //   meta: {
-    //     total,
-    //     hasNextPage,
-    //     hasPreviousPage,
-    //     endCursor,
-    //     startCursor,
-    //   }
-    // }
-
-    //오프셋
     const take = 7;
 
     const total = await this.postsRepository.count();
@@ -91,44 +101,6 @@ export class PostsService {
       throw new NotFoundException('해당 페이지는 존재하지 않습니다');
     }
   }
-
-  // public static async findByCursor(cursor: number) {
-  //   return await this.postsRepository.find({
-  //     where: { id: MoreThanOrEqual(cursor) },
-  //     order: { id: "ASC" },
-  //     take: 7,
-  //   });
-  // }
-
-  // async paginate(pageOptionsDto: PageOptionsDto): Promise<PageDto<Post>> {
-
-  //   const [posts, total] = await this.postsRepository.findAndCount({
-  //     take: pageOptionsDto.take,
-  //     where: pageOptionsDto.cursorId ? {
-  //       id: LessThan(pageOptionsDto.cursorId),
-  //     }: null,
-  //     order: {
-  //       id: pageOptionsDto.sort.toUpperCase() as any,
-  //     },
-  //   });
-
-  //   const takePerPage = pageOptionsDto.take;
-  //   const isLastPage = total <= takePerPage;
-
-  //   let hasNextData = true;
-  //   let cursor: number;
-
-  //   if (isLastPage || posts.length <= 0) {
-  //     hasNextData = false;
-  //     cursor = null;
-  //   } else {
-  //     cursor = posts[posts.length - 1].id;
-  //   }
-
-  //   const pageMetaDto = new PageMetaDto({ pageOptionsDto, total, hasNextData, cursor });
-
-  //   return new PageDto(posts, pageMetaDto);
-  // }
 
   async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
     const take = 7;

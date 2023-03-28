@@ -5,7 +5,7 @@
 	</div>
 	<br/>
 	<div>
-		<button onclick="location.href='/request/list/1'" class="btn btn-outline-dark" type="button" style="border-radius: 20px;">목록으로</button>
+		<button onclick="location.href='/request'" class="btn btn-outline-dark" type="button" style="border-radius: 20px;">목록으로</button>
 	</div>
 
 	<div class="cat-cards-container" >
@@ -193,7 +193,7 @@
 				is_ongoing: false,
 			}),
 			success: function(response) {
-				location.href = '/request/list/1';
+				location.href = '/request';
 			},
 			error: function(response) {
 				console.log(response);
@@ -212,7 +212,7 @@
 			url: `/requests/${id}`,
 			success: function (response) {
 				alert('품앗이 게시글을 삭제하였습니다')
-				location.href = '/request/list/1';
+				location.href = '/request';
 			},
 			error: function (response) {
 				console.log(response);

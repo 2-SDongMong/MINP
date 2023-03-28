@@ -6,9 +6,9 @@
     </div>
     <%if (!userId) { %>
     <ul class="navbarMenu2">
-      <li><a href="/request/list/1">품앗이 신청</a></li>
+      <li><a href="/request">품앗이 신청</a></li>
       <li><a href="/shareList">냥품나눔</a></li>
-      <li><a href="/boardList?page=1">자유게시판</a></li>
+      <li><a href="/boardList">자유게시판</a></li>
     </ul>
 
     <div class="navbarButton2">
@@ -18,9 +18,9 @@
     <%} else { 
       if (user.status === '관리자'){%>
         <ul class="navbarMenu2">
-      <li><a href="/request/list/1">품앗이 신청</a></li>
+      <li><a href="/request">품앗이 신청</a></li>
       <li><a href="/shareList">냥품나눔</a></li>
-      <li><a href="/boardList?page=1">자유게시판</a></li>
+      <li><a href="/boardList">자유게시판</a></li>
     </ul>
 
         <div class="navbarButton2">
@@ -30,9 +30,9 @@
         </div>
         <% } else{ %>
     <ul class="navbarMenu2">
-      <li><a href="/request/list/1">품앗이 신청</a></li>
+      <li><a href="/request">품앗이 신청</a></li>
       <li><a href="/shareList">냥품나눔</a></li>
-      <li><a href="/boardList?page=1">자유게시판</a></li>
+      <li><a href="/boardList">자유게시판</a></li>
     </ul>
 
         <div class="navbarButton2">

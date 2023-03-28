@@ -50,6 +50,4 @@ export class Cat {
   @ManyToOne(() => User, (user) => user.cats, { cascade: true })
   @JoinColumn({ name: 'user_id' })
   user: User;
-
-  
 }

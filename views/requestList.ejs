@@ -26,15 +26,16 @@
 
 		<br/>
 
-		<% if (requests.length === 0) { %>
+		<% console.log('length', requests.data.length) %>
+		<% if (requests.data.length === 0) { %>
 		<div class="">
 			지금은 우리 동네에 품앗이 요청이 없네요!
 		</div>
 		<% } %>
 		<div class="request-cards-container" >
-			<% for (let i = 0; i < requests.length; i++) { 
-				const request = requests[i]; 
-				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60 - (60 * 9)
+			<% for (let i = 0; i < requests.data.length; i++) { 
+				const request = requests.data[i]; 
+				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
 				let updated = ''
 				if (minutesAgo < 60) {
 					updated += parseInt(minutesAgo) + '분'
@@ -63,7 +64,7 @@
 					<div onclick="location.href='/request/detail/<%= request.request_id %>'" class="card h-100" style="border-radius: 20px; cursor: pointer;">
 
 						<div class="cat-card">
-							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0].image %>');">
+							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0]?.image %>');">
 							<img src="" alt="">
 							<div class="status">
 								<p><%= ongoing %></p>
@@ -107,7 +108,9 @@
 				</div>
 			<% } %>
 		</div>
-		
+
+		<button onclick="moreRequestLists(<%= requests.pageOpt.endCursor %>, <%= user?.address_certified ?? false %>)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button>
+    
 		<br><br>
 	</div>
 </section>
@@ -139,5 +142,122 @@
 			}
 		})
 	}
+
+	async function moreRequestLists(endRequestId, address_certified) {
+		if (endRequestId === -1) {
+			return;
+		}
+
+		console.log('endRequestId', endRequestId);
+		$.ajax({
+		type: 'GET',
+		async: "true",
+		url: `/requests?endCursor=${endRequestId}`,
+		success: function (response) {
+			const cardContainer = $('.request-cards-container');
+			
+			if (response.data.length === 0) {
+				const tempHTML = `<div style="margin: 10px auto;">
+					마지막 항목입니다
+					</div>
+					`
+				cardContainer.append(tempHTML);
+				// 버튼 업데이트
+				const moreButton = document.getElementById('moreBtn')
+				moreButton.setAttribute('onClick', `moreRequestLists(-1,  ${address_certified})`)
+				return;
+			}
+
+			response.data.forEach((request) => {
+				
+				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
+				let updated = ''
+				if (minutesAgo < 60) {
+					updated += parseInt(minutesAgo) + '분'
+				} else if (minutesAgo / 60 <= 48) {
+					updated += parseInt(minutesAgo / 60) + '시간'
+				} else {
+					updated += parseInt(minutesAgo / 60 / 24) + '일'
+				} 
+
+				let reserved_dates = ''
+				if (request.reserved_end_date == request.reserved_begin_date) {
+					reserved_dates = request.reserved_begin_date;
+				} else {
+					reserved_dates = request.reserved_begin_date + ' ~ ' + request.reserved_end_date;
+				}
+
+				let ongoing = ''
+				if (request.is_ongoing) {
+					ongoing = '모집중'
+				} else {
+					ongoing = '모집 완료'
+				}
+
+				let bname = ''
+				if (address_certified) { 
+					bname = request.user?.address_bname
+				} else {
+					bname = '동네를 인증해주세요!'
+				}
+
+				const tempHTML = `
+				<div class="col">
+					<div onclick="location.href='/request/detail/${request.request_id}'" class="card h-100" style="border-radius: 20px; cursor: pointer;">
+
+						<div class="cat-card">
+							<div class="imgContainer" style="background-image: url('${request.user?.cats[0].image}');">
+							<img src="" alt="">
+							<div class="status">
+								<p>${ongoing}</p>
+							</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="period">
+									기간
+								</div>
+								<div class="cat-info-content">
+									${reserved_dates} 
+								</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="name">
+								연락
+								</div>
+								<div class="cat-info-content">
+									${request.user?.nickname}
+								</div>
+							</div>
+							<div class="whole-column-container">
+								<div class="cat-info-title" id="character">
+									지역
+								</div>
+								<div class="cat-info-content">
+									${bname}
+								</div>
+							</div>
+							
+							<div class="more">
+								<small class="text-muted align-center">${updated} 전 업데이트</small>
+								<button class="moreBtn" onclick="location.href='/request/detail/${request.request_id}'">> 자세히 보기</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				`
+
+				cardContainer.append(tempHTML);
+			})
+
+
+			// 버튼 업데이트
+			const moreButton = document.getElementById('moreBtn')
+			moreButton.setAttribute('onClick', `moreRequestLists(${response.pageOpt.endCursor}, ${address_certified})`)
+		},
+		error: function (err) {
+			console.log(err);
+		},
+    });
+  }
 	
 </script>

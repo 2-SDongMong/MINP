@@ -37,8 +37,8 @@ export class CatsController {
   }
 
   @Post('/signup')
-  async createCatSignUp( @Body() data) {
-    const userId = data.userId
+  async createCatSignUp(@Body() data) {
+    const userId = data.userId;
     const newCat = await this.catService.createCat(Number(userId), data);
     return newCat;
   }
