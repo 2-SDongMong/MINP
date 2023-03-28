@@ -37,13 +37,14 @@
                     <td scope="row"><%= post.post_id %></td>
                     <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
                     <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
-                    <td><%= post.user.nickname %></td>
+                    <td><%= post.user?.nickname %></td>
                     <td><%= created_at %></td>
                 </tr>
                 <% } %>
               </tbody>
             </table>
-            <button onclick="viewBoardLists(document.querySelectorAll('tr')[document.querySelectorAll('tr').length - 1].getElementsByTagName('td')[0].textContent)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button>
+            <!-- <button onclick="viewBoardLists(document.querySelectorAll('tr')[document.querySelectorAll('tr').length - 1].getElementsByTagName('td')[0].textContent)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button> -->
+            <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button>
     
         </div>
     </div>
@@ -60,6 +61,10 @@
 
 <script>
   async function viewBoardLists(endPostId) {
+    if (endPostId === -1) {
+			return;
+		}
+
     $.ajax({
       type: 'GET',
       async: "true",
@@ -68,19 +73,43 @@
         const table = document.getElementById('my-table').getElementsByTagName('tbody')[0];
         const tr = document.querySelectorAll('tr');
         const lastRowInTable = tr[tr.length - 1];
+
+        if (response.data.length === 0) {
+          const tempHTML =  `
+                          <tr>
+                    <td scope="row"></td>
+                    <td></td> 
+                    <td style='margin: 10px auto'>마지막 항목입니다</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            `
+          const newRow = table.insertRow(table.rows.length);
+          newRow.innerHTML = tempHTML;
+
+          // 버튼 업데이트
+          const moreButton = document.getElementById('moreBtn')
+          moreButton.setAttribute('onClick', `viewBoardLists(-1)`)
+          return;
+        }
+
         response.data.forEach(post => {
           const html = `
                           <tr>
                     <td scope="row">${post.post_id}</td>
                     <td><a href="/boardList/${post.category}">${post.category}</a></td> 
                     <th><a href='/boardDetail/${post.post_id}'>${post.title}</a></th>
-                    <td>${post.user.nickname}</td>
+                    <td>${post.user?.nickname}</td>
                     <td>${post.created_at.toLocaleString()}</td>
                 </tr>
           `;
           const newRow = table.insertRow(table.rows.length);
           newRow.innerHTML = html;
         })
+
+        // 버튼 업데이트
+        const moreButton = document.getElementById('moreBtn')
+        moreButton.setAttribute('onClick', `viewBoardLists(${response.pageOpt.endCursor})`)
 
       },
       error: function (err) {

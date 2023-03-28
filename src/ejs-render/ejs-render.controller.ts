@@ -37,13 +37,13 @@ export class EjsRenderController {
     // 로그인 한 사용자이고 위치인증까지 마쳤다면
     // '사용자의 동네명 기반' 품앗이 최신 6개를 가져옴 (캐러셀용)
     if (req.user && req.user.address_certified) {
-      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+      requests = await this.requestsService.getRequestsByBnameAndCursor(
         req.user.address_bname,
-        1,
+        null,
         6
       );
     } else {
-      requests = await this.requestsService.getRequestsPagination(1, 6);
+      requests = await this.requestsService.getRequestsByCursor(null, 6);
     }
 
     let products;
@@ -56,7 +56,7 @@ export class EjsRenderController {
       components: 'main',
       userId: req.userId,
       user: req.user,
-      requests,
+      requests: requests.data,
       posts,
       products,
     };
@@ -97,14 +97,14 @@ export class EjsRenderController {
   async requestList(@Req() req, @Query('endCursor') endCursor: number) {
     let requests;
     if (req.user && req.user.address_certified) {
-      requests = await this.requestsService.getRequestsByAddressBnamePagination(
+      requests = await this.requestsService.getRequestsByBnameAndCursor(
         req.user.address_bname,
-        //page
+        endCursor
       );
     } else {
-      //requests = await this.requestsService.getRequestsPagination(page);
       requests = await this.requestsService.getRequestsByCursor(endCursor);
     }
+
     return {
       components: 'requestList',
       userId: req.userId,
@@ -204,9 +204,14 @@ export class EjsRenderController {
   @Get('boardList')
   @Render('index')
   async boardList(@Req() req, @Query('endCursor') endCursor: number) {
-    console.log('ejs render controller ===>', 'endCursor',endCursor)
+    console.log('ejs render controller ===>', 'endCursor', endCursor);
     const posts = await this.postsService.getPostsByCursor(endCursor);
-    return { components: 'boardList', userId: req.userId, user: req.user, posts };
+    return {
+      components: 'boardList',
+      userId: req.userId,
+      user: req.user,
+      posts,
+    };
   }
 
   // //오프셋

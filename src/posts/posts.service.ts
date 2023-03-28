@@ -6,7 +6,14 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { IsNull, LessThan, MoreThan, MoreThanOrEqual, Repository } from 'typeorm';
+import {
+  IsNull,
+  LessThan,
+  LessThanOrEqual,
+  MoreThan,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { PageOptionsDto } from './dto/page-options.dto';
 //import { PageMetaDto } from './dto/page-meta.dto';
 //import { PageOptionsDto } from './dto/page-options.dto';
@@ -23,11 +30,11 @@ export class PostsService {
 
   // 커서 페이지네이션
   async getPostsByCursor(endCursor?: number) {
-    console.log('endCursor', endCursor)
+    console.log('endCursor', endCursor);
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
-      take: 7+1,
-      where: !isFirstPage ? {post_id: LessThan(endCursor)} : null,
+      take: 7,
+      where: !isFirstPage ? { post_id: LessThan(endCursor) } : null,
       relations: {
         user: {},
       },
@@ -41,17 +48,20 @@ export class PostsService {
       },
     });
 
-    console.log('new posts',posts);
-
+    // FIXME: 앞뒤 페이지 호출 시 이용할 것.
     const take = 7;
-  
+
+    // 호출한 7개 중 마지막 인덱스를 newEndCursor로 삼는다. 다음 페이지를
+    // 불러올 떄 이 newEndCursor보다 작은 인덱스 7개를 호출하게 된다.
+    // 7개를 채우지 못하고 반환된 경우 newEndCursor는 false가 된다.
     let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
-  
+
     let startCursor = posts[0]?.post_id ?? false;
     let hasPreviousPage = total >= take;
     let hasNextPage = hasPreviousPage ? posts.length > take : true;
 
-    const takePosts = posts.slice(0,7);
+    // FIXME: 앞뒤 페이지 호출 시 이용할 것.
+    const takePosts = posts.slice(0, 7);
 
     return {
       data: takePosts,
@@ -62,14 +72,12 @@ export class PostsService {
         startCursor,
         hasNextPage,
         hasPreviousPage,
-      }
-    }
+      },
+    };
   }
-
 
   // 오프셋 페이지네이션
   async getPosts(page: number = 1) {
-    
     const take = 7;
 
     const total = await this.postsRepository.count();

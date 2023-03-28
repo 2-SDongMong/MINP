@@ -30,24 +30,35 @@ export class RequestsController {
   //   return await this.requestsService.getRequestsPagination(page, 2);
   // }
 
-  @Get('/address/:bname')
-  async getRequestsByAddressBname(@Param('bname') bname: string) {
-    return await this.requestsService.getRequestsByAddressBname(bname);
-  }
-
-  //기존
-  @Get('/address/:bname/:page')
-  async getRequestsByAddressBnamePagination(
+  @Get(':bname')
+  async getRequestsByBnameAndCursor(
     @Param('bname') bname: string,
-    @Param('page') page: number
-    // @Query('page') page: number
+    @Query('endCursor') endCursor: number
   ) {
-    return await this.requestsService.getRequestsByAddressBnamePagination(
+    return await this.requestsService.getRequestsByBnameAndCursor(
       bname,
-      page,
-      2
+      endCursor
     );
   }
+
+  // @Get('/address/:bname')
+  // async getRequestsByAddressBname(@Param('bname') bname: string) {
+  //   return await this.requestsService.getRequestsByAddressBname(bname);
+  // }
+
+  // //기존
+  // @Get('/address/:bname/:page')
+  // async getRequestsByAddressBnamePagination(
+  //   @Param('bname') bname: string,
+  //   @Param('page') page: number
+  //   // @Query('page') page: number
+  // ) {
+  //   return await this.requestsService.getRequestsByAddressBnamePagination(
+  //     bname,
+  //     page,
+  //     2
+  //   );
+  // }
 
   // // 기존 목록 조회
   // @Get()
