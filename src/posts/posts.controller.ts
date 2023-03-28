@@ -45,16 +45,17 @@ export class PostsController {
     return await this.postImagesService.getImagesByPostId(postId);
   }
 
-  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
+  // 게시물 목록을 조회 / 커서 페이지네이션
   @Get()
-  async getPosts(@Param('page') page: number = 1) {
-    this.logger.debug(`getPosts(page)`);
-    return await this.postsService.getPosts(page);
+  async getPostsByCursor(@Query('endCursor') endCursor: number) {
+    return await this.postsService.getPostsByCursor(endCursor);
   }
 
-  // async getPosts() {
-  //   this.logger.debug(`getPosts()`);
-  //   return await this.postsService.getPosts();
+  // 게시물 목록을 조회 / 오프셋 페이지네이션 구현
+  // @Get()
+  // async getPosts(@Param('page') page: number = 1) {
+  //   this.logger.debug(`getPosts(page)`);
+  //   return await this.postsService.getPosts(page);
   // }
 
   // 게시물 카테고리별 조회 -> 게시물 category로 확인
@@ -71,7 +72,6 @@ export class PostsController {
   @UsePipes(ValidationPipe)
   async getPostById(@Param('id') postId: number) {
     this.logger.debug(`getPostById() : ${postId}`);
-    console.log(postId);
     return await this.postsService.getPostById(postId);
   }
 

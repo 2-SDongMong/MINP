@@ -18,34 +18,47 @@ import { RequestsService } from './requests.service';
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 
-  // 오프셋 페이지네이션
-  // @Get()
-  // async getRequests() {
-  //   return await this.requestsService.getRequests();
+  //커서 페이지네이션
+  @Get()
+  async getRequestsByCursor(@Query('endCursor') endCursor: number) {
+    return await this.requestsService.getRequestsByCursor(endCursor);
+  }
+
+  //기존
+  // @Get('/page/:page')
+  // async getRequestsPagination(@Param('page') page: number) {
+  //   return await this.requestsService.getRequestsPagination(page, 2);
   // }
 
-  @Get('/page/:page')
-  async getRequestsPagination(@Param('page') page: number) {
-    return await this.requestsService.getRequestsPagination(page, 2);
-  }
-
-  @Get('/address/:bname')
-  async getRequestsByAddressBname(@Param('bname') bname: string) {
-    return await this.requestsService.getRequestsByAddressBname(bname);
-  }
-
-  @Get('/address/:bname/:page')
-  async getRequestsByAddressBnamePagination(
+  @Get(':bname')
+  async getRequestsByBnameAndCursor(
     @Param('bname') bname: string,
-    @Param('page') page: number
-    // @Query('page') page: number
+    @Query('endCursor') endCursor: number
   ) {
-    return await this.requestsService.getRequestsByAddressBnamePagination(
+    return await this.requestsService.getRequestsByBnameAndCursor(
       bname,
-      page,
-      2
+      endCursor
     );
   }
+
+  // @Get('/address/:bname')
+  // async getRequestsByAddressBname(@Param('bname') bname: string) {
+  //   return await this.requestsService.getRequestsByAddressBname(bname);
+  // }
+
+  // //기존
+  // @Get('/address/:bname/:page')
+  // async getRequestsByAddressBnamePagination(
+  //   @Param('bname') bname: string,
+  //   @Param('page') page: number
+  //   // @Query('page') page: number
+  // ) {
+  //   return await this.requestsService.getRequestsByAddressBnamePagination(
+  //     bname,
+  //     page,
+  //     2
+  //   );
+  // }
 
   // // 기존 목록 조회
   // @Get()

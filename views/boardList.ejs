@@ -2,7 +2,7 @@
     <div class="page-title">
         <div class="container">
           <br><br>
-          <h3>자유게시판</h3>
+          <h3 class="text-center">자유게시판</h3>
         </div>
     </div>
     <div class="container">
@@ -10,14 +10,15 @@
         <a class="sp_nav-link" href="/boardList/병원">병원</a>
         <a class="sp_nav-link" href="/boardList/자랑">자랑</a>
         <a class="sp_nav-link" href="/boardList/기타">기타</a>
-        <a class="sp_nav-link" href="/boardList?page=1" >전체보기</a>
+        <a class="sp_nav-link" href="/boardList" >전체보기</a>
       </nav>
     </div>
+
   
     <!-- board list area -->
     <div id="board-list">
         <div class="container">
-            <table class="table table-hover">
+            <table id="my-table" class="table table-hover">
                 <thead>
                 <tr>
                     <th scope="col" class="th-num">번호</th>
@@ -27,86 +28,114 @@
                     <th scope="col" class="th-date">등록일</th>
                 </tr>
                 </thead>
-            <tbody>
+              <tbody id="table-body">
                 <% for (let i = 0; i < posts.data.length ; i++) {
                     const post = posts.data[i];
                     const created_at = post.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }); %>
                 
-                <tr>
+                <tr id="table-row">
                     <td scope="row"><%= post.post_id %></td>
                     <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
                     <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
-                    <td><%= post.user.nickname %></td>
+                    <td><%= post.user?.nickname %></td>
                     <td><%= created_at %></td>
                 </tr>
                 <% } %>
-                </tbody>
+              </tbody>
             </table>
+            
+            <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-dark">더보기</button>
 
         </div>
     </div>
+
     <div class="container">
-      <a href='/boardPost' class="btn btn-success">글쓰기</a>
+      <a href='/board/post' class="btn btn-success">글쓰기</a>
     </div>
     <br><br>
-    <div class="pgn">
-        <nav aria-label="...">
-            <ul class="pagination justify-content-center">
-              <% if(Number(posts.meta.page) == 1) { %>
-              <li class="page-item disabled">
-                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <% } else {%>
-              <li class="page-item"></li>
-                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) - 1 %>" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <% } %>
 
-              <% for (let i = 0; i < posts.meta.last_Page ; i++) { 
-                if((i+1) == Number(posts.meta.page)) { %>
+    <div class="topBtnBox">
+      <button id="topBtn" type="button" class="btn btn-info">TOP</button>
+    </div>
 
-                <li class="page-item active""><a class="page-link" href="/boardList?page=<%= i+1 %>" aria-current="page"><%= i+1 %></a></li>
-                <% } else {%>
-
-                <li class="page-item"><a class="page-link" href="/boardList?page=<%= i+1 %>"><%= i+1 %></a></li>
-                <% } %>
-              <% } %>
-
-              <% if(Number(posts.meta.page) == posts.meta.last_Page) { %>
-              <li class="page-item disabled">
-                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) %>" tabindex="-1" aria-disabled="true" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-              <% } else {%>
-              <li class="page-item"></li>
-                <a class="page-link" href="/boardList?page=<%= Number(posts.meta.page) + 1 %>" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-              <% } %>
-            </ul>
-        </nav>
-    </div>  
 </section>
 
 <script>
-  $(document).ready(function () {
-    viewBoardLists();
-  });
+  async function viewBoardLists(endPostId) {
+    if (endPostId === -1) {
+			return;
+		}
 
-  async function viewBoardLists() {
     $.ajax({
       type: 'GET',
-      url: '/posts',
-      success: function (response) {},
+      async: "true",
+      url: `/posts?endCursor=${endPostId}`,
+      success: function (response) {
+        const table = document.getElementById('my-table').getElementsByTagName('tbody')[0];
+        const tr = document.querySelectorAll('tr');
+        const lastRowInTable = tr[tr.length - 1];
+
+        if (response.data.length === 0) {
+          const tempHTML =  `
+                          <tr>
+                    <td scope="row"></td>
+                    <td></td> 
+                    <td style='margin: 10px auto'>마지막 항목입니다</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            `
+          const newRow = table.insertRow(table.rows.length);
+          newRow.innerHTML = tempHTML;
+
+          // 버튼 업데이트
+          const moreButton = document.getElementById('moreBtn')
+          moreButton.setAttribute('onClick', `viewBoardLists(-1)`)
+          return;
+        }
+
+        response.data.forEach(post => {
+          const html = `
+                          <tr>
+                    <td scope="row">${post.post_id}</td>
+                    <td><a href="/boardList/${post.category}">${post.category}</a></td> 
+                    <th><a href='/boardDetail/${post.post_id}'>${post.title}</a></th>
+                    <td>${post.user?.nickname}</td>
+                    <td>${post.created_at.toLocaleString()}</td>
+                </tr>
+          `;
+          const newRow = table.insertRow(table.rows.length);
+          newRow.innerHTML = html;
+        })
+
+        
+        const moreButton = document.getElementById('moreBtn');
+        if(response.pageOpt.hasNextPage) { 
+          moreButton.setAttribute('onClick', `viewBoardLists(${response.pageOpt.endCursor})`);
+
+        } else {
+          moreButton.setAttribute('disabled', true);
+        }
+
+      },
       error: function (err) {
-        console.log(response.responseJSON.message);
+        console.log(err);
       },
     });
   }
+  
+  $(function() { // 보이기 | 숨기기
+	  $(window).scroll(function() {
+      if ($(this).scrollTop() > 250) { //250 넘으면 버튼이 보여짐니다. 
+        $('#topBtn').fadeIn();
+      } else {
+       $('#topBtn').fadeOut();
+      }
+    }); // 버튼 클릭시 
+    $("#topBtn").click(function() { 
+  	  $('html, body').animate({ scrollTop : 0 // 0 까지 animation 이동합니다. 
+  	  }, 400); // 속도 400 
+  	  return false; 
+    }); 
+  });
 </script>

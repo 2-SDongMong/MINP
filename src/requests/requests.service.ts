@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, LessThanOrEqual, Repository } from 'typeorm';
 import { Request } from './request.entity';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
@@ -22,197 +22,152 @@ export class RequestsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
-  // 오프셋 페이지네이션
-  // async getRequestsPagination(page: number = 1) {
-  //   const take = 8;
+  // 직전 페이지의 마지막 인덱스 endCursor와 페이지 당 게시글 수 take를 받아 품앗이 목록 조회
+  async getRequestsByCursor(endCursor?: number, take: number = 9) {
+    const isFirstPage = !endCursor;
 
-  //   const total = await this.requestsRepository.count();
-  //   const requests = await this.requestsRepository.find({
-  //     relations: {
-  //       user: {
-  //         cats: true,
-  //       },
-  //     },
-  //     select: {
-  //       user: {
-  //         nickname: true,
-  //         cats: {
-  //           image: true,
-  //         },
-  //       },
-  //       request_id: true,
-  //       reserved_begin_date: true,
-  //       reserved_end_date: true,
-  //       updated_at: true,
-  //       detail: true,
-  //       is_ongoing: true,
-  //     },
-  //     order: {
-  //       created_at: 'DESC',
-  //     },
-  //     take,
-  //     skip: (page - 1) * take,
-  //   });
-
-  //   const last_Page = Math.ceil(total / take);
-
-  //   if (last_Page >= page) {
-  //     return {
-  //       data: requests,
-  //       meta: {
-  //         total,
-  //         page: page <= 0 ? (page = 1) : page,
-  //         last_Page: last_Page,
-  //       },
-  //     };
-  //   } else {
-  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-  //   }
-  // }
-
-  // async getRequestsByAddressBnamePagination(bname: string, page: number = 1) {
-  //   const take = 8;
-
-  //   const total = await this.requestsRepository.count();
-  //   const requests = await this.requestsRepository.find({
-  //     relations: {
-  //       user: {
-  //         cats: true,
-  //       },
-  //     },
-
-  //     where: {
-  //       user: {
-  //         address_bname: bname},
-  //       },
-  //     select: {
-  //       user: {
-  //         nickname: true,
-  //         cats: {
-  //           image: true,
-  //         },
-  //       },
-  //       request_id: true,
-  //       reserved_begin_date: true,
-  //       reserved_end_date: true,
-  //       updated_at: true,
-  //       detail: true,
-  //       is_ongoing: true,
-  //     },
-  //     order: {
-  //       created_at: 'DESC',
-  //     },
-  //     take,
-  //     skip: (page - 1) * take,
-  //   });
-
-  //   const last_Page = Math.ceil(total / take);
-
-  //   if (last_Page >= page) {
-  //     return {
-  //       data: requests,
-  //       meta: {
-  //         total,
-  //         page: page <= 0 ? (page = 1) : page,
-  //         last_Page: last_Page,
-  //       },
-  //     };
-  //   } else {
-  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-  //   }
-  // }
-
-  async getRequests() {
-    const value = await this.cacheManager.get(`all-requests`);
-
-    if (!value) {
-      const request = await this.requestsRepository.find({
-        relations: {
-          user: {
-            cats: true,
+    const [requests, total] = await this.requestsRepository.findAndCount({
+      take,
+      where: !isFirstPage ? { request_id: LessThan(endCursor) } : null,
+      relations: {
+        user: {
+          cats: true,
+        },
+      },
+      select: {
+        user: {
+          nickname: true,
+          address_bname: true,
+          cats: {
+            image: true,
           },
         },
-        select: {
-          user: {
-            nickname: true,
-            cats: {
-              image: true,
-            },
-          },
-          request_id: true,
-          reserved_begin_date: true,
-          reserved_end_date: true,
-          updated_at: true,
-          detail: true,
-          is_ongoing: true,
-        },
-        order: {
-          created_at: 'DESC',
-        },
-      });
-      await this.cacheManager.set(`all-requests`, request);
+        request_id: true,
+        reserved_begin_date: true,
+        reserved_end_date: true,
+        updated_at: true,
+        detail: true,
+        is_ongoing: true,
+      },
+      order: {
+        request_id: 'DESC',
+      },
+    });
 
-      return request;
-    }
-    return value;
+    let newEndCursor = requests[requests.length - 1]?.request_id ?? false;
+    let startCursor = requests[0]?.request_id ?? false;
+    let hasPreviousPage = total >= take;
+    let hasNextPage = hasPreviousPage ? requests.length > take : true;
+
+    return {
+      data: requests,
+      pageOpt: {
+        total,
+        take,
+        endCursor: newEndCursor,
+        startCursor,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
   }
 
-  // 페이지 번호와 페이지당 게시글 수를 받아 목록 조회
-  async getRequestsPagination(page = 1, take = 8) {
-    const value = await this.cacheManager.get(`RequestsPagination`);
-    if (!value) {
-      const requests = await this.requestsRepository
-        .createQueryBuilder('r')
-        .select()
-        .leftJoin('r.user', 'user')
-        .leftJoin('user.cats', 'cats')
-        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-        .orderBy('r.created_at', 'DESC')
-        .skip((page - 1) * take)
-        .take(take)
-        .getMany();
-      await this.cacheManager.set(`RequestsPagination`, requests);
+  // 동네명 bname과 직전 페이지의 마지막 인덱스 endCursor, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
+  async getRequestsByBnameAndCursor(
+    bname: string,
+    endCursor?: number,
+    take: number = 9
+  ) {
+    const isFirstPage = !endCursor;
 
-      return requests;
-    }
-    return value;
-  }
-
-  // 동네명으로 품앗이 전체 목록 조회
-  async getRequestsByAddressBname(bname: string) {
-    const request = await this.requestsRepository
+    let requestsQuery = this.requestsRepository
       .createQueryBuilder('r')
       .select()
       .leftJoin('r.user', 'user')
       .leftJoin('user.cats', 'cats')
       .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-      .where('user.address_bname = :bname', { bname })
-      .orderBy('r.created_at', 'DESC')
-      .getMany();
-    return request;
-  }
-
-  // 동네명 bname과 페이지 번호 page, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
-  async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
-    const value = await this.cacheManager.get(`AddressBname${bname}`);
-    if (!value) {
-      const requests = await this.requestsRepository
-        .createQueryBuilder('r')
-        .select()
-        .leftJoin('r.user', 'user')
-        .leftJoin('user.cats', 'cats')
-        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-        .where('user.address_bname = :bname', { bname })
-        .orderBy('r.created_at', 'DESC')
-        .skip((page - 1) * take)
-        .take(take)
-        .getMany();
-      await this.cacheManager.set(`AddressBname${bname}`, requests);
-
-      return requests;
+      .where('user.address_bname = :bname', { bname });
+    if (!isFirstPage) {
+      requestsQuery = requestsQuery.andWhere('r.request_id < :endCursor', {
+        endCursor,
+      });
     }
-    return value;
+    const requests = await requestsQuery
+      .orderBy('r.created_at', 'DESC')
+      .take(take)
+      .getMany();
+
+    let newEndCursor = requests[requests.length - 1]?.request_id ?? false; // 67 -> 49 -> 13
+    let startCursor = requests[0]?.request_id ?? false;
+
+    return {
+      data: requests,
+      pageOpt: {
+        take,
+        endCursor: newEndCursor,
+        startCursor,
+      },
+    };
   }
+
+  // FIXME: 커서 기반에 문제가 생겼을 시, 오프셋 기반으로 전환할 것.
+
+  // // 페이지 번호와 페이지당 게시글 수를 받아 목록 조회
+  // async getRequestsPagination(page = 1, take = 8) {
+  //   const value = await this.cacheManager.get(`RequestsPagination`);
+  //   if (!value) {
+  //     const requests = await this.requestsRepository
+  //       .createQueryBuilder('r')
+  //       .select()
+  //       .leftJoin('r.user', 'user')
+  //       .leftJoin('user.cats', 'cats')
+  //       .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+  //       .orderBy('r.created_at', 'DESC')
+  //       .skip((page - 1) * take)
+  //       .take(take)
+  //       .getMany();
+  //     await this.cacheManager.set(`RequestsPagination`, requests);
+
+  //     return requests;
+  //   }
+  //   return value;
+  // }
+
+  // // 동네명으로 품앗이 전체 목록 조회
+  // async getRequestsByAddressBname(bname: string) {
+  //   const request = await this.requestsRepository
+  //     .createQueryBuilder('r')
+  //     .select()
+  //     .leftJoin('r.user', 'user')
+  //     .leftJoin('user.cats', 'cats')
+  //     .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+  //     .where('user.address_bname = :bname', { bname })
+  //     .orderBy('r.created_at', 'DESC')
+  //     .getMany();
+  //   return request;
+  // }
+
+  // // 동네명 bname과 페이지 번호 page, 페이지당 표시할 게시글 수 take로 품앗이 목록 조회
+  // async getRequestsByAddressBnamePagination(bname: string, page = 1, take = 8) {
+  //   // const value = await this.cacheManager.get(`AddressBname${bname}`);
+  //   // if(!value){
+  //   const requests = await this.requestsRepository
+  //     .createQueryBuilder('r')
+  //     .select()
+  //     .leftJoin('r.user', 'user')
+  //     .leftJoin('user.cats', 'cats')
+  //     .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+  //     .where('user.address_bname = :bname', { bname })
+  //     .orderBy('r.created_at', 'DESC')
+  //     .skip((page - 1) * take)
+  //     .take(take)
+  //     .getMany();
+  //   await this.cacheManager.set(`AddressBname${bname}`, requests);
+
+  //   return requests;
+  //   // }
+  //   // return value;
+  // }
 
   // 품앗이 ID로 게시글 하나 조회
   async getRequestById(id: number) {
