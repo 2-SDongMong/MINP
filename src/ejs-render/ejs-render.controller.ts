@@ -92,17 +92,18 @@ export class EjsRenderController {
     return { components: 'login', userId: req.userId, user: req.user };
   }
 
-  @Get('/request/list/:page')
+  @Get('/request')
   @Render('index')
-  async requestList(@Req() req, @Param('page') page: number) {
+  async requestList(@Req() req, @Query('endCursor') endCursor: number) {
     let requests;
     if (req.user && req.user.address_certified) {
       requests = await this.requestsService.getRequestsByAddressBnamePagination(
         req.user.address_bname,
-        page
+        //page
       );
     } else {
-      requests = await this.requestsService.getRequestsPagination(page);
+      //requests = await this.requestsService.getRequestsPagination(page);
+      requests = await this.requestsService.getRequestsByCursor(endCursor);
     }
     return {
       components: 'requestList',
@@ -202,8 +203,9 @@ export class EjsRenderController {
   //커서
   @Get('boardList')
   @Render('index')
-  async boardList(@Req() req, @Query('page') pageNum: number) {
-    const posts = await this.postsService.getPosts(pageNum);
+  async boardList(@Req() req, @Query('endCursor') endCursor: number) {
+    console.log('ejs render controller ===>', 'endCursor',endCursor)
+    const posts = await this.postsService.getPostsByCursor(endCursor);
     return { components: 'boardList', userId: req.userId, user: req.user, posts };
   }
 

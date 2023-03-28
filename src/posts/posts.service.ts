@@ -26,7 +26,7 @@ export class PostsService {
     console.log('endCursor', endCursor)
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
-      take: 8,
+      take: 7+1,
       where: !isFirstPage ? {post_id: LessThan(endCursor)} : null,
       relations: {
         user: {},
@@ -41,7 +41,6 @@ export class PostsService {
       },
     });
 
-    // console.log(pageOptionsDto);
     console.log('new posts',posts);
 
     const take = 7;

@@ -26,14 +26,15 @@
 
 		<br/>
 
-		<% if (requests.length === 0) { %>
+		<% console.log('length', requests.data.length) %>
+		<% if (requests.data.length === 0) { %>
 		<div class="">
 			지금은 우리 동네에 품앗이 요청이 없네요!
 		</div>
 		<% } %>
 		<div class="request-cards-container" >
-			<% for (let i = 0; i < requests.length; i++) { 
-				const request = requests[i]; 
+			<% for (let i = 0; i < requests.data.length; i++) { 
+				const request = requests.data[i]; 
 				const minutesAgo = (Date.now() - new Date(request.updated_at)) / 1000 / 60
 				let updated = ''
 				if (minutesAgo < 60) {
@@ -107,7 +108,9 @@
 				</div>
 			<% } %>
 		</div>
-		
+
+		<button onclick="moreRequestLists(<%= requests.data[requests.data.length-1].request_id %>)" id="moreBtn" type="button" class="btn btn-outline-secondary">더보기</button>
+    
 		<br><br>
 	</div>
 </section>
@@ -139,5 +142,37 @@
 			}
 		})
 	}
+
+	async function moreRequestLists(endPostId) {
+		console.log('endPostId', endPostId);
+    $.ajax({
+      type: 'GET',
+      async: "true",
+      url: `/requests?endCursor=${endPostId}`,
+      success: function (response) {
+		
+        // const table = document.getElementById('my-table').getElementsByTagName('tbody')[0];
+        // const tr = document.querySelectorAll('tr');
+        // const lastRowInTable = tr[tr.length - 1];
+        // response.data.forEach(post => {
+        //   const html = `
+        //                   <tr>
+        //             <td scope="row">${post.post_id}</td>
+        //             <td><a href="/boardList/${post.category}">${post.category}</a></td> 
+        //             <th><a href='/boardDetail/${post.post_id}'>${post.title}</a></th>
+        //             <td>${post.user.nickname}</td>
+        //             <td>${post.created_at.toLocaleString()}</td>
+        //         </tr>
+        //   `;
+        //   const newRow = table.insertRow(table.rows.length);
+        //   newRow.innerHTML = html;
+        // })
+
+      },
+      error: function (err) {
+        console.log(err);
+      },
+    });
+  }
 	
 </script>

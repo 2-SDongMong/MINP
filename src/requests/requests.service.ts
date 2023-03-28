@@ -7,7 +7,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { LessThan, Repository } from 'typeorm';
 import { Request } from './request.entity';
 import { CreateRequestDto } from './dto/create-request.dto';
 import { UpdateRequestDto } from './dto/update-request.dto';
@@ -22,111 +22,16 @@ export class RequestsService {
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache
   ) {}
 
-  // 오프셋 페이지네이션
-  // async getRequestsPagination(page: number = 1) {
-  //   const take = 8;
-
-  //   const total = await this.requestsRepository.count();
-  //   const requests = await this.requestsRepository.find({
-  //     relations: {
-  //       user: {
-  //         cats: true,
-  //       },
-  //     },
-  //     select: {
-  //       user: {
-  //         nickname: true,
-  //         cats: {
-  //           image: true,
-  //         },
-  //       },
-  //       request_id: true,
-  //       reserved_begin_date: true,
-  //       reserved_end_date: true,
-  //       updated_at: true,
-  //       detail: true,
-  //       is_ongoing: true,
-  //     },
-  //     order: {
-  //       created_at: 'DESC',
-  //     },
-  //     take,
-  //     skip: (page - 1) * take,
-  //   });
-
-  //   const last_Page = Math.ceil(total / take);
-
-  //   if (last_Page >= page) {
-  //     return {
-  //       data: requests,
-  //       meta: {
-  //         total,
-  //         page: page <= 0 ? (page = 1) : page,
-  //         last_Page: last_Page,
-  //       },
-  //     };
-  //   } else {
-  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-  //   }
-  // }
-
-  // async getRequestsByAddressBnamePagination(bname: string, page: number = 1) {
-  //   const take = 8;
-
-  //   const total = await this.requestsRepository.count();
-  //   const requests = await this.requestsRepository.find({
-  //     relations: {
-  //       user: {
-  //         cats: true,
-  //       },
-  //     },
-
-  //     where: {
-  //       user: {
-  //         address_bname: bname},
-  //       },
-  //     select: {
-  //       user: {
-  //         nickname: true,
-  //         cats: {
-  //           image: true,
-  //         },
-  //       },
-  //       request_id: true,
-  //       reserved_begin_date: true,
-  //       reserved_end_date: true,
-  //       updated_at: true,
-  //       detail: true,
-  //       is_ongoing: true,
-  //     },
-  //     order: {
-  //       created_at: 'DESC',
-  //     },
-  //     take,
-  //     skip: (page - 1) * take,
-  //   });
-
-  //   const last_Page = Math.ceil(total / take);
-
-  //   if (last_Page >= page) {
-  //     return {
-  //       data: requests,
-  //       meta: {
-  //         total,
-  //         page: page <= 0 ? (page = 1) : page,
-  //         last_Page: last_Page,
-  //       },
-  //     };
-  //   } else {
-  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-  //   }
-  // }
-
-  async getRequests() {
+  async getRequestsByCursor(endCursor?: number) {
+    console.log('getRequestsByCursor 실행');
     const value = await this.cacheManager.get(`all-requests`);
 
+    const isFirstPage = !endCursor;
+
     if (!value) {
-      const request = await this.requestsRepository.find({
+      const [requests, total] = await this.requestsRepository.findAndCount({
+        take: 10,
+        where: !isFirstPage ? {request_id: LessThan(endCursor)} : null,
         relations: {
           user: {
             cats: true,
@@ -135,6 +40,7 @@ export class RequestsService {
         select: {
           user: {
             nickname: true,
+            address_bname: true,
             cats: {
               image: true,
             },
@@ -147,12 +53,36 @@ export class RequestsService {
           is_ongoing: true,
         },
         order: {
-          created_at: 'DESC',
+          request_id: 'DESC',
         },
       });
-      await this.cacheManager.set(`all-requests`, request);
 
-      return request;
+      console.log('new requests',requests);
+      const take = 9;
+  
+      let newEndCursor = requests[requests.length - 1]?.request_id ?? false;
+  
+      let startCursor = requests[0]?.request_id ?? false;
+      let hasPreviousPage = total >= take;
+      let hasNextPage = hasPreviousPage ? requests.length > take : true;
+
+      const takeRequests = requests.slice(0,9);
+
+      const result = {
+        data: takeRequests,
+        pageOpt: {
+          total,
+          take,
+          endCursor: newEndCursor,
+          startCursor,
+          hasNextPage,
+          hasPreviousPage,
+        }
+      };
+
+      await this.cacheManager.set(`all-requests`, result);
+
+      return result;
     }
     return value;
   }

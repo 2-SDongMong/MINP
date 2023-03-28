@@ -48,7 +48,7 @@ export class PostsController {
   // 게시물 목록을 조회 / 커서 페이지네이션
   @Get()
   async getPostsByCursor(@Query('endCursor') endCursor: number) { //
-   console.log('posts controller === >',endCursor);
+   //console.log('posts controller === >',endCursor);
     return await this.postsService.getPostsByCursor(endCursor);
   }
 

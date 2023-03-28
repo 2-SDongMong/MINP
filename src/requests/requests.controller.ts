@@ -18,22 +18,24 @@ import { RequestsService } from './requests.service';
 export class RequestsController {
   constructor(private readonly requestsService: RequestsService) {}
 
-  // 오프셋 페이지네이션
-  // @Get()
-  // async getRequests() {
-  //   return await this.requestsService.getRequests();
-  // }
-
-  @Get('/page/:page')
-  async getRequestsPagination(@Param('page') page: number) {
-    return await this.requestsService.getRequestsPagination(page, 2);
+  //커서 페이지네이션
+  @Get()
+  async getRequestsByCursor(@Query('endCursor') endCursor: number) {
+    return await this.requestsService.getRequestsByCursor(endCursor);
   }
+
+  //기존
+  // @Get('/page/:page')
+  // async getRequestsPagination(@Param('page') page: number) {
+  //   return await this.requestsService.getRequestsPagination(page, 2);
+  // }
 
   @Get('/address/:bname')
   async getRequestsByAddressBname(@Param('bname') bname: string) {
     return await this.requestsService.getRequestsByAddressBname(bname);
   }
 
+  //기존
   @Get('/address/:bname/:page')
   async getRequestsByAddressBnamePagination(
     @Param('bname') bname: string,

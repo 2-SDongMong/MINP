@@ -22,7 +22,7 @@
 
   <div class="d-flex">
 	<button onclick="createRequest(<%= userId ?? 0 %>, <%= user?.address_certified ?? false %>)" type="button" class="btn btn-outline-dark">제출</button>
-	<button onclick="location.href='/request/list/1'" type="button" class="btn btn-outline-secondary">취소</button>
+	<button onclick="location.href='/request'" type="button" class="btn btn-outline-secondary">취소</button>
   </div>
 </section>
 
@@ -80,7 +80,7 @@
 					},
 					success: function (response) {
 						alert('게시글 작성을 완료하였습니다')
-						location.href = '/request/list/1';
+						location.href = '/request';
 					},
 					error: function (response) {
 						alert('요청 처리중 문제가 발생하였습니다. 관리자에게 문의 바랍니다')
