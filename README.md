@@ -54,7 +54,7 @@
 <img src="https://img.shields.io/badge/REDIS CLOUD-rgba(193, 66, 52)?style=for-the-badge&logo=REDIS CLOUD&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/GITHUB ACTION-2088FF?style=for-the-badge&logo=GITHUB ACTION&logoColor=white"> <img src="https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=Heroku&logoColor=white">
 
 ### Communication
-<img src="https://img.shields.io/badge/SLACK-4A154B?style=for-the-badge&logo=SLACK&logoColor=white"> <img src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=NOTION&logoColor=white"> 
+<img src="https://img.shields.io/badge/SLACK-4A154B?style=for-the-badge&logo=SLACK&logoColor=white"> <img src="https://img.shields.io/badge/NOTION-000000?style=for-the-badge&logo=NOTION&logoColor=white"> <img src="https://img.shields.io/badge/Linear-5E6AD2?style=for-the-badge&logo=Linear&logoColor=white">
 
 </br></br>
 
