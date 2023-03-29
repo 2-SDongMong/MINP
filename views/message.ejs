@@ -160,9 +160,7 @@
   }
 
   function sendMessage(sender_id,message_id) {
-    console.log(message_id)
     const inputContent = $(`#inputContent${message_id}`).val();
-    console.log("확인",inputContent)
     if (!inputContent) {
       alert('내용을 입력해주세요.');
     } else {
