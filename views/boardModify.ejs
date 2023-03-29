@@ -30,20 +30,20 @@
             <textarea
 				class="form-control"
 				rows="5"
-				id="postContent">
-				<%= post.content %>
-			</textarea>
+				id="postContent"><%= post.content %></textarea>
         </div>
 		<div class="form-group">
 			<div class="show-img-group">
-				<img id="show-image", src="">
+				<% if (post.post_images.length > 0) { %>
+				<img id="show-image", src=<%= post.post_images[post.post_images.length-1].post_image %>>
+				<% } %>
 			</div>
 			<input class="" type="file" onchange="uploadImage(this)">
         </div>
     </form>
 	<br>
 	<div style='display:inline'>
-		<button onclick="postModify('<%= post.post_id %>')" id="btn-save" class="btn btn-primary" type="button" style="display: inline-block">수정완료</button>
+		<button onclick="postModify(<%= post.post_id %>)" id="btn-save" class="btn btn-primary" type="button" style="display: inline-block">수정완료</button>
     	<button class="btn btn-secondary" onclick="history.back()" >글목록</button>
 	</div>
 </div>
@@ -78,7 +78,6 @@
 		const postCategory = $('#postCategory').val();
         const postContent = $('#postContent').val();
 		const image = $('#show-image').attr('src');
-		console.log('image', image)
 
 		if (!postTitle) {
 			alert('제목을 입력해주세요.');
@@ -91,15 +90,13 @@
 		
 		$.ajax({
 			type: 'PATCH',
-			url: `/posts/${id}`,
+			url: `/posts/${postId}`,
 			data: {
 				title: postTitle,
 				category: postCategory,
 				content: postContent,
 			},
 			success: function (response) {
-				const postId = response.post_id;
-				console.log('postId: ', postId);
 
 				if (image !== '') {
 					console.log('이미지를 등록합니다');
@@ -121,7 +118,7 @@
 					})
 				}
 				alert('게시글이 수정되었습니다.');
-				window.location.href = '/boardList';
+				window.location.href = `/boardDetail/${postId}`;
 			},
 
 			error: function (response) {

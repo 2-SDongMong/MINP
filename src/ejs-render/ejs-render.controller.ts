@@ -50,7 +50,7 @@ export class EjsRenderController {
     products = await this.productsService.findAll();
 
     const end = performance.now();
-    console.log('메인 페이지 로딩 시간: ', end - start);
+    //console.log('메인 페이지 로딩 시간: ', end - start);
 
     return {
       components: 'main',
@@ -260,9 +260,9 @@ export class EjsRenderController {
 
   @Get('board/modify/:id')
   @Render('index')
-  async boardModify(@Param('id') id: number, @Req() req) {
-    const post = await this.postsService.getPostById(id);
-    return { components: 'boardModify', userId: req.userId, post: post[0] };
+  async boardModify(@Req() req, @Param('id') postId: number) {
+    const post = await this.postsService.getPostById(postId);
+    return { components: 'boardModify', userId: req.userId, user: req.user, post: post[0] };
   }
 
   @Get('/message/:type')
