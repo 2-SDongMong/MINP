@@ -98,7 +98,8 @@
 			},
 			success: function (response) {
 
-				if (image !== '') {
+				console.log('image, ',image);
+				if (image) {
 					console.log('이미지를 등록합니다');
 					$.ajax({
 						type: 'POST',
