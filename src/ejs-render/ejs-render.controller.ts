@@ -225,12 +225,12 @@ export class EjsRenderController {
   @Render('index')
   async boardListCtg(
     @Req() req,
-    @Param('id') postId: number,
-    @Param('category') postCategory: PostCategoryType
+    @Param('category') postCategory: PostCategoryType,
+    @Query('endCursor') endCursor: number
   ) {
     const posts = await this.postsService.getPostByCategory(
-      postId,
-      postCategory
+      postCategory,
+      endCursor      
     );
     return {
       components: 'boardListCtg',

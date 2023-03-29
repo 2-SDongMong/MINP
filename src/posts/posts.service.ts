@@ -19,7 +19,6 @@ export class PostsService {
 
   // 커서 페이지네이션
   async getPostsByCursor(endCursor?: number) {
-    console.log('endCursor', endCursor);
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
       take: 7 + 1,
@@ -48,8 +47,6 @@ export class PostsService {
     let startCursor = posts[0]?.post_id ?? false;
     let hasPreviousPage = !isFirstPage;
     let hasNextPage = total >= take;
-
-    console.log('posts.length, ', posts.length);
 
     // FIXME: 앞뒤 페이지 호출 시 이용할 것.
     const takePosts = posts.slice(0, 7);
@@ -104,44 +101,85 @@ export class PostsService {
     }
   }
 
-  async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
-    const take = 7;
-
-    const total = await this.postsRepository.count({
-      where: { category: postsCategory, deleted_at: null },
-    });
-    const posts = await this.postsRepository.find({
+  async getPostByCategory(postsCategory: PostCategoryType, endCursor?: number) {
+    const isFirstPage = !endCursor;
+    const [posts, total] = await this.postsRepository.findAndCount({
+      take: 7 + 1,
+      where: !isFirstPage ? { category: postsCategory, deleted_at: null, post_id: LessThanOrEqual(endCursor) } : null,
       relations: {
         user: {},
       },
-      where: { category: postsCategory, deleted_at: null },
       select: {
         user: {
           nickname: true,
         },
       },
       order: {
-        updated_at: 'DESC',
+        post_id: 'DESC',
       },
-      take,
-      skip: (page - 1) * take,
     });
 
-    const last_Page = Math.ceil(total / take);
+    const take = 7;
 
-    if (last_Page >= page) {
-      return {
-        data: posts,
-        meta: {
-          total,
-          page: page <= 0 ? (page = 1) : page,
-          last_Page: last_Page,
-        },
-      };
-    } else {
-      throw new NotFoundException('해당 페이지는 존재하지 않습니다');
-    }
+    let newEndCursor = posts[posts.length - 1]?.post_id ?? false;
+
+    let startCursor = posts[0]?.post_id ?? false;
+    let hasPreviousPage = !isFirstPage;
+    let hasNextPage = total >= take;
+
+    const takePosts = posts.slice(0, 7);
+
+    return {
+      data: takePosts,
+      pageOpt: {
+        total,
+        take,
+        endCursor: newEndCursor,
+        startCursor,
+        hasNextPage,
+        hasPreviousPage,
+      },
+    };
   }
+
+  // async getPostByCategory(page: number = 1, postsCategory: PostCategoryType) {
+  //   const take = 7;
+
+  //   const total = await this.postsRepository.count({
+  //     where: { category: postsCategory, deleted_at: null },
+  //   });
+  //   const posts = await this.postsRepository.find({
+  //     relations: {
+  //       user: {},
+  //     },
+  //     where: { category: postsCategory, deleted_at: null },
+  //     select: {
+  //       user: {
+  //         nickname: true,
+  //       },
+  //     },
+  //     order: {
+  //       updated_at: 'DESC',
+  //     },
+  //     take,
+  //     skip: (page - 1) * take,
+  //   });
+
+  //   const last_Page = Math.ceil(total / take);
+
+  //   if (last_Page >= page) {
+  //     return {
+  //       data: posts,
+  //       meta: {
+  //         total,
+  //         page: page <= 0 ? (page = 1) : page,
+  //         last_Page: last_Page,
+  //       },
+  //     };
+  //   } else {
+  //     throw new NotFoundException('해당 페이지는 존재하지 않습니다');
+  //   }
+  // }
 
   async getPostById(post_id: number) {
     return await this.postsRepository.find({
