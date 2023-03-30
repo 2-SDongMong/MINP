@@ -92,15 +92,15 @@ export class User {
   requests: Request[];
 
   // FIXME: 집사 '좋아요' 기능을 사용하지 않음이 확실시 되면 삭제하기.
-  // @OneToMany(() => UserLike, (userLike) => userLike.user, {
-  //   cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
-  // })
-  // user_likes: UserLike[];
+  @OneToMany(() => UserLike, (userLike) => userLike.user, {
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
+  })
+  user_likes: UserLike[];
 
-  // @OneToMany(() => UserLike, (userLike) => userLike.target_user, {
-  //   cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
-  // })
-  // target_user_likes: UserLike[];
+  @OneToMany(() => UserLike, (userLike) => userLike.target_user, {
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
+  })
+  target_user_likes: UserLike[];
 
   @OneToMany(() => Message, (message) => message.send_user, {
     cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
