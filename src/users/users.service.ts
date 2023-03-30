@@ -244,7 +244,10 @@ export class UsersService {
 
   // Admin page API
   // 가입 신청 대기 조회
-  async getUserByStatus(id: number) {
+  async getUserByStatus(id: number, page: number) {
+    const limit = 5;
+    const offset = (page - 1) * limit;
+    console.log(offset)
     const user = await this.findUser(id);
     if (user.status === '관리자') {
       const users = await this.userRepository.find({
@@ -258,6 +261,8 @@ export class UsersService {
           nickname: true,
           status: true,
         },
+        skip: offset,
+        take: limit,
       });
       return users;
     } else {

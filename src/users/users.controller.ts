@@ -3,11 +3,11 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Req,
   Patch,
   Param,
+  Query,
 } from '@nestjs/common';
 import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -79,8 +79,10 @@ export class UsersController {
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
-  async getAllUser(@Req() req) {
-    const data = await this.usersService.getUserByStatus(req.userId);
+  async getAllUser(@Req() req, @Query() query: {page?: number}) {
+    console.log(req)
+    console.log(query)
+    const data = await this.usersService.getUserByStatus(req.userId, query.page||1);
     return data;
   }
 

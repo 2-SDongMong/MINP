@@ -30,7 +30,7 @@ Content-Type: application/json
 
 
 ###
-GET http://localhost:3000/requests
+GET http://localhost:3000/requests?endCusor=11
 
 ###
 GET http://localhost:3000/requests/page/1
