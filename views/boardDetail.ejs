@@ -1,11 +1,12 @@
 <div class="container">
+    <div>
     <button class="btn btn-secondary" onclick="history.back()">글목록</button>
     <% if (post.user_id == userId) { %>
         <button id="btn-update" class="btn btn-warning" onclick="location.href='/board/modify/<%= post.post_id %>'" type="button">수정</button>
         <button id="btn-delete" class="btn btn-danger" onclick="postDelete('<%= post.post_id %>')" type="button">삭제</button>
         <% } %>
-            <br><br>
-
+    </div>
+            <br>
             <div>
                 <h3><%= post.title %></h3>
                 <h5><%= post.category %></h5>
@@ -19,8 +20,8 @@
             
             <div>
                 <div><%= post.content %></div>
-                <% if (post.post_images[0] != null) { %>
-                    <dib><img src="<%= post.post_images[0].post_image %>" style="max-width: 600px"></dib>
+                <% if (post.post_images.length > 0) { %>
+                    <dib><img src="<%= post.post_images[post.post_images.length-1].post_image %>" style="max-width: 600px"></dib>
                 <% } %>
             </div>
             
@@ -33,6 +34,9 @@
                     const comment = post.post_comments[i]; %>
                     <div ><b style="margin: 0px 10px 0px 0px;"><%= comment.user.nickname %></b>   <%= comment.created_at.toLocaleString() %></div>
                     <div style="margin: 5px auto"><%= comment.content %></div>
+                    <% if (comment.user_id == userId) { %>
+                    <button id="cmt-delete" onclick="commentDelete('<%= post.post_id %>', '<%= comment.post_comment_id %>')">X</button>
+                    <% } %>
                     <hr />
                 <% } %>
             </div>
@@ -49,13 +53,7 @@
 </div>
 
 <script>
-
-    function updateWrite(id) {
-		const check = confirm('수정하기');
-
-	}
-
-    function postDelete(id) {
+    function postDelete(postId) {
         const isReal = confirm('정말 삭제하시겠습니까? 되돌릴 수 없습니다');
         if (!isReal) {
             alert('삭제 취소')
@@ -64,7 +62,7 @@
 
         $.ajax({
             type: "DELETE",
-            url: `/posts/${id}`,
+            url: `/posts/${postId}`,
             success: function (response) {
                 alert('삭제되었습니다.');
                 window.location.href = '../boardList';
@@ -96,8 +94,6 @@
 			},
 			success: function (response) {
 				const id = response.post_comment_id;
-				console.log('post_comment_id: ', id);
-
 				alert('댓글이 작성되었습니다.');
 				window.location.href = `../boardDetail/${postId}`;
 			},
@@ -106,5 +102,26 @@
 				console.log('댓글 등록 중 문제 발생 ', response);
 			},
 		});
+    }
+
+    function commentDelete(postId, cmtId) {
+        const isReal = confirm('정말 삭제하시겠습니까? 되돌릴 수 없습니다');
+        if (!isReal) {
+            alert('삭제 취소')
+            return;
+        }
+
+        $.ajax({
+            type: "DELETE",
+            url: `/posts/${postId}/comments/${cmtId}`,
+            success: function (response) {
+                alert('삭제되었습니다.');
+                window.location.href = `../boardDetail/${postId}`;
+            },
+            error: function (response) {
+                console.log(response);
+                console.log(response.responseJSON.message);s
+            }
+        });
     }
 </script>

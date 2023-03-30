@@ -67,7 +67,6 @@
 		const postCategory = $('#postCategory').val();
         const postContent = $('#postContent').val();
 		const image = $('#show-image').attr('src');
-		console.log('image', image)
 
 		if (!postTitle) {
 			alert('제목을 입력해주세요.');
@@ -88,7 +87,6 @@
 			},
 			success: function (response) {
 				const postId = response.post_id;
-				console.log('postId: ', postId);
 
 				if (image !== '') {
 					console.log('이미지를 등록합니다');
