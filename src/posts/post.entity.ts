@@ -47,19 +47,20 @@ export class Post extends PostBase {
   })
   category: PostCategoryType;
 
-  @ManyToOne(() => User, (user) => user.posts, { cascade: ['soft-remove','remove'], orphanedRowAction: 'soft-delete', onDelete: 'CASCADE' })
+  @ManyToOne(() => User, (user) => user.posts, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToMany(() => PostComment, (postComment) => postComment.post, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   post_comments: PostComment[];
 
   @OneToMany(() => PostImage, (postImage) => postImage.post, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   post_images: PostImage[];
 }

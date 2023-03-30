@@ -139,8 +139,23 @@ export class UsersService {
 
   // 유저 정보 삭제
   async deleteUserById(id: number, userId: number) {
-    const user = await this.findUser(id);
+    const user = await this.userRepository.findOne({
+      where: { user_id: id },
+      select: ['user_id', 'status'],
+      relations: [
+        'cats',
+        'products',
+        'requests',
+        'send_messages',
+        'receive_messages',
+        'post_comments',
+        'posts',
+      ],
+    });
+
     if (user.user_id === Number(userId)) {
+      // soft-delete cascading을 위해선 꼭 softRemove(Entity)로 해줘야 한다.
+      // 이 Entity는 cascading을 끼칠 자식 relations를 포함하여 불러온 객체여야 한다.
       await this.userRepository.softRemove(user);
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
@@ -325,7 +340,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: { user_id: id },
       select: ['user_id', 'status'],
-      relations: ['cats', 'posts', 'requests', 'products']
+      relations: ['cats', 'posts', 'requests', 'products'],
     });
     return user;
   }

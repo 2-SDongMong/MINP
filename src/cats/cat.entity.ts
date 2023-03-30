@@ -47,7 +47,10 @@ export class Cat {
   @DeleteDateColumn()
   deleted_at: Date | null;
 
-  @ManyToOne(() => User, (user) => user.cats, { cascade: true })
+  @ManyToOne(() => User, (user) => user.cats, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
