@@ -126,6 +126,7 @@ export class User {
   @OneToMany(() => Post, (post) => post.user, {
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
+    
   })
   posts: Post[];
 }

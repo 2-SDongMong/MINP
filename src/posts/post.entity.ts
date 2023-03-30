@@ -47,7 +47,7 @@ export class Post extends PostBase {
   })
   category: PostCategoryType;
 
-  @ManyToOne(() => User, (user) => user.posts, { cascade: true })
+  @ManyToOne(() => User, (user) => user.posts, { cascade: ['soft-remove','remove'], orphanedRowAction: 'soft-delete', onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 

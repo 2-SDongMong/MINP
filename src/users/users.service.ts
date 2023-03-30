@@ -141,7 +141,7 @@ export class UsersService {
   async deleteUserById(id: number, userId: number) {
     const user = await this.findUser(id);
     if (user.user_id === Number(userId)) {
-      await this.userRepository.softDelete(id);
+      await this.userRepository.softRemove(user);
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
@@ -325,6 +325,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: { user_id: id },
       select: ['user_id', 'status'],
+      relations: ['cats', 'posts', 'requests', 'products']
     });
     return user;
   }
