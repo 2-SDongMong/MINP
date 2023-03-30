@@ -1,6 +1,6 @@
 <div class="container">
     <div>
-    <button class="btn btn-secondary" onclick="history.back()">글목록</button>
+    <button class="btn btn-secondary" onclick="location.href='/boardList'">글목록</button>
     <% if (post.user_id == userId) { %>
         <button id="btn-update" class="btn btn-warning" onclick="location.href='/board/modify/<%= post.post_id %>'" type="button">수정</button>
         <button id="btn-delete" class="btn btn-danger" onclick="postDelete('<%= post.post_id %>')" type="button">삭제</button>
@@ -14,7 +14,7 @@
             <hr />
             <div>
                 <div>작성자: <%= post.user.nickname %></div>
-                <div><%= post.created_at.toLocaleString() %></div>
+                <div><%= post.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) %></div>
             </div>
             <hr />
             
@@ -32,7 +32,7 @@
                 <hr />
                 <% for (let i = 0; i < post.post_comments.length ; i++) { 
                     const comment = post.post_comments[i]; %>
-                    <div ><b style="margin: 0px 10px 0px 0px;"><%= comment.user.nickname %></b>   <%= comment.created_at.toLocaleString() %></div>
+                    <div ><b style="margin: 0px 10px 0px 0px;"><%= comment.user.nickname %></b>   <%= comment.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' }) %></div>
                     <div style="margin: 5px auto"><%= comment.content %></div>
                     <% if (comment.user_id == userId) { %>
                     <button id="cmt-delete" onclick="commentDelete('<%= post.post_id %>', '<%= comment.post_comment_id %>')">X</button>
