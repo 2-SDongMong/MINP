@@ -105,7 +105,13 @@ export class PostsService {
     const isFirstPage = !endCursor;
     const [posts, total] = await this.postsRepository.findAndCount({
       take: 7 + 1,
-      where: !isFirstPage ? { category: postsCategory, deleted_at: null, post_id: LessThanOrEqual(endCursor) } : null,
+      where: !isFirstPage
+        ? {
+            category: postsCategory,
+            deleted_at: null,
+            post_id: LessThanOrEqual(endCursor),
+          }
+        : null,
       relations: {
         user: {},
       },

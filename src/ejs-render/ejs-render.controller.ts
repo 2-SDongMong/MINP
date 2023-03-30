@@ -230,7 +230,7 @@ export class EjsRenderController {
   ) {
     const posts = await this.postsService.getPostByCategory(
       postCategory,
-      endCursor      
+      endCursor
     );
     return {
       components: 'boardListCtg',
@@ -262,7 +262,12 @@ export class EjsRenderController {
   @Render('index')
   async boardModify(@Req() req, @Param('id') postId: number) {
     const post = await this.postsService.getPostById(postId);
-    return { components: 'boardModify', userId: req.userId, user: req.user, post: post[0] };
+    return {
+      components: 'boardModify',
+      userId: req.userId,
+      user: req.user,
+      post: post[0],
+    };
   }
 
   @Get('/message/:type')

@@ -97,7 +97,7 @@
                     <td><a href="/boardList/${post.category}">${post.category}</a></td> 
                     <th><a href='/boardDetail/${post.post_id}'>${post.title}</a></th>
                     <td>${post.user?.nickname}</td>
-                    <td>${post.created_at.toLocaleString()}</td>
+                    <td>${post.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
                 </tr>
           `;
           const newRow = table.insertRow(table.rows.length);
