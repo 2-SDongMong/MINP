@@ -24,7 +24,9 @@ export class RequestsService {
 
   // 직전 페이지의 마지막 인덱스 endCursor와 페이지 당 게시글 수 take를 받아 품앗이 목록 조회
   async getRequestsByCursor(endCursor?: number, take: number = 9) {
+    
     const isFirstPage = !endCursor;
+    console.log("첫페이지",endCursor,isFirstPage)
     const value = await this.cacheManager.get(`requestCursor${endCursor}`);
     if (!value) {
       const [requests, total] = await this.requestsRepository.findAndCount({
