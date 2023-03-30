@@ -86,11 +86,11 @@ Content-Type: application/json
 }
 
 ###
-POST https://localhost:3000/auth/login
+POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "email": "test0@gmail.com",
+    "email": "post2@gmail.com",
     "password": "1234"
 }
 
@@ -143,15 +143,15 @@ Content-type: application/json
 }
 
 ###
-GET https://localhost:3000/posts/36
+GET http://localhost:3000/posts/90
 
 ###
-PATCH http://localhost:3000/posts/7
+PATCH http://localhost:3000/posts/90
 Content-type: application/json
 
 {
-    "title": "제목2",
-    "category": "기타",
+    "title": "수정 후",
+    "category": "병원",
     "content" : "수정했습니다"
 }
 

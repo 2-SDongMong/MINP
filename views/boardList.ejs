@@ -12,8 +12,9 @@
         <a class="sp_nav-link" href="/boardList/기타">기타</a>
         <a class="sp_nav-link" href="/boardList" >전체보기</a>
       </nav>
-    </div>
+    <a href='/board/post' class="btn btn-success">글쓰기</a>
 
+    </div>
   
     <!-- board list area -->
     <div id="board-list">
@@ -43,20 +44,15 @@
                 <% } %>
               </tbody>
             </table>
-            
-            <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-dark">더보기</button>
-
         </div>
     </div>
 
     <div class="container">
-      <a href='/board/post' class="btn btn-success">글쓰기</a>
+      <button onclick="viewBoardLists(<%= posts.pageOpt.endCursor %>)" id="moreBtn" type="button" class="btn btn-dark">더보기</button>
+      
     </div>
     <br><br>
-
-    <div class="topBtnBox">
-      <button id="topBtn" type="button" class="btn btn-info">TOP</button>
-    </div>
+    <button id="topBtn" type="button" class="btn btn-info">TOP</button>
 
 </section>
 
@@ -101,7 +97,7 @@
                     <td><a href="/boardList/${post.category}">${post.category}</a></td> 
                     <th><a href='/boardDetail/${post.post_id}'>${post.title}</a></th>
                     <td>${post.user?.nickname}</td>
-                    <td>${post.created_at.toLocaleString()}</td>
+                    <td>${post.created_at.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
                 </tr>
           `;
           const newRow = table.insertRow(table.rows.length);
