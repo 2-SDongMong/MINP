@@ -116,7 +116,7 @@ export class ProductsService {
       user, // user 객체로 수정
     });
     console.log('result:', result);
-    await this.cacheManager.del('/products');
+    await this.cacheManager.del(`all-share-products`);
     return result;
   }
 
@@ -144,7 +144,7 @@ export class ProductsService {
     const result = await this.productsRepository.update(id, updateData);
 
     console.log('Update result:', result); // Add log here
-    await this.cacheManager.del('/products');
+    await this.cacheManager.del(`all-share-products`);
     return result.affected > 0;
   }
 
@@ -161,7 +161,7 @@ export class ProductsService {
 
   async delete(id) {
     const result = await this.productsRepository.delete(id);
-    await this.cacheManager.del('/products');
+    await this.cacheManager.del(`all-share-products`);
     return result.affected > 0;
   }
 }
