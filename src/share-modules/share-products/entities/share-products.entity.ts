@@ -1,4 +1,5 @@
 import { ProductsCategory } from '../../share-products-category/entities/products-category.entity';
+import { ProductsTradeLocation } from '../../share-products-trade-location/entities/products-trade-location.entity';
 import { User } from '../../../users/user.entity';
 import {
   Column,
@@ -9,7 +10,6 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ProductsTradeLocation } from 'src/share-modules/share-products-trade-location/entities/products-trade-location.entity';
 
 @Entity({ schema: 'mooin_cat', name: 'share_products' })
 export class Products {
@@ -29,15 +29,24 @@ export class Products {
   @Column() // New column to store the foreign key relationship
   user_id: number;
 
-  @ManyToOne(() => ProductsTradeLocation, { cascade: true, eager: true })
+  @ManyToOne(() => ProductsTradeLocation, (location) => location.products, {
+    eager: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   productsTradeLocation: ProductsTradeLocation;
 
-  @ManyToOne(() => ProductsCategory, { eager: true })
+  @ManyToOne(() => ProductsCategory, (category) => category.products, {
+    eager: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   productsCategory: ProductsCategory;
 
   @ManyToOne(() => User, (user) => user.products, {
     eager: true,
-    cascade: true,
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'user_id' }) // Changed the name to 'user_id'
   user: User;

@@ -179,7 +179,7 @@
                     <td scope="row"><%= post.post_id %></td>
                     <td><a href="/boardList/<%= post.category %>"><%= post.category %></a></td> 
                     <th><a href='/boardDetail/<%= post.post_id %>'><%= post.title %> </a></th>
-                    <td><%= post.user.nickname %></td>
+                    <td><%= post.user?.nickname ?? '탈퇴한 사용자입니다' %></td>
                     <td><%= created_at %></td>
                   </tr>
                   <% } %>

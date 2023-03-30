@@ -33,7 +33,10 @@ export class PostImage extends PostImageBase {
   @Column('varchar', { length: 255 })
   post_image: string;
 
-  @ManyToOne(() => Post, (post) => post.post_images, { cascade: true })
+  @ManyToOne(() => Post, (post) => post.post_images, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'post_id' })
   post: Post;
 }

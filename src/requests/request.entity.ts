@@ -39,7 +39,7 @@ export class Request {
   @DeleteDateColumn()
   deleted_at: Date | null;
 
-  @ManyToOne(() => User, (user: User) => user.requests, { cascade: true })
+  @ManyToOne(() => User, (user: User) => user.requests)
   @JoinColumn({ name: 'user_id' })
   user: User;
 }
