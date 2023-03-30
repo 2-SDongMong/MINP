@@ -37,11 +37,17 @@ export class PostComment extends CommentBase {
   @Column('int')
   post_id: number;
 
-  @ManyToOne(() => User, (user) => user.post_comments, { cascade: true })
+  @ManyToOne(() => User, (user) => user.post_comments, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Post, (post) => post.post_comments, { cascade: true })
+  @ManyToOne(() => Post, (post) => post.post_comments, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'post_id' })
   post: Post;
 }

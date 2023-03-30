@@ -124,7 +124,7 @@ function deleteUser(id) {
     type: 'DELETE',
     url: `users/mypage/${id}`,
     success: function (response) {
-      window.location.replace('/');
+      window.location.href='/';
     },
   });
 }

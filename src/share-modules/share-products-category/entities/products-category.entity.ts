@@ -9,6 +9,8 @@ export class ProductsCategory {
   @Column({ unique: true })
   name: string;
 
-  @OneToMany(() => Products, (products) => products.productsCategory)
+  @OneToMany(() => Products, (products) => products.productsCategory, {
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
+  })
   products: Products[];
 }
