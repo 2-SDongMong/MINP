@@ -3,11 +3,11 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Req,
   Patch,
   Param,
+  Query,
 } from '@nestjs/common';
 import { AuthMiddleware } from 'src/auth/auth.middleware';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -79,8 +79,11 @@ export class UsersController {
   // Admin page API
   // 가입 신청 대기 조회 API
   @Get('/admin')
-  async getAllUser(@Req() req) {
-    const data = await this.usersService.getUserByStatus(req.userId);
+  async getAllUser(@Req() req, @Query() query) {
+    const data = await this.usersService.getUserByStatus(
+      req.userId,
+      Number(query.registrationPage) || 1
+    );
     return data;
   }
 
@@ -96,8 +99,11 @@ export class UsersController {
 
   // 일반 회원 목록 조회 API
   @Get('/admin/member')
-  getMember(@Req() req) {
-    return this.usersService.getAllMember(req.userId);
+  getMember(@Req() req, @Query() query) {
+    return this.usersService.getAllMember(
+      req.userId,
+      Number(query.memberPage) || 1
+    );
   }
 
   // 전체 회원 삭제 API
