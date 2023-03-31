@@ -64,7 +64,7 @@
 					<div onclick="location.href='/request/detail/<%= request.request_id %>'" class="card h-100" style="border-radius: 20px; cursor: pointer;">
 
 						<div class="cat-card">
-							<div class="imgContainer" style="background-image: url('<%= request.user.cats[0]?.image %>');">
+							<div class="imgContainer" style="background-image: url('<%= request.user?.cats[0]?.image %>');">
 							<img src="" alt="">
 							<div class="status">
 								<p><%= ongoing %></p>
@@ -83,7 +83,7 @@
 								연락
 								</div>
 								<div class="cat-info-content">
-								<%= request.user.nickname %>
+								<%= request.user?.nickname %>
 								</div>
 							</div>
 							<div class="whole-column-container">

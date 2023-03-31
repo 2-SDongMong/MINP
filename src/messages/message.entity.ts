@@ -32,11 +32,17 @@ export class Message {
   @DeleteDateColumn()
   deleted_at: Date | null;
 
-  @ManyToOne(() => User, (user) => user.send_messages, { cascade: true })
+  @ManyToOne(() => User, (user) => user.send_messages, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'sender_id' })
   send_user: User;
 
-  @ManyToOne(() => User, (user) => user.receive_messages, { cascade: true })
+  @ManyToOne(() => User, (user) => user.receive_messages, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'recipient_id' })
   receive_user: User;
 }

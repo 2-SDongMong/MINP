@@ -124,6 +124,7 @@ function deleteUser(id) {
     type: 'DELETE',
     url: `users/mypage/${id}`,
     success: function (response) {
+      alert('삭제가 완료되었습니다.')
       window.location.replace('/');
     },
   });

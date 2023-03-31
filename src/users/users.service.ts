@@ -139,9 +139,24 @@ export class UsersService {
 
   // 유저 정보 삭제
   async deleteUserById(id: number, userId: number) {
-    const user = await this.findUser(id);
+    const user = await this.userRepository.findOne({
+      where: { user_id: id },
+      select: ['user_id', 'status'],
+      relations: [
+        'cats',
+        'products',
+        'requests',
+        'send_messages',
+        'receive_messages',
+        'post_comments',
+        'posts',
+      ],
+    });
+
     if (user.user_id === Number(userId)) {
-      await this.userRepository.softDelete(id);
+      // soft-delete cascading을 위해선 꼭 softRemove(Entity)로 해줘야 한다.
+      // 이 Entity는 cascading을 끼칠 자식 relations를 포함하여 불러온 객체여야 한다.
+      await this.userRepository.softRemove(user);
     } else {
       throw new BadRequestException('로그인한 아이디가 일치하지 않습니다.');
     }
@@ -244,10 +259,13 @@ export class UsersService {
 
   // Admin page API
   // 가입 신청 대기 조회
-  async getUserByStatus(id: number) {
+  async getUserByStatus(id: number, registrationPage: number) {
+    const limit = 5;
+    const offset = (registrationPage - 1) * limit;
+    console.log(offset);
     const user = await this.findUser(id);
     if (user.status === '관리자') {
-      const users = await this.userRepository.find({
+      const users = await this.userRepository.findAndCount({
         where: { status: '가입 대기' },
         relations: { cats: true },
         select: {
@@ -258,6 +276,8 @@ export class UsersService {
           nickname: true,
           status: true,
         },
+        skip: offset,
+        take: limit,
       });
       return users;
     } else {
@@ -283,7 +303,9 @@ export class UsersService {
   }
 
   // 일반 회원 목록 조회
-  async getAllMember(id: number) {
+  async getAllMember(id: number, memberPage: number) {
+    const limit = 5;
+    const offset = (memberPage - 1) * limit;
     const user = await this.findUser(id);
     if (user.status === '관리자') {
       const member = await this.userRepository
@@ -291,7 +313,9 @@ export class UsersService {
         .where('user.status IN (:...statuses)', {
           statuses: ['일반', '관리자'],
         })
-        .getMany();
+        .limit(limit)
+        .offset(offset)
+        .getManyAndCount();
       return member;
     } else {
       throw new UnauthorizedException('권한이 없습니다.');
@@ -316,6 +340,7 @@ export class UsersService {
     const user = await this.userRepository.findOne({
       where: { user_id: id },
       select: ['user_id', 'status'],
+      relations: ['cats', 'posts', 'requests', 'products'],
     });
     return user;
   }

@@ -5,12 +5,18 @@ $(document).ready(function() {
 
 // 가입 대기인 유저 목록 불러오기 
 function showUserStatus() {
+  const url = new URL(window.location.href)
+  const registrationPage = url.searchParams.get('registrationPage') || 1
   $.ajax({
     type: 'GET',
-    url: '/users/admin',
+    url: `/users/admin?registrationPage=${registrationPage}`,
     async: false,
     data: {},
     success: function(response) {
+      
+      const totalCount = response[1];
+      showPagination(totalCount, registrationPage, 'registrationPage')
+      response = response[0];
       for( let i = 0; i < response.length; i++) {
         let userId = response[i].user_id;
         let status = response[i].status;
@@ -73,13 +79,19 @@ function modifyUserStatus(id) {
 
 // 일반 회원 리스트
 function showMember() {
+  const url = new URL(window.location.href)
+  const memberPage = url.searchParams.get('memberPage') || 1
   $.ajax({
     type: 'GET',
-    url: '/users/admin/member',
+    url: `/users/admin/member?memberPage=${memberPage}`,
     async: false,
     data: {},
     success: function(response) {
       console.log(response)
+      const totalCount = response[1];
+      showPagination(totalCount, memberPage, 'memberPage')
+      response = response[0];
+
       for(let i = 0; i < response.length; i++) {
         let userId = response[i].user_id;
         let status = response[i].status;
@@ -125,4 +137,90 @@ function deleteAllUser(id) {
       console.log('error:', response);
     }
   })
+}
+
+function showPagination(totalCount, currentPage, pageType) {
+  console.log(currentPage)
+
+  totalCount = Number(totalCount)
+  currentPage = Number(currentPage)
+  const lastPage = Math.ceil(totalCount / 5)
+  const pagesInPageGroup = 5
+
+
+  // 1~2페이지는 그룹1, 3~4페이지는 그룹2
+  const pageGroup = Math.ceil(currentPage / pagesInPageGroup)
+
+  // 페이지 그룹1의 마지막 페이지는 2
+  const pageGroupLast =
+      pageGroup * pagesInPageGroup > lastPage
+          ? lastPage
+          : pageGroup * pagesInPageGroup
+
+  // 페이지 그룹1의 첫번째 페이지는 1
+  // => 마지막 페이지 숫자(2) - 한 페이지 그룹에 들어가는 페이지 수(2) - 1
+  // const pageGroupFirst = pageGroupLast - (pagesInPageGroup - 1) < 1 ? 1 : pageGroupLast - (pagesInPageGroup -1)
+  const pageGroupFirst =
+      pageGroup === 1 ? 1 : (pageGroup - 1) * pagesInPageGroup + 1
+
+  const pages = []
+
+  // 전 페이지 그룹으로 가기
+  if (pageGroup > 1) {
+      // 이전 페이지 그룹 - 1 => 이전 페이지 그룹의 마지막 페이지는 (pageGroup-1)*2
+      pages.push(
+          `<li class="page-item"><a class="page-link" onclick="appendQueryParameter('${pageType}',${
+              (pageGroup - 1) * pagesInPageGroup
+          })"><<</a></li>`
+      )
+  }
+
+  // 페이지 그룹의 첫번 째 페이지가 1보다 크면 이전 화살 만들기
+  if (currentPage > 1) {
+      pages.push(
+          `<li class="page-item"><a class="page-link" onclick="appendQueryParameter('${pageType}',${
+              currentPage - 1
+          })"><</a></li>`
+      )
+  }
+
+  // 페이지 그룹의 마지막 페이지까지 페이지 숫자 렌더링 하기
+  for (i = pageGroupFirst; i <= pageGroupLast; i++) {
+      pages.push(
+          `<li class="page-item" id="${pageType}${i}"><a class="page-link" onclick="appendQueryParameter('${pageType}',${i})">${i}</a></li>`
+      )
+  }
+
+  // 페이지 그룹의 마지막 페이지가 총 마지막 페이지보다 작을 때 다음 화살 만들기
+  if (currentPage < lastPage) {
+      pages.push(
+          `<li class="page-item"><a class="page-link" onclick="appendQueryParameter('${pageType}',${
+              currentPage + 1
+          })">></a></li>`
+      )
+  }
+
+  // 다음 페이지 그룹으로 가기
+  if (pageGroupLast < lastPage) {
+      // 다음 페이지 그룹 + 2 => 다음 페이지 그룹의 첫 페이지는 pageGroup * pagesInPageGroup + 1
+      pages.push(
+          `<li class="page-item"><a class="page-link" onclick="appendQueryParameter('${pageType}',${
+              pageGroup * pagesInPageGroup + 1
+          })">>></a></li>`
+      )
+  }
+  if (pageType === 'registrationPage') {
+    document.getElementById('accessPagination').innerHTML = pages.join('')
+  } else if (pageType === 'memberPage') {
+    document.getElementById('memberPagination').innerHTML = pages.join('')
+  }
+  
+
+  $(`#${pageType}${currentPage}`).addClass('active')
+}
+
+function appendQueryParameter(query, value){
+  let url = new URL(window.location.href)
+  url.searchParams.set(query, value)
+  window.location.href = url.href
 }

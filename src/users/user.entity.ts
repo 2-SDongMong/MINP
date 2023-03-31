@@ -70,11 +70,11 @@ export class User {
   deleted_at: Date | null;
 
   @OneToMany(() => Cat, (cat: Cat) => cat.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   cats: Cat[];
 
+  // FIXME: 고양이 '좋아요' 기능을 사용하지 않음이 확실시 되면 삭제하기.
   // @OneToMany(() => CatLike, (catLike) => catLike.user, {
   //   onUpdate: 'CASCADE',
   //   onDelete: 'CASCADE',
@@ -82,50 +82,43 @@ export class User {
   // cat_likes: CatLike[];
 
   @OneToMany(() => Products, (Products) => Products.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   products: Products[];
 
   @OneToMany(() => Request, (request) => request.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   requests: Request[];
 
+  // FIXME: 집사 '좋아요' 기능을 사용하지 않음이 확실시 되면 삭제하기.
   @OneToMany(() => UserLike, (userLike) => userLike.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   user_likes: UserLike[];
 
   @OneToMany(() => UserLike, (userLike) => userLike.target_user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   target_user_likes: UserLike[];
 
   @OneToMany(() => Message, (message) => message.send_user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   send_messages: Message[];
 
   @OneToMany(() => Message, (message) => message.receive_user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   receive_messages: Message[];
 
   @OneToMany(() => PostComment, (postComment) => postComment.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   post_comments: PostComment[];
 
   @OneToMany(() => Post, (post) => post.user, {
-    onUpdate: 'CASCADE',
-    onDelete: 'CASCADE',
+    cascade: ['insert', 'update', 'remove', 'soft-remove', 'recover'],
   })
   posts: Post[];
 }
