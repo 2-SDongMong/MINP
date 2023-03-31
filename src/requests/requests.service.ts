@@ -26,7 +26,6 @@ export class RequestsService {
   async getRequestsByCursor(endCursor?: number, take: number = 9) {
     
     const isFirstPage = !endCursor;
-    console.log("첫페이지",endCursor,isFirstPage)
     const value = await this.cacheManager.get(`requestCursor${endCursor}`);
     if (!value) {
       const [requests, total] = await this.requestsRepository.findAndCount({
@@ -89,7 +88,6 @@ export class RequestsService {
     const isFirstPage = !endCursor;
     const value = await this.cacheManager.get(`requestCursor${endCursor},${bname}`);
     if (!value) {
-      console.log("캐시데이터x")
       let requestsQuery = this.requestsRepository
         .createQueryBuilder('r')
         .select()
@@ -122,7 +120,7 @@ export class RequestsService {
 
       return request;
     }
-    console.log("캐시데이터0")
+    
     return value;
   }
 
