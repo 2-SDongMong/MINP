@@ -27,7 +27,7 @@ export class Message {
   read_at: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  created_atㄴㄴㄴㄴㄴㄴㄴ: Date;
 
   @DeleteDateColumn()
   deleted_at: Date | null;

@@ -79,3 +79,16 @@
   background-color: white;
 }
 
+/* 가입 상태 조회 페이지네이션 버튼 위치 */
+#accessPagination {
+  display: flex;
+  justify-content: center;
+  margin: 10px 5px;
+}
+
+/* 멤버 조회 페이지네이션 버튼 위치 */
+#memberPagination {
+  display: flex;
+  justify-content: center;
+  margin: 10px 5px;
+}
