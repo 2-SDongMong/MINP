@@ -5,11 +5,11 @@ import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { JwtConfigService } from 'src/config/jwt.config.service';
+import { JwtConfigService } from '../config/jwt.config.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
-import { Post } from 'src/posts/post.entity';
-import { Request } from 'src/requests/request.entity';
+import { Products } from '../share-modules/share-products/entities/share-products.entity';
+import { Post } from '../posts/post.entity';
+import { Request } from '../requests/request.entity';
 
 @Module({
   imports: [
