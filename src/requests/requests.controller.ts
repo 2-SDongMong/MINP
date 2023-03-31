@@ -30,7 +30,7 @@ export class RequestsController {
   //   return await this.requestsService.getRequestsPagination(page, 2);
   // }
 
-  @Get(':bname')
+  @Get('address/:bname')
   async getRequestsByBnameAndCursor(
     @Param('bname') bname: string,
     @Query('endCursor') endCursor: number
@@ -72,8 +72,8 @@ export class RequestsController {
   }
 
   @Post()
-  createRequest(@Req() req, @Body() data: CreateRequestDto) {
-    return this.requestsService.createRequest(req.userId, data);
+  async createRequest(@Req() req, @Body() data: CreateRequestDto) {
+    return await this.requestsService.createRequest(req.userId, data);
   }
 
   @Patch('/:id')

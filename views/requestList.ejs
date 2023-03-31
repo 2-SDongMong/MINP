@@ -166,7 +166,7 @@
 			$.ajax({
 				type: 'GET',
 				async: "true",
-				url: `/requests/${bname}?endCursor=${endRequestId}`,
+				url: `/requests/address/${bname}?endCursor=${endRequestId}`,
 				success: function (response) {
 					showCards(response, address_certified, bname);
 				},
