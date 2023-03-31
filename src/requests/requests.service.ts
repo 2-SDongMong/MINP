@@ -87,35 +87,43 @@ export class RequestsService {
     take: number = 9
   ) {
     const isFirstPage = !endCursor;
+    const value = await this.cacheManager.get(`requestCursor${endCursor},${bname}`);
+    if (!value) {
+      console.log("캐시데이터x")
+      let requestsQuery = this.requestsRepository
+        .createQueryBuilder('r')
+        .select()
+        .leftJoin('r.user', 'user')
+        .leftJoin('user.cats', 'cats')
+        .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
+        .where('user.address_bname = :bname', { bname });
+      if (!isFirstPage) {
+        requestsQuery = requestsQuery.andWhere('r.request_id < :endCursor', {
+          endCursor,
+        });
+      }
+      const requests = await requestsQuery
+        .orderBy('r.created_at', 'DESC')
+        .take(take)
+        .getMany();
 
-    let requestsQuery = this.requestsRepository
-      .createQueryBuilder('r')
-      .select()
-      .leftJoin('r.user', 'user')
-      .leftJoin('user.cats', 'cats')
-      .addSelect(['user.nickname', 'user.address_bname', 'cats.image'])
-      .where('user.address_bname = :bname', { bname });
-    if (!isFirstPage) {
-      requestsQuery = requestsQuery.andWhere('r.request_id < :endCursor', {
-        endCursor,
-      });
+      let newEndCursor = requests[requests.length - 1]?.request_id ?? false; // 67 -> 49 -> 13
+      let startCursor = requests[0]?.request_id ?? false;
+
+      const request = {
+        data: requests,
+        pageOpt: {
+          take,
+          endCursor: newEndCursor,
+          startCursor,
+        },
+      };
+      await this.cacheManager.set(`requestCursor${endCursor},${bname}`, request);
+
+      return request;
     }
-    const requests = await requestsQuery
-      .orderBy('r.created_at', 'DESC')
-      .take(take)
-      .getMany();
-
-    let newEndCursor = requests[requests.length - 1]?.request_id ?? false; // 67 -> 49 -> 13
-    let startCursor = requests[0]?.request_id ?? false;
-
-    return {
-      data: requests,
-      pageOpt: {
-        take,
-        endCursor: newEndCursor,
-        startCursor,
-      },
-    };
+    console.log("캐시데이터0")
+    return value;
   }
 
   // FIXME: 커서 기반에 문제가 생겼을 시, 오프셋 기반으로 전환할 것.
@@ -227,7 +235,7 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
-    await this.cacheManager.del('/requests');
+    await this.cacheManager.reset();
     return await this.requestsRepository.save(newRequest);
   }
 
@@ -286,7 +294,7 @@ export class RequestsService {
       reserved_end_date,
       detail,
     });
-    await this.cacheManager.del('/requests');
+    await this.cacheManager.reset();
   }
 
   async updateRequestIsOngoing(
@@ -297,13 +305,13 @@ export class RequestsService {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.update(id, { is_ongoing: bodyData.is_ongoing });
-    await this.cacheManager.del('/requests');
+    await this.cacheManager.reset();
   }
 
   async deleteRequestById(userId: number, id: number) {
     const request = await this._existenceCheckById(id);
     this._authorCheckByUserId(request.user_id, userId);
     this.requestsRepository.softDelete(id);
-    await this.cacheManager.del('/requests');
+    await this.cacheManager.reset();
   }
 }
