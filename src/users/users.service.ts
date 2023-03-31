@@ -13,9 +13,9 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdateMypageDto } from './dto/update-mypage.dto';
 import { UpdateMemberDto } from './dto/update-member-status.dto';
-import { Request } from 'src/requests/request.entity';
-import { Products } from 'src/share-modules/share-products/entities/share-products.entity';
-import { Post } from 'src/posts/post.entity';
+import { Request } from '../requests/request.entity';
+import { Products } from '../share-modules/share-products/entities/share-products.entity';
+import { Post } from '../posts/post.entity';
 import { UpdateAddressCertifiedDto } from './dto/update-address-certified.dto';
 
 @Injectable()
