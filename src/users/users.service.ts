@@ -262,7 +262,7 @@ export class UsersService {
   async getUserByStatus(id: number, registrationPage: number) {
     const limit = 5;
     const offset = (registrationPage - 1) * limit;
-    console.log(offset);
+
     const user = await this.findUser(id);
     if (user.status === '관리자') {
       const users = await this.userRepository.findAndCount({
@@ -288,7 +288,7 @@ export class UsersService {
   // 가입 신청 승인
   async accessMember(id: number, userId: number, data: UpdateMemberDto) {
     const user = await this.findUser(id);
-    console.log(user);
+
     if (user.status === '관리자') {
       const editStatus = await this.userRepository
         .createQueryBuilder()

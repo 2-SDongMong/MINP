@@ -115,7 +115,6 @@ export class UsersController {
   //이메일로 유저 찾기
   @Get('/:email')
   async getUserId(@Param(`email`) email) {
-    console.log('user.controllers.ts', email);
     const a = await this.usersService.findOneByEmail(email);
     return a.user_id;
   }

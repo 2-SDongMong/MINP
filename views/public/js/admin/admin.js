@@ -87,7 +87,6 @@ function showMember() {
     async: false,
     data: {},
     success: function(response) {
-      console.log(response)
       const totalCount = response[1];
       showPagination(totalCount, memberPage, 'memberPage')
       response = response[0];
@@ -140,7 +139,6 @@ function deleteAllUser(id) {
 }
 
 function showPagination(totalCount, currentPage, pageType) {
-  console.log(currentPage)
 
   totalCount = Number(totalCount)
   currentPage = Number(currentPage)

@@ -302,15 +302,84 @@ export const mockRequestsService = {
   deleteRequestById: jest.fn((userId, requestId) => undefined),
 };
 
+// repository 테스트 특수
+// export const findAndCountSample = getRequestsByCursorSample.data;
+export const findAndCountSample = [
+  {
+    request_id: 77,
+    detail: 'dbeaver 타임존 수정 후!',
+    reserved_begin_date: '2023-04-08',
+    reserved_end_date: '2023-04-08',
+    is_ongoing: true,
+    updated_at: '2023-03-27T15:33:33.369Z',
+    user: {
+      nickname: '고양이만세',
+      address_bname: '구로동',
+      cats: [
+        {
+          image: '/img/cat9.jfif',
+        },
+      ],
+    },
+  },
+  {
+    request_id: 73,
+    detail: '테스트입니다! 시간 측정을 위한',
+    reserved_begin_date: '2023-03-31',
+    reserved_end_date: '2023-04-01',
+    is_ongoing: true,
+    updated_at: '2023-03-27T05:21:28.942Z',
+    user: {
+      nickname: '고양이만세',
+      address_bname: '구로동',
+      cats: [
+        {
+          image: '/img/cat9.jfif',
+        },
+      ],
+    },
+  },
+  {
+    request_id: 72,
+    detail: '이게 들어가나?!',
+    reserved_begin_date: '2023-03-25',
+    reserved_end_date: '2023-03-25',
+    is_ongoing: false,
+    updated_at: '2023-03-27T05:14:18.031Z',
+    user: {
+      nickname: '리베',
+      address_bname: '대림동',
+      cats: [
+        {
+          image:
+            'https://minp.s3.amazonaws.com/cat_images/1679484445087_cat-2310384_1280.jpg',
+        },
+      ],
+    },
+  },
+];
+
 export const mockRequestsRepository = {
-  find: jest.fn(() => getRequestsByCursorSample),
+  findAndCount: jest.fn(() => [findAndCountSample, 33]),
+  createQueryBuiler: jest.fn(),
+  select: jest.fn(),
+  leftJoin: jest.fn(),
+  addSelect: jest.fn(),
+  where: jest.fn(),
+  andWhere: jest.fn(),
+  orderby: jest.fn(),
+  take: jest.fn(),
+  getMany: jest.fn(() => getRequestsByBnameAndCursorSample),
+
+  find: jest.fn(() => getRequestByIdSample),
   findOne: jest.fn((options) => getRequestByIdSample),
   create: jest.fn((dto) => createRequestSample),
   save: jest.fn((request) =>
-    Promise.resolve({
-      ...request,
-      request_id: 26,
-    })
+    // Promise.resolve({
+    //   ...request,
+    //   request_id: 26,
+    // })
+    Promise.resolve(createRequestSample)
   ),
   update: jest.fn((requestId, dto) => Promise<UpdateResult>),
   softDelete: jest.fn((requestId) => Promise<UpdateResult>),
