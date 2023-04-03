@@ -89,7 +89,6 @@
 				const postId = response.post_id;
 
 				if (image !== '') {
-					console.log('이미지를 등록합니다');
 					$.ajax({
 						type: 'POST',
 						url: `/posts/${postId}/images`,
@@ -98,7 +97,7 @@
 							post_images: [image],
 						}), 
 						success: function (response) {
-							console.log('이미지까지 등록 후 ', response)
+							// console.log('이미지까지 등록 후 ', response)
 						},
 						error: function (response) {
 							alert('사진 등록 중 문제가 발생하였습니다. 다시 시도해주세요')

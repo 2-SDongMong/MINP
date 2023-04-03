@@ -281,7 +281,7 @@ export class EjsRenderController {
     } else {
       messages = await this.messagesService.getUnreadMessages(req.userId);
     }
-    console.log("------------------",messages)
+
     return {
       components: 'message',
       userId: req.userId,
