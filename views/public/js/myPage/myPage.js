@@ -269,7 +269,6 @@ function addCatUploadImage(input) {
     contentType: false,
     data: formData,
     success: function (response) {
-      console.log('upload success. received url: ', response.url)
       $(`#addCatShowImage`).attr('style', `background-image: url(${response.url});`);
     },
     error: function (err) {
@@ -280,7 +279,6 @@ function addCatUploadImage(input) {
   }
 
 function upload_image(input, catId) {
-  console.log('catId, before ajax: ', catId)
   if (input.files.length === 0) {
     alert('파일을 선택해주세요.');
     return;
@@ -295,8 +293,6 @@ function upload_image(input, catId) {
     contentType: false,
     data: formData,
     success: function (response) {
-      console.log('upload success. received url: ', response.url)
-      console.log('catId: ', catId)
       $(`#catPic${catId}`).attr('style', `background-image: url(${response.url});`);
     },
     error: function (err) {
@@ -334,7 +330,6 @@ function addMyCat() {
 
 function modifyMyCat(id) {
   const catImg = $(`#catPic${id}`).css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
-  console.log('catImg url: ', catImg)
   const catAge = $(`#catAge${id}`).val();
   let catNeutered = $(`#catNeutered${id}`).val();
   const catCharacter = $(`#catCharacter${id}`).val();
@@ -452,7 +447,6 @@ function verifyLocation() {
 
             // 동네명이 같거나 기록된 주소<->현재위치 거리가 5km 이내라면
             // 사용자의 address_certified 컬럼을 true로 변환시키는 ajax 콜 호출
-            console.log('isSameBname, isInRadius: ', isSameBname, isInRadius);
             if (isSameBname || isInRadius) {
               alert('동네 인증을 성공적으로 마쳤습니다! 회원 정보를 수정합니다.');
               $.ajax({
