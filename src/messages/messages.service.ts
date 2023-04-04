@@ -74,12 +74,12 @@ export class MessagesService {
 
   async createMessage(senderId: number, data: CreateMessageDto) {
     const newMessage = this.repository.create({ sender_id: senderId, ...data });
-    await this.cacheManager.del('/messages');
+    await this.cacheManager.del(`sender${senderId}`);
     return await this.repository.save(newMessage);
   }
 
   async deleteMessageById(id: number) {
-    await this.cacheManager.del('/messages');
+    await this.cacheManager.reset();
     return this.repository.softDelete(id);
   }
 }
