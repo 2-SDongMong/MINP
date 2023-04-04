@@ -17,32 +17,20 @@ export class MessagesService {
   ) {}
 
   async getMessageById(id: number, userId: number) {
-    const value = await this.cacheManager.get(`${id}`);
-    if (!value) {
-      const message = await this.repository.getMessageById(id);
-      await this.cacheManager.set(`${id}`, message);
-      if (message.sender_id !== userId && message.read_at === null) {
-        const time = new Date();
-        this.repository.updateReadAt(message.message_id, time);
-      }
-      if (_.isNil(message)) {
-        throw new NotFoundException(`Message not found. id: ${id}`);
-      }
-      return message;
+    const message = await this.repository.getMessageById(id);
+    if (message.sender_id !== userId && message.read_at === null) {
+      const time = new Date();
+      this.repository.updateReadAt(message.message_id, time);
     }
-    return value;
+    if (_.isNil(message)) {
+      throw new NotFoundException(`Message not found. id: ${id}`);
+    }
+    return message;
   }
 
   async getUnreadMessages(userId: number) {
-    const value = await this.cacheManager.get(`unread${userId}`);
-
-    if (!value) {
-      const message = await this.repository.getUnreadMessages(userId);
-      await this.cacheManager.set(`unread${userId}`, message);
-
-      return message;
-    }
-    return value;
+    const message = await this.repository.getUnreadMessages(userId);
+    return message;
   }
 
   async getMessages() {
